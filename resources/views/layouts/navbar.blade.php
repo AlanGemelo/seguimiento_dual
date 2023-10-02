@@ -7,9 +7,8 @@
             </a>
         </li>
         <li class="nav-item nav-category">Acciones</li>
-        <li class="nav-item">
-{{--            {{ request()->routeIs('plagio.*') ? 'active' : ''}}--}}
-            <a class="nav-link" href="">
+        <li class="nav-item {{ request()->routeIs('estudiantes.*') ? 'active' : ''}}">
+            <a class="nav-link" href="{{ route('estudiantes.index') }}">
                 <i class="menu-icon mdi mdi-floor-plan"></i>
                 <span class="menu-title">Estudiantes</span>
             </a>

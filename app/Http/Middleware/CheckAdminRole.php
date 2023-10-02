@@ -3,19 +3,28 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CheckAdminRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response| RedirectResponse
     {
-        return $next($request);
+        // Verificar si el usuario ha iniciado sesión
+        if (Auth::check()) {
+            // Obtener el usuario autenticado
+            $user = Auth::user();
+
+            // Verificar el tipo de usuario (por ejemplo, role_id == 1 para el administrador)
+            if ($user->rol_id == 1) {
+                // Usuario administrador, continuar con la solicitud
+                return $next($request);
+            }
+        }
+
+        // Si no es un usuario administrador, redirigir al dashboard
+        return redirect('/dashboard');
     }
 }

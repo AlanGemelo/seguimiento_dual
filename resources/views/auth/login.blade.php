@@ -8,7 +8,7 @@
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                             <div class="brand-logo">
-                                <img src="{{ asset('assets/plagio/img/logos/logo.png')}}" alt="Cuervo Logo">
+                                <img src="{{ asset('assets/images/logo.png')}}" alt="Cuervo Logo">
                             </div>
                             <h2 class="fw-light">Inicia Sesión</h2>
                             <form class="pt-3" action="{{ route('login') }}" method="post">
@@ -38,9 +38,6 @@
                                         </label>
                                     </div>
                                     <a href="{{ route('password.request') }}" class="auth-link text-black">Forgot password?</a>
-                                </div>
-                                <div class="text-center mt-4 fw-light">
-                                    <a href="{{ route('register') }}" class="text-primary">Registrate</a>
                                 </div>
                             </form>
                         </div>

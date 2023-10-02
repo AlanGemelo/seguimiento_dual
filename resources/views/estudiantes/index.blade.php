@@ -20,13 +20,15 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes</h6>
-                                <div class="float-end">
-                                    {{-- Button del modal --}}
-                                    <a href="{{route('estudiantes.create')}}" class="btn btn-primary"
-                                       title="Agregar una nueva Moto">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
-                                    </a>
-                                </div>
+                                @if(Auth::user()->rol_id === 1)
+                                    <div class="float-end">
+                                        {{-- Button del modal --}}
+                                        <a href="{{route('estudiantes.create')}}" class="btn btn-primary"
+                                           title="Agregar una nueva Moto">
+                                            <i class="mdi mdi-plus-circle-outline"></i>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="card-body">

@@ -4,25 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Estudiantes;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Http\Request;
 
 class EstudiantesController extends Controller
 {
 
-    public function index()
+    public function __construct()
+    {
+        $this->middleware('admin')->only('create', 'store', 'delete');
+    }
+
+    public function index(): View
     {
         $estudiantes = Estudiantes::all();
 
         return view('estudiantes.index', compact('estudiantes'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('estudiantes.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
 //        dd($request->all());
         $request->validate([
@@ -45,7 +52,7 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante creado');
     }
 
-    public function show($id)
+    public function show($id): View
     {
         $id=Hashids::decode($id);
         $estudiante=Estudiantes::where('matricula', $id)->get();
@@ -54,9 +61,9 @@ class EstudiantesController extends Controller
         return view('estudiantes.show', compact('estudiante'));
     }
 
-    public function edit(Estudiantes $estudiantes)
+    public function edit(Estudiantes $estudiantes): View
     {
-        //
+        return view('estudiantes.edit');
     }
 
     public function update(Request $request, Estudiantes $estudiantes)

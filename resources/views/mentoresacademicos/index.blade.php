@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Estudiantes')
+@section('title', 'Mentores')
 
 @section('content')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -20,11 +20,11 @@
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes</h6>
+                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores Academicos</h6>
                                 @if(Auth::user()->rol_id === 1)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
-                                        <a href="{{route('estudiantes.create')}}" class="btn btn-primary"
+                                        <a href="{{route('academicos.create')}}" class="btn btn-primary"
                                            title="Agregar una nueva Moto">
                                             <i class="mdi mdi-plus-circle-outline"></i>
                                         </a>
@@ -37,34 +37,32 @@
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Matricula</th>
-                                        <th>Estudiante</th>
-                                        <th>CURP</th>
-                                        <th>Fecha de Nacimiento</th>
-                                        <th>Cuatrimestre</th>
+                                        <th>#</th>
+                                        <th>Titulo</th>
+                                        <th>Nombre</th>
+                                        <th>Correo Electronico</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($estudiantes as $estudiante)
+                                    @foreach($mentores as $mentor)
                                         <tr>
-                                            <td>{{ $estudiante->matricula }}</td>
-                                            <td>{{ $estudiante->name }}</td>
-                                            <td>{{ $estudiante->curp }}</td>
-                                            <td>{{ $estudiante->fecha_na }}</td>
-                                            <td>{{ $estudiante->cuatrimestre }}</td>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ $mentor->titulo }}</td>
+                                            <td>{{ $mentor->name }}</td>
+                                            <td>{{ $mentor->email }}</td>
                                             <td>
-                                                <a href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                                <a href="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
                                                    class="btn btn-facebook">
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a>
                                                 @if(Auth::user()->rol_id === 1)
-                                                    <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}" class="btn btn-twitter">
+                                                    <a href="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}" class="btn btn-twitter">
                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                     </a>
                                                     <button class="btn btn-danger" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
-                                                            onclick="deleteEstudiante({{ $estudiante->matricula }})">
+                                                            onclick="deleteEstudiante({{ $mentor->matricula }})">
                                                         <i class="mdi mdi-delete btn-icon-prepend"></i>
                                                     </button>
                                                 @endif

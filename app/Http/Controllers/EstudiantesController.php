@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Estudiantes;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Vinkla\Hashids\Facades\Hashids;
@@ -61,9 +62,13 @@ class EstudiantesController extends Controller
         return view('estudiantes.show', compact('estudiante'));
     }
 
-    public function edit(Estudiantes $estudiantes): View
+    public function edit($id): View
     {
-        return view('estudiantes.edit');
+        $id=Hashids::decode($id);
+        $estudiante=Estudiantes::where('matricula', $id)->get();
+        $estudiante=$estudiante[0];
+
+        return view('estudiantes.edit', compact('estudiante'));
     }
 
     public function update(Request $request, Estudiantes $estudiantes)
@@ -74,5 +79,12 @@ class EstudiantesController extends Controller
     public function destroy(Estudiantes $estudiantes)
     {
         //
+    }
+
+    public function showJson($id): JsonResponse
+    {
+        $estudiante=Estudiantes::where('matricula', $id)->get();
+
+        return response()->json($estudiante);
     }
 }

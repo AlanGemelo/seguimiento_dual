@@ -2,20 +2,20 @@
     <ul class="nav">
         <li class="nav-item">
             <a class="nav-link" href="{{ route('dashboard') }}">
-                <i class="mdi mdi-grid-large menu-icon"></i>
+                <i class="mdi mdi-home menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
         <li class="nav-item nav-category">Acciones</li>
         <li class="nav-item {{ request()->routeIs('estudiantes.*') ? 'active' : ''}}">
             <a class="nav-link" href="{{ route('estudiantes.index') }}">
-                <i class="menu-icon mdi mdi-floor-plan"></i>
+                <i class="menu-icon mdi mdi-account"></i>
                 <span class="menu-title">Estudiantes</span>
             </a>
         </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="#form-elements">
+        @if(Auth::user()->rol_id === 1)
+        <li class="nav-item {{ request()->routeIs('academicos.*') ? 'active' : ''}}">
+            <a class="nav-link" href="{{ route('academicos.index') }}">
                 <i class="menu-icon mdi mdi-card-text-outline"></i>
                 <span class="menu-title">Mentores Academicos</span>
             </a>
@@ -36,5 +36,6 @@
                 </ul>
             </div>
         </li>
+        @endif
     </ul>
 </nav>

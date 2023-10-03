@@ -18,9 +18,9 @@
                 <div class="col-md-6 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Profile User Information</h4>
-                            <p class="card-description"> Update your profile information </p>
-                            <span class="text-danger">* Required</span>
+                            <h4 class="card-title">Mi Perfil</h4>
+                            <p class="card-description">Actualiza la información de tu Perfil</p>
+                            <span class="text-danger">* Campos requeridos</span>
                             <div class="dropdown-divider"></div>
                             <form method="post" action="{{ route('profile.update') }}" class="forms-sample">
                                 @csrf

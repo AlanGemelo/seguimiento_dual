@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Crear Estudiante')
+@section('title', 'Editar Estudiante')
 
 @section('content')
     <div class="row">
@@ -8,15 +8,17 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Crear Estudiante Dual</h4>
+                            <h4 class="card-title">Editar Estudiante Dual</h4>
                             <span class="text-danger">* Son campos requeridos</span>
+                            @dump($errors)
                             <div class="dropdown-divider"></div>
-                            <form class="pt-3" action="{{ route('estudiantes.store') }}" method="post">
+                            <form class="pt-3" action="{{ route('estudiantes.update', $estudiante->matricula) }}" method="post">
                                 @csrf
+                                @method('PATCH')
                                 <div class="form-group">
                                     <label for="matricula">Matricula <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control form-control-lg" id="matricula"
-                                           name="matricula" value="{{ old('matricula') }}">
+                                           name="matricula" value="{{ old('matricula', $estudiante->matricula) }}">
                                     @error('matricula')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -24,7 +26,8 @@
                                 <div class="form-group">
                                     <label for="name">Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="name"
-                                           placeholder="Juan Perez Hermenegildo" name="name" value="{{ old('name') }}">
+                                           placeholder="Juan Perez Hermenegildo" name="name"
+                                           value="{{ old('name', $estudiante->name) }}">
                                     @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -32,19 +35,23 @@
                                 <div class="form-group">
                                     <label for="curp">CURP <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="curp" name="curp"
-                                           value="{{ old('curp') }}">
+                                           value="{{ old('curp', $estudiante->curp) }}">
                                     @error('curp')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="fecha_na">Fecha de Nacimiento <span class="text-danger">*</span></label>
-                                    <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
+                                    <div class="input-group date datepicker navbar-date-picker">
                                         <span class="input-group-addon input-group-prepend border-right">
                                             <span class="icon-calendar input-group-text calendar-icon"></span>
                                         </span>
-                                        <input type="text" class="form-control" name="fecha_na" id="fecha_na" value="{{ old('fecha_na') }}">
+                                        <input type="text" class="form-control" name="fecha_na" id="fecha_na"
+                                               value="{{ old('fecha_na', $estudiante->fecha_na) }}">
                                     </div>
+                                    @error('fecha_na')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="cuatrimestre">Cuatrimestre <span class="text-danger">*</span></label>
@@ -63,7 +70,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                            type="submit">Guardar
+                                            type="submit">Editar
                                     </button>
                                 </div>
                             </form>

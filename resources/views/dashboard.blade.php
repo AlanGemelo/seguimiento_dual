@@ -22,7 +22,7 @@
                                 <div class="card-body">
                                     <h4 class="text-secondary">Estudiantes Registrados: {{ $estudiantes }}</h4>
                                     <br>
-                                        <a type="button" class="btn btn-success" href="{{ route('estudiantes.create') }}">Crear Estudiante  <i class="mdi mdi-account-plus mdi-16px align-middle"></i></a>
+                                        <a type="button" class="btn btn-success" href="{{ route('estudiantes.create') }}">Crear Estudiante  <i class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
                                 </div>
                             </div>
                             @endif

@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Carrera;
 use App\Models\Roles;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,6 +30,19 @@ class DatabaseSeeder extends Seeder
 
         Roles::create([
             'name' => 'Mentor'
+        ]);
+
+        Carrera::create([
+            'nombre' => 'admin'
+        ]);
+
+        User::create([
+            'titulo' => 'Admin',
+            'name'=> 'Admin Dual',
+            'email' => 'admin@seguimiento.utvt.com',
+            'password' => Hash::make('12345678'),
+            'rol_id' => 1,
+            'carrera_id' => 1
         ]);
     }
 }

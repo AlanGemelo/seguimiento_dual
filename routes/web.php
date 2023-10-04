@@ -40,6 +40,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/academicos/{id}/editar', [MentorAcademicoController::class, 'edit'])->name('academicos.edit');
     Route::patch('/academicos/{id}', [MentorAcademicoController::class, 'update'])->name('academicos.update');
     Route::delete('/academicos/{id}/delete', [MentorAcademicoController::class, 'destroy'])->name('academicos.destroy');
+
+    Route::get('/empresas', [EmpresaController::class, 'index'])->name('empresas.index');
+    Route::get('/empresas/crear', [EmpresaController::class, 'create'])->name('empresas.create');
+    Route::post('/empresas', [EmpresaController::class, 'store'])->name('empresas.store');
+    Route::get('/empresas/{id}/show', [EmpresaController::class, 'show'])->name('empresas.show');
+//    Route::get('/empresas/{id}/json', [EmpresaController::class, 'show'])->name('empresas.showJson');
+    Route::get('/empresas/{id}/editar', [EmpresaController::class, 'edit'])->name('empresas.edit');
+    Route::patch('/empresas/{id}', [EmpresaController::class, 'update'])->name('empresas.update');
+    Route::delete('/empresas/{id}/delete', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
 });
 
 require __DIR__.'/auth.php';

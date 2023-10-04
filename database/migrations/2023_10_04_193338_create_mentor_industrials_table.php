@@ -13,17 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('mentor_industrials', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('titulo')->nullable();
+            $table->string('titulo');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->foreignId('rol_id')->constrained('roles');
-            $table->foreignId('carrera_id')->constrained('carreras');
-            $table->rememberToken();
-            $table->softDeletes();
+            $table->foreignId('empresa_id')->constrained('empresas');
             $table->timestamps();
         });
     }
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('mentor_industrials');
     }
 };

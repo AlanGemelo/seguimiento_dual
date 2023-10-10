@@ -15,66 +15,89 @@ class EmpresaController extends Controller
     }
 
     public function index()
-    {
-        $empresas=Empresa::all();
+{
+    $empresas = Empresa::all();
 
-        return view('empresas.index', compact('empresas'));
-    }
+    return view('empresas.index', compact('empresas'));
+}
 
-    public function create()
-    {
-        $estudiantes=Estudiantes::all();
+public function create()
+{
+    $estudiantes = Estudiantes::all();
 
-        return view('empresas.create', compact('estudiantes'));
-    }
+    return view('empresas.create', compact('estudiantes'));
+}
 
-    public function store(Request $request)
-    {
-        //
-    }
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'descripcion' => ['required', 'string'],
+    ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Empresa  $empresa
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Empresa $empresa)
-    {
-        //
-    }
+    $empresa = new Empresa();
+    $empresa->name = $request->input('name');
+    $empresa->descripcion = $request->input('descripcion');
+    $empresa->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Empresa  $empresa
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Empresa $empresa)
-    {
-        //
-    }
+    return redirect()->route('empresas.index')->with('status', 'Empresa creada');
+}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Empresa  $empresa
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Empresa $empresa)
-    {
-        //
-    }
+/**
+ * Display the specified resource.
+ *
+ * @param  \App\Models\Empresa  $empresa
+ * @return \Illuminate\Http\Response
+ */
+public function show(Empresa $empresa)
+{
+    return view('empresas.show', compact('empresa'));
+}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Empresa  $empresa
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Empresa $empresa)
-    {
-        //
-    }
+/**
+ * Show the form for editing the specified resource.
+ *
+ * @param  \App\Models\Empresa  $empresa
+ * @return \Illuminate\Http\Response
+ */
+public function edit(Empresa $empresa)
+{
+    $estudiantes = Estudiantes::all();
+
+    return view('empresas.edit', compact('empresa', 'estudiantes'));
+}
+
+/**
+ * Update the specified resource in storage.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @param  \App\Models\Empresa  $empresa
+ * @return \Illuminate\Http\Response
+ */
+public function update(Request $request, Empresa $empresa)
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'descripcion' => ['required', 'string'],
+    ]);
+
+    $empresa->name = $request->input('name');
+    $empresa->descripcion = $request->input('descripcion');
+    $empresa->save();
+
+    return redirect()->route('empresas.index')->with('status', 'Empresa actualizada');
+}
+
+/**
+ * Remove the specified resource from storage.
+ *
+ * @param  \App\Models\Empresa  $empresa
+ * @return \Illuminate\Http\Response
+ */
+public function destroy(Empresa $empresa)
+{
+    $empresa->delete();
+
+    return redirect()->route('empresas.index')->with('status', 'Empresa eliminada');
+}
 }

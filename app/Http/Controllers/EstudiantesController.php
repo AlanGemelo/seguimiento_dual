@@ -73,12 +73,29 @@ class EstudiantesController extends Controller
 
     public function update(Request $request, Estudiantes $estudiantes)
     {
-        //
+        $request->validate([
+            'matricula' => ['integer', 'required'],
+            'name' => ['string', 'min:3', 'max:255'],
+            'curp' => ['string', 'min:17'],
+            'fecha_na' => ['date'],
+            'cuatrimestre'=> ['integer'],
+        ]);
+    
+        $estudiantes->update([
+            'name' => $request->name,
+            'curp' => $request->curp,
+            'fecha_na' => Carbon::parse($request->fecha_na)->format("Y-m-d"),
+            'cuatrimestre'=> $request->cuatrimestre,
+        ]);
+    
+        return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');
     }
 
     public function destroy(Estudiantes $estudiantes)
     {
-        //
+        $estudiantes->delete();
+
+    return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
     }
 
     public function showJson($id): JsonResponse

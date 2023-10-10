@@ -14,7 +14,9 @@ class MentorIndustrialController extends Controller
      */
     public function index()
     {
-        //
+        $mentoresIndustriales = MentorIndustrial::all();
+    
+        return view('mentoresIndustriales.index', compact('mentoresIndustriales'));
     }
 
     /**
@@ -24,7 +26,7 @@ class MentorIndustrialController extends Controller
      */
     public function create()
     {
-        //
+        return view('mentoresIndustriales.create');
     }
 
     /**
@@ -35,7 +37,17 @@ class MentorIndustrialController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:mentor_industrials'],
+        ]);
+    
+        $mentorIndustrial = new MentorIndustrial();
+        $mentorIndustrial->name = $request->input('name');
+        $mentorIndustrial->email = $request->input('email');
+        $mentorIndustrial->save();
+    
+        return redirect()->route('mentoresIndustriales.index')->with('status', 'Mentor industrial creado');
     }
 
     /**
@@ -46,7 +58,7 @@ class MentorIndustrialController extends Controller
      */
     public function show(MentorIndustrial $mentorIndustrial)
     {
-        //
+        return view('mentoresIndustriales.show', compact('mentorIndustrial'));
     }
 
     /**
@@ -57,7 +69,7 @@ class MentorIndustrialController extends Controller
      */
     public function edit(MentorIndustrial $mentorIndustrial)
     {
-        //
+        return view('mentoresIndustriales.edit', compact('mentorIndustrial'));
     }
 
     /**
@@ -69,7 +81,16 @@ class MentorIndustrialController extends Controller
      */
     public function update(Request $request, MentorIndustrial $mentorIndustrial)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email'],
+        ]);
+
+        $mentorIndustrial->name = $request->input('name');
+        $mentorIndustrial->email = $request->input('email');
+        $mentorIndustrial->save();
+
+        return redirect()->route('mentoresIndustriales.index')->with('status', 'Mentor industrial actualizado');
     }
 
     /**
@@ -80,6 +101,8 @@ class MentorIndustrialController extends Controller
      */
     public function destroy(MentorIndustrial $mentorIndustrial)
     {
-        //
+        $mentorIndustrial->delete();
+    
+        return redirect()->route('mentoresIndustriales.index')->with('status', 'Mentor industrial eliminado');
     }
 }

@@ -2,107 +2,90 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empresa;
+use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
 
 class MentorIndustrialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $mentoresIndustriales = MentorIndustrial::all();
-    
+
         return view('mentoresIndustriales.index', compact('mentoresIndustriales'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        return view('mentoresIndustriales.create');
+        $empresas = Empresa::all();
+
+        return view('mentoresIndustriales.create', compact('empresas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
+            'titulo' =>  ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:mentor_industrials'],
+            'empresa_id' => ['required', 'integer', 'exists:' . Empresa::class . ',id'],
         ]);
-    
-        $mentorIndustrial = new MentorIndustrial();
-        $mentorIndustrial->name = $request->input('name');
-        $mentorIndustrial->email = $request->input('email');
-        $mentorIndustrial->save();
-    
-        return redirect()->route('mentoresIndustriales.index')->with('status', 'Mentor industrial creado');
+
+        MentorIndustrial::create([
+            'titulo' => $request->titulo,
+            'name' => $request->name,
+            'empresa_id' => $request->empresa_id,
+        ]);
+
+        return redirect()->route('mentores.index')->with('status', 'Mentor industrial creado');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\MentorIndustrial  $mentorIndustrial
-     * @return \Illuminate\Http\Response
-     */
-    public function show(MentorIndustrial $mentorIndustrial)
+    public function show($id)
     {
+        $id = Hashids::decode($id);
+        $mentorIndustrial=MentorIndustrial::find($id);
+        $mentorIndustrial=$mentorIndustrial[0];
         return view('mentoresIndustriales.show', compact('mentorIndustrial'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\MentorIndustrial  $mentorIndustrial
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(MentorIndustrial $mentorIndustrial)
+    public function edit($id)
     {
+        $mentorIndustrial=MentorIndustrial::find($id);
+        $mentorIndustrial=$mentorIndustrial[0];
+
         return view('mentoresIndustriales.edit', compact('mentorIndustrial'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\MentorIndustrial  $mentorIndustrial
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, MentorIndustrial $mentorIndustrial)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email'],
+            'titulo' =>  ['string', 'max:255'],
+            'name' => ['string', 'max:255'],
+            'empresa_id' => ['integer', 'exists:' . Empresa::class . ',id'],
         ]);
 
-        $mentorIndustrial->name = $request->input('name');
-        $mentorIndustrial->email = $request->input('email');
-        $mentorIndustrial->save();
+        $mentorIndustrial->update($request->all());
 
-        return redirect()->route('mentoresIndustriales.index')->with('status', 'Mentor industrial actualizado');
+        return redirect()->route('mentores.index')->with('status', 'Mentor industrial actualizado');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\MentorIndustrial  $mentorIndustrial
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(MentorIndustrial $mentorIndustrial)
+
+    public function destroy($id)
     {
-        $mentorIndustrial->delete();
-    
-        return redirect()->route('mentoresIndustriales.index')->with('status', 'Mentor industrial eliminado');
+        $id=MentorIndustrial::find($id);
+        $id->delete();
+
+        return redirect()->route('mentores.index')->with('status', 'Mentor industrial eliminado');
+    }
+
+    public function showJson($id): JsonResponse
+    {
+        $mentor = MentorIndustrial::find($id);
+
+        return response()->json($mentor);
     }
 }

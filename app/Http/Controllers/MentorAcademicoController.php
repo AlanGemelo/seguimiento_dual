@@ -36,12 +36,13 @@ class MentorAcademicoController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
         ]);
 
-        User::create([
+        $user = User::create([
             'titulo' => $request->titulo,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make('12345678'),
-            'rol_id' => 2
+            'rol_id' => 2,
+            'carrera_id' => 2
         ]);
 
         return redirect()->route('academicos.index')->with('message', 'Mentor Academico creado Correctamente');

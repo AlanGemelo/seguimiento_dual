@@ -49,6 +49,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/empresas/{id}/editar', [EmpresaController::class, 'edit'])->name('empresas.edit');
     Route::patch('/empresas/{id}', [EmpresaController::class, 'update'])->name('empresas.update');
     Route::delete('/empresas/{id}/delete', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
+
+    Route::get('/mentores', [MentorIndustrialController::class, 'index'])->name('mentores.index');
+    Route::get('/mentores/crear', [MentorIndustrialController::class, 'create'])->name('mentores.create');
+    Route::post('/mentores', [MentorIndustrialController::class, 'store'])->name('mentores.store');
+    Route::get('/mentores/{id}/show', [MentorIndustrialController::class, 'show'])->name('mentores.show');
+    Route::get('/mentores/{id}/json', [MentorIndustrialController::class, 'showJson'])->name('mentores.showJson');
+    Route::get('/mentores/{id}/editar', [MentorIndustrialController::class, 'edit'])->name('mentores.edit');
+    Route::patch('/mentores/{id}', [MentorIndustrialController::class, 'update'])->name('mentores.update');
+    Route::delete('/mentores/{id}/delete', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
+
 });
 
 require __DIR__.'/auth.php';

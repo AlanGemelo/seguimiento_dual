@@ -20,7 +20,7 @@
                 <span class="menu-title">Mentores Academicos</span>
             </a>
         </li>
-        <li class="nav-item {{ request()->routeIs('empresas.*') ? 'active' : ''}}">
+        <li class="nav-item {{ request()->routeIs('empresas.*') ? 'active' : '' , request()->routeIs('mentores.*') ? 'active' : ''}}">
             <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false"
                aria-controls="charts">
                 <i class="menu-icon mdi mdi-chart-line"></i>
@@ -29,9 +29,9 @@
             </a>
             <div class="collapse" id="charts">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('empresas.index') }}">Empresa</a>
+                    <li class="nav-item {{ request()->routeIs('empresas.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('empresas.index') }}">Empresa</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="pages/charts/chartjs.html">Mentor Industrial</a>
+                    <li class="nav-item {{ request()->routeIs('mentores.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('mentores.index') }}">Mentor Industrial</a>
                     </li>
                 </ul>
             </div>

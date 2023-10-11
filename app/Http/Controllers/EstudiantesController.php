@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
+use App\Models\Empresa;
 use App\Models\Estudiantes;
+use App\Models\MentorIndustrial;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -27,19 +31,73 @@ class EstudiantesController extends Controller
 
     public function create(): View
     {
-        return view('estudiantes.create');
+        $empresas = Empresa::all();
+        $academico = User::where('rol_id', 2)->get();
+        $industrial = MentorIndustrial::all();
+        $carrera = Carrera::all();
+
+        return view('estudiantes.create', compact('empresas', 'academico', 'industrial', 'carrera'));
     }
 
     public function store(Request $request): RedirectResponse
     {
 //        dd($request->all());
         $request->validate([
-            'matricula' => ['integer', 'unique:'.Estudiantes::class, 'min:8'],
+            'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
-            'cuatrimestre'=> ['integer'],
+            'cuatrimestre' => ['integer'],
+            'nombre_proyecto' => ['string', 'min:3'],
+            'inicio_dual' => ['date'],
+            'fin_dual' => ['date'],
+            'ine' => ['required', 'file', 'mimes:pdf'],
+            'evaluacion_form' => ['file', 'mimes:pdf'],
+            'minutas' => ['file', 'mimes:pdf'],
+            'carta_acp' => ['file', 'mimes:pdf'],
+            'plan_form' => ['file', 'mimes:pdf'],
+            'historial_academico' => ['file', 'mimes:pdf'],
+            'perfil_ingles' => ['file', 'mimes:pdf'],
+            'empresa_id' => ['required', 'integer', 'exists:' . Empresa::class . ',id'],
+            'academico_id' => ['required', 'integer', 'exists:' . User::class . ',id'],
+            'asesorin_id' => ['required', 'integer', 'exists:' . MentorIndustrial::class . ',id'],
+            'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
+
+        if ($request->file('ine')) {
+            $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
+            $ine = $request->file('ine')->storeAs('public', $ine);
+        }
+
+        if ($request->file('evaluacion_form')) {
+            $evaluacion_form = 'evaluacion_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('evaluacion_form')->getClientOriginalName();
+            $evaluacion_form = $request->file('evaluacion_form')->storeAs('public', $evaluacion_form);
+        }
+
+        if ($request->file('minutas')) {
+            $minutas = 'minutas/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('minutas')->getClientOriginalName();
+            $minutas = $request->file('minutas')->storeAs('public', $minutas);
+        }
+
+        if ($request->file('carta_acp')) {
+            $carta_acp = 'carta_acp/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('carta_acp')->getClientOriginalName();
+            $carta_acp = $request->file('carta_acp')->storeAs('public', $carta_acp);
+        }
+
+        if ($request->file('plan_form')) {
+            $plan_form = 'plan_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('plan_form')->getClientOriginalName();
+            $plan_form = $request->file('plan_form')->storeAs('public', $plan_form);
+        }
+
+        if ($request->file('historial_academico')) {
+            $historial_academico = 'historial_academico/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('historial_academico')->getClientOriginalName();
+            $historial_academico = $request->file('historial_academico')->storeAs('public', $historial_academico);
+        }
+
+        if ($request->file('perfil_ingles')) {
+            $perfil_ingles = 'perfil_ingles/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('perfil_ingles')->getClientOriginalName();
+            $perfil_ingles = $request->file('perfil_ingles')->storeAs('public', $perfil_ingles);
+        }
 
         Estudiantes::create([
             'matricula' => $request->matricula,
@@ -47,7 +105,22 @@ class EstudiantesController extends Controller
             'curp' => $request->curp,
             'fecha_na' => Carbon::parse($request->fecha_na)->format("Y-m-d"),
             'activo' => true,
-            'cuatrimestre'=> $request->cuatrimestre,
+            'cuatrimestre' => $request->cuatrimestre,
+            'nombre_proyecto' => $request->nombre_proyecto,
+            'inicio_dual' => Carbon::parse($request->inicio_dual)->format("Y-m-d"),
+            'fin_dual' => Carbon::parse($request->fin_dual)->format("Y-m-d"),
+            'beca' => $request->beca,
+            'ine' => $ine,
+            'evaluacion_form' => $evaluacion_form,
+            'minutas' => $minutas,
+            'carta_acp' => $carta_acp,
+            'plan_form' => $plan_form,
+            'historial_academico' => $historial_academico,
+            'perfil_ingles' => $perfil_ingles,
+            'empresa_id' => $request->empresa_id,
+            'academico_id' => $request->academico_id,
+            'asesorin_id' => $request->asesorin_id,
+            'carrera_id' => $request->carrera_id,
         ]);
 
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante creado');
@@ -55,39 +128,110 @@ class EstudiantesController extends Controller
 
     public function show($id): View
     {
-        $id=Hashids::decode($id);
-        $estudiante=Estudiantes::where('matricula', $id)->get();
-        $estudiante=$estudiante[0];
+        $id = Hashids::decode($id);
+        $estudiante = Estudiantes::where('matricula', $id)->get();
+        $estudiante = $estudiante[0];
 
         return view('estudiantes.show', compact('estudiante'));
     }
 
     public function edit($id): View
     {
-        $id=Hashids::decode($id);
-        $estudiante=Estudiantes::where('matricula', $id)->get();
-        $estudiante=$estudiante[0];
+        $id = Hashids::decode($id);
+        $estudiante = Estudiantes::where('matricula', $id)->get();
+        $estudiante = $estudiante[0];
+        $empresas = Empresa::all();
+        $academico = User::where('rol_id', 2)->get();
+        $industrial = MentorIndustrial::all();
+        $carrera = Carrera::all();
 
-        return view('estudiantes.edit', compact('estudiante'));
+
+        return view('estudiantes.edit', compact('estudiante', 'empresas', 'academico', 'industrial', 'carrera'));
     }
 
     public function update(Request $request, Estudiantes $estudiantes)
     {
         $request->validate([
-            'matricula' => ['integer', 'required'],
+            'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
-            'cuatrimestre'=> ['integer'],
+            'cuatrimestre' => ['integer'],
+            'nombre_proyecto' => ['string', 'min:3'],
+            'inicio_dual' => ['date'],
+            'fin_dual' => ['date'],
+            'ine' => ['required', 'file', 'mimes:pdf'],
+            'evaluacion_form' => ['file', 'mimes:pdf'],
+            'minutas' => ['file', 'mimes:pdf'],
+            'carta_acp' => ['file', 'mimes:pdf'],
+            'plan_form' => ['file', 'mimes:pdf'],
+            'historial_academico' => ['file', 'mimes:pdf'],
+            'perfil_ingles' => ['file', 'mimes:pdf'],
+            'empresa_id' => ['required', 'integer', 'exists:' . Empresa::class . ',id'],
+            'academico_id' => ['required', 'integer', 'exists:' . User::class . ',id'],
+            'asesorin_id' => ['required', 'integer', 'exists:' . MentorIndustrial::class . ',id'],
+            'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
-    
+
+        if ($request->file('ine')) {
+            $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
+            $ine = $request->file('ine')->storeAs('public', $ine);
+        }
+
+        if ($request->file('evaluacion_form')) {
+            $evaluacion_form = 'evaluacion_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('evaluacion_form')->getClientOriginalName();
+            $evaluacion_form = $request->file('evaluacion_form')->storeAs('public', $evaluacion_form);
+        }
+
+        if ($request->file('minutas')) {
+            $minutas = 'minutas/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('minutas')->getClientOriginalName();
+            $minutas = $request->file('minutas')->storeAs('public', $minutas);
+        }
+
+        if ($request->file('carta_acp')) {
+            $carta_acp = 'carta_acp/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('carta_acp')->getClientOriginalName();
+            $carta_acp = $request->file('carta_acp')->storeAs('public', $carta_acp);
+        }
+
+        if ($request->file('plan_form')) {
+            $plan_form = 'plan_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('plan_form')->getClientOriginalName();
+            $plan_form = $request->file('plan_form')->storeAs('public', $plan_form);
+        }
+
+        if ($request->file('historial_academico')) {
+            $historial_academico = 'historial_academico/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('historial_academico')->getClientOriginalName();
+            $historial_academico = $request->file('historial_academico')->storeAs('public', $historial_academico);
+        }
+
+        if ($request->file('perfil_ingles')) {
+            $perfil_ingles = 'perfil_ingles/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('perfil_ingles')->getClientOriginalName();
+            $perfil_ingles = $request->file('perfil_ingles')->storeAs('public', $perfil_ingles);
+        }
+
         $estudiantes->update([
+            'matricula' => $request->matricula,
             'name' => $request->name,
             'curp' => $request->curp,
             'fecha_na' => Carbon::parse($request->fecha_na)->format("Y-m-d"),
-            'cuatrimestre'=> $request->cuatrimestre,
+            'activo' => true,
+            'cuatrimestre' => $request->cuatrimestre,
+            'nombre_proyecto' => $request->nombre_proyecto,
+            'inicio_dual' => Carbon::parse($request->inicio_dual)->format("Y-m-d"),
+            'fin_dual' => Carbon::parse($request->fin_dual)->format("Y-m-d"),
+            'beca' => $request->beca,
+            'ine' => $ine,
+            'evaluacion_form' => $evaluacion_form,
+            'minutas' => $minutas,
+            'carta_acp' => $carta_acp,
+            'plan_form' => $plan_form,
+            'historial_academico' => $historial_academico,
+            'perfil_ingles' => $perfil_ingles,
+            'empresa_id' => $request->empresa_id,
+            'academico_id' => $request->academico_id,
+            'asesorin_id' => $request->asesorin_id,
+            'carrera_id' => $request->carrera_id,
         ]);
-    
+
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');
     }
 
@@ -95,12 +239,12 @@ class EstudiantesController extends Controller
     {
         $estudiantes->delete();
 
-    return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
+        return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
     }
 
     public function showJson($id): JsonResponse
     {
-        $estudiante=Estudiantes::where('matricula', $id)->get();
+        $estudiante = Estudiantes::where('matricula', $id)->get();
 
         return response()->json($estudiante);
     }

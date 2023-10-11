@@ -14,20 +14,45 @@
                             <form class="pt-3" action="{{ route('empresas.store') }}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="name">Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="name"
-                                           placeholder="Juan Perez Hermenegildo" name="name" value="{{ old('name') }}">
-                                    @error('name')
+                                    <label for="nombre">Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="nombre"
+                                           placeholder="" name="nombre" value="{{ old('nombre') }}">
+                                    @error('nombre')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="descripcion">Descripcion <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="descripcion" name="descripcion"
-                                           value="{{ old('descripcion') }}">
-                                    @error('descripcion')
+                                    <label for="direccion">Direccion <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="direccion"
+                                           name="direccion"
+                                           value="{{ old('direccion') }}">
+                                    @error('direccion')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="inicio_conv">Inicio Convenio <span class="text-danger">*</span></label>
+                                    <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
+                                        <span class="input-group-addon input-group-prepend border-right">
+                                            <span class="icon-calendar input-group-text calendar-icon"></span>
+                                        </span>
+                                        <input type="text" class="form-control" name="inicio_conv" id="inicio_conv" value="{{ old('inicio_conv') }}">
+                                        @error('inicio_conv')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fin_conv">Fin Convenio <span class="text-danger">*</span></label>
+                                    <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
+                                        <span class="input-group-addon input-group-prepend border-right">
+                                            <span class="icon-calendar input-group-text calendar-icon"></span>
+                                        </span>
+                                        <input type="date" class="form-control" name="fin_conv" id="fin_conv" value="{{ old('fin_conv') }}">
+                                        @error('fin_conv')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"

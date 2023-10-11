@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/typicons/typicons.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/simple-line-icons/css/simple-line-icons.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
     <!-- Plugin css for this page -->
 {{--    <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css')}}">--}}
     <link rel="stylesheet" href="{{ asset('assets/js/select.dataTables.min.css')}}">
@@ -47,6 +49,8 @@
 <script src="{{ asset('assets/js/template.js')}}"></script>
 <script src="{{ asset('assets/js/settings.js')}}"></script>
 <script src="{{ asset('assets/js/todolist.js')}}"></script>
+<script src="{{ asset('assets/js/select2.js') }}"></script>
+<script src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
 <!-- endinject -->
 <!-- Custom js for this page-->
 <script src="{{ asset('assets/js/jquery.cookie.js')}}" type="text/javascript"></script>

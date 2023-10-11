@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Empresa;
 use App\Models\Estudiantes;
+use App\Models\MentorIndustrial;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
 
 class EmpresaController extends Controller
 {
@@ -15,89 +18,81 @@ class EmpresaController extends Controller
     }
 
     public function index()
-{
-    $empresas = Empresa::all();
+    {
+        $empresas = Empresa::all();
 
-    return view('empresas.index', compact('empresas'));
-}
+        return view('empresas.index', compact('empresas'));
+    }
 
-public function create()
-{
-    $estudiantes = Estudiantes::all();
+    public function create()
+    {
+        $mentores=MentorIndustrial::all();
 
-    return view('empresas.create', compact('estudiantes'));
-}
+        return view('empresas.create', compact('mentores'));
+    }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'descripcion' => ['required', 'string'],
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nombre' => ['required', 'string', 'max:255'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'inicio_conv' => ['required', 'date'],
+            'fin_conv' => ['required', 'date'],
+        ]);
 
-    $empresa = new Empresa();
-    $empresa->name = $request->input('name');
-    $empresa->descripcion = $request->input('descripcion');
-    $empresa->save();
+        $empresa = Empresa::create([
+            'nombre' => $request->nombre,
+            'direccion' => $request->direccion,
+            'inicio_conv' => Carbon::parse($request->inicio_conv)->format("Y-m-d"),
+            'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
+        ]);
 
-    return redirect()->route('empresas.index')->with('status', 'Empresa creada');
-}
+        return redirect()->route('empresas.index')->with('status', 'Empresa creada');
+    }
 
-/**
- * Display the specified resource.
- *
- * @param  \App\Models\Empresa  $empresa
- * @return \Illuminate\Http\Response
- */
-public function show(Empresa $empresa)
-{
-    return view('empresas.show', compact('empresa'));
-}
+    public function show($id)
+    {
+        $id = Hashids::decode($id);
+        $empresa=Empresa::find($id);
+        $empresa=$empresa[0];
 
-/**
- * Show the form for editing the specified resource.
- *
- * @param  \App\Models\Empresa  $empresa
- * @return \Illuminate\Http\Response
- */
-public function edit(Empresa $empresa)
-{
-    $estudiantes = Estudiantes::all();
+        return view('empresas.show', compact('empresa'));
+    }
 
-    return view('empresas.edit', compact('empresa', 'estudiantes'));
-}
+    public function edit($id)
+    {
+        $id = Hashids::decode($id);
+        $empresa=Empresa::find($id);
+        $empresa=$empresa[0];
 
-/**
- * Update the specified resource in storage.
- *
- * @param  \Illuminate\Http\Request  $request
- * @param  \App\Models\Empresa  $empresa
- * @return \Illuminate\Http\Response
- */
-public function update(Request $request, Empresa $empresa)
-{
-    $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'descripcion' => ['required', 'string'],
-    ]);
+        $estudiantes = Estudiantes::all();
 
-    $empresa->name = $request->input('name');
-    $empresa->descripcion = $request->input('descripcion');
-    $empresa->save();
+        return view('empresas.edit', compact('empresa', 'estudiantes'));
+    }
 
-    return redirect()->route('empresas.index')->with('status', 'Empresa actualizada');
-}
+    public function update(Request $request, Empresa $empresa)
+    {
+        $request->validate([
+            'nombre' => ['required', 'string', 'max:255'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'inicio_conv' => ['required', 'date'],
+            'fin_conv' => ['required', 'date'],
+        ]);
 
-/**
- * Remove the specified resource from storage.
- *
- * @param  \App\Models\Empresa  $empresa
- * @return \Illuminate\Http\Response
- */
-public function destroy(Empresa $empresa)
-{
-    $empresa->delete();
+        $empresa->update([
+            'nombre' => $request->nombre,
+            'direccion' => $request->direccion,
+            'inicio_conv' => Carbon::parse($request->inicio_conv)->format("Y-m-d"),
+            'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
+        ]);
 
-    return redirect()->route('empresas.index')->with('status', 'Empresa eliminada');
-}
+        return redirect()->route('empresas.index')->with('status', 'Empresa actualizada');
+    }
+
+    public function destroy(Empresa $empresa)
+    {
+        $empresa->delete();
+
+        return redirect()->route('empresas.index')->with('status', 'Empresa eliminada');
+    }
 }

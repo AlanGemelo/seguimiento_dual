@@ -36,6 +36,12 @@
                 </ul>
             </div>
         </li>
+            <li class="nav-item {{ request()->routeIs('carreras.*') ? 'active' : ''}}">
+                <a class="nav-link" href="{{ route('carreras.index') }}">
+                    <i class="menu-icon mdi mdi-card-text-outline"></i>
+                    <span class="menu-title">Carreras</span>
+                </a>
+            </li>
         @endif
     </ul>
 </nav>

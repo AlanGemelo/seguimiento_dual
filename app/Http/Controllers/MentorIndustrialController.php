@@ -54,10 +54,13 @@ class MentorIndustrialController extends Controller
 
     public function edit($id)
     {
+        $id = Hashids::decode($id);
         $mentorIndustrial=MentorIndustrial::find($id);
         $mentorIndustrial=$mentorIndustrial[0];
 
-        return view('mentoresIndustriales.edit', compact('mentorIndustrial'));
+        $empresas = Empresa::all();
+
+        return view('mentoresIndustriales.edit', compact('mentorIndustrial', 'empresas'));
     }
 
     public function update(Request $request, MentorIndustrial $mentorIndustrial)

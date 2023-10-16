@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Crear Mentor Academico')
+@section('title', 'Editar Mentor Academico')
 @section('content')
     <div class="row">
         <div class="col-12 grid-margin">

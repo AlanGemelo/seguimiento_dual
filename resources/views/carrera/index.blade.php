@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Mentores')
+@section('title', 'Carreras')
 
 @section('content')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -20,14 +20,14 @@
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores Academicos</h6>
+                                <h6 class="text-white text-capitalize ps-3">Lista De Carreras</h6>
                                 @if(Auth::user()->rol_id === 1)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
-                                        <a href="{{route('academicos.create')}}" class="btn btn-primary"
-                                           title="Agregar una nueva Moto">
-                                            <i class="mdi mdi-plus-circle-outline"></i>
-                                        </a>
+                                        {{--                                        <a href="{{route('empresas.create')}}" class="btn btn-primary"--}}
+                                        {{--                                           title="Agregar una nueva Carrera">--}}
+                                        {{--                                            <i class="mdi mdi-plus-circle-outline"></i>--}}
+                                        {{--                                        </a>--}}
                                     </div>
                                 @endif
                             </div>
@@ -38,31 +38,20 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Titulo</th>
-                                        <th>Nombre</th>
-                                        <th>Correo Electronico</th>
+                                        <th>Carrera</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($mentores as $mentor)
+                                    @foreach($carreras as $carrera)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $mentor->titulo }}</td>
-                                            <td>{{ $mentor->name }}</td>
-                                            <td>{{ $mentor->email }}</td>
+                                            <td>{{ $carrera->nombre }}</td>
                                             <td>
-                                                <a href="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                   class="btn btn-facebook">
-                                                    <i class="mdi mdi-account-details btn-icon-prepend"></i>
-                                                </a>
                                                 @if(Auth::user()->rol_id === 1)
-                                                    <a href="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}" class="btn btn-twitter">
-                                                        <i class="mdi mdi-account-edit btn-icon-prepend"></i>
-                                                    </a>
                                                     <button class="btn btn-danger" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
-                                                            onclick="deleteMentor({{ $mentor->id }})">
+                                                            onclick="deleteCarrera({{ $carrera->id }})">
                                                         <i class="mdi mdi-delete btn-icon-prepend"></i>
                                                     </button>
                                                 @endif
@@ -79,7 +68,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Academico Temporalmente</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Carrera Temporalmente</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -111,27 +100,14 @@
     </div>
     <script type="application/javascript">
         // hace una peticion ajax para obtener la informacion de la moto
-        function deleteMentor(id) {
+        function deleteCarrera(id) {
             let form = document.getElementById('deleteForm')
-            form.action = '/academicos/' + id + '/delete'
+            form.action = '/carreras/' + id + '/delete'
             $.ajax({
-                url: '/academicos/' + id + '/json',
+                url: '/carreras/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
-                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.titulo + ', ' + response.name);
-                }
-            })
-        }
-
-        function restoreRegistro(id) {
-            let form = document.getElementById('restaurarForm')
-            form.action = '/academicos/' + id + '/restaurar'
-            $.ajax({
-                url: '/academicos/' + id,
-                type: 'GET',
-                success: function (response) {
-                    //console.log(response.name)
-                    $('#bannerRestore').html('¿Estas seguro de restaurar este registro? ' + response.titulo + ' ' + response.name);
+                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.nombre);
                 }
             })
         }

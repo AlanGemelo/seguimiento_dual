@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estudiantes;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +15,7 @@ class MentorAcademicoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except('showJson');
     }
 
     public function index(): View
@@ -88,5 +90,12 @@ class MentorAcademicoController extends Controller
         $mentor->delete();
 
         return redirect()->route('academicos.index')->with('messageDelete', 'Mentor Academico Eliminado Correctamente');
+    }
+
+    public function showJson($id): JsonResponse
+    {
+        $mentores = User::find($id);
+
+        return response()->json($mentores);
     }
 }

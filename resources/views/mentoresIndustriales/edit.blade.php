@@ -8,62 +8,39 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Editar Estudiante Dual</h4>
+                            <h4 class="card-title">Editar Mentor Industrial</h4>
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
-                            <form class="pt-3" action="{{ route('estudiantes.update', $estudiante->matricula) }}" method="post">
+                            <form class="pt-3" action="{{ route('mentores.update', $mentorIndustrial->id) }}" method="post">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">
-                                    <label for="matricula">Matricula <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control form-control-lg" id="matricula"
-                                           name="matricula" value="{{ old('matricula', $estudiante->matricula) }}">
-                                    @error('matricula')
+                                    <label for="titulo">Titulo <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="titulo"
+                                           placeholder="" name="titulo" value="{{ $mentorIndustrial->titulo, old('titulo') }}">
+                                    @error('titulo')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="name"
-                                           placeholder="Juan Perez Hermenegildo" name="name"
-                                           value="{{ old('name', $estudiante->name) }}">
+                                           placeholder="" name="name" value="{{ $mentorIndustrial->name, old('name') }}">
                                     @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="curp">CURP <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="curp" name="curp"
-                                           value="{{ old('curp', $estudiante->curp) }}">
-                                    @error('curp')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="fecha_na">Fecha de Nacimiento <span class="text-danger">*</span></label>
-                                    <div class="input-group date datepicker navbar-date-picker">
-                                        <span class="input-group-addon input-group-prepend border-right">
-                                            <span class="icon-calendar input-group-text calendar-icon"></span>
-                                        </span>
-                                        <input type="text" class="form-control" name="fecha_na" id="fecha_na"
-                                               value="{{ old('fecha_na', $estudiante->fecha_na) }}">
-                                    </div>
-                                    @error('fecha_na')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="cuatrimestre">Cuatrimestre <span class="text-danger">*</span></label>
+                                    <label for="empresa_id" class="form-label">Empresa <span class="text-danger">*</span></label>
                                     <select class="form-select"
-                                            aria-label="Seleccionar Cuatrimestre" name="cuatrimestre">
+                                            aria-label="Seleccionar Empresa" name="empresa_id">
                                         <option selected>Seleccione una opcion</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
+                                        @foreach($empresas as $empresa)
+                                            <option
+                                                value="{{$empresa->id}}">{{$empresa->nombre}}</option>
+                                        @endforeach
                                     </select>
-                                    @error('cuatrimestre')
+                                    @error('empresa_id')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>

@@ -36,7 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/academicos/crear', [MentorAcademicoController::class, 'create'])->name('academicos.create');
     Route::post('/academicos', [MentorAcademicoController::class, 'store'])->name('academicos.store');
     Route::get('/academicos/{id}/show', [MentorAcademicoController::class, 'show'])->name('academicos.show');
-    Route::get('/academicos/{id}/json', [MentorAcademicoController::class, 'show'])->name('academicos.showJson');
+    Route::get('/academicos/{id}/json', [MentorAcademicoController::class, 'showJson'])->name('academicos.showJson');
     Route::get('/academicos/{id}/editar', [MentorAcademicoController::class, 'edit'])->name('academicos.edit');
     Route::patch('/academicos/{id}', [MentorAcademicoController::class, 'update'])->name('academicos.update');
     Route::delete('/academicos/{id}/delete', [MentorAcademicoController::class, 'destroy'])->name('academicos.destroy');
@@ -59,6 +59,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/mentores/{id}', [MentorIndustrialController::class, 'update'])->name('mentores.update');
     Route::delete('/mentores/{id}/delete', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
 
+    Route::get('/carreras', [CarreraController::class, 'index'])->name('carreras.index');
+    Route::post('/carreras', [CarreraController::class, 'store'])->name('carreras.store');
+    Route::get('/carreras/{id}/json', [CarreraController::class, 'showJson'])->name('carreras.showJson');
+    Route::patch('/carreras/{id}', [CarreraController::class, 'update'])->name('carreras.update');
+    Route::delete('/carreras/{id}/delete', [CarreraController::class, 'destroy'])->name('carreras.destroy');
 });
 
 require __DIR__.'/auth.php';

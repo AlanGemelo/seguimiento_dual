@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
     <!-- Plugin css for this page -->
-{{--    <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css')}}">--}}
+    {{--    <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css')}}">--}}
     <link rel="stylesheet" href="{{ asset('assets/js/select.dataTables.min.css')}}">
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css')}}">
@@ -29,8 +29,86 @@
         @include('layouts.navbar')
         <div class="main-panel">
             <div class="content-wrapper">
-            @yield('content')
+                @yield('content')
             </div>
+{{--            <div class="semipolar-spinner" :style="spinnerStyle" id="loading">--}}
+{{--                <div class="ring"></div>--}}
+{{--                <div class="ring"></div>--}}
+{{--                <div class="ring"></div>--}}
+{{--                <div class="ring"></div>--}}
+{{--                <div class="ring"></div>--}}
+{{--            </div>--}}
+{{--            <style>--}}
+{{--                .semipolar-spinner, .semipolar-spinner * {--}}
+{{--                    box-sizing: border-box;--}}
+{{--                }--}}
+
+{{--                .semipolar-spinner {--}}
+{{--                    height: 65px;--}}
+{{--                    width: 65px;--}}
+{{--                    position: relative;--}}
+{{--                }--}}
+
+{{--                .semipolar-spinner .ring {--}}
+{{--                    border-radius: 50%;--}}
+{{--                    position: absolute;--}}
+{{--                    border: calc(65px * 0.05) solid transparent;--}}
+{{--                    border-top-color: #ff1d5e;--}}
+{{--                    border-left-color: #ff1d5e;--}}
+{{--                    animation: semipolar-spinner-animation 2s infinite;--}}
+{{--                }--}}
+
+{{--                .semipolar-spinner .ring:nth-child(1) {--}}
+{{--                    height: calc(65px - 65px * 0.2 * 0);--}}
+{{--                    width: calc(65px - 65px * 0.2 * 0);--}}
+{{--                    top: calc(65px * 0.1 * 0);--}}
+{{--                    left: calc(65px * 0.1 * 0);--}}
+{{--                    animation-delay: calc(2000ms * 0.1 * 4);--}}
+{{--                    z-index: 5;--}}
+{{--                }--}}
+
+{{--                .semipolar-spinner .ring:nth-child(2) {--}}
+{{--                    height: calc(65px - 65px * 0.2 * 1);--}}
+{{--                    width: calc(65px - 65px * 0.2 * 1);--}}
+{{--                    top: calc(65px * 0.1 * 1);--}}
+{{--                    left: calc(65px * 0.1 * 1);--}}
+{{--                    animation-delay: calc(2000ms * 0.1 * 3);--}}
+{{--                    z-index: 4;--}}
+{{--                }--}}
+
+{{--                .semipolar-spinner .ring:nth-child(3) {--}}
+{{--                    height: calc(65px - 65px * 0.2 * 2);--}}
+{{--                    width: calc(65px - 65px * 0.2 * 2);--}}
+{{--                    top: calc(65px * 0.1 * 2);--}}
+{{--                    left: calc(65px * 0.1 * 2);--}}
+{{--                    animation-delay: calc(2000ms * 0.1 * 2);--}}
+{{--                    z-index: 3;--}}
+{{--                }--}}
+
+{{--                .semipolar-spinner .ring:nth-child(4) {--}}
+{{--                    height: calc(65px - 65px * 0.2 * 3);--}}
+{{--                    width: calc(65px - 65px * 0.2 * 3);--}}
+{{--                    top: calc(65px * 0.1 * 3);--}}
+{{--                    left: calc(65px * 0.1 * 3);--}}
+{{--                    animation-delay: calc(2000ms * 0.1 * 1);--}}
+{{--                    z-index: 2;--}}
+{{--                }--}}
+
+{{--                .semipolar-spinner .ring:nth-child(5) {--}}
+{{--                    height: calc(65px - 65px * 0.2 * 4);--}}
+{{--                    width: calc(65px - 65px * 0.2 * 4);--}}
+{{--                    top: calc(65px * 0.1 * 4);--}}
+{{--                    left: calc(65px * 0.1 * 4);--}}
+{{--                    animation-delay: calc(2000ms * 0.1 * 0);--}}
+{{--                    z-index: 1;--}}
+{{--                }--}}
+
+{{--                @keyframes semipolar-spinner-animation {--}}
+{{--                    50% {--}}
+{{--                        transform: rotate(360deg) scale(0.7);--}}
+{{--                    }--}}
+{{--                }--}}
+{{--            </style>--}}
         </div>
     </div>
 </div>
@@ -56,7 +134,13 @@
 <script src="{{ asset('assets/js/jquery.cookie.js')}}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/dashboard.js')}}"></script>
 <script src="{{ asset('assets/js/Chart.roundedBarCharts.js')}}"></script>
+<script src="{{ asset('assets/js/jquery.min.js')}}"></script>
 <!-- End custom js for this page-->
+{{--<script>--}}
+{{--    $(window).on('load', function () {--}}
+{{--        $('#loading').hide();--}}
+{{--    })--}}
+{{--</script>--}}
 </body>
 
 </html>

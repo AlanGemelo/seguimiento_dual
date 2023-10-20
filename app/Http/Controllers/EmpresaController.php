@@ -6,6 +6,7 @@ use App\Models\Empresa;
 use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -14,7 +15,7 @@ class EmpresaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin')->except('showJson');
     }
 
     public function index()
@@ -94,5 +95,12 @@ class EmpresaController extends Controller
         $empresa->delete();
 
         return redirect()->route('empresas.index')->with('status', 'Empresa eliminada');
+    }
+
+    public function showJson($id): JsonResponse
+    {
+        $empresa = Empresa::find($id);
+
+        return response()->json($empresa);
     }
 }

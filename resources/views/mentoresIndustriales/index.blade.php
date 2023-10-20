@@ -2,7 +2,6 @@
 @section('title', 'Mentores Industriales')
 
 @section('content')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <div class="row">
         <div class="col-12 grid-margin">
             @if( session('status') )

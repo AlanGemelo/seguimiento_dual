@@ -2,7 +2,6 @@
 @section('title', 'Empresas')
 
 @section('content')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <div class="row">
         <div class="col-12 grid-margin">
             @if( session('status') )
@@ -109,27 +108,14 @@
     </div>
     <script type="application/javascript">
         // hace una peticion ajax para obtener la informacion de la moto
-        function deleteEstudiante(matricula) {
+        function deleteEstudiante(id) {
             let form = document.getElementById('deleteForm')
-            form.action = '/estudiantes/' + matricula + '/delete'
+            form.action = '/empresas/' + id + '/delete'
             $.ajax({
-                url: '/estudiantes/' + matricula + '/json',
+                url: '/empresas/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
-                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response[0].name + ', Matricula: ' + response[0].matricula);
-                }
-            })
-        }
-
-        function restoreRegistro(id) {
-            let form = document.getElementById('restaurarForm')
-            form.action = '/motos/' + id + '/restaurar'
-            $.ajax({
-                url: '/motos/' + id,
-                type: 'GET',
-                success: function (response) {
-                    //console.log(response.name)
-                    $('#bannerRestore').html('¿Estas seguro de restaurar este registro? ' + response.name + ' ' + response.model);
+                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.nombre);
                 }
             })
         }

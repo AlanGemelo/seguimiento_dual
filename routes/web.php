@@ -45,7 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/empresas/crear', [EmpresaController::class, 'create'])->name('empresas.create');
     Route::post('/empresas', [EmpresaController::class, 'store'])->name('empresas.store');
     Route::get('/empresas/{id}/show', [EmpresaController::class, 'show'])->name('empresas.show');
-//    Route::get('/empresas/{id}/json', [EmpresaController::class, 'show'])->name('empresas.showJson');
+    Route::get('/empresas/{id}/json', [EmpresaController::class, 'showJson'])->name('empresas.showJson');
     Route::get('/empresas/{id}/editar', [EmpresaController::class, 'edit'])->name('empresas.edit');
     Route::patch('/empresas/{id}', [EmpresaController::class, 'update'])->name('empresas.update');
     Route::delete('/empresas/{id}/delete', [EmpresaController::class, 'destroy'])->name('empresas.destroy');

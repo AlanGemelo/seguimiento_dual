@@ -27,7 +27,7 @@ class MentorAcademicoController extends Controller
 
     public function create(): View
     {
-        return view('mentoresacademicos.create', compact('mentores'));
+        return view('mentoresacademicos.create');
     }
 
     public function store(Request $request)

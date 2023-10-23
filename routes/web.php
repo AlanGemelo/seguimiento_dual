@@ -64,6 +64,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/carreras/{id}/json', [CarreraController::class, 'showJson'])->name('carreras.showJson');
     Route::patch('/carreras/{id}', [CarreraController::class, 'update'])->name('carreras.update');
     Route::delete('/carreras/{id}/delete', [CarreraController::class, 'destroy'])->name('carreras.destroy');
+    Route::get('/carreras/crear', [CarreraController::class, 'create'])->name('carreras.create');
+    Route::get('/carreras/{id}/editar', [CarreraController::class, 'edit'])->name('carreras.edit');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

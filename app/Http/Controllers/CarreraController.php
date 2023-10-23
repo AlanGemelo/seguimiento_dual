@@ -21,11 +21,11 @@ class CarreraController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'min:2', 'max:6', 'string']
+            'nombre' => ['required', 'min:2', 'max:255', 'string']
         ]);
 
         Carrera::create([
-            'name' => $request->name
+            'nombre' => $request->nombre
         ]);
 
         return redirect()->route('carreras.index');
@@ -34,12 +34,12 @@ class CarreraController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => ['required', 'min:2', 'max:6', 'string']
+            'nombre' => ['required', 'min:2', 'max:255', 'string']
         ]);
 
-        $id=Hashids::decode($id);
+        $id = Hashids::decode($id);
         $carreras = Carrera::find($id);
-        $carreras=$carreras[0];
+        $carreras = $carreras[$id];
 
         $carreras->update($request->all());
 
@@ -48,12 +48,9 @@ class CarreraController extends Controller
 
     public function destroy($id)
     {
-        $id=Hashids::decode($id);
-        $carreras = Carrera::find($id);
-        $carreras=$carreras[0];
-
-        $carreras->delete();
-
+        $id = Hashids::decode($id);
+        $carrera = Carrera::find($id);
+        $carrera -> delete();
         return redirect()->route('carreras.index')->with('status', 'Carrera Eliminada');
     }
 
@@ -62,5 +59,17 @@ class CarreraController extends Controller
         $carrera = Carrera::find($id);
 
         return response()->json($carrera);
+    }
+
+    public function create()
+    {
+        return view('carrera.create');
+    }
+
+    public function edit($id)
+    {
+        $carrera = Carrera::find($id);
+
+        return view('carrera.edit', compact('carrera'));
     }
 }

@@ -34,9 +34,9 @@ class EstudiantesController extends Controller
         $empresas = Empresa::all();
         $academico = User::where('rol_id', 2)->get();
         $industrial = MentorIndustrial::all();
-        $carrera = Carrera::all();
+        $carreras = Carrera::all();
 
-        return view('estudiantes.create', compact('empresas', 'academico', 'industrial', 'carrera'));
+        return view('estudiantes.create', compact('empresas', 'academico', 'industrial', 'carreras'));
     }
 
     public function store(Request $request): RedirectResponse

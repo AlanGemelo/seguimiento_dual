@@ -34,7 +34,7 @@ class EstudiantesController extends Controller
         $empresas = Empresa::all();
         $academico = User::where('rol_id', 2)->get();
         $industrial = MentorIndustrial::all();
-        $carreras = Carrera::all();
+        $carreras =  Carrera::where('id', '<>', 1)->get();
 
         return view('estudiantes.create', compact('empresas', 'academico', 'industrial', 'carreras'));
     }
@@ -47,57 +47,57 @@ class EstudiantesController extends Controller
             'name' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
-            'cuatrimestre' => ['integer'],
+            'cuatrimestre' => ['required'],
             'nombre_proyecto' => ['string', 'min:3'],
             'inicio_dual' => ['date'],
             'fin_dual' => ['date'],
-            'ine' => ['required', 'file', 'mimes:pdf'],
-            'evaluacion_form' => ['file', 'mimes:pdf'],
-            'minutas' => ['file', 'mimes:pdf'],
-            'carta_acp' => ['file', 'mimes:pdf'],
-            'plan_form' => ['file', 'mimes:pdf'],
-            'historial_academico' => ['file', 'mimes:pdf'],
-            'perfil_ingles' => ['file', 'mimes:pdf'],
+//            'ine' => ['file', 'mimes:pdf'],
+//            'evaluacion_form' => ['file', 'mimes:pdf'],
+//            'minutas' => ['file', 'mimes:pdf'],
+//            'carta_acp' => ['file', 'mimes:pdf'],
+//            'plan_form' => ['file', 'mimes:pdf'],
+//            'historial_academico' => ['file', 'mimes:pdf'],
+//            'perfil_ingles' => ['file', 'mimes:pdf'],
             'empresa_id' => ['required', 'integer', 'exists:' . Empresa::class . ',id'],
             'academico_id' => ['required', 'integer', 'exists:' . User::class . ',id'],
             'asesorin_id' => ['required', 'integer', 'exists:' . MentorIndustrial::class . ',id'],
             'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
 
-        if ($request->file('ine')) {
-            $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
-            $ine = $request->file('ine')->storeAs('public', $ine);
-        }
-
-        if ($request->file('evaluacion_form')) {
-            $evaluacion_form = 'evaluacion_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('evaluacion_form')->getClientOriginalName();
-            $evaluacion_form = $request->file('evaluacion_form')->storeAs('public', $evaluacion_form);
-        }
-
-        if ($request->file('minutas')) {
-            $minutas = 'minutas/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('minutas')->getClientOriginalName();
-            $minutas = $request->file('minutas')->storeAs('public', $minutas);
-        }
-
-        if ($request->file('carta_acp')) {
-            $carta_acp = 'carta_acp/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('carta_acp')->getClientOriginalName();
-            $carta_acp = $request->file('carta_acp')->storeAs('public', $carta_acp);
-        }
-
-        if ($request->file('plan_form')) {
-            $plan_form = 'plan_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('plan_form')->getClientOriginalName();
-            $plan_form = $request->file('plan_form')->storeAs('public', $plan_form);
-        }
-
-        if ($request->file('historial_academico')) {
-            $historial_academico = 'historial_academico/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('historial_academico')->getClientOriginalName();
-            $historial_academico = $request->file('historial_academico')->storeAs('public', $historial_academico);
-        }
-
-        if ($request->file('perfil_ingles')) {
-            $perfil_ingles = 'perfil_ingles/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('perfil_ingles')->getClientOriginalName();
-            $perfil_ingles = $request->file('perfil_ingles')->storeAs('public', $perfil_ingles);
-        }
+//        if ($request->file('ine')) {
+//            $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
+//            $ine = $request->file('ine')->storeAs('public', $ine);
+//        }
+//
+//        if ($request->file('evaluacion_form')) {
+//            $evaluacion_form = 'evaluacion_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('evaluacion_form')->getClientOriginalName();
+//            $evaluacion_form = $request->file('evaluacion_form')->storeAs('public', $evaluacion_form);
+//        }
+//
+//        if ($request->file('minutas')) {
+//            $minutas = 'minutas/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('minutas')->getClientOriginalName();
+//            $minutas = $request->file('minutas')->storeAs('public', $minutas);
+//        }
+//
+//        if ($request->file('carta_acp')) {
+//            $carta_acp = 'carta_acp/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('carta_acp')->getClientOriginalName();
+//            $carta_acp = $request->file('carta_acp')->storeAs('public', $carta_acp);
+//        }
+//
+//        if ($request->file('plan_form')) {
+//            $plan_form = 'plan_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('plan_form')->getClientOriginalName();
+//            $plan_form = $request->file('plan_form')->storeAs('public', $plan_form);
+//        }
+//
+//        if ($request->file('historial_academico')) {
+//            $historial_academico = 'historial_academico/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('historial_academico')->getClientOriginalName();
+//            $historial_academico = $request->file('historial_academico')->storeAs('public', $historial_academico);
+//        }
+//
+//        if ($request->file('perfil_ingles')) {
+//            $perfil_ingles = 'perfil_ingles/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('perfil_ingles')->getClientOriginalName();
+//            $perfil_ingles = $request->file('perfil_ingles')->storeAs('public', $perfil_ingles);
+//        }
 
         Estudiantes::create([
             'matricula' => $request->matricula,
@@ -109,14 +109,14 @@ class EstudiantesController extends Controller
             'nombre_proyecto' => $request->nombre_proyecto,
             'inicio_dual' => Carbon::parse($request->inicio_dual)->format("Y-m-d"),
             'fin_dual' => Carbon::parse($request->fin_dual)->format("Y-m-d"),
-            'beca' => $request->beca,
-            'ine' => $ine,
-            'evaluacion_form' => $evaluacion_form,
-            'minutas' => $minutas,
-            'carta_acp' => $carta_acp,
-            'plan_form' => $plan_form,
-            'historial_academico' => $historial_academico,
-            'perfil_ingles' => $perfil_ingles,
+            'beca' => true,
+//            'ine' => $ine,
+//            'evaluacion_form' => $evaluacion_form,
+//            'minutas' => $minutas,
+//            'carta_acp' => $carta_acp,
+//            'plan_form' => $plan_form,
+//            'historial_academico' => $historial_academico,
+//            'perfil_ingles' => $perfil_ingles,
             'empresa_id' => $request->empresa_id,
             'academico_id' => $request->academico_id,
             'asesorin_id' => $request->asesorin_id,
@@ -143,7 +143,7 @@ class EstudiantesController extends Controller
         $empresas = Empresa::all();
         $academico = User::where('rol_id', 2)->get();
         $industrial = MentorIndustrial::all();
-        $carrera = Carrera::all();
+        $carrera =  Carrera::where('id', '<>', 1)->get();
 
 
         return view('estudiantes.edit', compact('estudiante', 'empresas', 'academico', 'industrial', 'carrera'));

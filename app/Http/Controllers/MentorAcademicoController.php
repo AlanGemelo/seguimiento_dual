@@ -19,8 +19,8 @@ class MentorAcademicoController extends Controller
 
     public function index(): View
     {
-        $mentores=User::where('rol_id', 2)->get();
-        $mentoresDeleted=User::onlyTrashed()->where('rol_id', 2)->get();
+        $mentores = User::where('rol_id', 2)->get();
+        $mentoresDeleted = User::onlyTrashed()->where('rol_id', 2)->get();
 
         return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
     }
@@ -32,52 +32,40 @@ class MentorAcademicoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'titulo' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-        ]);
+        $request->validate(['titulo' => ['required', 'string', 'max:255'], 'name' => ['required', 'string', 'max:255'], 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],]);
 
-        $user = User::create([
-            'titulo' => $request->titulo,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make('12345678'),
-            'rol_id' => 2,
-            'carrera_id' => 2
-        ]);
+        $user = User::create(['titulo' => $request->titulo, 'name' => $request->name, 'email' => $request->email, 'password' => Hash::make('12345678'), 'rol_id' => 2, 'carrera_id' => 2]);
 
         return redirect()->route('academicos.index')->with('message', 'Mentor Academico creado Correctamente');
     }
 
     public function show($id): View
     {
-        $id=Hashids::decode($id);
-        $mentor=User::find($id);
-        $mentor=$mentor[0];
+        $id = Hashids::decode($id);
+        $mentor = User::find($id);
+        $mentor = $mentor[0];
 
         return view('mentoresacademicos.show', compact('mentor'));
     }
 
     public function edit($id): View
     {
-        $id=Hashids::decode($id);
-        $mentor=User::find($id);
-        $mentor=$mentor[0];
+        $id = Hashids::decode($id);
+        $mentor = User::find($id);
+        $mentor = $mentor[0];
 
         return view('mentoresacademicos.edit', compact('mentor'));
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
-        $request->validate([
-            'titulo' => ['string', 'max:255'],
-            'name' => ['min:3', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-        ]);
-        $mentor=User::find($id);
-        if ($mentor->email === $request->email){
-            return redirect()->route('academicos.index');
+        $request->validate(['titulo' => ['string', 'max:255'], 'name' => ['min:3', 'string', 'max:255'], 'email' => ['required', 'string', 'email', 'max:255'],]);
+
+//        dd($request->all());
+        $mentor = User::find($id);
+        if ($request->email !== $mentor->email) {
+            $request->validate(['email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]]);
+            $mentor->update(['email' => $request->email], $request->all());
         }
         $mentor->update($request->all());
 
@@ -86,7 +74,7 @@ class MentorAcademicoController extends Controller
 
     public function destroy($id)
     {
-        $mentor=User::find($id);
+        $mentor = User::find($id);
         $mentor->delete();
 
         return redirect()->route('academicos.index')->with('messageDelete', 'Mentor Academico Eliminado Correctamente');

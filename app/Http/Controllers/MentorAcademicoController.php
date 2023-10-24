@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Estudiantes;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -21,8 +20,9 @@ class MentorAcademicoController extends Controller
     public function index(): View
     {
         $mentores=User::where('rol_id', 2)->get();
+        $mentoresDeleted=User::onlyTrashed()->where('rol_id', 2)->get();
 
-        return view('mentoresacademicos.index', compact('mentores'));
+        return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
     }
 
     public function create(): View
@@ -94,8 +94,23 @@ class MentorAcademicoController extends Controller
 
     public function showJson($id): JsonResponse
     {
-        $mentores = User::find($id);
-
+        $mentores = User::withTrashed()->find($id);
         return response()->json($mentores);
+    }
+
+    public function restoreMentor($id): RedirectResponse
+    {
+        $mentor = User::onlyTrashed()->find($id);
+        $mentor->restore();
+
+        return redirect()->route('academicos.index')->with('success', 'Mentor Academico Restaurado.');
+    }
+
+    public function forceDelete($id): RedirectResponse
+    {
+        $mentor = User::onlyTrashed()->find($id);
+        $mentor->forceDelete();
+
+        return redirect()->route('academicos.index')->with('success', 'Mentor Academico Eliminado Correctamente.');
     }
 }

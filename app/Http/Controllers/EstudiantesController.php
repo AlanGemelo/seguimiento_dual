@@ -144,7 +144,6 @@ class EstudiantesController extends Controller
         $academico = User::where('rol_id', 2)->get();
         $industrial = MentorIndustrial::all();
         $carreras =  Carrera::where('id', '<>', 1)->get();
-
         $cuatrimestres =  [
             4,
             5,

@@ -21,7 +21,7 @@
                             <h4 class="card-title">Crear Estudiante Dual</h4>
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
-                            <form class="pt-3" action="{{ route('estudiantes.store') }}" method="post">
+                            <form class="pt-3" action="{{ route('estudiantes.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 {{-- matricula --}}
                                 <div class="form-group">
@@ -100,64 +100,76 @@
                                     <input type=date class="form-control" name="fin_dual" id="fin_dual"
                                            value="{{ old('fin_dual') }}">
                                 </div>
-                                {{--                                --}}{{-- cargar documento INE --}}
-                                {{--                                <div class="form-group">--}}
-                                {{--                                    <label for="ine">INE <span class="text-danger">*</span></label>--}}
-                                {{--                                    <input type="file" class="form-control form-control-lg" id="ine"--}}
-                                {{--                                        placeholder="caega INE" name="ine" value="{{ old('ine') }}">--}}
-                                {{--                                    @error('ine')--}}
-                                {{--                                        <div class="text-danger">{{ $message }}</div>--}}
-                                {{--                                    @enderror--}}
-                                {{--                                </div>--}}
-                                {{--                                --}}{{-- cargar documento Minutas --}}
-                                {{--                                <div class="form-group">--}}
-                                {{--                                    <label for="minutas">Minutas <span class="text-danger">*</span></label>--}}
-                                {{--                                    <input type="file" class="form-control form-control-lg" id="minutas"--}}
-                                {{--                                        placeholder="minutas" name="minutas" value="{{ old('minutas') }}">--}}
-                                {{--                                    @error('minutas')--}}
-                                {{--                                        <div class="text-danger">{{ $message }}</div>--}}
-                                {{--                                    @enderror--}}
-                                {{--                                </div>--}}
-                                {{--                                --}}{{-- cargar documento de Aceptación --}}
-                                {{--                                <div class="form-group">--}}
-                                {{--                                    <label for="carta_acp">Carta de Aceptación <span class="text-danger">*</span></label>--}}
-                                {{--                                    <input type="file" class="form-control form-control-lg" id="carta_acp"--}}
-                                {{--                                        placeholder="carta_acp" name="carta_acp" value="{{ old('carta_acp') }}">--}}
-                                {{--                                    @error('carta_acp')--}}
-                                {{--                                        <div class="text-danger">{{ $message }}</div>--}}
-                                {{--                                    @enderror--}}
-                                {{--                                </div>--}}
-                                {{--                                --}}{{-- cargar documento de Plan-Form --}}
-                                {{--                                <div class="form-group">--}}
-                                {{--                                    <label for="plan_form">Plan Form<span class="text-danger">*</span></label>--}}
-                                {{--                                    <input type="file" class="form-control form-control-lg" id="plan_form"--}}
-                                {{--                                        placeholder="plan_form" name="plan_form" value="{{ old('plan_form') }}">--}}
-                                {{--                                    @error('plan_form')--}}
-                                {{--                                        <div class="text-danger">{{ $message }}</div>--}}
-                                {{--                                    @enderror--}}
-                                {{--                                </div>--}}
-                                {{--                                --}}{{-- cargar documento de Historial Academico --}}
-                                {{--                                <div class="form-group">--}}
-                                {{--                                    <label for="historial_academico">Historial Academico<span--}}
-                                {{--                                            class="text-danger">*</span></label>--}}
-                                {{--                                    <input type="file" class="form-control form-control-lg" id="historial_academico"--}}
-                                {{--                                        placeholder="historial_academico" name="historial_academico"--}}
-                                {{--                                        value="{{ old('historial_academico') }}">--}}
-                                {{--                                    @error('historial_academico')--}}
-                                {{--                                        <div class="text-danger">{{ $message }}</div>--}}
-                                {{--                                    @enderror--}}
-                                {{--                                </div>--}}
-                                {{--                                --}}{{-- cargar documento de Perfil de Ingles --}}
-                                {{--                                <div class="form-group">--}}
-                                {{--                                    <label for="perfil_ingles">Perfil de inglés<span class="text-danger">*</span></label>--}}
-                                {{--                                    <input type="file" class="form-control form-control-lg" id="perfil_ingles"--}}
-                                {{--                                        placeholder="perfil_ingles" name="perfil_ingles"--}}
-                                {{--                                        value="{{ old('perfil_ingles') }}">--}}
-                                {{--                                    @error('perfil_ingles')--}}
-                                {{--                                        <div class="text-danger">{{ $message }}</div>--}}
-                                {{--                                    @enderror--}}
-                                {{--                                </div>--}}
-                                {{--                                 Seleccionar empresa --}}
+                                {{-- Cargar documento INE --}}
+                                <div class="form-group">
+                                    <label for="ine">INE <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control form-control-lg" id="ine"
+                                           placeholder="INE" name="ine" value="{{ old('ine') }}">
+                                    @error('ine')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Cargar documento Minutas --}}
+                                <div class="form-group">
+                                    <label for="minutas">Minutas <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control form-control-lg" id="minutas"
+                                           placeholder="minutas" name="minutas" value="{{ old('minutas') }}">
+                                    @error('minutas')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Cargar documento de Aceptación --}}
+                                <div class="form-group">
+                                    <label for="carta_acp">Carta de Aceptación <span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" class="form-control form-control-lg" id="carta_acp"
+                                           placeholder="carta_acp" name="carta_acp" value="{{ old('carta_acp') }}">
+                                    @error('carta_acp')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Cargar documento de Plan-Form --}}
+                                <div class="form-group">
+                                    <label for="plan_form">Plan Form<span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control form-control-lg" id="plan_form"
+                                           placeholder="plan_form" name="plan_form" value="{{ old('plan_form') }}">
+                                    @error('plan_form')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Cargar documento de Historial Academico --}}
+                                <div class="form-group">
+                                    <label for="historial_academico">Historial Academico<span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" class="form-control form-control-lg" id="historial_academico"
+                                           placeholder="historial_academico" name="historial_academico"
+                                           value="{{ old('historial_academico') }}">
+                                    @error('historial_academico')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{--  Crgar documento de Perfil de Ingles --}}
+                                <div class="form-group">
+                                    <label for="perfil_ingles">Perfil de inglés<span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" class="form-control form-control-lg" id="perfil_ingles"
+                                           placeholder="perfil_ingles" name="perfil_ingles"
+                                           value="{{ old('perfil_ingles') }}">
+                                    @error('perfil_ingles')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="evaluacion_form">Perfil de inglés<span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" class="form-control form-control-lg" id="evaluacion_form"
+                                           placeholder="evaluacion_form" name="evaluacion_form"
+                                           value="{{ old('evaluacion_form') }}">
+                                    @error('evaluacion_form')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Seleccionar empresa --}}
                                 <div class="form-group">
                                     <label for="empresa_id" class="form-label">Empresa <span
                                             class="text-danger">*</span></label>
@@ -171,7 +183,7 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-{{--                                Seleccionar Mentor academico--}}
+                                {{-- Seleccionar Mentor academico--}}
                                 <div class="form-group">
                                     <label for="academico_id" class="form-label">Mentor Academico <span
                                             class="text-danger">*</span></label>
@@ -186,7 +198,7 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-{{--                                Seleccionar Acesor industrial--}}
+                                {{-- Seleccionar Acesor industrial--}}
                                 <div class="form-group">
                                     <label for="asesorin_id" class="form-label">Acesor Indutrial <span
                                             class="text-danger">*</span></label>
@@ -201,7 +213,7 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-{{--                                Seleccionar Carrera del estudiante--}}
+                                {{-- Seleccionar Carrera del estudiante--}}
                                 <div class="form-group">
                                     <label for="carrera_id" class="form-label">Carrera <span
                                             class="text-danger">*</span></label>

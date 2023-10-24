@@ -42,10 +42,7 @@
                                 <div class="form-group">
                                     <label for="fecha_na">Fecha de Nacimiento <span class="text-danger">*</span></label>
                                     <div class="input-group date datepicker navbar-date-picker">
-                                        <span class="input-group-addon input-group-prepend border-right">
-                                            <span class="icon-calendar input-group-text calendar-icon"></span>
-                                        </span>
-                                        <input type="text" class="form-control" name="fecha_na" id="fecha_na"
+                                        <input type="date" class="form-control" name="fecha_na" id="fecha_na"
                                                value="{{ old('fecha_na', $estudiante->fecha_na) }}">
                                     </div>
                                     @error('fecha_na')
@@ -56,12 +53,12 @@
                                     <label for="cuatrimestre">Cuatrimestre <span class="text-danger">*</span></label>
                                     <select class="form-select"
                                             aria-label="Seleccionar Cuatrimestre" name="cuatrimestre">
-                                        <option selected>Seleccione una opcion</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
+                                        <option value="{{ old('cuatrimestre'), $estudiante->cuatrimestre }}">{{  $estudiante->cuatrimestre }}</option>
+                                        @foreach ($cuatrimestres as $cuatrimestre)
+                                            @if ($cuatrimestre != $estudiante->cuatrimestre)
+                                                <option value="{{ $cuatrimestre }}">{{ $cuatrimestre }}</option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                     @error('cuatrimestre')
                                     <div class="text-danger">{{ $message }}</div>

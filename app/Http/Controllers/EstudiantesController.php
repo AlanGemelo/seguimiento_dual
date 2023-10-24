@@ -143,7 +143,7 @@ class EstudiantesController extends Controller
         $empresas = Empresa::all();
         $academico = User::where('rol_id', 2)->get();
         $industrial = MentorIndustrial::all();
-        $carrera =  Carrera::where('id', '<>', 1)->get();
+        $carreras =  Carrera::where('id', '<>', 1)->get();
 
         $cuatrimestres =  [
             4,
@@ -154,7 +154,7 @@ class EstudiantesController extends Controller
         ];
 
 
-        return view('estudiantes.edit', compact('estudiante', 'empresas', 'academico', 'industrial', 'carrera', 'cuatrimestres'));
+        return view('estudiantes.edit', compact('estudiante', 'empresas', 'academico', 'industrial', 'carreras', 'cuatrimestres'));
     }
 
     public function update(Request $request, $id)

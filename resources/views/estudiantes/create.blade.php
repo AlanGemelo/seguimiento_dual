@@ -160,7 +160,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="evaluacion_form">Perfil de inglés<span
+                                    <label for="evaluacion_form">Evaluación de Formación<span
                                             class="text-danger">*</span></label>
                                     <input type="file" class="form-control form-control-lg" id="evaluacion_form"
                                            placeholder="evaluacion_form" name="evaluacion_form"

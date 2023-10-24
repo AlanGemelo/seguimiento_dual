@@ -64,6 +64,76 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="form-group">
+                                    <label for="nombre_proyecto">Nombre del Proyecto <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
+                                           placeholder="Integrador" name="nombre_proyecto"
+                                           value="{{ old('nombre_proyecto') }}">
+                                    @error('nombre_proyecto')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="empresa_id" class="form-label">Empresa <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="empresa_id">
+                                        @foreach ($empresas as $empresa)
+                                            <option value="{{ old('empresa_id') }}">{{ $empresa->nombre }}</option>
+                                            @if ($empresa->id != $estudiante->empresa_id)
+                                                <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    @error('empresa_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Seleccionar Mentor academico--}}
+                                <div class="form-group">
+                                    <label for="academico_id" class="form-label">Mentor Academico <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="academico_id">
+                                        @foreach ($academico as $user)
+                                        <option value="{{ old('academico_id') }}">{{ $user->titulo }} {{ $user->name }}</option>
+                                            @if ($user->id != $estudiante->academico_id)
+                                                <option value="{{ $user->id }}">{{ $user->titulo }} {{ $user->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    @error('academico_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Seleccionar Acesor industrial--}}
+                                <div class="form-group">
+                                    <label for="asesorin_id" class="form-label">Acesor Indutrial <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="asesorin_id">
+                                        <option selected>Seleccione una opcion</option>
+                                        @foreach ($industrial as $mentorIndustrial)
+                                            <option
+                                                value="{{ $mentorIndustrial->id }}">{{ $mentorIndustrial->titulo }} {{ $mentorIndustrial->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('asesorin_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Seleccionar Carrera del estudiante--}}
+                                <div class="form-group">
+                                    <label for="carrera_id" class="form-label">Carrera <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="carrera_id">
+                                        <option selected>Seleccione una opcion</option>
+                                        @foreach ($carreras as $carrera)
+                                            <option value="{{ $carrera->id }}">{{ $carrera->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('carrera_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                             type="submit">Editar

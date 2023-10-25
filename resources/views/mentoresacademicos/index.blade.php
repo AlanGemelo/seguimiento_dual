@@ -24,7 +24,7 @@
                                     <div class="float-end">
                                         {{-- Button del modal --}}
                                         <a href="{{route('academicos.create')}}" class="btn btn-primary"
-                                           title="Agregar una nueva Moto">
+                                           title="Agregar una nuevo Mentor Academico">
                                             <i class="mdi mdi-plus-circle-outline"></i>
                                         </a>
                                     </div>

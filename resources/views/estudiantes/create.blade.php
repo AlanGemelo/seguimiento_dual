@@ -96,7 +96,7 @@
                                 </div>
                                 {{-- Final Dual --}}
                                 <div class="form-group">
-                                    <label for="fin_dual">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                                    <label for="fin_dual">Fin Dual <span class="text-danger">*</span></label>
                                     <input type=date class="form-control" name="fin_dual" id="fin_dual"
                                            value="{{ old('fin_dual') }}">
                                 </div>

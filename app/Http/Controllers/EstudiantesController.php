@@ -25,8 +25,9 @@ class EstudiantesController extends Controller
     public function index(): View
     {
         $estudiantes = Estudiantes::all();
+        $estudiantesDeleted = Estudiantes::onlyTrashed()->get();
 
-        return view('estudiantes.index', compact('estudiantes'));
+        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted'));
     }
 
     public function create(): View
@@ -257,8 +258,25 @@ class EstudiantesController extends Controller
 
     public function showJson($id): JsonResponse
     {
-        $estudiante = Estudiantes::where('matricula', $id)->get();
+        $estudiante = Estudiantes::withTrashed()->where('matricula', $id)->get();
 
         return response()->json($estudiante);
+    }
+
+    public function restoreEstudiante($id): RedirectResponse
+    {
+        $estudiante = Estudiantes::onlyTrashed()->where('matricula', $id)->first();
+        $estudiante->restore();
+
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante Restaurado.');
+    }
+
+    public function forceDelete($id): RedirectResponse
+    {
+        $estudiante = Estudiantes::onlyTrashed()->where('matricula', $id)->first();
+//        dd($estudiante);
+        $estudiante->forceDelete();
+//
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante Eliminado Correctamente.');
     }
 }

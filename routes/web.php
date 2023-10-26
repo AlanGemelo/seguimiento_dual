@@ -31,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/estudiantes/{matricula}/editar', [EstudiantesController::class, 'edit'])->name('estudiantes.edit');
     Route::patch('/estudiantes/{matricula}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
     Route::delete('/estudiantes/{matricula}/delete', [EstudiantesController::class, 'destroy'])->name('estudiantes.destroy');
+    Route::patch('/estudiantes/{id}/restaurar', [EstudiantesController::class, 'restoreEstudiante'])->name('estudiantes.restore');
+    Route::delete('/estudiantes/{id}/force', [EstudiantesController::class, 'forceDelete'])->name('estudiantes.forceDelete');
 
     Route::get('/academicos', [MentorAcademicoController::class, 'index'])->name('academicos.index');
     Route::get('/academicos/crear', [MentorAcademicoController::class, 'create'])->name('academicos.create');

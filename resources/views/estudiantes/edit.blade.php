@@ -11,7 +11,8 @@
                             <h4 class="card-title">Editar Estudiante Dual</h4>
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
-                            <form class="pt-3" action="{{ route('estudiantes.update', $estudiante->matricula) }}" method="post">
+                            <form class="pt-3" action="{{ route('estudiantes.update', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                  method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">
@@ -41,10 +42,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="fecha_na">Fecha de Nacimiento <span class="text-danger">*</span></label>
-                                    <div class="input-group date datepicker navbar-date-picker">
-                                        <input type="date" class="form-control" name="fecha_na" id="fecha_na"
-                                               value="{{ old('fecha_na', $estudiante->fecha_na) }}">
-                                    </div>
+                                    <input type="date" class="form-control form-control-lg" name="fecha_na"
+                                           id="fecha_na"
+                                           value="{{ old('fecha_na', $estudiante->fecha_na) }}">
                                     @error('fecha_na')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -53,11 +53,11 @@
                                     <label for="cuatrimestre">Cuatrimestre <span class="text-danger">*</span></label>
                                     <select class="form-select"
                                             aria-label="Seleccionar Cuatrimestre" name="cuatrimestre">
-                                        <option value="{{ old('cuatrimestre'), $estudiante->cuatrimestre }}">{{  $estudiante->cuatrimestre }}</option>
+                                        @if ($estudiante->cuatrimestre)
+                                            <option value="{{ $estudiante->cuatrimestre }}" selected>{{ $estudiante->cuatrimestre }}</option>
+                                        @endif
                                         @foreach ($cuatrimestres as $cuatrimestre)
-                                            @if ($cuatrimestre != $estudiante->cuatrimestre)
-                                                <option value="{{ $cuatrimestre }}">{{ $cuatrimestre }}</option>
-                                            @endif
+                                            <option value="{{ $cuatrimestre }}">{{ $cuatrimestre }}</option>
                                         @endforeach
                                     </select>
                                     @error('cuatrimestre')
@@ -69,7 +69,7 @@
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
                                            placeholder="Integrador" name="nombre_proyecto"
-                                           value="{{ old('nombre_proyecto'), $estudiante->nombre_proyecto }}">
+                                           value="{{ $estudiante->nombre_proyecto, old('nombre_proyecto') }}">
                                     @error('nombre_proyecto')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -78,11 +78,12 @@
                                     <label for="empresa_id" class="form-label">Empresa <span
                                             class="text-danger">*</span></label>
                                     <select class="form-select" aria-label="Seleccionar Empresa" name="empresa_id">
+                                        @if ($estudiante->empresa_id)
+                                            <option value="{{ $estudiante->empresa_id }}"
+                                                    selected>{{ $estudiante->empresa->nombre }}</option>
+                                        @endif
                                         @foreach ($empresas as $empresa)
-                                            <option value="{{ old('empresa_id') }}">{{ $empresa->nombre }}</option>
-                                            @if ($empresa->id != $estudiante->empresa_id)
-                                                <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
-                                            @endif
+                                            <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
                                         @endforeach
                                     </select>
                                     @error('empresa_id')
@@ -93,12 +94,12 @@
                                 <div class="form-group">
                                     <label for="academico_id" class="form-label">Mentor Academico <span
                                             class="text-danger">*</span></label>
-                                    <select class="form-select" aria-label="Seleccionar Empresa" name="academico_id">
-                                        @foreach ($academico as $user)
-                                        <option value="{{ old('academico_id') }}">{{ $user->titulo }} {{ $user->name }}</option>
-                                            @if ($user->id != $estudiante->academico_id)
-                                                <option value="{{ $user->id }}">{{ $user->titulo }} {{ $user->name }}</option>
-                                            @endif
+                                    <select class="form-select" aria-label="Seleccionar Mentor Academico" name="academico_id">
+                                        @if ($estudiante->academico_id)
+                                            <option value="{{ $estudiante->academico_id }}" selected>{{ $estudiante->academico->name }}</option>
+                                        @endif
+                                        @foreach ($academicos as $academico)
+                                            <option value="{{ $academico->id }}">{{ $academico->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('academico_id')
@@ -109,12 +110,12 @@
                                 <div class="form-group">
                                     <label for="asesorin_id" class="form-label">Acesor Indutrial <span
                                             class="text-danger">*</span></label>
-                                    <select class="form-select" aria-label="Seleccionar Empresa" name="asesorin_id">
-                                        @foreach ($industrial as $mentorIndustrial)
-                                            <option value="{{ old('asesorin_id') }}">{{ $mentorIndustrial->titulo }} {{ $mentorIndustrial->name }}</option>
-                                            @if ($user->id != $estudiante->academico_id)
-                                                <option value="{{ $mentorIndustrial->id }}">{{ $mentorIndustrial->titulo }} {{ $mentorIndustrial->name }}</option>
-                                            @endif
+                                    <select class="form-select" aria-label="Seleccionar Asesor Industrial" name="asesorin_id">
+                                        @if ($estudiante->asesorin_id)
+                                            <option value="{{ $estudiante->asesorin_id }}" selected>{{ $estudiante->asesorin->name }}</option>
+                                        @endif
+                                        @foreach ($industrials as $industrial)
+                                            <option value="{{ $industrial->id }}">{{ $industrial->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('asesorin_id')
@@ -125,12 +126,12 @@
                                 <div class="form-group">
                                     <label for="carrera_id" class="form-label">Carrera <span
                                             class="text-danger">*</span></label>
-                                    <select class="form-select" aria-label="Seleccionar Empresa" name="carrera_id">
+                                    <select class="form-select" aria-label="Seleccionar Carrera" name="carrera_id">
+                                        @if ($estudiante->carrera_id)
+                                            <option value="{{ $estudiante->carrera_id }}" selected>{{ $estudiante->carrera->nombre }}</option>
+                                        @endif
                                         @foreach ($carreras as $carrera)
-                                            <option value="{{ old('carrera_id') }}">{{ $carrera->nombre }}</option>
-                                            @if ($carrera->id != $estudiante->carrera_id)
-                                                <option value="{{ $carrera->id }}">{{ $carrera->nombre }}</option>
-                                            @endif
+                                            <option value="{{ $carrera->id }}">{{ $carrera->nombre }}</option>
                                         @endforeach
                                     </select>
                                     @error('carrera_id')

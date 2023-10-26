@@ -142,8 +142,8 @@ class EstudiantesController extends Controller
         $estudiante = Estudiantes::where('matricula', $id)->get();
         $estudiante = $estudiante[0];
         $empresas = Empresa::all();
-        $academico = User::where('rol_id', 2)->get();
-        $industrial = MentorIndustrial::all();
+        $academicos = User::where('rol_id', 2)->get();
+        $industrials = MentorIndustrial::all();
         $carreras =  Carrera::where('id', '<>', 1)->get();
         $cuatrimestres =  [
             4,
@@ -154,7 +154,7 @@ class EstudiantesController extends Controller
         ];
 
 
-        return view('estudiantes.edit', compact('estudiante', 'empresas', 'academico', 'industrial', 'carreras', 'cuatrimestres'));
+        return view('estudiantes.edit', compact('estudiante', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres'));
     }
 
     public function update(Request $request, $id)
@@ -181,7 +181,10 @@ class EstudiantesController extends Controller
             'carrera_id' => ['integer', 'exists:' . Carrera::class . ',id'],
         ]);
 
+//        dd($request->all());
+        $id = Hashids::decode($id);
         $estudiantes=Estudiantes::find($id);
+        $estudiantes=$estudiantes[0];
 
         if ($request->file('ine')) {
             $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
@@ -219,30 +222,16 @@ class EstudiantesController extends Controller
         }
 
         $estudiantes->update(
-            $request->all()
-//            [
-//            'matricula' => $request->matricula,
-//            'name' => $request->name,
-//            'curp' => $request->curp,
-//            'fecha_na' => Carbon::parse($request->fecha_na)->format("Y-m-d"),
-//            'activo' => true,
-//            'cuatrimestre' => $request->cuatrimestre,
-//            'nombre_proyecto' => $request->nombre_proyecto,
-//            'inicio_dual' => Carbon::parse($request->inicio_dual)->format("Y-m-d"),
-//            'fin_dual' => Carbon::parse($request->fin_dual)->format("Y-m-d"),
-//            'beca' => true,
-//            'ine' => $ine ?? $estudiantes->ine,
-//            'evaluacion_form' => $evaluacion_form  ?? $estudiantes->evaluacion_form,
-//            'minutas' => $minutas ?? $estudiantes->minutas,
-//            'carta_acp' => $carta_acp ?? $estudiantes->carta_acp,
-//            'plan_form' => $plan_form ?? $estudiantes->plan_form,
-//            'historial_academico' => $historial_academico ?? $estudiantes->historial_academico,
-//            'perfil_ingles' => $perfil_ingles ?? $estudiantes->perfil_ingles,
-//            'empresa_id' => $request->empresa_id,
-//            'academico_id' => $request->academico_id,
-//            'asesorin_id' => $request->asesorin_id,
-//            'carrera_id' => $request->carrera_id,
-//        ]
+            $request->all(),
+            [
+            'ine' => $ine ?? $estudiantes->ine,
+            'evaluacion_form' => $evaluacion_form  ?? $estudiantes->evaluacion_form,
+            'minutas' => $minutas ?? $estudiantes->minutas,
+            'carta_acp' => $carta_acp ?? $estudiantes->carta_acp,
+            'plan_form' => $plan_form ?? $estudiantes->plan_form,
+            'historial_academico' => $historial_academico ?? $estudiantes->historial_academico,
+            'perfil_ingles' => $perfil_ingles ?? $estudiantes->perfil_ingles,
+            ]
         );
 
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');

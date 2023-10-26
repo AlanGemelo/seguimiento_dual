@@ -47,7 +47,7 @@ class EstudiantesController extends Controller
             'name' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
-            'cuatrimestre' => ['required',],
+            'cuatrimestre' => ['integer', 'required',],
             'nombre_proyecto' => ['string', 'min:3'],
             'inicio_dual' => ['date'],
             'fin_dual' => ['date'],

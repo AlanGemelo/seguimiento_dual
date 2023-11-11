@@ -11616,38 +11616,37 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   pointer-events: none;
   opacity: 0.65;
 }
-
 .btn-primary {
   color: #fff;
-  background-color: #1F3BB3;
-  border-color: #1F3BB3;
+  background-color: #58BB43 !important; /* Verde principal */
+  border-color: #58BB43 !important;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #1a3298;
-  border-color: #192f8f;
+  background-color: #3d902e; /* Verde más oscuro para el hover */
+  border-color: #3d902e;
 }
 
 .btn-check:focus + .btn-primary, .btn-primary:focus {
   color: #fff;
-  background-color: #1a3298;
-  border-color: #192f8f;
-  box-shadow: 0 0 0 0.25rem rgba(65, 88, 190, 0.5);
+  background-color: #2d641b; /* Verde más oscuro para el foco */
+  border-color: #2d641b;
+  box-shadow: 0 0 0 0.25rem rgba(45, 100, 27, 0.5);
 }
 
 .btn-check:checked + .btn-primary,
 .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active,
 .show > .btn-primary.dropdown-toggle {
   color: #fff;
-  background-color: #192f8f;
-  border-color: #172c86;
+  background-color: #2d641b; /* Otro tono de verde para estados activos y desplegados */
+  border-color: #2d641b;
 }
 
 .btn-check:checked + .btn-primary:focus,
 .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus,
 .show > .btn-primary.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(65, 88, 190, 0.5);
+  box-shadow: 0 0 0 0.25rem rgba(45, 100, 27, 0.5);
 }
 
 .btn-primary:disabled, .btn-primary.disabled {
@@ -11655,6 +11654,8 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   background-color: #1F3BB3;
   border-color: #1F3BB3;
 }
+
+
 
 .btn-secondary {
   color: #000;
@@ -19734,7 +19735,7 @@ input:focus {
 }
 
 .bg-gradient-primary {
-  background: linear-gradient(230deg, #759bff, #843cf6);
+  background: linear-gradient(230deg,#C1FF1C, #1E8C45);
 }
 
 .bg-gradient-secondary {

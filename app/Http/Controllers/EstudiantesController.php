@@ -25,8 +25,9 @@ class EstudiantesController extends Controller
     public function index(): View
     {
         $estudiantes = Estudiantes::all();
+        $estudiantesDeleted = Estudiantes::onlyTrashed()->get();
 
-        return view('estudiantes.index', compact('estudiantes'));
+        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted'));
     }
 
     public function create(): View
@@ -34,7 +35,7 @@ class EstudiantesController extends Controller
         $empresas = Empresa::all();
         $academico = User::where('rol_id', 2)->get();
         $industrial = MentorIndustrial::all();
-        $carreras = Carrera::all();
+        $carreras =  Carrera::where('id', '<>', 1)->get();
 
         return view('estudiantes.create', compact('empresas', 'academico', 'industrial', 'carreras'));
     }
@@ -47,11 +48,11 @@ class EstudiantesController extends Controller
             'name' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
-            'cuatrimestre' => ['integer'],
+            'cuatrimestre' => ['integer', 'required',],
             'nombre_proyecto' => ['string', 'min:3'],
             'inicio_dual' => ['date'],
             'fin_dual' => ['date'],
-            'ine' => ['required', 'file', 'mimes:pdf'],
+            'ine' => ['file', 'mimes:pdf'],
             'evaluacion_form' => ['file', 'mimes:pdf'],
             'minutas' => ['file', 'mimes:pdf'],
             'carta_acp' => ['file', 'mimes:pdf'],
@@ -109,7 +110,7 @@ class EstudiantesController extends Controller
             'nombre_proyecto' => $request->nombre_proyecto,
             'inicio_dual' => Carbon::parse($request->inicio_dual)->format("Y-m-d"),
             'fin_dual' => Carbon::parse($request->fin_dual)->format("Y-m-d"),
-            'beca' => $request->beca,
+            'beca' => true,
             'ine' => $ine,
             'evaluacion_form' => $evaluacion_form,
             'minutas' => $minutas,
@@ -141,18 +142,25 @@ class EstudiantesController extends Controller
         $estudiante = Estudiantes::where('matricula', $id)->get();
         $estudiante = $estudiante[0];
         $empresas = Empresa::all();
-        $academico = User::where('rol_id', 2)->get();
-        $industrial = MentorIndustrial::all();
-        $carrera = Carrera::all();
+        $academicos = User::where('rol_id', 2)->get();
+        $industrials = MentorIndustrial::all();
+        $carreras =  Carrera::where('id', '<>', 1)->get();
+        $cuatrimestres =  [
+            4,
+            5,
+            6,
+            7,
+            8,
+        ];
 
 
-        return view('estudiantes.edit', compact('estudiante', 'empresas', 'academico', 'industrial', 'carrera'));
+        return view('estudiantes.edit', compact('estudiante', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres'));
     }
 
-    public function update(Request $request, Estudiantes $estudiantes)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:8'],
+            'matricula' => ['integer','min:8'],
             'name' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
@@ -160,18 +168,23 @@ class EstudiantesController extends Controller
             'nombre_proyecto' => ['string', 'min:3'],
             'inicio_dual' => ['date'],
             'fin_dual' => ['date'],
-            'ine' => ['required', 'file', 'mimes:pdf'],
+            'ine' => ['file', 'mimes:pdf'],
             'evaluacion_form' => ['file', 'mimes:pdf'],
             'minutas' => ['file', 'mimes:pdf'],
             'carta_acp' => ['file', 'mimes:pdf'],
             'plan_form' => ['file', 'mimes:pdf'],
             'historial_academico' => ['file', 'mimes:pdf'],
             'perfil_ingles' => ['file', 'mimes:pdf'],
-            'empresa_id' => ['required', 'integer', 'exists:' . Empresa::class . ',id'],
-            'academico_id' => ['required', 'integer', 'exists:' . User::class . ',id'],
-            'asesorin_id' => ['required', 'integer', 'exists:' . MentorIndustrial::class . ',id'],
-            'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
+            'empresa_id' => ['integer', 'exists:' . Empresa::class . ',id'],
+            'academico_id' => ['integer', 'exists:' . User::class . ',id'],
+            'asesorin_id' => ['integer', 'exists:' . MentorIndustrial::class . ',id'],
+            'carrera_id' => ['integer', 'exists:' . Carrera::class . ',id'],
         ]);
+
+//        dd($request->all());
+        $id = Hashids::decode($id);
+        $estudiantes=Estudiantes::find($id);
+        $estudiantes=$estudiantes[0];
 
         if ($request->file('ine')) {
             $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
@@ -208,44 +221,51 @@ class EstudiantesController extends Controller
             $perfil_ingles = $request->file('perfil_ingles')->storeAs('public', $perfil_ingles);
         }
 
-        $estudiantes->update([
-            'matricula' => $request->matricula,
-            'name' => $request->name,
-            'curp' => $request->curp,
-            'fecha_na' => Carbon::parse($request->fecha_na)->format("Y-m-d"),
-            'activo' => true,
-            'cuatrimestre' => $request->cuatrimestre,
-            'nombre_proyecto' => $request->nombre_proyecto,
-            'inicio_dual' => Carbon::parse($request->inicio_dual)->format("Y-m-d"),
-            'fin_dual' => Carbon::parse($request->fin_dual)->format("Y-m-d"),
-            'beca' => $request->beca,
-            'ine' => $ine,
-            'evaluacion_form' => $evaluacion_form,
-            'minutas' => $minutas,
-            'carta_acp' => $carta_acp,
-            'plan_form' => $plan_form,
-            'historial_academico' => $historial_academico,
-            'perfil_ingles' => $perfil_ingles,
-            'empresa_id' => $request->empresa_id,
-            'academico_id' => $request->academico_id,
-            'asesorin_id' => $request->asesorin_id,
-            'carrera_id' => $request->carrera_id,
-        ]);
+        $estudiantes->update(
+            $request->all(),
+            [
+            'ine' => $ine ?? $estudiantes->ine,
+            'evaluacion_form' => $evaluacion_form  ?? $estudiantes->evaluacion_form,
+            'minutas' => $minutas ?? $estudiantes->minutas,
+            'carta_acp' => $carta_acp ?? $estudiantes->carta_acp,
+            'plan_form' => $plan_form ?? $estudiantes->plan_form,
+            'historial_academico' => $historial_academico ?? $estudiantes->historial_academico,
+            'perfil_ingles' => $perfil_ingles ?? $estudiantes->perfil_ingles,
+            ]
+        );
 
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');
     }
 
-    public function destroy(Estudiantes $estudiantes)
+    public function destroy($id): RedirectResponse
     {
-        $estudiantes->delete();
+        $estudiante=Estudiantes::find($id);
+        $estudiante->delete();
 
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
     }
 
     public function showJson($id): JsonResponse
     {
-        $estudiante = Estudiantes::where('matricula', $id)->get();
+        $estudiante = Estudiantes::withTrashed()->where('matricula', $id)->get();
 
         return response()->json($estudiante);
+    }
+
+    public function restoreEstudiante($id): RedirectResponse
+    {
+        $estudiante = Estudiantes::onlyTrashed()->where('matricula', $id)->first();
+        $estudiante->restore();
+
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante Restaurado.');
+    }
+
+    public function forceDelete($id): RedirectResponse
+    {
+        $estudiante = Estudiantes::onlyTrashed()->where('matricula', $id)->first();
+//        dd($estudiante);
+        $estudiante->forceDelete();
+//
+        return redirect()->route('estudiantes.index')->with('success', 'Estudiante Eliminado Correctamente.');
     }
 }

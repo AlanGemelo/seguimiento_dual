@@ -71,7 +71,7 @@ class EmpresaController extends Controller
         return view('empresas.edit', compact('empresa', 'estudiantes'));
     }
 
-    public function update(Request $request, Empresa $empresa)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
@@ -79,6 +79,8 @@ class EmpresaController extends Controller
             'inicio_conv' => ['required', 'date'],
             'fin_conv' => ['required', 'date'],
         ]);
+
+        $empresa=Empresa::find($id);
 
         $empresa->update([
             'nombre' => $request->nombre,
@@ -90,8 +92,10 @@ class EmpresaController extends Controller
         return redirect()->route('empresas.index')->with('status', 'Empresa actualizada');
     }
 
-    public function destroy(Empresa $empresa)
+    public function destroy($id)
     {
+        $empresa=Empresa::find($id);
+
         $empresa->delete();
 
         return redirect()->route('empresas.index')->with('status', 'Empresa eliminada');

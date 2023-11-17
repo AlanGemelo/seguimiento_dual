@@ -3,7 +3,7 @@
 <h1 align="center">Proyecto de Gestión de Alumnos Duales - UTVT</h1>
 
 <p align="center">
-  <img alt="Proyecto Banner" src="[link-to-your-banner-image](https://seeklogo.com/images/U/universidad-tecnologica-del-valle-de-toluca-logo-82F16BF313-seeklogo.com.png)">
+  <img alt="Proyecto Banner" src="/logo.png)">
 </p>
 
 <!-- Descripción -->

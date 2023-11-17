@@ -1,66 +1,52 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<!-- Proyecto de Gestión de Alumnos Duales - UTVT -->
+
+<h1 align="center">Proyecto de Gestión de Alumnos Duales - UTVT</h1>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img alt="Proyecto Banner" src="link-to-your-banner-image">
 </p>
 
-## About Laravel
+<!-- Descripción -->
+<h3 align="center">🌐 Descripción:</h3>
+<p align="center">Este proyecto tiene como objetivo revolucionar la experiencia de aprendizaje dual en la UTVT mediante una plataforma integral. Desde el seguimiento del progreso de los alumnos hasta la generación de informes personalizados, estamos dando forma al futuro de la gestión educativa.</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<!-- Características Destacadas -->
+<h3 align="center">🚀 Características Destacadas:</h3>
+<ul align="center">
+  <li><strong>Gestión Integral:</strong> Carga de documentos, notificaciones automáticas, y seguimiento de progreso, todo en un solo lugar.</li>
+  <li><strong>Notificaciones Personalizadas:</strong> Mantente al tanto con recordatorios automáticos y eventos importantes.</li>
+  <li><strong>Acceso Seguro:</strong> Garantizamos que cada usuario vea solo la información relevante a su rol.</li>
+</ul>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<!-- Tecnologías Utilizadas -->
+<h3 align="center">🛠️ Tecnologías Utilizadas:</h3>
+<p align="center">
+  <strong>Frontend:</strong> HTML, CSS, JavaScript, React<br>
+  <strong>Backend:</strong> Node.js, Express, MongoDB<br>
+  <strong>Herramientas Adicionales:</strong> GitHub Actions para CI/CD, Docker para la contenerización.
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<!-- Cómo Contribuir -->
+<h3 align="center">👩‍💻 ¿Cómo Contribuir?</h3>
+<p align="center">¡Nos encantaría contar con tu colaboración! Si deseas contribuir, por favor consulta nuestras pautas de contribución <a href="link-to-contributing-guide">aquí</a>.</p>
 
-## Learning Laravel
+<!-- Documentación -->
+<h3 align="center">📖 Documentación:</h3>
+<p align="center">Para obtener información detallada sobre el uso y configuración del proyecto, consulta nuestra <a href="link-to-documentation">documentación</a>.</p>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<!-- Estado del Proyecto -->
+<h3 align="center">🚧 Estado del Proyecto:</h3>
+<p align="center">Actualmente estamos en la fase de desarrollo activo. Consulta nuestras <a href="link-to-issues">issues</a> para conocer las características en desarrollo y los problemas conocidos.</p>
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+<!-- Cómo Contribuir -->
+<h3 align="center">🙌 ¡Contribuye y Sé Parte del Cambio!</h3>
+<p align="center">¡Este proyecto es un esfuerzo de equipo y nos encantaría que formaras parte de él! Contribuye, abre issues, y ayúdanos a mejorar.</p>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<!-- Contacto -->
+<h3 align="center">📧 Contacto:</h3>
+<p align="center">¿Preguntas, sugerencias o comentarios? ¡Estamos aquí para ayudarte! Ponte en contacto con nosotros a través de <a href="mailto:contacto@proyectoduales.com">correo electrónico</a>.</p>
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<!-- Agradecimientos -->
+<p align="center">
+  <strong>¡Gracias por tu Interés y Colaboración en este Emocionante Viaje Educativo! 🚀</strong>
+</p>

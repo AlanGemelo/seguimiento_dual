@@ -3,7 +3,7 @@
 <h1 align="center">Proyecto de Gestión de Alumnos Duales - UTVT</h1>
 
 <p align="center">
-  <img alt="Proyecto Banner" src="logo.png">
+  <img alt="Proyecto Banner" src="./public/assets/images/Logo-utvt.png">
 </p>
 
 <!-- Descripción -->
@@ -21,15 +21,15 @@
 <!-- Tecnologías Utilizadas -->
 <h3 align="center">🛠️ Tecnologías Utilizadas:</h3>
 <p align="center">
-  <strong>Frontend:</strong> Laravel, HTML, CSS, JavaScript<br>
-  <strong>Backend:</strong> Node.js, Express, MongoDB<br>
+  <strong>Frontend:</strong> Blade, HTML, CSS, JavaScript<br>
+  <strong>Backend:</strong> Laravel, MySQL<br>
   <strong>Herramientas Adicionales:</strong> GitHub Actions para CI/CD, Docker para la contenerización.
 </p>
 
 
 <!-- Documentación -->
 <h3 align="center">📖 Documentación:</h3>
-<p align="center">Para obtener información detallada sobre el uso y configuración del proyecto, consulta nuestra <a href="link-to-documentation">documentación</a>.</p>
+<p align="center">Para obtener información detallada sobre el uso y configuración del proyecto, consulta nuestra <a href="./documentation.md">documentación</a>.</p>
 
 <!-- Estado del Proyecto -->
 <h3 align="center">🚧 Estado del Proyecto:</h3>

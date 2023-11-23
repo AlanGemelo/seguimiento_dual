@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carrera;
+use App\Models\Empresa;
 use App\Models\Estudiantes;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -48,10 +51,21 @@ class CarreraController extends Controller
 
     public function destroy($id)
     {
-        $id = Hashids::decode($id);
-        $carrera = Carrera::find($id);
-        $carrera -> delete();
-        return redirect()->route('carreras.index')->with('status', 'Carrera Eliminada');
+        try {
+            $carrera = Carrera::find($id);
+            $carrera -> delete();
+            return redirect()->route('carreras.index')->with('status', 'Carrera Eliminada');
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+
+            if ($errorCode == 1451) {
+                // Error de integridad referencial (clave foránea)
+                return redirect()->route('carreras.index')->with('statusError', 'No se puede eliminar la carrera. Primero elimina los estudiantes asociados');
+            }
+
+            // Otro tipo de error, puedes manejarlo según tus necesidades
+            return redirect()->route('carreras.index')->with('statusError', 'Error al eliminar la carrera: ' . $e->getMessage());
+        }
     }
 
     public function showJson($id): JsonResponse

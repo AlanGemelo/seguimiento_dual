@@ -14,6 +14,17 @@
                     </button>
                 </div>
             @endif
+            @if (session('statusError'))
+                <div class="alert alert-danger alert-dismissible text-dark" role="alert">
+                    <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Error</a>.
+                        {{ session('statusError') }}.</span>
+                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
@@ -259,7 +270,7 @@
 
             form.action = '/academicos/' + id + '/restaurar'
             $.ajax({
-                url: '/academicos/' + id  + '/json',
+                url: '/academicos/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     //console.log(response.name)

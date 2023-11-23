@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -74,10 +75,23 @@ class MentorAcademicoController extends Controller
 
     public function destroy($id)
     {
-        $mentor = User::find($id);
-        $mentor->delete();
+        try {
+            $mentor = User::find($id);
+            $mentor->delete();
 
-        return redirect()->route('academicos.index')->with('messageDelete', 'Mentor Academico Eliminado Correctamente');
+            return redirect()->route('academicos.index')->with('messageDelete', 'Mentor Academico Eliminado Correctamente');
+
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+
+            if ($errorCode == 1451) {
+                // Error de integridad referencial (clave foránea)
+                return redirect()->route('academicos.index')->with('statusError', 'No se puede eliminar el Mentor Academico. Primero elimina los estudiantes asociados');
+            }
+
+            // Otro tipo de error, puedes manejarlo según tus necesidades
+            return redirect()->route('academicos.index')->with('statusError', 'Error al eliminar el Mentor Academico: ' . $e->getMessage());
+        }
     }
 
     public function showJson($id): JsonResponse

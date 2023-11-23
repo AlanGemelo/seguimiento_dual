@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Empresa;
 use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
@@ -79,10 +80,22 @@ class MentorIndustrialController extends Controller
 
     public function destroy($id)
     {
-        $id=MentorIndustrial::find($id);
-        $id->delete();
+        try {
+            $id=MentorIndustrial::find($id);
+            $id->delete();
 
-        return redirect()->route('mentores.index')->with('status', 'Mentor industrial eliminado');
+            return redirect()->route('mentores.index')->with('status', 'Mentor industrial eliminado');
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+
+            if ($errorCode == 1451) {
+                // Error de integridad referencial (clave foránea)
+                return redirect()->route('mentores.index')->with('statusError', 'No se puede eliminar el Mentor industrial. Primero elimina los estudiantes asociados');
+            }
+
+            // Otro tipo de error, puedes manejarlo según tus necesidades
+            return redirect()->route('mentores.index')->with('statusError', 'Error al eliminar el Mentor industrial: ' . $e->getMessage());
+        }
     }
 
     public function showJson($id): JsonResponse

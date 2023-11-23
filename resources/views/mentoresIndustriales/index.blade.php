@@ -14,6 +14,16 @@
                     </button>
                 </div>
             @endif
+            @if (session('statusError'))
+                <div class="alert alert-danger alert-dismissible text-dark" role="alert">
+                    <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Error</a>.
+                        {{ session('statusError') }}.</span>
+                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
@@ -54,7 +64,8 @@
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a>
                                                 @if(Auth::user()->rol_id === 1)
-                                                    <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}" class="btn btn-twitter">
+                                                    <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                       class="btn btn-twitter">
                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                     </a>
                                                     <button class="btn btn-danger" data-bs-toggle="modal"
@@ -76,7 +87,8 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Estudiante Temporalmente</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Estudiante
+                                        Temporalmente</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>

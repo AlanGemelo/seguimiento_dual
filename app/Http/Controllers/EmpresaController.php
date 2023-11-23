@@ -6,6 +6,7 @@ use App\Models\Empresa;
 use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
@@ -94,11 +95,22 @@ class EmpresaController extends Controller
 
     public function destroy($id)
     {
-        $empresa=Empresa::find($id);
+        try {
+            $carrera = Empresa::find($id);
+            $carrera->delete();
 
-        $empresa->delete();
+            return redirect()->route('empresas.index')->with('status', 'Carrera Eliminada');
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
 
-        return redirect()->route('empresas.index')->with('status', 'Empresa eliminada');
+            if ($errorCode == 1451) {
+                // Error de integridad referencial (clave foránea)
+                return redirect()->route('empresas.index')->with('statusError', 'No se puede eliminar la Empresa. Primero elimina los mentores academicos asociados');
+            }
+
+            // Otro tipo de error, puedes manejarlo según tus necesidades
+            return redirect()->route('empresas.index')->with('statusError', 'Error al eliminar la Empresa: ' . $e->getMessage());
+        }
     }
 
     public function showJson($id): JsonResponse

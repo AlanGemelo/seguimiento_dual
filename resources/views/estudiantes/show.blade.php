@@ -42,14 +42,14 @@
                                                value="{{ $estudiante->cuatrimestre }}" disabled>
                                     </div>
                                     <div class="form-group">
-                                        <label for="curp">Empresa</label>
+                                        <label for="empresa_id">Empresa</label>
                                         <input type="text" class="form-control form-control-lg" id="empresa_id"
                                                name="empresa_id"
                                                value="{{ $estudiante->empresa->nombre }}" disabled>
                                     </div>
                                     <div class="form-group">
-                                        <label for="curp">Asesor Industrial</label>
-                                        <input type="text" class="form-control form-control-lg" id="curp" name="curp"
+                                        <label for="asesorin">Asesor Industrial</label>
+                                        <input type="text" class="form-control form-control-lg" id="asesorin" name="asesorin"
                                                value="{{ $estudiante->asesorin->titulo }} {{ $estudiante->asesorin->name }}"
                                                disabled>
                                     </div>
@@ -64,7 +64,6 @@
                                                 <th>Acciones</th>
                                             </tr>
                                             </thead>
-
                                             <tbody>
                                             <tr>
                                                 <td>1</td>

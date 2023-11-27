@@ -34,10 +34,9 @@ class EstudiantesController extends Controller
     {
         $empresas = Empresa::all();
         $academico = User::where('rol_id', 2)->get();
-        $industrial = MentorIndustrial::all();
         $carreras =  Carrera::where('id', '<>', 1)->get();
 
-        return view('estudiantes.create', compact('empresas', 'academico', 'industrial', 'carreras'));
+        return view('estudiantes.create', compact('empresas', 'academico', 'carreras'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -51,7 +50,7 @@ class EstudiantesController extends Controller
             'cuatrimestre' => ['integer', 'required',],
             'nombre_proyecto' => ['string', 'min:3'],
             'inicio_dual' => ['date'],
-            'fin_dual' => ['date'],
+            'fin_dual' => ['date', 'after_or_equal:inicio_dual'],
             'ine' => ['file', 'mimes:pdf'],
             'evaluacion_form' => ['file', 'mimes:pdf'],
             'minutas' => ['file', 'mimes:pdf'],
@@ -64,6 +63,13 @@ class EstudiantesController extends Controller
             'asesorin_id' => ['required', 'integer', 'exists:' . MentorIndustrial::class . ',id'],
             'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
+
+        $inicioDual = Carbon::parse($request->inicio_dual);
+        $finDual = Carbon::parse($request->fin_dual);
+        if ($inicioDual->diffInYears($finDual) !== 1) {
+            // Si la diferencia no es de un año, retornar un error
+            return redirect()->back()->withErrors(['fin_dual' => 'La diferencia entre inicio dual y fin dual debe ser de un año.']);
+        }
 
         if ($request->file('ine')) {
             $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
@@ -143,7 +149,6 @@ class EstudiantesController extends Controller
         $estudiante = $estudiante[0];
         $empresas = Empresa::all();
         $academicos = User::where('rol_id', 2)->get();
-        $industrials = MentorIndustrial::all();
         $carreras =  Carrera::where('id', '<>', 1)->get();
         $cuatrimestres =  [
             4,

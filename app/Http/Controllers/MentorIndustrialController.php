@@ -104,4 +104,11 @@ class MentorIndustrialController extends Controller
 
         return response()->json($mentor);
     }
+
+    public function showForEmpresa($id):JsonResponse
+    {
+        $mentores=MentorIndustrial::where('empresa_id', $id)->get();
+
+        return response()->json($mentores);
+    }
 }

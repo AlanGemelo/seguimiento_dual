@@ -2,6 +2,7 @@
 @section('title', 'Crear Estudiante')
 
 @section('content')
+    <script src="{{ asset('assets/js/jquery.min.js')}}"></script>
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -98,13 +99,25 @@
                                             <label for="empresa_id" class="form-label">Empresa <span
                                                     class="text-danger">*</span></label>
                                             <select class="form-select" aria-label="Seleccionar Empresa"
-                                                    name="empresa_id">
+                                                    name="empresa_id" id="empresa_id">
                                                 <option selected>Seleccione una opcion</option>
                                                 @foreach ($empresas as $empresa)
                                                     <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
                                                 @endforeach
                                             </select>
                                             @error('empresa_id')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        {{-- Seleccionar Acesor industrial--}}
+                                        <div class="form-group">
+                                            <label for="asesorin_id" class="form-label">Acesor Indutrial <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" aria-label="Seleccionar Empresa"
+                                                    name="asesorin_id" id="asesorin_id">
+                                                <option selected>Seleccione una opcion</option>
+                                            </select>
+                                            @error('asesorin_id')
                                             <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -121,22 +134,6 @@
                                                 @endforeach
                                             </select>
                                             @error('academico_id')
-                                            <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Seleccionar Acesor industrial--}}
-                                        <div class="form-group">
-                                            <label for="asesorin_id" class="form-label">Acesor Indutrial <span
-                                                    class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa"
-                                                    name="asesorin_id">
-                                                <option selected>Seleccione una opcion</option>
-                                                @foreach ($industrial as $mentorIndustrial)
-                                                    <option
-                                                        value="{{ $mentorIndustrial->id }}">{{ $mentorIndustrial->titulo }} {{ $mentorIndustrial->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('asesorin_id')
                                             <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -163,12 +160,18 @@
                                                     class="text-danger">*</span></label>
                                             <input type="date" class="form-control form-control-lg" name="inicio_dual" id="inicio_dual"
                                                    value="{{ old('inicio_dual') }}">
+                                            @error('inicio_dual')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         {{-- Final Dual --}}
                                         <div class="form-group">
                                             <label for="fin_dual">Fin Dual <span class="text-danger">*</span></label>
                                             <input type=date class="form-control form-control-lg" name="fin_dual" id="fin_dual"
                                                    value="{{ old('fin_dual') }}">
+                                            @error('fin_dual')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         {{-- Cargar documento INE --}}
                                         <div class="form-group">
@@ -258,4 +261,39 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Manejar el cambio en el campo academico_id
+            $('#empresa_id').change(function () {
+                var mentorId = $(this).val();
+
+
+                // Realizar la petición AJAX
+                $.ajax({
+                    type: 'GET',
+                    url: '/mentores/' + mentorId + '/empresa',
+                    success: function (data) {
+                        // Limpiar y actualizar el select de empresas
+                            var selectAsesorin = $('select[name="asesorin_id"]');
+                        if (data.length > 0) {
+                            selectAsesorin.empty();
+                            selectAsesorin.append('<option value="" selected>Seleccione una opción</option>');
+
+                            // Agregar las opciones recibidas en la respuesta AJAX al select
+                            $.each(data, function (index, asesorin) {
+                                selectAsesorin.append('<option value="' + asesorin.id + '">' + asesorin.name + '</option>');
+                            });
+                        }
+                        else {
+                            selectAsesorin.empty();
+                            selectAsesorin.append('<option value="" selected disabled>No hay asesores industriales disponibles</option>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

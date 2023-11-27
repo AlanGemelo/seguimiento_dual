@@ -61,7 +61,7 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>Nombre Documento</th>
-                                                <th>Acciones</th>
+                                                <th>Ver</th>
                                             </tr>
                                             </thead>
                                             <tbody>

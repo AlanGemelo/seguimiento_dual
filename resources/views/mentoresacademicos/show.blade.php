@@ -32,7 +32,7 @@
                                     <div class="card-body">
                                         <h4 class="text-secondary">Estudiante: {{ $estudiante->name }}</h4>
                                         <br>
-                                        <a type="button" class="btn btn-success" href="{{ route('estudiantes.show', $estudiante->matricula) }}">Ver Estudiante  <i class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
+                                        <a type="button" class="btn btn-success" href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}">Ver Estudiante  <i class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
                                     </div>
                                 </div>
                             @endforeach

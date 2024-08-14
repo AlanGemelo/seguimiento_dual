@@ -46,33 +46,46 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                     @if ($estudiantes->count() === 0)
+                                        <tr>
+                                           
+                                            <td colspan="7">
+                                                <div class="alert alert-danger" role="alert">
+                                                    No hay registros de estudiantes
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @else
                                         @foreach ($estudiantes as $estudiante)
-                                            <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $estudiante->matricula }}</td>
-                                                <td>{{ $estudiante->name }}</td>
-                                                <td>{{ $estudiante->curp }}</td>
-                                                <td>{{ $estudiante->fecha_na }}</td>
-                                                <td>{{ $estudiante->cuatrimestre }}</td>
-                                                <td>
-                                                    <a href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                                        class="btn btn-facebook">
-                                                        <i class="mdi mdi-account-details btn-icon-prepend"></i>
-                                                    </a>
-                                                    <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                                        class="btn btn-twitter">
-                                                        <i class="mdi mdi-account-edit btn-icon-prepend"></i>
-                                                    </a>
-                                                    @if (Auth::user()->rol_id === 1)
-                                                        <button class="btn btn-danger" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal1"
-                                                            onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
-                                                            <i class="mdi mdi-delete btn-icon-prepend"></i>
-                                                        </button>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        <tr>
+                                            
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ $estudiante->matricula }}</td>
+                                            <td>{{ $estudiante->name }}</td>
+                                            <td>{{ $estudiante->curp }}</td>
+                                            <td>{{ $estudiante->fecha_na }}</td>
+                                            <td>{{ $estudiante->cuatrimestre }}</td>
+                                            <td>
+                                                <a href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                                    class="btn btn-facebook">
+                                                    <i class="mdi mdi-account-details btn-icon-prepend"></i>
+                                                </a>
+                                                <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                                    class="btn btn-twitter">
+                                                    <i class="mdi mdi-account-edit btn-icon-prepend"></i>
+                                                </a>
+                                                @if (Auth::user()->rol_id === 1)
+                                                    <button class="btn btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal1"
+                                                        onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
+                                                        <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                         
+                                     @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -170,7 +183,7 @@
                                                                                                 </td>
                                                                                                 <td>{{ $estudianteDeleted->cuatrimestre }}
                                                                                                 </td>
-                                                                                                <td>{{ $estudiante->status_text }}
+                                                                                                <td>{{ $estudianteDeleted->status_text }}
                                                                                                 </td>        
 
                                                                                                 <td>

@@ -23,7 +23,7 @@
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
                             <form class="pt-3" action="{{ route('estudiantes.store') }}" method="post"
-                                  enctype="multipart/form-data">
+                                 enctype="multipart/form-data" >
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6">
@@ -100,7 +100,7 @@
                                                     class="text-danger">*</span></label>
                                             <select class="form-select" aria-label="Seleccionar Empresa"
                                                     name="empresa_id" id="empresa_id">
-                                                <option selected>Seleccione una opcion</option>
+                                                <option value="NULL" selected>Seleccione una opcion</option>
                                                 @foreach ($empresas as $empresa)
                                                     <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
                                                 @endforeach
@@ -152,6 +152,23 @@
                                             <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                        <div  class="form-group" id="tipoBeca" style="display: none">
+                                            <label for="tipoBeca" class="form-label">Apoyo Economico <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" aria-label="Seleccionar Carrera" name="tipoBeca">
+
+                                                @foreach ($tipoBeca as $carrera)
+                                                    <option
+                                                    value="{{ $carrera['id'] }}">{{ $carrera['name'] }} 
+                                                </option>
+                                          
+                                                @endforeach
+                                            </select>
+                                            @error('tipoBeca')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
                                     </div>
                                     <div class="col-md-6">
                                         {{-- Inicio Dual --}}
@@ -173,6 +190,26 @@
                                             <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+
+                                            {{-- Estatus --}}
+                                            <div class="form-group">
+                                                <label for="status" class="form-label">Situacion Dual <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-select" aria-label="Seleccionar Empresa"
+                                                        name="status">
+                                                    <option selected>Seleccione una opcion</option>
+                                                    @foreach ($situation as $carrera)
+                                                        <option value="{{ $carrera['id'] }}" >
+                                                            {{ $carrera['name'] }}
+                                                        </option>
+                                                    
+                                                @endforeach
+                                                </select>
+                                                @error('status')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                           
                                         {{-- Cargar documento INE --}}
                                         <div class="form-group">
                                             <label for="ine">INE <span class="text-danger">*</span></label>
@@ -182,36 +219,9 @@
                                             <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        {{-- Cargar documento Minutas --}}
-                                        <div class="form-group">
-                                            <label for="minutas">Minutas <span class="text-danger">*</span></label>
-                                            <input type="file" class="form-control form-control-lg" id="minutas"
-                                                   placeholder="minutas" name="minutas" value="{{ old('minutas') }}">
-                                            @error('minutas')
-                                            <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Cargar documento de Aceptación --}}
-                                        <div class="form-group">
-                                            <label for="carta_acp">Carta de Aceptación <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="file" class="form-control form-control-lg" id="carta_acp"
-                                                   placeholder="carta_acp" name="carta_acp"
-                                                   value="{{ old('carta_acp') }}">
-                                            @error('carta_acp')
-                                            <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Cargar documento de Plan-Form --}}
-                                        <div class="form-group">
-                                            <label for="plan_form">Plan Form<span class="text-danger">*</span></label>
-                                            <input type="file" class="form-control form-control-lg" id="plan_form"
-                                                   placeholder="plan_form" name="plan_form"
-                                                   value="{{ old('plan_form') }}">
-                                            @error('plan_form')
-                                            <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+                                       
+                                       
+                                       
                                         {{-- Cargar documento de Historial Academico --}}
                                         <div class="form-group">
                                             <label for="historial_academico">Historial Academico<span
@@ -224,9 +234,42 @@
                                             <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                        {{--  Crgar documento de Formart A --}}
+                                        <div class="form-group">
+                                            <label for="formatoA">Formato A<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="file" class="form-control form-control-lg" id="formatoA"
+                                                   placeholder="formatoA" name="formatoA"
+                                                   value="{{ old('formatoA') }}">
+                                            @error('formatoA')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        {{--  Crgar documento de documento de Formart B --}}
+                                        <div class="form-group">
+                                            <label for="formatoB">Formato B<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="file" class="form-control form-control-lg" id="formatoB"
+                                                   placeholder="formatoB" name="formatoB"
+                                                   value="{{ old('formatoB') }}">
+                                            @error('formatoB')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        {{--  Crgar documento de documento de Formart C --}}
+                                        <div class="form-group">
+                                            <label for="formatoC">Formato C<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="file" class="form-control form-control-lg" id="formatoC"
+                                                   placeholder="formatoC" name="formatoC"
+                                                   value="{{ old('formatoC') }}">
+                                            @error('formatoC')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                         {{--  Crgar documento de Perfil de Ingles --}}
                                         <div class="form-group">
-                                            <label for="perfil_ingles">Perfil de inglés<span
+                                            <label for="perfil_ingles">Perfil de Ingles<span
                                                     class="text-danger">*</span></label>
                                             <input type="file" class="form-control form-control-lg" id="perfil_ingles"
                                                    placeholder="perfil_ingles" name="perfil_ingles"
@@ -236,15 +279,23 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="evaluacion_form">Evaluación de Formación<span
+                                            <label for="beca" class="form-label">Beca Dual <span
                                                     class="text-danger">*</span></label>
-                                            <input type="file" class="form-control form-control-lg" id="evaluacion_form"
-                                                   placeholder="evaluacion_form" name="evaluacion_form"
-                                                   value="{{ old('evaluacion_form') }}">
-                                            @error('evaluacion_form')
-                                            <div class="text-danger">{{ $message }}</div>
+                                            <select class="form-select" aria-label="Seleccionar Carrera" id="beca" onchange="mostrarInput()" name="beca">
+<option value="nada" selected> Seleccione una opcion</option>
+                                                @foreach ($becas as $carrera)
+                                                  
+                                                        <option value="{{ $carrera['id'] }}">
+                                                            {{ $carrera['name'] }}
+                                                        </option>
+                                                @endforeach
+                                            </select>
+                                            @error('beca')
+                                                <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+
+                                       
                                     </div>
                                     {{-- Boton par enviar el formulario --}}
                                     <div class="mt-3">
@@ -262,6 +313,20 @@
         </div>
     </div>
     <script type="text/javascript">
+
+
+
+
+function mostrarInput() {
+    var becaValue = document.getElementById('beca').value;
+    var becitaInput = document.getElementById('tipoBeca');
+console.log(becaValue)
+    if (becaValue == 0) {  // Reemplaza 'el_valor_especifico' con el valor específico que deseas comparar
+        becitaInput.style.display = 'block';
+    } else {
+        becitaInput.style.display = 'none';
+    }
+}
         $(document).ready(function () {
             // Manejar el cambio en el campo academico_id
             $('#empresa_id').change(function () {

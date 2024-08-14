@@ -26,6 +26,24 @@
                                            name="direccion"
                                            value="{{ $empresa->direccion, old('direccion') }}">
                                 </div>
+                                  {{-- Cargar convenio academico --}}
+                                  <div class="form-group">
+                                    <label for="convenioA">Convenio Academico <span class="text-danger">*</span></label>
+                                    <input autofocus type="file" class="form-control form-control-lg" id="convenioA"
+                                           placeholder="convenioA" name="convenioA" value="{{ old('convenioA') }}">
+                                    @error('convenioA')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- Cargar convenio marco-empresa --}}
+                                <div class="form-group">
+                                    <label for="convenioMA">Convenio Marco-Empresa <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control form-control-lg" id="convenioMA"
+                                           placeholder="convenioMA" name="convenioMA" value="{{ old('convenioMA') }}">
+                                    @error('convenioMA')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                                 <div class="form-group">
                                     <label for="inicio_conv">Inicio Convenio <span class="text-danger">*</span></label>
                                     <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">

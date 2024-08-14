@@ -1,3 +1,5 @@
+@php use Illuminate\Support\Facades\Storage; @endphp
+
 @extends('layouts.app')
 @section('title', 'Mostrar Empresa')
 
@@ -38,6 +40,48 @@
                                             <span class="icon-calendar input-group-text calendar-icon"></span>
                                         </span>
                                     <input type="date" class="form-control" name="fin_conv" id="fin_conv" value="{{ $empresa->fin_conv }}" disabled>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nombre Documento</th>
+                                            <th>Ver</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>
+                                                <h5 class="card-title">Convenio Academico</h5>
+                                            </td>
+                                            <td>
+                                            <a href="{{ Storage::url($empresa->convenioA) }}"
+                                                   class="btn btn-primary" target="_blank">Ver
+                                                    Convenio Academico
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>
+                                                <h5 class="card-title">Convenio Marco-Empresa</h5>
+                                            </td>
+                                            <td>
+                                            <a href="{{ Storage::url($empresa->convenioMA) }}"
+                                                   class="btn btn-primary" target="_blank">Ver
+                                                    Convenio Marco-Empresa
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                              
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

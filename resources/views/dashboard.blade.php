@@ -13,11 +13,28 @@
                     </button>
                 </div>
             @endif
+            @if(Auth::user()->rol_id === 1)
+
             <div class="row">
                 <div class="col-lg-4 d-flex flex-column">
                     <div class="row flex-grow">
                         <div class="col-12 grid-margin stretch-card">
-                            @if(Auth::user()->rol_id === 1)
+                        
+                            <div class="card card-rounded">
+                                <div class="card-body">
+                                    <h4 class="text-secondary">Mentores Registrados: {{ $mentores }}</h4>
+                                    <br>
+                                        <a type="button" class="btn btn-success" href="{{ route('mentores.create') }}">Crear Mentor  <i class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <div class="col-lg-4 d-flex flex-column "  >
+                    <div class="row flex-grow">
+                        <div class="col-12 grid-margin stretch-card">
                             <div class="card card-rounded">
                                 <div class="card-body">
                                     <h4 class="text-secondary">Estudiantes Registrados: {{ $estudiantes }}</h4>
@@ -25,10 +42,11 @@
                                         <a type="button" class="btn btn-success" href="{{ route('estudiantes.create') }}">Crear Estudiante  <i class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
                                 </div>
                             </div>
-                            @endif
+                            
                         </div>
                     </div>
                 </div>
+          
             </div>
         </div>
     </div>

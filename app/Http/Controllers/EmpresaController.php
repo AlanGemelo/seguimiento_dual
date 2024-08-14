@@ -28,23 +28,36 @@ class EmpresaController extends Controller
 
     public function create()
     {
-        $mentores=MentorIndustrial::all();
+        $mentores = MentorIndustrial::all();
 
         return view('empresas.create', compact('mentores'));
     }
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
             'direccion' => ['required', 'string', 'max:255'],
+            'convenioMA' => ['file', 'mimes:pdf,jpg'],
+            'convenioA' => ['file', 'mimes:pdf'],
             'inicio_conv' => ['required', 'date'],
             'fin_conv' => ['required', 'date'],
+
         ]);
+        if ($request->file('convenioA')) {
+            $convenioA = 'convenioA/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('convenioA')->getClientOriginalName();
+            $convenioA = $request->file('convenioA')->storeAs('public', $convenioA);
+        }
+        if ($request->file('convenioMA')) {
+            $convenioMA = 'convenioMA/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('convenioMA')->getClientOriginalName();
+            $convenioMA = $request->file('convenioMA')->storeAs('public', $convenioMA);
+        }
 
         $empresa = Empresa::create([
             'nombre' => $request->nombre,
-            'direccion' => $request->direccion,
+            'direccion' => $request->direccion,       'convenioA' => $convenioA,
+            'convenioMA' => $convenioMA,
             'inicio_conv' => Carbon::parse($request->inicio_conv)->format("Y-m-d"),
             'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
         ]);
@@ -55,8 +68,8 @@ class EmpresaController extends Controller
     public function show($id)
     {
         $id = Hashids::decode($id);
-        $empresa=Empresa::find($id);
-        $empresa=$empresa[0];
+        $empresa = Empresa::find($id);
+        $empresa = $empresa[0];
 
         return view('empresas.show', compact('empresa'));
     }
@@ -64,8 +77,8 @@ class EmpresaController extends Controller
     public function edit($id)
     {
         $id = Hashids::decode($id);
-        $empresa=Empresa::find($id);
-        $empresa=$empresa[0];
+        $empresa = Empresa::find($id);
+        $empresa = $empresa[0];
 
         $estudiantes = Estudiantes::all();
 
@@ -81,7 +94,7 @@ class EmpresaController extends Controller
             'fin_conv' => ['required', 'date'],
         ]);
 
-        $empresa=Empresa::find($id);
+        $empresa = Empresa::find($id);
 
         $empresa->update([
             'nombre' => $request->nombre,

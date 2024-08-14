@@ -25,6 +25,6 @@ class CheckAdminRole
         }
 
         // Si no es un usuario administrador, redirigir al dashboard
-        return redirect()->back();
+        return redirect()->route('dashboard');
     }
 }

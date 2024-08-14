@@ -15,6 +15,8 @@ class Empresa extends Model
         'direccion',
         'inicio_conv',
         'fin_conv',
+        'convenioA',
+        'convenioMA',
     ];
 
 }

@@ -44,5 +44,13 @@ class DatabaseSeeder extends Seeder
             'rol_id' => 1,
             'carrera_id' => 1
         ]);
+        User::create([
+            'titulo' => 'Admin',
+            'name'=> 'Admin Dual',
+            'email' => 'mago@gmail.com',
+            'password' => Hash::make('12345678'),
+            'rol_id' => 2,
+            'carrera_id' => 1
+        ]);
     }
 }

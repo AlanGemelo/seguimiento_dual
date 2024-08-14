@@ -11,6 +11,7 @@
                             <h4 class="card-title">Editar Mentor Industrial</h4>
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
+                       
                             <form class="pt-3" action="{{ route('mentores.update', $mentorIndustrial->id) }}" method="post">
                                 @csrf
                                 @method('PATCH')
@@ -32,12 +33,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="empresa_id" class="form-label">Empresa <span class="text-danger">*</span></label>
-                                    <select class="form-select"
+                                    <select class="form-select" type="number"
                                             aria-label="Seleccionar Empresa" name="empresa_id">
                                         <option selected>Seleccione una opcion</option>
                                         @foreach($empresas as $empresa)
-                                            <option
-                                                value="{{$empresa->id}}">{{$empresa->nombre}}</option>
+                                        @if ($empresa->id == $mentorIndustrial->empresa_id)
+                                        <option selected value="{{$empresa->id}}">{{$empresa->nombre}}</option>
+                                    @else
+                                        <option value={{$empresa->id}}>{{$empresa->nombre}}</option>
+                                    @endif
                                         @endforeach
                                     </select>
                                     @error('empresa_id')

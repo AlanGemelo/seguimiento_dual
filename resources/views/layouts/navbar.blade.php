@@ -6,7 +6,7 @@
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
-        <li class="nav-item nav-category">Acciones</li>
+        <li class="nav-item nav-category">Opciones</li>
         <li class="nav-item {{ request()->routeIs('estudiantes.*') ? 'active' : ''}}">
             <a class="nav-link" href="{{ route('estudiantes.index') }}">
                 <i class="menu-icon mdi mdi-account"></i>
@@ -23,7 +23,7 @@
         <li class="nav-item {{ request()->routeIs('empresas.*') ? 'active' : '' , request()->routeIs('mentores.*') ? 'active' : ''}}">
             <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false"
                aria-controls="charts">
-                <i class="menu-icon mdi mdi-chart-line"></i>
+                <i class="menu-icon mdi mdi-home-assistant"></i>
                 <span class="menu-title">Empresas</span>
                 <i class="menu-arrow"></i>
             </a>
@@ -38,8 +38,14 @@
         </li>
             <li class="nav-item {{ request()->routeIs('carreras.*') ? 'active' : ''}}">
                 <a class="nav-link" href="{{ route('carreras.index') }}">
-                    <i class="menu-icon mdi mdi-card-text-outline"></i>
+                    <i class="menu-icon mdi mdi-package"></i>
                     <span class="menu-title">Carreras</span>
+                </a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('estadisticas.*') ? 'active' : ''}}">
+                <a class="nav-link" href="{{ route('estadisticas.index') }}">
+                    <i class="menu-icon mdi mdi-chart-line"></i>
+                    <span class="menu-title">Estadisticas</span>
                 </a>
             </li>
         @endif

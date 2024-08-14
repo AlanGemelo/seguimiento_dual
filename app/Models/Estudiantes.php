@@ -12,11 +12,23 @@ class Estudiantes extends Model
     use HasFactory, SoftDeletes;
 
     protected $primaryKey = 'matricula';
+      public function getStatusTextAttribute()
+    {
+        $statuses = [
+            0 => 'Reprobacion',
+            1 => 'Termino de Convenio',
+            2 => 'Ciclo de Renovacion Concluido',
+            3 => 'Termino del PE',
+        ];
+
+        return $statuses[$this->status] ?? 'Desconocido';
+    }
 
     protected $fillable = [
         'matricula',
         'name',
         'curp',
+        'status',
         'fecha_na',
         'activo',
         'cuatrimestre',

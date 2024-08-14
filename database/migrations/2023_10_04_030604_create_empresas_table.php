@@ -18,6 +18,10 @@ return new class extends Migration {
             $table->text('direccion');
             $table->date('inicio_conv');
             $table->date('fin_conv');
+            $table->text('ine')->nullable();
+            $table->text('convenioA')->nullable();
+            $table->text('convenioMA')->nullable();
+
             $table->timestamps();
         });
     }

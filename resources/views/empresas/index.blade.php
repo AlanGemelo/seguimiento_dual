@@ -49,6 +49,7 @@
                                         <th>#</th>
                                         <th>Empresa</th>
                                         <th>Descripcion</th>
+                                        <th>Telefono</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
@@ -58,6 +59,7 @@
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $empresa->nombre }}</td>
                                             <td>{{ $empresa->direccion }}</td>
+                                            <td>{{ $empresa->telefono }}</td>
                                             <td>
                                                 <a href="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
                                                    class="btn btn-facebook">

@@ -48,9 +48,9 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Titulo</th>
                                         <th>Nombre</th>
                                         <th>Correo Electronico</th>
+                                        <th>Direccion de Carrera</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
@@ -58,14 +58,18 @@
                                     @foreach($mentores as $mentor)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $mentor->titulo }}</td>
                                             <td>{{ $mentor->name }}</td>
                                             <td>{{ $mentor->email }}</td>
+                                            <td>{{ $mentor->direccion->name }}</td>
                                             <td>
                                                 <a href="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
                                                    class="btn btn-facebook">
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a>
+                                                {{-- <a href="{{ route('academicos.showE', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                   class="btn btn-facebook">
+                                                    <i class="mdi mdi-account-details btn-icon-prepend"></i>
+                                                </a> --}}
                                                 @if(Auth::user()->rol_id === 1)
                                                     <a href="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
                                                        class="btn btn-twitter">

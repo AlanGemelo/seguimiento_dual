@@ -25,7 +25,8 @@ class User extends Authenticatable
         'email',
         'password',
         'rol_id',
-        'carrera_id'
+        'carrera_id',
+        'direccion_id'
     ];
 
     /**
@@ -50,5 +51,9 @@ class User extends Authenticatable
     public function estudiantes()
     {
         return $this->hasMany(Estudiantes::class, 'academico_id', 'id');
+    }
+    public function direccion()
+    {
+        return $this->hasOne(DireccionCarrera::class, 'id', 'direccion_id');
     }
 }

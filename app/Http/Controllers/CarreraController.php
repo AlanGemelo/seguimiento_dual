@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carrera;
+use App\Models\DireccionCarrera;
 use App\Models\Empresa;
 use App\Models\Estudiantes;
+use Google\Cloud\Core\Batch\Retry;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -16,28 +18,31 @@ class CarreraController extends Controller
 
     public function index()
     {
-        $carreras = Carrera::where('id', '<>', 1)->get();
-
+        $carreras = Carrera::with('direccion')->where('id', '<>', 1)->get();
         return view('carrera.index', compact('carreras'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => ['required', 'min:2', 'max:255', 'string']
+            'nombre' => ['required', 'min:2', 'max:255', 'string'],
+            'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id']
         ]);
-
+        $direcciones = DireccionCarrera::all();
         Carrera::create([
-            'nombre' => $request->nombre
+            'nombre' => $request->nombre,
+            'direccion_id' => $request->direccion_id
         ]);
 
-        return redirect()->route('carreras.index');
+        return redirect()->route('carreras.index',compact('direcciones'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombre' => ['required', 'min:2', 'max:255', 'string']
+            'nombre' => ['required', 'min:2', 'max:255', 'string'],
+            'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id']
+
         ]);
 
         $id = Hashids::decode($id);
@@ -77,12 +82,13 @@ class CarreraController extends Controller
 
     public function create()
     {
-        return view('carrera.create');
+        $direcciones = DireccionCarrera::all();
+        return view('carrera.create',compact('direcciones'));
     }
 
-    public function edit($id)
+    public function edit(Carrera $id)
     {
-        $carrera = Carrera::find($id);
+        dd($id);    
 
         return view('carrera.edit', compact('carrera'));
     }

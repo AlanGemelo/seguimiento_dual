@@ -30,9 +30,29 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="form-group">
+                                    <label for="telefono">Numero Telefonico <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control form-control-lg" id="telefono"
+                                           name="telefono"
+                                           value="{{ old('telefono') }}">
+                                    @error('telefono')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Correo Electronico <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control form-control-lg" id="email"
+                                           name="email"
+                                           value="{{ old('email') }}">
+                                    @error('email')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                
                                 {{-- Cargar convenio academico --}}
                                 <div class="form-group">
-                                    <label for="convenioA">Convenio Academico <span class="text-danger">*</span></label>
+                                    <label for="convenioA">Convenio Especifico <span class="text-danger">*</span></label>
                                     <input autofocus type="file" class="form-control form-control-lg" id="convenioA"
                                            placeholder="convenioA" name="convenioA" value="{{ old('convenioA') }}">
                                     @error('convenioA')

@@ -8,7 +8,7 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Editar Mentor Industrial</h4>
+                            <h4 class="card-title">Editar Mentor de Unidad Economica</h4>
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
                        
@@ -16,7 +16,7 @@
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">
-                                    <label for="titulo">Titulo <span class="text-danger">*</span></label>
+                                    <label for="titulo">Grado <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="titulo"
                                            placeholder="" name="titulo" value="{{ $mentorIndustrial->titulo, old('titulo') }}">
                                     @error('titulo')
@@ -24,7 +24,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Name <span class="text-danger">*</span></label>
+                                    <label for="name">Nombre <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="name"
                                            placeholder="" name="name" value="{{ $mentorIndustrial->name, old('name') }}">
                                     @error('name')

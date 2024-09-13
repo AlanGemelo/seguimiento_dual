@@ -35,10 +35,11 @@ class EmpresaController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
             'direccion' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255'],
+            'telefono' => ['required', 'string', 'max:10'],
             'convenioMA' => ['file', 'mimes:pdf,jpg'],
             'convenioA' => ['file', 'mimes:pdf'],
             'inicio_conv' => ['required', 'date'],
@@ -56,10 +57,13 @@ class EmpresaController extends Controller
 
         $empresa = Empresa::create([
             'nombre' => $request->nombre,
-            'direccion' => $request->direccion,       'convenioA' => $convenioA,
+            'direccion' => $request->direccion,
+            'convenioA' => $convenioA,
             'convenioMA' => $convenioMA,
             'inicio_conv' => Carbon::parse($request->inicio_conv)->format("Y-m-d"),
             'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
+            'email' => $request->email,
+            'telefono' => $request->telefono,
         ]);
 
         return redirect()->route('empresas.index')->with('status', 'Empresa creada');
@@ -92,6 +96,8 @@ class EmpresaController extends Controller
             'direccion' => ['required', 'string', 'max:255'],
             'inicio_conv' => ['required', 'date'],
             'fin_conv' => ['required', 'date'],
+            'email' => ['required', 'string', 'max:255'],
+            'telefono' => ['required', 'string', 'max:10'],
         ]);
 
         $empresa = Empresa::find($id);
@@ -101,6 +107,8 @@ class EmpresaController extends Controller
             'direccion' => $request->direccion,
             'inicio_conv' => Carbon::parse($request->inicio_conv)->format("Y-m-d"),
             'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
+            'email' => $request->email,
+            'telefono' => $request->telefono,
         ]);
 
         return redirect()->route('empresas.index')->with('status', 'Empresa actualizada');

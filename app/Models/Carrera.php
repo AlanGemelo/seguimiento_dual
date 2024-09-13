@@ -11,5 +11,12 @@ class Carrera extends Model
 
     protected $fillable = [
         'nombre',
+        'direccion_id',
+        'email',
+        'telefono',
     ];
+    public function direccion()
+    {
+        return $this->belongsTo(DireccionCarrera::class, 'direccion_id', 'id');
+    }
 }

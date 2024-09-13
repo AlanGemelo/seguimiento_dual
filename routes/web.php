@@ -25,16 +25,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
     Route::get('/estudiantes/crear', [EstudiantesController::class, 'create'])->name('estudiantes.create');
+    Route::get('/estudiantes/crearC', [EstudiantesController::class, 'crearC'])->name('estudiantes.crearC');
     Route::get('/estudiantes/documentation', [EstudiantesController::class, 'updateForm'])->name('estudiantes.updateForm');
+    Route::post('/candidatos', [EstudiantesController::class, 'candidato'])->name('estudiantes.candidatos');
     Route::post('/estudiantes', [EstudiantesController::class, 'store'])->name('estudiantes.store');
     Route::get('/estudiantes/{matricula}/show', [EstudiantesController::class, 'show'])->name('estudiantes.show');
+    Route::get('/estudiantes/{matricula}/showC', [EstudiantesController::class, 'showC'])->name('estudiantes.showC');
     Route::get('/estudiantes/{matricula}/json', [EstudiantesController::class, 'showJson'])->name('estudiantes.showJson');
     Route::get('/estudiantes/{matricula}/editar', [EstudiantesController::class, 'edit'])->name('estudiantes.edit');
-    Route::patch('/estudiantes/{matricula}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
     Route::delete('/estudiantes/{matricula}/delete', [EstudiantesController::class, 'destroy'])->name('estudiantes.destroy');
     Route::patch('/estudiantes/{id}/restaurar', [EstudiantesController::class, 'restoreEstudiante'])->name('estudiantes.restore');
     Route::delete('/estudiantes/{id}/force', [EstudiantesController::class, 'forceDelete'])->name('estudiantes.forceDelete');
-
+    Route::patch('/estudiantes/{matricula}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
+    Route::patch('/estudiantes/{matricula}/dual', [EstudiantesController::class, 'updateDocDual'])->name('estudiantes.updateDocDual');
+    
     Route::get('/academicos', [MentorAcademicoController::class, 'index'])->name('academicos.index');
     Route::get('/academicos/crear', [MentorAcademicoController::class, 'create'])->name('academicos.create');
     Route::post('/academicos', [MentorAcademicoController::class, 'store'])->name('academicos.store');
@@ -42,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/academicos/{id}/json', [MentorAcademicoController::class, 'showJson'])->name('academicos.showJson');
     Route::get('/academicos/{id}/editar', [MentorAcademicoController::class, 'edit'])->name('academicos.edit');
     Route::patch('/academicos/{id}', [MentorAcademicoController::class, 'update'])->name('academicos.update');
+    Route::get('/academicos/{id}/showE', [MentorAcademicoController::class, 'showE'])->name('academicos.showE');
     Route::delete('/academicos/{id}/delete', [MentorAcademicoController::class, 'destroy'])->name('academicos.destroy');
     Route::patch('/academicos/{id}/restaurar', [MentorAcademicoController::class, 'restoreMentor'])->name('academicos.restore');
     Route::delete('/academicos/{id}/force', [MentorAcademicoController::class, 'forceDelete'])->name('academicos.forceDelete');
@@ -73,6 +78,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/carreras/crear', [CarreraController::class, 'create'])->name('carreras.create');
     Route::get('/carreras/{id}/editar', [CarreraController::class, 'edit'])->name('carreras.edit');
     Route::resource('estadisticas', EstadisticaController::class);
+
+    Route::get('/direcciones', [DireccionCarreraController::class, 'index'])->name('direcciones.index');
+    Route::post('/direcciones', [DireccionCarreraController::class, 'store'])->name('direcciones.store');
+    Route::get('/direcciones/{id}/json', [DireccionCarreraController::class, 'showJson'])->name('direcciones.showJson');
+    Route::get('/direcciones/{direccion}', [DireccionCarreraController::class, 'show'])->name('direcciones.show');
+    Route::patch('/direcciones/{direccion}', [DireccionCarreraController::class, 'update'])->name('direcciones.update');
+    Route::delete('/direcciones/{direccion}/delete', [DireccionCarreraController::class, 'destroy'])->name('direcciones.destroy');
+    Route::get('/direcciones/crear', [DireccionCarreraController::class, 'create'])->name('direcciones.create');
+    Route::get('/direcciones/{direccion}/editar', [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
+
+    Route::post('alerts', [MentorAcademicoController::class, 'alerts'])->name('alerts');
 });
 
 require __DIR__ . '/auth.php';

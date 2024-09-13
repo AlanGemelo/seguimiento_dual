@@ -24,6 +24,8 @@
     <!-- favicon -->    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}" />
+ {{-- Sweet Alert 11 --}}
+ <script src="{{ asset('assets/js/sweetAlert.js') }}"></script>
 
 
 </head>
@@ -131,6 +133,8 @@
     <script src="{{ asset('assets/vendors/progressbar.js/progressbar.min.js') }}"></script>
 
     <!-- End plugin js for this page -->
+
+   
     <!-- inject:js -->
     <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
     <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
@@ -158,6 +162,7 @@
         $(window).on('load', function() {
             $('#loading').hide();
         })
+        
     </script>
 
 </body>

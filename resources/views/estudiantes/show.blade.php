@@ -45,7 +45,7 @@
                                         <label for="empresa_id">Empresa</label>
                                         <input type="text" class="form-control form-control-lg" id="empresa_id"
                                                name="empresa_id"
-                                               value="{{ $estudiante->empresa->nombre }}" disabled>
+                                               value="{{ $estudiante->empresa->nombre  }}" disabled>
                                     </div>
                                     <div class="form-group">
                                         <label for="asesorin">Asesor Industrial</label>

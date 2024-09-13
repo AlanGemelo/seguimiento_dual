@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Carreras')
+@section('title', 'Programas de Educativo')
 
 @section('content')
     <div class="row">
@@ -29,7 +29,7 @@
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Carreras</h6>
+                                <h6 class="text-white text-capitalize ps-3">Lista De Programas Educativos</h6>
                                 @if (Auth::user()->rol_id === 1)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
@@ -47,7 +47,8 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Carrera</th>
+                                        <th>Direccion de Carrera</th>
+                                        <th>Programa Educativo</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
@@ -55,6 +56,7 @@
                                     @foreach ($carreras as $carrera)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ $carrera->direccion->name }}</td>
                                             <td>{{ $carrera->nombre }}</td>
                                             <td>
                                                 @if (Auth::user()->rol_id === 1)
@@ -63,6 +65,10 @@
                                                             onclick="deleteCarrera({{ $carrera->id }})">
                                                         <i class="mdi mdi-delete btn-icon-prepend"></i>
                                                     </button>
+                                                    <a href="{{ route('carreras.edit', $carrera->id) }}"
+                                                        class="btn btn-twitter">
+                                                        <i class="mdi mdi-account-edit btn-icon-prepend"></i>
+                                                    </a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -144,6 +150,7 @@
             </div>
         </div>
     </div>
+
     <script type="application/javascript">
         // hace una peticion ajax para obtener la informacion de la carrera
         function deleteCarrera(id) {
@@ -157,5 +164,6 @@
                 }
             })
         }
+
     </script>
 @endsection

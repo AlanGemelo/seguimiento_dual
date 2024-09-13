@@ -17,6 +17,8 @@ class Empresa extends Model
         'fin_conv',
         'convenioA',
         'convenioMA',
+        'email',
+        'telefono'
     ];
 
 }

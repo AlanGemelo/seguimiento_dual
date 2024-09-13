@@ -28,7 +28,7 @@
                                 </div>
                                   {{-- Cargar convenio academico --}}
                                   <div class="form-group">
-                                    <label for="convenioA">Convenio Academico <span class="text-danger">*</span></label>
+                                    <label for="convenioA">Convenio Especifico <span class="text-danger">*</span></label>
                                     <input autofocus type="file" class="form-control form-control-lg" id="convenioA"
                                            placeholder="convenioA" name="convenioA" value="{{ old('convenioA') }}">
                                     @error('convenioA')

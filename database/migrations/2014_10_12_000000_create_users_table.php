@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('password');
             $table->foreignId('rol_id')->constrained('roles');
             $table->foreignId('carrera_id')->constrained('carreras');
+            $table->foreignId('direccion_id')->constrained('direccion_carreras');
+
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

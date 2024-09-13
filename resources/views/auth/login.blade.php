@@ -8,7 +8,7 @@
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                             <div class="brand-logo">
-                                <img src="{{ asset('assets/images/logo.png')}}" alt="Cuervo Logo">
+                                <img src="{{ asset('assets/images/logo-utvt-removebg-preview.png')}}" alt="Cuervo Logo">
                             </div>
                             <h2 class="fw-light">Inicia Sesión</h2>
                             <form class="pt-3" action="{{ route('login') }}" method="post">

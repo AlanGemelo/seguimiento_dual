@@ -27,6 +27,12 @@
                                        placeholder="user@utvtol.edu.mx" name="email" value="{{ $mentor->email }}"
                                        disabled>
                             </div>
+                            <div class="form-group">
+                                <label for="direccion_id">Direccion de Carrera</label>
+                                <input type="text" class="form-control form-control-lg" id="direccion_id"
+                                       placeholder="user@utvtol.edu.mx" name="direccion_id" value="{{ $mentor->direccion->name }}"
+                                       disabled>
+                            </div>
                             @foreach($mentor->estudiantes as $estudiante)
                                 <div class="card card-rounded" style="width: 18rem; align-items: center; justify-content: center;">
                                     <div class="card-body">

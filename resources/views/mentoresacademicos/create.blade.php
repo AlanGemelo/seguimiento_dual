@@ -33,6 +33,21 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                     {{-- Seleccionar Docencia del estudiante--}}
+                                     <div class="form-group">
+                                        <label for="direccion_id" class="form-label">Direccion de Carrera <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-select" aria-label="Seleccionar Empresa"
+                                                name="direccion_id">
+                                            <option selected>Seleccione una opcion</option>
+                                            @foreach ($direcciones as $carrera)
+                                                <option value="{{ $carrera->id }}">{{ $carrera->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('direccion_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">Guardar</button>
                                 </div>

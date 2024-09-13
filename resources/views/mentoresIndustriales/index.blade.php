@@ -29,7 +29,7 @@
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores Industriales</h6>
+                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores de Unidad Economica</h6>
                                 @if(Auth::user()->rol_id === 1)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
@@ -47,6 +47,7 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Grado </th>
                                         <th>Nombre</th>
                                         <th>Empresa</th>
                                         <th>Acciones</th>
@@ -56,7 +57,8 @@
                                     @foreach($mentoresIndustriales as $mentor)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $mentor->titulo }} {{ $mentor->name }}</td>
+                                            <td>{{ $mentor->titulo }}</td>
+                                            <td> {{ $mentor->name }}</td>
                                             <td>{{ $mentor->empresa->nombre }}</td>
                                             <td>
                                                 <a href="{{ route('mentores.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"

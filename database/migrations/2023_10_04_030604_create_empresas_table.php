@@ -15,7 +15,9 @@ return new class extends Migration {
         Schema::create('empresas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
+            $table->string('email')->unique();
             $table->text('direccion');
+            $table->string('telefono', 10);
             $table->date('inicio_conv');
             $table->date('fin_conv');
             $table->text('ine')->nullable();

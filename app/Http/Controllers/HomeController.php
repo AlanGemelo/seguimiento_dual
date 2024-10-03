@@ -21,14 +21,19 @@ class HomeController extends Controller
         $estudiantes = Estudiantes::count();
         $mentores = MentorIndustrial::count();
         $auth = Auth::user();
-if($auth->rol_id == 1){
+if($auth->rol_id == 1 )
+{
     return view('dashboard', compact(['estudiantes','mentores']));
 }
 else if($auth->rol_id == 3){
     
     $estudiante = Estudiantes::where('matricula', strtok($auth->email,'@'))->first();
     return view('dashboardEstudiante',compact('estudiante'));
-}else{
+}
+else if($auth->rol_id == 4){    
+    return view('dashboard', compact(['estudiantes','mentores']));
+}
+else{
         return view('dashboard', compact(['estudiantes','mentores']));
 
     }

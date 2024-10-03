@@ -57,14 +57,14 @@
             <h1>Notificación de Vencimiento de Documentos</h1>
         </div>
         <div class="content">
-            <p>Estimado(a) {{ $nombreAlumno }},</p>
-            <p>Queremos informarle que los documentos de su alumno Juan De la Cruz están próximos a vencer. La fecha de vencimiento es: <strong>{{ $fechaVencimiento }}</strong>.</p>
-            <p>Por favor, asegúrese de actualizar los documentos antes de la fecha indicada para evitar cualquier inconveniente.</p>
+            <p>Estimado(a) {{ $academico }},</p>
+            <p>Queremos informarle que los documentos de su alumno: {{ $nombreAlumno  }} están próximos a vencer. La fecha de vencimiento es: <strong>{{ $fechaVencimiento }}</strong>.</p>
+            <p>Por favor, asegúrese de verificar la renovación de los convenios antes de la fecha indicada para evitar cualquier inconveniente.</p>
             <p>Puede acceder a su cuenta y actualizar los documentos haciendo clic en el siguiente enlace:</p>
             <a href="{{ $enlaceSistema }}" class="button">Acceder al Sistema</a>
         </div>
         <div class="footer">
-            <p>© {{ date('Y') }} Tu Empresa. Todos los derechos reservados.</p>
+            <p>© {{ date('Y') }} Universidad Tecnologica del Valle de Toluca. Todos los derechos reservados.</p>
         </div>
     </div>
 </body>

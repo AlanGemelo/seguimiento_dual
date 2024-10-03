@@ -13,17 +13,19 @@ class DocumentoVencimientoNotification extends Mailable
     public $nombreAlumno;
     public $fechaVencimiento;
     public $enlaceSistema;
+    public $academico;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($nombreAlumno, $fechaVencimiento, $enlaceSistema)
+    public function __construct($nombreAlumno,$academico, $fechaVencimiento, $enlaceSistema)
     {
         $this->nombreAlumno = $nombreAlumno;
         $this->fechaVencimiento = $fechaVencimiento;
         $this->enlaceSistema = $enlaceSistema;
+        $this->academico = $academico;
     }
 
     /**
@@ -34,11 +36,12 @@ class DocumentoVencimientoNotification extends Mailable
     public function build()
     {
         return $this->view('emails.documento_vencimiento')
-                    ->subject('Notificación de Vencimiento de Documentos')
+                    ->subject('Notificación de Vencimiento de Convenio')
                     ->with([
                         'nombreAlumno' => $this->nombreAlumno,
                         'fechaVencimiento' => $this->fechaVencimiento,
                         'enlaceSistema' => $this->enlaceSistema,
+                        'academico' => $this->academico,
                     ]);
     }
 }

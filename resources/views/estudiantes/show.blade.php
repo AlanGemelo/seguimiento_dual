@@ -19,7 +19,7 @@
                                                name="matricula" value="{{ $estudiante->matricula }}" disabled>
                                     </div>
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Nombre</label>
                                         <input type="text" class="form-control form-control-lg" id="name"
                                                placeholder="Juan Perez Hermenegildo" name="name"
                                                value="{{ $estudiante->name }}" disabled>
@@ -48,9 +48,27 @@
                                                value="{{ $estudiante->empresa->nombre  }}" disabled>
                                     </div>
                                     <div class="form-group">
+                                        <label for="empresa_id">Nombre del Proyecto</label>
+                                        <input type="text" class="form-control form-control-lg" id="empresa_id"
+                                               name="empresa_id"
+                                               value="{{ $estudiante->nombre_proyecto  }}" disabled>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="asesorin">Asesor Industrial</label>
                                         <input type="text" class="form-control form-control-lg" id="asesorin" name="asesorin"
                                                value="{{ $estudiante->asesorin->titulo }} {{ $estudiante->asesorin->name }}"
+                                               disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="asesorin">Direccion de Carrera</label>
+                                        <input type="text" class="form-control form-control-lg" id="asesorin" name="asesorin"
+                                               value="{{ $estudiante->direccion->name }} "
+                                               disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="asesorin">Programa Educativo</label>
+                                        <input type="text" class="form-control form-control-lg" id="asesorin" name="asesorin"
+                                               value="{{ $estudiante->carrera->nombre }} "
                                                disabled>
                                     </div>
                                 </div>
@@ -143,6 +161,85 @@
                                                     </a>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td>7</td>
+                                                <td>
+                                                    <h5 class="card-title">Formato A</h5>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ Storage::url($estudiante->formatoA) }}"
+                                                       class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>
+                                                    <h5 class="card-title">Formato B</h5>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ Storage::url($estudiante->formatoB) }}"
+                                                       class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>
+                                                    <h5 class="card-title">Formato C</h5>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ Storage::url($estudiante->formatoC) }}"
+                                                       class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>
+                                                    <h5 class="card-title">Formato 5.1</h5>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ Storage::url($estudiante->formato51) }}"
+                                                       class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>
+                                                    <h5 class="card-title">Formato 5.4</h5>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ Storage::url($estudiante->formato54) }}"
+                                                       class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>
+                                                    <h5 class="card-title">Formato 5.5</h5>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ Storage::url($estudiante->formato55) }}"
+                                                       class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            
                                             </tbody>
                                         </table>
                                     </div>

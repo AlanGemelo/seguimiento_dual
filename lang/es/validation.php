@@ -155,6 +155,7 @@ return [
     'attributes' => [
         'convenioA' => 'Convenio Academico',
         'convenioMA' => 'Convenio marco-empresa',
-        'asesorin_id' => 'Asesor Industrial'
+        'asesorin_id' => 'Asesor Industrial',
+        'password'=> 'Contraseña',
     ],
 ];

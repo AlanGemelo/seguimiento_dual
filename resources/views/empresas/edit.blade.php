@@ -21,6 +21,18 @@
 
                                 </div>
                                 <div class="form-group">
+                                    <label for="email">Email <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control form-control-lg" id="email"
+                                           placeholder="" name="email" value="{{ $empresa->email, old('email') }}">
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="telefono">Telefono <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control form-control-lg" id="telefono"
+                                           placeholder="7228634014" name="telefono" value="{{ $empresa->telefono, old('telefono') }}">
+
+                                </div>
+                                <div class="form-group">
                                     <label for="direccion">Direccion <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="direccion"
                                            name="direccion"

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ContactMail;
+use App\Mail\DocumentoVencimientoNotification;
+use App\Mail\EmpresaMailable;
+use App\Mail\UniMentorMailable;
 use App\Models\Carrera;
 use App\Models\DireccionCarrera;
 use App\Models\Empresa;
@@ -54,6 +57,11 @@ class EstudiantesController extends Controller
             ['id' => 0, 'name' => 'Si'],
             ['id' => 1, 'name' => 'No']
         ];
+
+        $hoy = Carbon::now();
+
+        // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
+     
         return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted','situation','becas','academico','candidatos'));
     }
 
@@ -296,7 +304,7 @@ class EstudiantesController extends Controller
 
         $id = Hashids::decode($id);
 
-        $estudiante = Estudiantes::with('direccion','empresa')->where('matricula', $id)->get();
+        $estudiante = Estudiantes::with('direccion','empresa','carrera')->where('matricula', $id)->get();
         $estudiante = $estudiante[0];
 
         return view('estudiantes.show', compact('estudiante'));

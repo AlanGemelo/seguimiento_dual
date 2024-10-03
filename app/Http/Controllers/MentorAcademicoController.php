@@ -39,7 +39,7 @@ $fechaVencimiento = '2024-09-25'; // Ejemplo de fecha de vencimiento
 $enlaceSistema = 'https://tusistema.com/login';
 
 // Envía el correo
-Mail::to('mago7410alan@gmail.com')->send(new DocumentoVencimientoNotification($nombreAlumno, $fechaVencimiento, $enlaceSistema));
+Mail::to('al222010229@utvtol.edu.mx')->send(new DocumentoVencimientoNotification($nombreAlumno, $fechaVencimiento, $fechaVencimiento,'google.com'));
 
 
         return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));

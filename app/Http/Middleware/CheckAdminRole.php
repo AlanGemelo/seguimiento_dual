@@ -18,7 +18,7 @@ class CheckAdminRole
             $user = Auth::user();
 
             // Verificar el tipo de usuario (por ejemplo, role_id == 1 para el administrador)
-            if ($user->rol_id == 1) {
+            if ($user->rol_id == 1||4) {
                 // Usuario administrador, continuar con la solicitud
                 return $next($request);
             }

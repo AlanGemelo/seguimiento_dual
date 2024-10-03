@@ -39,6 +39,9 @@ class DatabaseSeeder extends Seeder
         Roles::create([
             'name' => 'Estudiante'
         ]);
+        Roles::create([
+            'name' => 'Director'
+        ]);
 
         Carrera::create([
             'nombre' => 'admin',
@@ -55,9 +58,9 @@ class DatabaseSeeder extends Seeder
             'direccion_id' => 1,
         ]);
         User::create([
-            'titulo' => 'Admin',
-            'name'=> 'Admin Dual',
-            'email' => 'mago@gmail.com',
+            'titulo' => 'Ingeniero',
+            'name'=> 'Roberto Vinicio',
+            'email' => 'asesor@gmail.com',
             'password' => Hash::make('12345678'),
             'rol_id' => 2,
             'carrera_id' => 1,

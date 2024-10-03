@@ -17,8 +17,10 @@
                                 <div class="form-group">
                                     <label for="name">Nombre <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="name"
-                                           placeholder="" name="name" value="{{ $carrera->name, old('name') }}">
-
+                                           placeholder="" name="nombre" value="{{ $carrera->nombre, old('nombre') }}">
+                                           @error('nombre')
+                                           <div class="text-danger">{{ $message }}</div>
+                                           @enderror
                                 </div>
                                    {{-- Seleccionar Docencia del estudiante--}}
                                    <div class="form-group">
@@ -27,9 +29,11 @@
                                     <select class="form-select" aria-label="Seleccionar Empresa"
                                             name="direccion_id">
                                         <option selected>Seleccione una opcion</option>
-                                        @foreach ($direcciones as $carrera)
-                                            <option value="{{ $carrera->id }}">{{ $carrera->name }}</option>
-                                        @endforeach
+                                        @foreach ($direcciones as $direccion)
+                                        <option value="{{ $direccion->id }}"
+                                            {{ $carrera->direccion_id == $direccion->id ? "selected" : "" }}>
+                                            {{ $direccion->name }}
+                                        </option>                                        @endforeach
                                     </select>
                                     @error('direccion_id')
                                     <div class="text-danger">{{ $message }}</div>

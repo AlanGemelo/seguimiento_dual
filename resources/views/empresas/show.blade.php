@@ -19,6 +19,18 @@
 
                             </div>
                             <div class="form-group">
+                                <label for="email">Correo Electronico</label>
+                                <input type="text" class="form-control form-control-lg" id="email" placeholder=""
+                                    name="email" value="{{ $empresa->email }}" disabled>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Telefono</label>
+                                <input type="text" class="form-control form-control-lg" id="telefono" placeholder=""
+                                    name="telefono" value="{{ $empresa->telefono }}" disabled>
+
+                            </div>
+                            <div class="form-group">
                                 <label for="direccion">Direccion</label>
                                 <input type="text" class="form-control form-control-lg" id="direccion" name="direccion"
                                     value="{{ $empresa->direccion }}" disabled>

@@ -37,19 +37,17 @@ class CarreraController extends Controller
         return redirect()->route('carreras.index',compact('direcciones'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Carrera $id)
     {
         $request->validate([
             'nombre' => ['required', 'min:2', 'max:255', 'string'],
             'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id']
-
+            
         ]);
+        
+        // $id = Hashids::decode($id);
 
-        $id = Hashids::decode($id);
-        $carreras = Carrera::find($id);
-        $carreras = $carreras[$id];
-
-        $carreras->update($request->all());
+        $id->update($request->all());
 
         return redirect()->route('carreras.index')->with('status', 'Carrera Actualizada');
     }
@@ -88,8 +86,9 @@ class CarreraController extends Controller
 
     public function edit(Carrera $id)
     {
-        dd($id);    
-
-        return view('carrera.edit', compact('carrera'));
+$id->load('direccion');
+$carrera = $id;
+$direcciones = DireccionCarrera::all();
+        return view('carrera.edit', compact('carrera','direcciones'));
     }
 }

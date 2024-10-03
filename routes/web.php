@@ -89,6 +89,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/direcciones/{direccion}/editar', [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
 
     Route::post('alerts', [MentorAcademicoController::class, 'alerts'])->name('alerts');
+    Route::resource('directores', DirectorController::class);
 });
 
 require __DIR__ . '/auth.php';

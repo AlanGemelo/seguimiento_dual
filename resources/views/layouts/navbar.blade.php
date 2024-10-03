@@ -16,7 +16,7 @@
     </li>
         
     @endif
-        @if(Auth::user()->rol_id === 1)
+        @if(Auth::user()->rol_id === 1|| Auth::user()->rol_id === 4)
         <li class="nav-item {{ request()->routeIs('academicos.*') ? 'active' : ''}}">
             <a class="nav-link" href="{{ route('academicos.index') }}">
                 <i class="menu-icon mdi mdi-card-text-outline"></i>
@@ -39,36 +39,66 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item {{ request()->routeIs('direcciones.*') ? 'active' : '' , request()->routeIs('mentores.*') ? 'active' : ''}}">
-            <a class="nav-link" data-bs-toggle="collapse" href="#chartsD" aria-expanded="false"
-               aria-controls="chartsD">
-               <i class="menu-icon mdi mdi-package"></i>
-               <span class="menu-title">Direccion de Carrera</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="chartsD">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item {{ request()->routeIs('direcciones.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('direcciones.index') }}">Direccion Carrera</a>
-                    </li>
-                    <li class="nav-item {{ request()->routeIs('carreras.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('carreras.index') }}">Programa Educativo</a>
-                    </li>
-                </ul>
-            </div>
-            </li>
+       @if(Auth::user()->rol_id === 1)
+       <li class="nav-item {{ request()->routeIs('direcciones.*') ? 'active' : '' , request()->routeIs('mentores.*') ? 'active' : ''}}">
+        <a class="nav-link" data-bs-toggle="collapse" href="#chartsD" aria-expanded="false"
+           aria-controls="chartsD">
+           <i class="menu-icon mdi mdi-package"></i>
+           <span class="menu-title">Direccion de Carrera</span>
+            <i class="menu-arrow"></i>
+        </a>
+       
+        <div class="collapse" id="chartsD">
+            <ul class="nav flex-column sub-menu">
+                <li class="nav-item {{ request()->routeIs('direcciones.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('direcciones.index') }}">Direccion Carrera</a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('directores.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('directores.index') }}">Director de Carrera</a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('carreras.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('carreras.index') }}">Programa Educativo</a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item {{ request()->routeIs('estadisticas.*') ? 'active' : ''}}">
+        <a class="nav-link" href="{{ route('estadisticas.index') }}">
+            <i class="menu-icon mdi mdi-chart-line"></i>
+            <span class="menu-title">Estadisticas</span>
+        </a>
+    </li>
+    @endif
         
-            {{--
-          <li class="nav-item {{ request()->routeIs('carreras.*') ? 'active' : ''}}">
-                <a class="nav-link" href="{{ route('carreras.index') }}">
-                    <span class="menu-title">Carreras</span>
+       
+            @endif
+            <divider/>
+            <hr>
+            <li class="nav-item {{ request()->routeIs('profile.*') ? 'active' : '' , request()->routeIs('profile.*') ? 'active' : ''}}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#chartsProfile" aria-expanded="false"
+                   aria-controls="chartsProfile">
+                   <i class="menu-icon mdi mdi-account"></i>
+                   <span class="menu-title">Mi Perfil</span>
+                    <i class="menu-arrow"></i>
                 </a>
-            </li> --}}
-            <li class="nav-item {{ request()->routeIs('estadisticas.*') ? 'active' : ''}}">
-                <a class="nav-link" href="{{ route('estadisticas.index') }}">
-                    <i class="menu-icon mdi mdi-chart-line"></i>
-                    <span class="menu-title">Estadisticas</span>
-                </a>
-            </li>
-        @endif
+                <div class="collapse" id="chartsProfile">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item {{ request()->routeIs('profile.edit') ? 'active' : ''}}">
+                            <a class="nav-link" href="{{ route('profile.edit') }}">
+                                <i class="menu-icon mdi mdi-pencil"></i>
+                                Editar Perfil
+                            </a>
+                        </li>
+                        <li class="nav-item" style="display: inline-block">
+                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-link').submit();">
+                                <i class="menu-icon mdi mdi-power"></i>
+                                Cerrar Sesión
+                            </a>
+                            <form id="logout-link" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                </li>
+        
    
     </ul>
 </nav>

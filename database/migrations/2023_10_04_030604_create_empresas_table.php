@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->date('inicio_conv');
             $table->date('fin_conv');
             $table->text('ine')->nullable();
+            $table->foreignId('direccion_id')->constrained('direccion_carreras');
             $table->text('convenioA')->nullable();
             $table->text('convenioMA')->nullable();
 

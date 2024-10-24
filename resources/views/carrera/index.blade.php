@@ -30,7 +30,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">Lista De Programas Educativos</h6>
-                                @if (Auth::user()->rol_id === 1)
+                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
                                         <a href="{{route('carreras.create')}}" class="btn btn-primary"
@@ -54,12 +54,12 @@
                                     </thead>
                                     <tbody>
                                     @foreach ($carreras as $carrera)
-                                        <tr>
+                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $carrera->direccion->name }}</td>
                                             <td>{{ $carrera->nombre }}</td>
                                             <td>
-                                                @if (Auth::user()->rol_id === 1)
+                                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                     <button class="btn btn-danger" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteCarrera({{ $carrera->id }})">

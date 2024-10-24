@@ -18,7 +18,7 @@ class DireccionCarreraPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        
     }
 
     /**

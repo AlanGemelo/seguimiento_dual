@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('directors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nombre');
             $table->string('email');
             $table->foreignId('direccion_id')->constrained('direccion_carreras');
             $table->timestamps();

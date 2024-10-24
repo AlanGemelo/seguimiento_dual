@@ -7,10 +7,13 @@ use App\Http\Requests\StoreDirectorRequest;
 use App\Http\Requests\UpdateDirectorRequest;
 use App\Models\DireccionCarrera;
 use App\Models\User;
-use Illuminate\Http\Client\Request;
+use Vinkla\Hashids\Facades\Hashids;
 
 class DirectorController extends Controller
 {
+    public function __construct(){
+    $this->middleware('admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -61,9 +64,10 @@ class DirectorController extends Controller
      * @param  \App\Models\Director  $director
      * @return \Illuminate\Http\Response
      */
-    public function show(Director $directore)
+    public function show( $directore)
     {
-        return $directore;
+        $directore = Hashids::decode($directore);
+        $directore = Director::findOrFail($directore)->first();
         $directore->load('direccion');
         return view('directores.show', ['director' => $directore]);
     }
@@ -74,9 +78,12 @@ class DirectorController extends Controller
      * @param  \App\Models\Director  $director
      * @return \Illuminate\Http\Response
      */
-    public function edit(Director $directore)
+    public function edit( $directore)
     {
+        $directore = Hashids::decode($directore);
+        $directore = Director::findOrFail($directore)->first(); 
         $direcciones = DireccionCarrera::all();
+        
          $directore->load('direccion');
         return view('directores.edit', ['direccion' => $directore, 'direcciones' => $direcciones]);
     }

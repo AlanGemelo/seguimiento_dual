@@ -2,6 +2,7 @@
 @section("title", "Dashboard")
 @section("content")
     <div class="row">
+       
         <div class="col-12 grid-margin">
             @if (session("status"))
                 <div class="alert alert-success alert-dismissible text-dark" role="alert">
@@ -68,8 +69,8 @@
                                         Documento</button>
                                 </div>
                             </div>
-                            <div class="mt-3  bg-black">
-                                <button hidden class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn "
+                            <div class="mt-3 d-flex justify-content-center">
+                                <button hidden class="btn btn-lg btn-block btn-primary btn-lg font-weight-medium font-weight-medium w auth-form-btn "
                                     id="guardar" type="submit">Guardar
                                 </button>
                             </div>

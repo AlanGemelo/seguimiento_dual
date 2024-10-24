@@ -7,63 +7,48 @@
                 <div class="alert alert-success alert-dismissible text-dark" role="alert">
                     <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
                         {{ session('status') }}.</span>
-                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                   
                 </div>
             @endif
-      
-            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+            @if (session('error'))
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>!Por favooor!!!</strong> Selecciona una direccion para continuar.
+           
+              </div>
+              
+            @endif
+          
+        
+        
+            <div class="container my-5">
                 <div class="row">
-                    <div class="col-lg-4 d-flex flex-column">
-                        <div class="row flex-grow">
-                            <div class="col-12 grid-margin stretch-card">
+                    @foreach($direcciones as $direccion)
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <a href="{{ route('direcciones.select', $direccion->id) }}" class="card-link" style="text-decoration: none">
 
-                                <div class="card card-rounded">
-                                    <div class="card-body">
-                                        <h4 class="text-secondary">Mentores Registrados: {{ $mentores }}</h4>
-                                        <br>
-                                        <a type="button" class="btn btn-success"
-                                            href="{{ route('mentores.create') }}">Crear Mentor <i
-                                                class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
-                                    </div>
+                        <div class="card shadow card-hover animate__animated animate__flipInY" style="animation-delay: {{ $loop->index * 0.5 }}s; height: 100%;">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <!-- Ícono -->
+                                <div class="d-flex justify-content-center mb-3">
+                                    <i class="mdi mdi-school btn-icon-prepend" style="font-size: 2rem;"></i>
+                                </div>
+                                <!-- Nombre de la dirección -->
+                                <h5 class="card-title text-center">{{ $direccion->name }}</h5>
+                                <!-- Programas educativos -->
+                                <p class="card-text text-muted text-center">
+                                    Programas educativos disponibles: {{ $direccion->programas->count() }} <!-- Ejemplo -->
+                                </p>
+                                <!-- Botón interactivo -->
+                                <div class="d-flex justify-content-center mt-auto">
+                                    <a href="{{ route('carreras.index', $direccion->id) }}" class="btn btn-primary btn-gradient">
+                                        Ver Programas
+                                    </a>
                                 </div>
                             </div>
                         </div>
+                        </a>
                     </div>
-            @endif
-
-            <div class="col-lg-4 d-flex flex-column ">
-                <div class="row flex-grow">
-                    <div class="col-12 grid-margin stretch-card">
-                        <div class="card card-rounded">
-                            <div class="card-body">
-                                <h4 class="text-secondary">Estudiantes Registrados: {{ $estudiantes }}</h4>
-                                <br>
-                                <a type="button" class="btn btn-success" href="{{ route('estudiantes.create') }}">Crear
-                                    Estudiante <i
-                                        class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 d-flex flex-column ">
-                <div class="row flex-grow">
-                    <div class="col-12 grid-margin stretch-card">
-                        <div class="card card-rounded">
-                            <div class="card-body">
-                                <h4 class="text-secondary">Documentacion por vencer</h4>
-                                <br>
-                                <a type="button" class="btn btn-success" href="{{ route('estudiantes.index') }}">
-                                    Actualizar Documentacion Estudiante <i
-                                        class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
-                            </div>
-                        </div>
-
-                    </div>
+                    @endforeach
                 </div>
             </div>
       
@@ -110,4 +95,4 @@
     </div>
     </div>
 @endsection
- 
+

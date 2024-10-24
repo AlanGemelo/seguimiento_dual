@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Carrera;
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 use App\Models\Estudiantes;
 use Carbon\Carbon;
@@ -17,7 +17,27 @@ class EstadisticaController extends Controller
      */
     public function index()
     {
-        $fecha = Carbon::now()->startOfDay();
+
+        // Consultas para la grafica de becas
+        $estudiantesS = Estudiantes::where('beca', 1)->get()->count();
+        $estudiantesC = Estudiantes::where('beca', 0)->get()->count();
+        // Consultas Grafica de Estudiantes
+
+$activos = Estudiantes::where('activo',1)->get()->count();
+$inactivos = Estudiantes::where('activo',0)->get()->count();
+$baja = Estudiantes::onlyTrashed()->count(); 
+
+
+// Consulta para la grafica de carreras
+        $labelsCarrera = Carrera::where('direccion_id', session('direccion')->id)->get('nombre')->pluck('nombre');
+        $carreras = Carrera::where('direccion_id', session('direccion')->id)
+            ->withCount('estudiantes')
+            ->pluck('estudiantes_count');
+
+        $labelsTutor = Carrera::where('direccion_id', session('direccion')->id)->get('nombre')->pluck('nombre');
+
+      
+                $fecha = Carbon::now()->startOfDay();
         $fechaUnMesAntes = $fecha->copy()->subMonth(1)->startOfDay(); // Obtener la fecha actual más un mes
         $estudiantes = Estudiantes::whereBetween('fin_dual', [$fechaUnMesAntes,$fecha])->get();
 // return response()->json([$fecha,$fechaUnMesAntes,$estudiantes ]);
@@ -27,17 +47,34 @@ class EstadisticaController extends Controller
               ->dataset('Sample', 'bar', [65, 59, 80, 81, 56, 55, 40]);
         
 
-// Configurar opciones adicionales del gráfico
 
-$activos = Estudiantes::where('activo',1)->get()->count();
-$inactivos = Estudiantes::where('activo',0)->get()->count();
-$baja = Estudiantes::onlyTrashed()->count();
+// CReacion de la grafica
 $chart1 = new Chart();
-$chart1->labels(['activos','inactivos','Eliminados'])
+$carreraGraphic = new Chart();
+$tutorGraphic = new Chart();
+$becaGraphic = new Chart();
+
+// Labels Graficas
+$chart1->labels(['activos','Candidatos','Eliminados'])
 ->dataset('Estudiantes', 'pie', [$activos,$inactivos,$baja])
 ->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
 ->color('#000'); // Establece el color del texto en blanco
-// Renderizar el gráfico
+
+$becaGraphic->labels(['Becados','Sin beca'])
+->dataset('Estudiantes', 'pie', [$estudiantesC,$estudiantesS])
+->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
+->color('#000'); // Establece el color del texto en blanco
+$carreraGraphic->labels($labelsCarrera)->dataset('Estudiantes por Carrera', 'pie', $carreras)
+->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
+->color('#000'); // Establece el color del texto en blanco
+$tutorGraphic->labels($labelsCarrera)->dataset('Estudiantes por Carrera', 'pie', $carreras)
+->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
+->color('#000'); // Establece el color del texto en blanco
+
+
+// Options el gráfico
+
+
 $chart1->options([
     'scales' => [
         'yAxes' => [
@@ -50,18 +87,7 @@ $chart1->options([
     ],
 ]);
 
-        // return $estudiantes;
-        // return response()->json([
-        //     'fecha' => $fecha,
-        //     'fechaUnMesAntes' => $fechaUnMesAntes,
-        // ]);
-        $estudiantesS = Estudiantes::where('beca', 1)->get()->count();
-        $estudiantesC = Estudiantes::where('beca', 0)->get()->count();
-        $becaGraphic = new Chart();
-$becaGraphic->labels(['Becados','Sin beca'])
-->dataset('Estudiantes', 'pie', [$estudiantesC,$estudiantesS])
-->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
-->color('#000'); // Establece el color del texto en blanco
+
 // Renderizar el gráfico
 $becaGraphic->options([
     'scales' => [
@@ -75,7 +101,7 @@ $becaGraphic->options([
     ],
 ]);
 
-        return view('Estadistica.index', compact(['chart','chart1','becaGraphic']));
+        return view('Estadistica.index', compact(['chart','chart1','becaGraphic','carreraGraphic']));
     }
 
     /**

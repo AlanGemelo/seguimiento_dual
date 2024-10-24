@@ -54,23 +54,23 @@
                                     </thead>
                                     <tbody>
                                     @foreach ($directores as $carrera)
-                                        <tr>
+                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $carrera->nombre }}</td>
                                             <td>{{ $carrera->email }}</td>
                                             <td>{{ $carrera->direccion->name }}</td>
                                             <td>
-                                                <a href="{{ route('directores.show', $carrera->id) }}"
+                                                <a href="{{ route('directores.show', Vinkla\Hashids\Facades\Hashids::encode($carrera->id)) }}"
                                                     class="btn btn-facebook">
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a>
-                                                @if (Auth::user()->rol_id === 1)
+                                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                     <button class="btn btn-danger" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteDireccion({{ $carrera->id }})">
                                                         <i class="mdi mdi-delete btn-icon-prepend"></i>
                                                     </button>
-                                                    <a href="{{ route('directores.edit', $carrera->id) }}"
+                                                    <a href="{{ route('directores.edit', Vinkla\Hashids\Facades\Hashids::encode($carrera->id)) }}"
                                                         class="btn btn-twitter">
                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                     </a>

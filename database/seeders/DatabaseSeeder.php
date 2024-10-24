@@ -44,13 +44,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Carrera::create([
-            'nombre' => 'admin',
+            'nombre' => 'IDGS Desarrollo de Software',
             'direccion_id' => 1,
         ]);
 
         User::create([
             'titulo' => 'Admin',
-            'name'=> 'Admin Dual',
+            'name'=> 'Super Admin',
             'email' => 'admin@seguimiento.utvt.com',
             'password' => Hash::make('12345678'),
             'rol_id' => 1,
@@ -67,13 +67,14 @@ class DatabaseSeeder extends Seeder
             'direccion_id' => 1,
         ]);
         User::create([
-            'titulo' => 'Estudiante',
-            'name'=> 'Sofia Pedraza',
-            'email' => 'sofia@gmail.com',
+            'titulo' => 'Ingeniero Director',
+            'name'=> 'CArlos Milan',
+            'email' => 'charly@gmail.com',
             'password' => Hash::make('12345678'),
-            'rol_id' => 3,
+            'rol_id' => 4,
             'carrera_id' => 1,
             'direccion_id' => 1,
         ]);
+     
     }
 }

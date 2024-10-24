@@ -31,7 +31,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">Lista De Mentores Academicos</h6>
-                                @if(Auth::user()->rol_id === 1)
+                                @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
                                         <a href="{{route('academicos.create')}}" class="btn btn-primary"
@@ -56,7 +56,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($mentores as $mentor)
-                                        <tr>
+                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $mentor->name }}</td>
                                             <td>{{ $mentor->email }}</td>
@@ -70,7 +70,7 @@
                                                    class="btn btn-facebook">
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a> --}}
-                                                @if(Auth::user()->rol_id === 1)
+                                                @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                     <a href="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
                                                        class="btn btn-twitter">
                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
@@ -125,7 +125,7 @@
             </div>
         </div>
         @if($mentoresDeleted->count() !== 0)
-            @if(Auth::user()->rol_id === 1)
+            @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -147,7 +147,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($mentoresDeleted as $mentorDeletd)
-                                        <tr>
+                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $mentorDeletd->titulo }}</td>
                                             <td>{{ $mentorDeletd->name }}</td>

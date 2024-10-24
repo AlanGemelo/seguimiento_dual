@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 @section('title','Login')
 @section('content')
-    <div class="container-scroller">
+    <div class="animate__animated animate__jello animate__infinite  container-scroller" style="background-color: aqua;z-index: 100;border-radius: 50px" >
         <div class="container-fluid page-body-wrapper full-page-wrapper">
             <div class="content-wrapper d-flex align-items-center auth px-0">
                 <div class="row w-100 mx-0">
@@ -11,9 +11,10 @@
                                 <img src="{{ asset('assets/images/logo-utvt-removebg-preview.png')}}" alt="Cuervo Logo">
                             </div>
                             <h2 class="fw-light">Inicia Sesión</h2>
+                            
                             <form class="pt-3" action="{{ route('login') }}" method="post">
                                 @csrf
-                                <div class="form-group">
+                                <div class="form-group animate__animated animate__bounce animate__infinite " >
                                     <label for="email">Correo Electronico</label>
                                     <input type="email" class="form-control form-control-lg" id="email" placeholder="user@utvtol.edu.mx" name="email" value="{{ old('email') }}">
                                     @error('email')

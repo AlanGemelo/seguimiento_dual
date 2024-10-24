@@ -8,7 +8,7 @@
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                             <div class="brand-logo">
-                                <img src="{{ asset('assets/plagio/img/logos/logo.png')}}" alt="Cuervo Logo">
+                                <img src="{{ asset('assets/images/logo.png')}}" alt="Cuervo Logo">
                             </div>
                             <h2 class="fw-light">Recuperar Cuenta</h2>
                             <form method="POST" action="{{ route('password.store') }}">
@@ -37,7 +37,7 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="mt-3">
+                                <div class="mt-3 d-flex justify-content-center">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">Recuperar Cuenta</button>
                                 </div>
                             </form>

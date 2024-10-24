@@ -30,7 +30,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">Lista De Empresas</h6>
-                                @if(Auth::user()->rol_id === 1)
+                                @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
                                         <a href="{{route('empresas.create')}}" class="btn btn-primary"
@@ -55,7 +55,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($empresas as $empresa)
-                                        <tr>
+                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $empresa->nombre }}</td>
                                             <td>{{ $empresa->direccion }}</td>
@@ -65,7 +65,7 @@
                                                    class="btn btn-facebook">
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a>
-                                                @if(Auth::user()->rol_id === 1)
+                                                @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                     <a href="{{ route('empresas.edit', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" class="btn btn-twitter">
                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                     </a>

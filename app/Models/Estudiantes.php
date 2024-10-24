@@ -57,6 +57,7 @@ class Estudiantes extends Model
         'formato54',
         'formato55',
         'direccion_id',
+        'user_id',
     ];
 
     public function empresa(): HasOne

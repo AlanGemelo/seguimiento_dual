@@ -19,11 +19,15 @@ class Empresa extends Model
         'convenioA',
         'convenioMA',
         'email',
-        'telefono'
+        'telefono',
+        'direccion_id'
     ];
     public function asesorin(): BelongsTo
     {
         return $this->belongsTo(MentorIndustrial::class, 'id', 'empresa_id');
+    }
+    public function direccion(){
+        return $this->belongsTo(DireccionCarrera::class, 'direccion_id', 'id');        
     }
  
 

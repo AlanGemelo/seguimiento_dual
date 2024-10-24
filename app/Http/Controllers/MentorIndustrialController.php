@@ -13,11 +13,17 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class MentorIndustrialController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 
     public function index()
     {
-        $mentoresIndustriales = MentorIndustrial::all();
-
+        
+$mentoresIndustriales = MentorIndustrial::with(['empresa'])->whereHas('empresa',function ($query){
+            $query->where('direccion_id',session('direccion')->id);
+})->get();
         return view('mentoresIndustriales.index', compact('mentoresIndustriales'));
     }
 

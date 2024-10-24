@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DireccionCarrera;
 use App\Models\Empresa;
 use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Vinkla\Hashids\Facades\Hashids;
 
 class EmpresaController extends Controller
@@ -16,21 +18,26 @@ class EmpresaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('admin')->except('showJson');
+        $this->middleware('admin');
     }
+ 
 
     public function index()
     {
-        $empresas = Empresa::all();
+        $empresas = Empresa::where('direccion_id',session('direccion')->id)->get();
+        Empresa::with('direccion')->get();
 
         return view('empresas.index', compact('empresas'));
     }
 
     public function create()
     {
-        $mentores = MentorIndustrial::all();
+        $mentores = MentorIndustrial::with(['empresa'=>function($query){
+            $query->where('direccion_id',session('direccion')->id);
+        }])->get();
+        $direcciones = DireccionCarrera::all();
 
-        return view('empresas.create', compact('mentores'));
+        return view('empresas.create', compact('mentores','direcciones'));
     }
 
     public function store(Request $request)
@@ -64,12 +71,13 @@ class EmpresaController extends Controller
             'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
             'email' => $request->email,
             'telefono' => $request->telefono,
+            'direccion_id' => session('direccion')->id ?? Auth::user()->direccion_id,
         ]);
 
         return redirect()->route('empresas.index')->with('status', 'Empresa creada');
     }
 
-    public function show($id)
+    public function show( $id)
     {
         $id = Hashids::decode($id);
         $empresa = Empresa::find($id);
@@ -83,10 +91,10 @@ class EmpresaController extends Controller
         $id = Hashids::decode($id);
         $empresa = Empresa::find($id);
         $empresa = $empresa[0];
+        $direcciones = DireccionCarrera::all();
 
-        $estudiantes = Estudiantes::all();
 
-        return view('empresas.edit', compact('empresa', 'estudiantes'));
+        return view('empresas.edit', compact('empresa','direcciones'));
     }
 
     public function update(Request $request, $id)

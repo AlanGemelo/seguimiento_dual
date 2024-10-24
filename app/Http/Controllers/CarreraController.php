@@ -7,6 +7,7 @@ use App\Models\DireccionCarrera;
 use App\Models\Empresa;
 use App\Models\Estudiantes;
 use Google\Cloud\Core\Batch\Retry;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -15,10 +16,13 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class CarreraController extends Controller
 {
+    public function __construct(){
+        $this->middleware('admin');
+    }
 
     public function index()
     {
-        $carreras = Carrera::with('direccion')->where('id', '<>', 1)->get();
+        $carreras = Carrera::with('direccion')->where('direccion_id',session('direccion')->id)->get();
         return view('carrera.index', compact('carreras'));
     }
 
@@ -77,6 +81,13 @@ class CarreraController extends Controller
 
         return response()->json($carrera);
     }
+    public function show(Carrera $carrera): View
+    {
+        $direcciones = DireccionCarrera::all();
+        return view('carrera.show', compact('carrera','direcciones'));
+
+        return response()->json($carrera);
+    }
 
     public function create()
     {
@@ -88,7 +99,7 @@ class CarreraController extends Controller
     {
 $id->load('direccion');
 $carrera = $id;
-$direcciones = DireccionCarrera::all();
+$direcciones = DireccionCarrera::get();
         return view('carrera.edit', compact('carrera','direcciones'));
     }
 }

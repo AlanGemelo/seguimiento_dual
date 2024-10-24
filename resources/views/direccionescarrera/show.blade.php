@@ -22,16 +22,26 @@
                                        placeholder="user@utvtol.edu.mx" name="email" value="{{ $direccion->email }}"
                                        disabled>
                             </div>
+                            <div class="form-group">
+                                <label for="email">Director de Carrera</label>
+                                <input type="email" class="form-control form-control-lg" id="email"
+                                       {{-- placeholder="user@utvtol.edu.mx" name="email" value="{{ $direccion->director->name }}" --}}
+                                       disabled>
+                            </div>
                           
-                            @foreach($direccion->programas as $estudiante)
-                                <div class="card card-rounded" style="width: 18rem; align-items: center; justify-content: center;">
-                                    <div class="card-body">
-                                        <h4 class="text-secondary">Programa Educativo: {{ $estudiante->nombre }}</h4>
-                                        <br>
-                                        <a type="button" class="btn btn-success" href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}">Ver Estudiante  <i class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
+                            <div    class="row">
+                                @foreach($direccion->programas as $programa)
+                                <div    class="col-md-4 mb-4">
+                                    <div    class="card h-100 shadow-lg`">
+                                        <div    class="card-body d-flex flex-column justify-content-between">
+                                            <h5 data-aos="fade-up" class="card-title">{{ $programa->nombre }}</h5>
+                                       
+                                            <a href="{{ route('carreras.show', $programa->id) }}"   class="btn btn-primary mt-auto">Ver detalles</a>
+                                        </div>
                                     </div>
                                 </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>

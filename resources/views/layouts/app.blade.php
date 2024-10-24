@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@yield('title')&nbsp;|&nbsp;{{ config('app.name') }}</title>
     <!-- plugins:css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
@@ -21,23 +23,26 @@
     <link rel="stylesheet" href="{{ asset('assets/js/select.dataTables.min.css') }}">
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     <!-- favicon -->    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}" />
  {{-- Sweet Alert 11 --}}
- <script src="{{ asset('assets/js/sweetAlert.js') }}"></script>
 
 
 </head>
 
-<body>
+<body >
     <!-- container-scroller -->
     <div class="container-scroller">
+        
         @include('layouts.navigation')
         <div class="container-fluid page-body-wrapper">
             @include('layouts.navbar')
             <div class="main-panel">
-                <div class="content-wrapper">
+                <div class="content-wrapper  ">
                     <div class="semipolar-spinner" :style="spinnerStyle" id="loading">
                         <div class="ring"></div>
                         <div class="ring"></div>
@@ -46,6 +51,7 @@
                         <div class="ring"></div>
                     </div>
                     @yield('content')
+
                 </div>
                 <style>
                     .semipolar-spinner,
@@ -63,8 +69,8 @@
                         border-radius: 50%;
                         position: absolute;
                         border: calc(65px * 0.05) solid transparent;
-                        border-top-color: #ff1d5e;
-                        border-left-color: #ff1d5e;
+                        border-top-color: #37ff1d;
+                        border-left-color: #30c50e;
                         animation: semipolar-spinner-animation 2s infinite;
                     }
 
@@ -133,6 +139,7 @@
     <script src="{{ asset('assets/vendors/progressbar.js/progressbar.min.js') }}"></script>
 
     <!-- End plugin js for this page -->
+    
 
    
     <!-- inject:js -->
@@ -150,6 +157,8 @@
     <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/tooltips.js') }}"></script>
+ <script src="{{ asset('assets/js/sweetAlert.js') }}"></script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
@@ -161,7 +170,10 @@
     <script>
         $(window).on('load', function() {
             $('#loading').hide();
-        })
+        });
+                
+        
+
         
     </script>
 

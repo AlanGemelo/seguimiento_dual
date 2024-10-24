@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('fecha_na');
             $table->boolean('activo')->default(false);
             $table->string('cuatrimestre');
+
             $table->text('nombre_proyecto')->nullable()->default(NULL);
             $table->date('inicio_dual')->nullable()->default(NULL);
             $table->date('inicio')->nullable()->default(NULL);
@@ -42,9 +43,10 @@ return new class extends Migration
             $table->text('plan_form')->nullable()->default(NULL);
             $table->text('historial_academico')->nullable()->default(NULL);
             $table->text('perfil_ingles')->nullable()->default(NULL);
-            $table->foreignId('empresa_id')->constrained('empresas')->nullable()->default(NULL);
-            $table->foreignId('academico_id')->constrained('users')->nullable()->default(NULL);
-            $table->foreignId('asesorin_id')->constrained('mentor_industrials')->nullable()->default(NULL);
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('empresa_id')->nullable()->constrained('empresas')->default(NULL);
+            $table->foreignId('academico_id')->nullable()->constrained('users')->default(NULL);
+            $table->foreignId('asesorin_id')->nullable()->constrained('mentor_industrials')->default(NULL);
             $table->foreignId('carrera_id')->constrained('carreras');
             $table->foreignId('direccion_id')->constrained('direccion_carreras');
             $table->softDeletes();

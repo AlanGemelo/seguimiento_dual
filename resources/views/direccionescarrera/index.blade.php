@@ -30,7 +30,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">Lista de Direcciones de Carrera</h6>
-                                @if (Auth::user()->rol_id === 1)
+                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
                                         <a href="{{route('direcciones.create')}}" class="btn btn-primary"
@@ -54,7 +54,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach ($direcciones as $carrera)
-                                        <tr>
+                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $carrera->name }}</td>
                                             <td>{{ $carrera->email }}</td>
@@ -63,7 +63,7 @@
                                                     class="btn btn-facebook">
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a>
-                                                @if (Auth::user()->rol_id === 1)
+                                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                     <button class="btn btn-danger" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteDireccion({{ $carrera->id }})">

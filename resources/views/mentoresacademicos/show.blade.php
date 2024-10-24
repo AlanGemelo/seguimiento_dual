@@ -32,20 +32,21 @@
                                     placeholder="user@utvtol.edu.mx" name="direccion_id"
                                     value="{{ $mentor->direccion->name }}" disabled>
                             </div>
-                            @foreach ($mentor->estudiantes as $estudiante)
-                                <div class="card card-rounded bg-gray-400 sm:bg-red-500 md:bg-green-500 lg:bg-blue-500"
-"
-                                    style="width: 18rem; align-items: center; justify-content: center; ">
-                                    <div class="card-body">
-                                        <h4 class="text-secondary">Estudiante: {{ $estudiante->name }}</h4>
-                                        <br>
-                                        <a type="button" class="btn btn-success"
-                                            href="{{ route("estudiantes.show", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}">Ver
-                                            Estudiante <i
-                                                class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
+
+                            <div    class="row">
+                                @foreach($mentor->estudiantes as $estudiante)
+                                <div    class="col-md-4 mb-4">
+                                    <div    class="card h-100 shadow-lg`">
+                                        <div    class="card-body d-flex flex-column justify-content-between">
+                                            <h5 class="card-title align-center">{{ $estudiante->name }}</h5>
+                                       
+                                            <a href="{{ route('estudiantes.show',Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"   class="btn btn-primary mt-auto">Ver detalles</a>
+                                        </div>
                                     </div>
                                 </div>
-                            @endforeach
+                                @endforeach
+                            </div>
+                     
                         </div>
                     </div>
                 </div>

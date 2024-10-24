@@ -30,16 +30,16 @@ class MentorAcademicoController extends Controller
 
     public function index()
     {
-     $mentores = User::where('rol_id', 2)->with('direccion')->get();
-        $mentoresDeleted = User::onlyTrashed()->where('rol_id', 2)->get();
+     $mentores = User::where('rol_id', 2)->with('direccion')->where('direccion_id',session('direccion')->id)->get();
+        $mentoresDeleted = User::onlyTrashed()->where('direccion_id',session('direccion')->id)->where('rol_id', 2)->get();
 
      
-$nombreAlumno = 'Juan Pérez';
-$fechaVencimiento = '2024-09-25'; // Ejemplo de fecha de vencimiento
-$enlaceSistema = 'https://tusistema.com/login';
+// $nombreAlumno = 'Juan Pérez';
+// $fechaVencimiento = '2024-09-25'; // Ejemplo de fecha de vencimiento
+// $enlaceSistema = 'https://tusistema.com/login';
 
-// Envía el correo
-Mail::to('al222010229@utvtol.edu.mx')->send(new DocumentoVencimientoNotification($nombreAlumno, $fechaVencimiento, $fechaVencimiento,'google.com'));
+// // Envía el correo
+// Mail::to('al222010229@utvtol.edu.mx')->send(new DocumentoVencimientoNotification($nombreAlumno, $fechaVencimiento, $fechaVencimiento,'google.com'));
 
 
         return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
@@ -63,7 +63,7 @@ Mail::to('al222010229@utvtol.edu.mx')->send(new DocumentoVencimientoNotification
     public function show($id): View
     {
         $id = Hashids::decode($id);
-        $mentor = User::with('direccion')->find($id);
+        $mentor = User::with(['direccion','estudiantes'])->find($id);
         $mentor = $mentor[0];
 
         return view('mentoresacademicos.show', compact('mentor'));

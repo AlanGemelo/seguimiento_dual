@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DireccionCarrera;
 use App\Http\Requests\StoreDireccionCarreraRequest;
 use App\Http\Requests\UpdateDireccionCarreraRequest;
+use App\Models\Carrera;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -13,13 +14,18 @@ class DireccionCarreraController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->only('create', 'store', 'delete');
+        $this->middleware('admin');
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function select(DireccionCarrera $direccion){
+        session(['direccion' => $direccion]);
+        $carreras = Carrera::all();
+        return view('carrera.index',compact('carreras'));
+    }
     public function index()
     {
         $direcciones = DireccionCarrera::all();
@@ -57,7 +63,7 @@ class DireccionCarreraController extends Controller
     public function show(DireccionCarrera $direccion)
     {
 
-        $direccion->load('programas');
+        $direccion->load('programas','director');
         return view('direccionescarrera.show', compact('direccion'));
     }
 

@@ -16,14 +16,15 @@
                 </div>
             @endif
          
-            <div class="row">
+            <div  class="row">
                 {{-- Estudiantes Lista --}}
-                <div class="col-md-12 grid-margin stretch-card">
+                <div 
+                    class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes</h6>
-                                @if (Auth::user()->rol_id === 1)
+                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
                                         <a href="{{ route("estudiantes.create") }}" class="btn btn-primary"
@@ -36,7 +37,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table  class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -48,7 +49,7 @@
                                     </thead>
                                     <tbody>
                                         @if ($estudiantes->count() === 0)
-                                            <tr>
+                                            <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                                 <td colspan="7">
                                                     <div class="alert alert-danger" role="alert">
                                                         No hay registros de estudiantes
@@ -57,7 +58,7 @@
                                             </tr>
                                         @else
                                             @foreach ($estudiantes as $estudiante)
-                                                <tr>
+                                                <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                                     <td>{{ $loop->index + 1 }}</td>
                                                     <td>{{ $estudiante->name }}</td>
                                                     <td>{{ $estudiante->carrera->nombre }}</td>
@@ -71,7 +72,7 @@
                                                             class="btn btn-twitter">
                                                             <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                         </a>
-                                                        @if (Auth::user()->rol_id === 1)
+                                                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                             <button class="btn btn-danger" data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModal1"
                                                                 onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
@@ -137,7 +138,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">Lista De Candidatos a Dual</h6>
-                                @if (Auth::user()->rol_id === 1)
+                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
                                         <a href="{{ route("estudiantes.crearC") }}" class="btn btn-primary"
@@ -171,7 +172,7 @@
                                             </tr>
                                         @else
                                             @foreach ($candidatos as $estudiante)
-                                                <tr>
+                                                <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                                     <td>{{ $loop->index + 1 }}</td>
                                                     <td>{{ $estudiante->name }}</td>
                                                     <td>{{ $estudiante->carrera->nombre }}</td>
@@ -186,7 +187,7 @@
                                                             <i class="mdi mdi-arrow-up btn-icon-prepend"></i>
 
                                                         </a>
-                                                        @if (Auth::user()->rol_id === 1)
+                                                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                             <button class="btn btn-danger" data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModal1"
                                                                 onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
@@ -249,7 +250,7 @@
             </div>
             {{-- Eliminados Lista --}}
             @if ($estudiantesDeleted->count() !== 0)
-                @if (Auth::user()->rol_id === 1)
+                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card">
                             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -258,8 +259,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
+                                <div class="table-responsive  ">
+                                    <table      class="table table-hover">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -274,7 +275,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($estudiantesDeleted as $estudianteDeleted)
-                                                <tr>
+                                                <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                                     <td>{{ $loop->index + 1 }}</td>
                                                     <td>{{ $estudianteDeleted->matricula }}</td>
                                                     <td>{{ $estudianteDeleted->name }}</td>

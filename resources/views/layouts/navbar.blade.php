@@ -1,4 +1,4 @@
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
+<nav class="sidebar sidebar-offcanvas animate__animated animate__jackInTheBox  animate__delay-2s" id="sidebar">
     <ul class="nav">
         <li class="nav-item">
             <a class="nav-link" href="{{ route('dashboard') }}">
@@ -6,17 +6,20 @@
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
-    @if (Auth::user()->rol_id !== 3)
-    <li class="nav-item nav-category">Opciones</li>
-    <li class="nav-item {{ request()->routeIs('estudiantes.*') ? 'active' : ''}}">
-        <a class="nav-link" href="{{ route('estudiantes.index') }}">
-            <i class="menu-icon mdi mdi-account"></i>
-            <span class="menu-title">Estudiantes</span>
-        </a>
-    </li>
-        
-    @endif
-        @if(Auth::user()->rol_id === 1|| Auth::user()->rol_id === 4)
+   @isset(session()->get('direccion')->id)
+   @if((Auth::user()->rol_id === 1 && session('direccion')) || Auth::user()->rol_id !== 3  )
+   <li class="nav-item nav-category">Opciones</li>
+   <li class="nav-item {{ request()->routeIs('estudiantes.*') ? 'active' : ''}}">
+       <a class="nav-link" href="{{ route('estudiantes.index') }}">
+           <i class="menu-icon mdi mdi-account"></i>
+           <span class="menu-title">Estudiantes</span>
+       </a>
+   </li>
+       
+   @endif
+       
+   @endisset
+        @if((Auth::user()->rol_id === 1 && session('direccion')) || Auth::user()->rol_id === 4)
         <li class="nav-item {{ request()->routeIs('academicos.*') ? 'active' : ''}}">
             <a class="nav-link" href="{{ route('academicos.index') }}">
                 <i class="menu-icon mdi mdi-card-text-outline"></i>
@@ -39,7 +42,7 @@
                 </ul>
             </div>
         </li>
-       @if(Auth::user()->rol_id === 1)
+       @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
        <li class="nav-item {{ request()->routeIs('direcciones.*') ? 'active' : '' , request()->routeIs('mentores.*') ? 'active' : ''}}">
         <a class="nav-link" data-bs-toggle="collapse" href="#chartsD" aria-expanded="false"
            aria-controls="chartsD">
@@ -50,10 +53,12 @@
        
         <div class="collapse" id="chartsD">
             <ul class="nav flex-column sub-menu">
-                <li class="nav-item {{ request()->routeIs('direcciones.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('direcciones.index') }}">Direccion Carrera</a>
-                </li>
-                <li class="nav-item {{ request()->routeIs('directores.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('directores.index') }}">Director de Carrera</a>
-                </li>
+             @if(Auth::user()->rol_id === 1)
+             <li class="nav-item {{ request()->routeIs('direcciones.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('direcciones.index') }}">Direccion Carrera</a>
+             </li>
+             <li class="nav-item {{ request()->routeIs('directores.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('directores.index') }}">Director de Carrera</a>
+             </li>
+                @endif
                 <li class="nav-item {{ request()->routeIs('carreras.*') ? 'active' : ''}}"><a class="nav-link" href="{{ route('carreras.index') }}">Programa Educativo</a>
                 </li>
             </ul>

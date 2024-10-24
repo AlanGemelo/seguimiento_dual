@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DireccionCarrera;
 use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
 use App\Models\User;
@@ -17,17 +18,22 @@ class HomeController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function dashboard(): View{
+    public function dashboard(){
+        $direccion = DireccionCarrera::find(Auth::user()->direccion_id);
+
+        session()->put('direccion',  $direccion ?? '');
         $estudiantes = Estudiantes::count();
         $mentores = MentorIndustrial::count();
         $auth = Auth::user();
-if($auth->rol_id == 1 )
-{
-    return view('dashboard', compact(['estudiantes','mentores']));
+        if($auth->rol_id == 1 )
+        {
+            session()->forget('direccion');
+            $direcciones = DireccionCarrera::all();
+    return view('dashboardSuperAdmin', compact(['estudiantes','mentores','direcciones']));
 }
 else if($auth->rol_id == 3){
     
-    $estudiante = Estudiantes::where('matricula', strtok($auth->email,'@'))->first();
+    $estudiante = Estudiantes::where('user_id', $auth->id)->first();
     return view('dashboardEstudiante',compact('estudiante'));
 }
 else if($auth->rol_id == 4){    

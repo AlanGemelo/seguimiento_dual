@@ -1,12 +1,12 @@
-<nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+<nav class=" animate__animated animate__fadeInLeftBig navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-        <div class="me-3">
+        <div class="me-3  animate__animated animate__slideInDown animate__delay-0.5s">
             <button class="navbar-toggler navbar-toggler align-self-center" type="button"
                     data-bs-toggle="minimize">
                 <span class="icon-menu"></span>
             </button>
         </div>
-        <div>
+        <div class="animate__animated animate__flipOutY animate__delay-1.5s">
             <a class="navbar-brand brand-logo" href="{{ route('dashboard') }}">
                 <img src="{{ asset('assets/images/Logo-utvt.png')}}" alt="logo" width="70px"/>
             </a>
@@ -15,12 +15,11 @@
             </a>
         </div>
     </div>
-    <div class="navbar-menu-wrapper d-flex align-items-top">
+    <div class="navbar-menu-wrapper d-flex align-items-top animate__animated animate__slideInDown animate__delay-1s">
         <ul class="navbar-nav">
             <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-                <h1 class="welcome-text">Bienvenido, <span class="text-black fw-bold">{{ Auth::user()->name }}</span>
-                </h1>
-                {{--                <h3 class="welcome-sub-text">Your performance summary this week </h3>--}}
+                <h1 class="welcome-text d-none d-sm-block">Bienvenido, <span class="text-black fw-bold">{{ Auth::user()->name }}</span></h1>
+                <span >{{ session('direccion')->name ?? '' }}</span>
             </li>
         </ul>
         <ul class="navbar-nav ms-auto z-0">

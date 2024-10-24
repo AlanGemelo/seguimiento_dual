@@ -19,4 +19,7 @@ class DireccionCarrera extends Model
         return $this->hasMany(Carrera::class, 'direccion_id', 'id');
 
     }
+    public function director(){
+        return $this->hasOne(Director::class, 'direccion_id', 'id');
+    }
 }

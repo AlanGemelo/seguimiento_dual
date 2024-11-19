@@ -24,7 +24,7 @@ class CarreraController extends Controller
     {
         $carreras = Carrera::with('direccion')->where('direccion_id',session('direccion')->id)->get();
         return view('carrera.index', compact('carreras'));
-    }
+    } 
 
     public function store(Request $request)
     {

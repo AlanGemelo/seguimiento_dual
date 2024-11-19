@@ -152,11 +152,17 @@ canvas {
   transition: all 0.3s ease-in-out;
   border-radius: 15px;
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  
 }
 
 .card-hover:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  -o-transform: scale(1.5);
 }
 
 .card-icon {
@@ -15114,6 +15120,7 @@ fieldset:disabled .swal2-modal .swal2-buttonswrapper .swal2-styled,
   border: 1px solid #e3e3e3;
   border-radius: 20px;
 }
+
 
 .card>hr {
   margin-right: 0;

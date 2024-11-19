@@ -25,8 +25,8 @@ class EstadisticaController extends Controller
 
 $activos = Estudiantes::where('activo',1)->get()->count();
 $inactivos = Estudiantes::where('activo',0)->get()->count();
-$baja = Estudiantes::onlyTrashed()->count(); 
-
+$egresados = Estudiantes::withTrashed()->where('status',3)->get()->count();
+$baja = Estudiantes::onlyTrashed()->where('status', '!=', 3)->count();
 
 // Consulta para la grafica de carreras
         $labelsCarrera = Carrera::where('direccion_id', session('direccion')->id)->get('nombre')->pluck('nombre');
@@ -55,9 +55,9 @@ $tutorGraphic = new Chart();
 $becaGraphic = new Chart();
 
 // Labels Graficas
-$chart1->labels(['activos','Candidatos','Eliminados'])
-->dataset('Estudiantes', 'pie', [$activos,$inactivos,$baja])
-->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
+$chart1->labels(['activos','Candidatos','Egresados','Bajas'])
+->dataset('Estudiantes', 'pie', [$activos,$inactivos,$egresados,$baja])
+->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#FF3357'])
 ->color('#000'); // Establece el color del texto en blanco
 
 $becaGraphic->labels(['Becados','Sin beca'])

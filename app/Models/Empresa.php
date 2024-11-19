@@ -26,7 +26,7 @@ class Empresa extends Model
     {
         return $this->belongsTo(MentorIndustrial::class, 'id', 'empresa_id');
     }
-    public function direccion(){
+    public function direcciones(){
         return $this->belongsTo(DireccionCarrera::class, 'direccion_id', 'id');        
     }
  

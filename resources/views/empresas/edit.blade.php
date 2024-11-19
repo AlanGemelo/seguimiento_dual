@@ -38,6 +38,17 @@
                                            name="direccion"
                                            value="{{ $empresa->direccion, old('direccion') }}">
                                 </div>
+                                <div class="form-group">
+                                    <label for="direccion">Direccion de  Carrera <span class="text-danger form-label">*</span></label>
+                                  <select class="form-select" name="direccion_id" >
+                                    @foreach ($direcciones as $direccion)
+                                    <option value="{{ $direccion->id  }}" {{ $direccion->id == session('direccion')->id ? 'selected' : '' }}>{{ $direccion->name }}</option>
+                                    @endforeach
+                                  </select>
+                                </div>
+
+                                
+                                    
                                   {{-- Cargar convenio academico --}}
                                   <div class="form-group">
                                     <label for="convenioA">Convenio Especifico <span class="text-danger">*</span></label>

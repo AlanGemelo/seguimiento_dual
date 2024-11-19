@@ -36,11 +36,13 @@ class EstudiantesController extends Controller
 
     public function index()
     {
+        $search = request('search'); // Obtener el parámetro 'search' de la URL
 
         $direccionId = session('direccion')->id ?? null;
 
         $estudiantes = Estudiantes::with('academico', 'carrera')
             ->where('activo', true)
+            ->where('name', 'LIKE', '%' . $search . '%')
             ->where('direccion_id', session('direccion')->id)
             ->get();
         $candidatos = Estudiantes::where('activo', false)
@@ -64,7 +66,7 @@ class EstudiantesController extends Controller
 
         // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
 
-        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos'));
+        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos','search'));
     }
 
     public function create(): View
@@ -495,6 +497,7 @@ class EstudiantesController extends Controller
             'formato54' => $formato54 ?? $estudiantes->formato54,
             'formato55' => $formato55 ?? $estudiantes->formato55,
             'activo' => true,
+            'beca'=> $request->beca,
 
         ]);
         $estudiantes->save();

@@ -40,7 +40,7 @@
                                 </p>
                                 <!-- Botón interactivo -->
                                 <div class="d-flex justify-content-center mt-auto">
-                                    <a href="{{ route('carreras.index', $direccion->id) }}" class="btn btn-primary btn-gradient">
+                                    <a href="{{ route('direcciones.select', $direccion->id) }}" class="btn btn-primary btn-gradient">
                                         Ver Programas
                                     </a>
                                 </div>

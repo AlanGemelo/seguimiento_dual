@@ -54,7 +54,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach ($direcciones as $carrera)
-                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $carrera->name }}</td>
                                             <td>{{ $carrera->email }}</td>

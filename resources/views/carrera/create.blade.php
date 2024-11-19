@@ -39,7 +39,11 @@
                                             name="direccion_id">
                                         <option selected>Seleccione una opcion</option>
                                         @foreach ($direcciones as $carrera)
-                                            <option value="{{ $carrera->id }}">{{ $carrera->name }}</option>
+                                        <option value="{{ $carrera->id }}"
+                                            {{ $carrera->id == session('direccion')->id ? "selected" : "" }}>
+                                            {{ $carrera->name }}
+                                        </option>  
+                                            {{-- <option value="{{ $carrera->id }}">{{ $carrera->name }}</option> --}}
                                         @endforeach
                                     </select>
                                     @error('direccion_id')

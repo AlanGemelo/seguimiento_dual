@@ -56,7 +56,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($mentores as $mentor)
-                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $mentor->name }}</td>
                                             <td>{{ $mentor->email }}</td>
@@ -147,7 +147,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($mentoresDeleted as $mentorDeletd)
-                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $mentorDeletd->titulo }}</td>
                                             <td>{{ $mentorDeletd->name }}</td>

@@ -23,7 +23,8 @@ class DireccionCarreraController extends Controller
      */
     public function select(DireccionCarrera $direccion){
         session(['direccion' => $direccion]);
-        $carreras = Carrera::all();
+        $carreras = Carrera::with('direccion')->where('direccion_id',session('direccion')->id)->get();
+
         return view('carrera.index',compact('carreras'));
     }
     public function index()

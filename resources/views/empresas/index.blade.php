@@ -50,16 +50,18 @@
                                         <th>Empresa</th>
                                         <th>Descripcion</th>
                                         <th>Telefono</th>
+                                        <th>Convenio</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($empresas as $empresa)
-                                        <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        @foreach($empresas as $empresa)
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $empresa->nombre }}</td>
                                             <td>{{ $empresa->direccion }}</td>
                                             <td>{{ $empresa->telefono }}</td>
+                                            <td>{{ $empresa->direcciones->name }}</td>
                                             <td>
                                                 <a href="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
                                                    class="btn btn-facebook">

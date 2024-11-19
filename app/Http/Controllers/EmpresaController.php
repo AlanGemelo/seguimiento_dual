@@ -24,9 +24,7 @@ class EmpresaController extends Controller
 
     public function index()
     {
-        $empresas = Empresa::where('direccion_id',session('direccion')->id)->get();
-        Empresa::with('direccion')->get();
-
+        $empresas = Empresa::with('direcciones')->where('direccion_id',session('direccion')->id)->get();
         return view('empresas.index', compact('empresas'));
     }
 
@@ -51,6 +49,7 @@ class EmpresaController extends Controller
             'convenioA' => ['file', 'mimes:pdf'],
             'inicio_conv' => ['required', 'date'],
             'fin_conv' => ['required', 'date'],
+            'direccion_id' => ['required', 'integer', 'exists:direccion_carreras,id'],
 
         ]);
         if ($request->file('convenioA')) {

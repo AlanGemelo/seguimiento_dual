@@ -2,99 +2,64 @@
 @section('title', 'Editar Estudiante')
 
 @section('content')
-    <div class="row">
-        <div class="col-12 grid-margin">
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Editar Empresa</h4>
-                            <span class="text-danger">* Son campos requeridos</span>
-                            <div class="dropdown-divider"></div>
-                            <form class="pt-3" action="{{ route('empresas.update', $empresa->id) }}" method="post">
-                                @csrf
-                                @method('PATCH')
-                                <div class="form-group">
-                                    <label for="nombre">Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="nombre"
-                                           placeholder="" name="nombre" value="{{ $empresa->nombre, old('nombre') }}">
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title px-3 pt-3">Editar Empresa</h4>
+                        <div class="form-text text-danger ps-3">* Son campos requeridos</div>
+                        <div class="dropdown-divider"></div>
+                        <form class="pt-3" action="{{ route('empresas.update', $empresa->id) }}" method="post">
+                            @csrf
+                            @method('PATCH')
+                            <div class="form-group">
+                                <label for="nombre">Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-lg" id="nombre"
+                                    placeholder="" name="nombre" value="{{ $empresa->nombre, old('nombre') }}">
 
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control form-control-lg" id="email"
-                                           placeholder="" name="email" value="{{ $empresa->email, old('email') }}">
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="telefono">Telefono <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control form-control-lg" id="telefono"
-                                           placeholder="7228634014" name="telefono" value="{{ $empresa->telefono, old('telefono') }}">
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="direccion">Direccion <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="direccion"
-                                           name="direccion"
-                                           value="{{ $empresa->direccion, old('direccion') }}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="direccion">Direccion de  Carrera <span class="text-danger form-label">*</span></label>
-                                  <select class="form-select" name="direccion_id" >
-                                    @foreach ($direcciones as $direccion)
-                                    <option value="{{ $direccion->id  }}" {{ $direccion->id == session('direccion')->id ? 'selected' : '' }}>{{ $direccion->name }}</option>
-                                    @endforeach
-                                  </select>
-                                </div>
-
-                                
-                                    
-                                  {{-- Cargar convenio academico --}}
-                                  <div class="form-group">
-                                    <label for="convenioA">Convenio Especifico <span class="text-danger">*</span></label>
-                                    <input autofocus type="file" class="form-control form-control-lg" id="convenioA"
-                                           placeholder="convenioA" name="convenioA" value="{{ old('convenioA') }}">
-                                    @error('convenioA')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                {{-- Cargar convenio marco-empresa --}}
-                                <div class="form-group">
-                                    <label for="convenioMA">Convenio Marco-Empresa <span class="text-danger">*</span></label>
-                                    <input type="file" class="form-control form-control-lg" id="convenioMA"
-                                           placeholder="convenioMA" name="convenioMA" value="{{ old('convenioMA') }}">
-                                    @error('convenioMA')
-                                    <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="inicio_conv">Inicio Convenio <span class="text-danger">*</span></label>
-                                    <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
-                                        <span class="input-group-addon input-group-prepend border-right">
-                                            <span class="icon-calendar input-group-text calendar-icon"></span>
-                                        </span>
-                                        <input type="text" class="form-control" name="inicio_conv" id="inicio_conv" value="{{ $empresa->inicio_conv, old('inicio_conv') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion">Direccion <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-lg" id="direccion"
+                                    name="direccion"
+                                    value="{{ $empresa->direccion, old('direccion') }}">
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="mb-3">
+                                            <label for="inicio_conv" class="form-label">Inicio Convenio <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" name="inicio_conv" id="inicio_conv" value="{{ $empresa->inicio_conv, old('inicio_conv') }}">
+                                            @error('inicio_conv')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="fin_conv">Fin Convenio <span class="text-danger">*</span></label>
-                                    <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
-                                        <span class="input-group-addon input-group-prepend border-right">
-                                            <span class="icon-calendar input-group-text calendar-icon"></span>
-                                        </span>
-                                        <input type="date" class="form-control" name="fin_conv" id="fin_conv" value="{{ $empresa->fin_conv, old('fin_conv') }}">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <div class="mb-3">
+                                            <label for="fin_conv" class="form-label">Fin Convenio <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" name="fin_conv" id="fin_conv" value="{{ $empresa->fin_conv, old('fin_conv') }}">
+                                            @error('fin_conv')
+                                            <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="mt-3">
-                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                            type="submit">Editar
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                    type="submit">Editar
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection

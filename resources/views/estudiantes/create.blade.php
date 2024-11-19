@@ -19,13 +19,14 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Crear Estudiante Dual</h4>
-                            <span class="text-danger">* Son campos requeridos</span>
+                            <h4 class="card-title mt-3 ps-3">Crear Estudiante Dual</h4>
+                            <div class="form-text text-danger ps-3">* Son campos requeridos</div>
                             <div class="dropdown-divider"></div>
                             <form class="pt-3" action="{{ route("estudiantes.store") }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
+                                <h4 class="card-title mt-2 ps-3">Datos del alumno</h4>
                                     <div class="col-md-6">
                                         {{-- matricula --}}
                                         <div class="form-group">
@@ -36,9 +37,11 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         {{-- Nombre del estudiante --}}
                                         <div class="form-group">
-                                            <label for="name">Name <span class="text-danger">*</span></label>
+                                            <label for="name">Nombre completo <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-lg" id="name"
                                                 placeholder="Juan Perez Hermenegildo" name="name"
                                                 value="{{ old("name") }}">
@@ -46,15 +49,19 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         {{-- CURP --}}
                                         <div class="form-group">
-                                            <label for="curp">CURP<span class="text-danger">*</span></label>
+                                            <label for="curp">CURP <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-lg" id="curp"
                                                 name="curp" value="{{ old("curp") }}">
                                             @error("curp")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         {{-- Fecha de nacimiento --}}
                                         <div class="form-group">
                                             <label for="fecha_na">Fecha de Nacimiento <span
@@ -65,6 +72,11 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="container">
+                                    <hr>
+                                    </div>
+                                    <div class="col-md-6">
                                         {{-- Cuatrimestre aplicable a Dual --}}
                                         <div class="form-group">
                                             <label for="cuatrimestre">Cuatrimestre <span
@@ -82,17 +94,21 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         {{-- Proyecto Dual --}}
                                         <div class="form-group">
                                             <label for="nombre_proyecto">Nombre del Proyecto <span
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
                                                 placeholder="Integrador" name="nombre_proyecto"
-                                                value="{{ old("nombre_proyecto") }}">
-                                            @error("nombre_proyecto")
-                                                <div class="text-danger">{{ $message }}</div>
+                                                value="{{ old('nombre_proyecto') }}">
+                                            @error('nombre_proyecto')
+                                            <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         {{-- Seleccionar empresa --}}
                                         <div class="form-group">
                                             <label for="empresa_id" class="form-label">Empresa <span
@@ -108,7 +124,9 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        {{-- Seleccionar Acesor industrial --}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{-- Seleccionar Acesor industrial--}}
                                         <div class="form-group">
                                             <label for="asesorin_id" class="form-label">Acesor Indutrial <span
                                                     class="text-danger">*</span></label>
@@ -120,6 +138,9 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{-- Seleccionar Mentor academico--}}
                                         <div class="form-group">
                                             <label for="direccion_id" class="form-label">Direccion de Carrera <span
                                                     class="text-danger">*</span></label>
@@ -153,9 +174,10 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-                                        {{-- Seleccionar Carrera del estudiante --}}
-                                        <div class="form-group" id="carrera_select" style="display: none;">
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{-- Seleccionar Carrera del estudiante--}}
+                                        <div class="form-group">
                                             <label for="carrera_id" class="form-label">Carrera <span
                                                     class="text-danger">*</span></label>
                                             <select class="form-select" aria-label="Seleccionar Empresa"
@@ -215,6 +237,8 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         {{-- Final Dual --}}
                                         <div class="form-group">
                                             <label for="fin_dual">Fin Dual <span class="text-danger">*</span></label>
@@ -224,7 +248,10 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        {{-- Fecha de Ingreso --}}
+                                    </div>
+                                    <h4 class="card-title mt-2 ps-3">Documentación</h4>
+                                    <div class="col-md-6">
+                                        {{-- Cargar documento INE --}}
                                         <div class="form-group">
                                             <label for="inicio">Fecha de Ingreso <span
                                                     class="text-danger">*</span></label>
@@ -234,7 +261,9 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        {{-- Fecha de egreso --}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{-- Cargar documento Minutas --}}
                                         <div class="form-group">
                                             <label for="fin">Fecha de Egreso <span
                                                     class="text-danger">*</span></label>
@@ -244,8 +273,9 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-                                        {{-- Estatus --}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{-- Cargar documento de Aceptación --}}
                                         <div class="form-group">
                                             <label for="status" class="form-label">Situacion Dual <span
                                                     class="text-danger">*</span></label>
@@ -261,8 +291,9 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-                                        {{-- Cargar documento INE --}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{-- Cargar documento de Plan-Form --}}
                                         <div class="form-group">
                                             <label for="ine">INE <span class="text-danger">*</span></label>
                                             <input type="file" class="form-control form-control-lg" id="ine"
@@ -271,7 +302,8 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
+                                    </div>
+                                    <div class="col-md-6">
                                         {{-- Cargar documento de Historial Academico --}}
                                         <div class="form-group">
                                             <label for="historial_academico">Historial Academico<span
@@ -311,18 +343,8 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-                                        {{--  Crgar documento de Perfil de Ingles --}}
-                                        <div class="form-group">
-                                            <label for="perfil_ingles">Perfil de Ingles<span
-                                                    class="text-danger">*</span></label>
-                                            <input type="file" class="form-control form-control-lg" id="perfil_ingles"
-                                                placeholder="perfil_ingles" name="perfil_ingles"
-                                                value="{{ old("perfil_ingles") }}">
-                                            @error("perfil_ingles")
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="beca" class="form-label">Beca Dual <span
                                                     class="text-danger">*</span></label>
@@ -353,23 +375,21 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
                                     </div>
-
+                                    {{-- Boton par enviar el formulario --}}
+                                    <div class="mt-3 d-flex justify-content-end">
+                                        <button
+                                            class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                            type="submit">Guardar
+                                        </button>
+                                    </div>
                                 </div>
-                                {{-- Boton par enviar el formulario --}}
-                                <div class="mt-3">
-                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        type="submit">Guardar
-                                    </button>
-                                </div>
+                            </form>
                         </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

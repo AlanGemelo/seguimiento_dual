@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <!-- <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                                 <h6 class="text-white text-capitalize ps-3">Lista De Empresas</h6>
                                 @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
@@ -40,13 +40,26 @@
                                     </div>
                                 @endif
                             </div>
+                        </div> -->
+                        <div class="card-header bg-gradient-primary shadow-primary" style="border-radius: 20px 20px 0px 0px;">
+                            <div class="container row py-2">
+                                <div class="col">
+                                    <h4 class="text-capitalize text-white mt-3 ps-3">Lista De Empresas</h4>
+                                </div>
+                                <div class="col d-flex justify-content-end">
+                                    {{-- Button del modal --}}
+                                    <a href="{{route('empresas.create')}}" class="btn btn-primary btn-rounded" title="Agregar una nueva Empresa">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th class="text-center">#</th>
                                         <th>Empresa</th>
                                         <th>Descripcion</th>
                                         <th>Telefono</th>
@@ -55,23 +68,23 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($empresas as $empresa)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
-                                            <td>{{ $loop->index + 1 }}</td>
+                                    @foreach($empresas as $empresa)
+                                        <tr>
+                                            <td class="text-center">{{ $loop->index + 1 }}</td>
                                             <td>{{ $empresa->nombre }}</td>
                                             <td>{{ $empresa->direccion }}</td>
                                             <td>{{ $empresa->telefono }}</td>
                                             <td>{{ $empresa->direcciones->name }}</td>
                                             <td>
                                                 <a href="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
-                                                   class="btn btn-facebook">
+                                                   class="btn btn-facebook btn-rounded">
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a>
                                                 @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                     <a href="{{ route('empresas.edit', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" class="btn btn-twitter">
                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                     </a>
-                                                    <button class="btn btn-danger" data-bs-toggle="modal"
+                                                    <button class="btn btn-danger btn-rounded" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteEstudiante({{ $empresa->id }})">
                                                         <i class="mdi mdi-delete btn-icon-prepend"></i>
@@ -129,7 +142,7 @@
                 url: '/empresas/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
-                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.nombre);
+                    $('#banner').html('¿Estas seguro de eliminar este registro? <br>' + response.nombre);
                 }
             })
         }

@@ -18,8 +18,8 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Crear Programa Educativo</h4>
-                            <span class="text-danger">* Son campos requeridos</span>
+                        <h4 class="card-title px-3 pt-3">Crear Carrera</h4>
+                        <div class="form-text text-danger ps-3">* Son campos requeridos</div>
                             <div class="dropdown-divider"></div>
                             <form class="pt-3" action="{{ route('carreras.store') }}" method="post">
                                 @csrf

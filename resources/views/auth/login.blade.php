@@ -35,10 +35,10 @@
                                     <div class="form-check">
                                         <label class="form-check-label text-muted">
                                             <input type="checkbox" class="form-check-input">
-                                            Mantener Sesion Iniciada
+                                            Mantener sesión
                                         </label>
                                     </div>
-                                    <a href="{{ route('password.request') }}" class="auth-link text-black">Olvidaste tu contraseña?</a>
+                                    <a href="{{ route('password.request') }}" class="auth-link text-black">¿Olvidaste tu contraseña?</a>
                                 </div>
                             </form>
                         </div>

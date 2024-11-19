@@ -15,19 +15,20 @@
             </a>
         </div>
     </div>
-    <div class="navbar-menu-wrapper d-flex align-items-top animate__animated animate__slideInDown animate__delay-1s">
+    <div class="navbar-menu-wrapper d-flex align-items-top pt-5">
         <ul class="navbar-nav">
             <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-                <h1 class="welcome-text d-none d-sm-block">Bienvenido, <span class="text-black fw-bold">{{ Auth::user()->name }}</span></h1>
-                <span >{{ session('direccion')->name ?? '' }}</span>
+                <h1 class="welcome-text">Bienvenido! <span class="text-black fw-bold">{{ Auth::user()->name }}</span>
+                </h1>
+                {{--                <h3 class="welcome-sub-text">Your performance summary this week </h3>--}}
             </li>
         </ul>
         <ul class="navbar-nav ms-auto z-0">
           
             <li class="nav-item dropdown d-none d-lg-block user-dropdown">
-                <a style="z-index: 1" class="nav-link" id="UserDropdown" data-bs-toggle="dropdown" aria-expanded="true">
-                    <img  class="img-xs rounded-circle" src="{{ asset('assets/images/logo-utvt-new.png') }}" alt="Profile image"> </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="img-xs rounded-circle" src="{{ asset('assets/images/logo.png') }}" alt="Profile image"> </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" style="border-radius: 20px;" aria-labelledby="UserDropdown">
                     <div class="dropdown-header text-center">
                         <img class="img-md rounded-circle" src="{{ asset('assets/images/logo-utvt-removebg-preview.png') }}" width="20%" alt="Profile image">
                         <p class="mb-1 mt-3 font-weight-semibold">{{ Auth::user()->name }}</p>

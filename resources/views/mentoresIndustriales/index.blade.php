@@ -27,17 +27,18 @@
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores de Unidad Economica</h6>
-                                @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <div class="float-end">
-                                        {{-- Button del modal --}}
-                                        <a href="{{route('mentores.create')}}" class="btn btn-primary"
-                                           title="Agregar una nueva Empresa">
-                                            <i class="mdi mdi-plus-circle-outline"></i>
-                                        </a>
-                                    </div>
+                        <div class="card-header bg-gradient-primary shadow-primary" style="border-radius: 20px 20px 0px 0px;">
+                            <div class="container row py-3">
+                                <div class="col">
+                                    <h4 class="text-capitalize text-white mt-3 ps-3">Lista De Mentores Industriales</h4>
+                                </div>
+                                @if(Auth::user()->rol_id === 1)
+                                <div class="col d-flex justify-content-end">
+                                    {{-- Button del modal --}}
+                                    <a href="{{route('mentores.create')}}" class="btn btn-primary btn-rounded" title="Agregar una nueva Moto">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </a>
+                                </div>
                                 @endif
                             </div>
                         </div>
@@ -46,31 +47,29 @@
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Grado </th>
+                                        <th class="text-center">#</th>
                                         <th>Nombre</th>
-                                        <th>Empresa</th>
-                                        <th>Acciones</th>
+                                        <th class="text-center">Empresa</th>
+                                        <th class="text-center">Acciones</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($mentoresIndustriales as $mentor)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
-                                            <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $mentor->titulo }}</td>
-                                            <td> {{ $mentor->name }}</td>
-                                            <td>{{ $mentor->empresa->nombre }}</td>
-                                            <td>
+                                        <tr>
+                                            <td class="text-center">{{ $loop->index + 1 }}</td>
+                                            <td>{{ $mentor->titulo }} {{ $mentor->name }}</td>
+                                            <td class="text-center">{{ $mentor->empresa->nombre }}</td>
+                                            <td class="text-center">
                                                 <a href="{{ route('mentores.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                   class="btn btn-facebook">
+                                                   class="btn btn-facebook btn-rounded">
                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
                                                 </a>
                                                 @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                     <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                       class="btn btn-twitter">
+                                                       class="btn btn-twitter btn-rounded">
                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                     </a>
-                                                    <button class="btn btn-danger" data-bs-toggle="modal"
+                                                    <button class="btn btn-danger btn-rounded" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteEstudiante({{ $mentor->id }})">
                                                         <i class="mdi mdi-delete btn-icon-prepend"></i>
@@ -129,7 +128,7 @@
                 url: '/mentores/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
-                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.titulo + ', ' + response.name);
+                    $('#banner').html('¿Estas seguro de eliminar este registro? <br>' + response.titulo + ', ' + response.name);
                 }
             })
         }
@@ -142,7 +141,7 @@
                 type: 'GET',
                 success: function (response) {
                     //console.log(response.name)
-                    $('#bannerRestore').html('¿Estas seguro de restaurar este registro? ' + response.name + ' ' + response.model);
+                    $('#bannerRestore').html('¿Estas seguro de restaurar este registro? <br>' + response.name + ' ' + response.model);
                 }
             })
         }

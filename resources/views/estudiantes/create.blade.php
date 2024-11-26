@@ -115,6 +115,9 @@
                                             <select class="form-select" aria-label="Seleccionar Empresa"
                                                 name="asesorin_id" id="asesorin_id">
                                                 <option selected>Seleccione una opcion</option>
+                                                {{-- @foreach ($asesores as $asesor)
+                                                <option value="{{ $asesor->id }}">{{ $asesor->name }}</option>
+                                            @endforeach --}}
                                             </select>
                                             @error("asesorin_id")
                                                 <div class="text-danger">{{ $message }}</div>
@@ -400,7 +403,7 @@
                         if (data.length > 0) {
                             selectAsesorin.empty();
                             selectAsesorin.append(
-                                '<option value="" selected>Seleccione una opción</option>');
+                                '<option value="" selected>Seleccione algo</option>');
 
                             // Agregar las opciones recibidas en la respuesta AJAX al select
                             $.each(data, function(index, asesorin) {

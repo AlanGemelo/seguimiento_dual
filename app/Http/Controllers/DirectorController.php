@@ -32,7 +32,9 @@ class DirectorController extends Controller
      */
     public function create()
     {
-        $direcciones = DireccionCarrera::all();
+        $DireccionConDirector = Director::get('direccion_id')->pluck('direccion_id');
+        $direcciones = DireccionCarrera::whereNotIn('id',$DireccionConDirector)->get();
+        return response()->json($direcciones);
         return view('directores.create',compact('direcciones'));
     }
 
@@ -114,9 +116,9 @@ class DirectorController extends Controller
      * @param  \App\Models\Director  $director
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Director $director)
+    public function destroy(Director $directore)
     {
-        $director->delete();
+        $directore->delete();
         return redirect()->route('directores.index');
     }
 }

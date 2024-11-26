@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\Debugbar\Facades\Debugbar;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,16 +16,25 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::resource('directores', DirectorController::class);
+Route::get('/optimize', function () {
+    Artisan::call('optimize:clear');
+    Debugbar::addMessage('Comando generado', 'listo!!');
+
+    // return 'EL gemelo es mi pastor y lo chapulin no a de faltar';
+
+})->name('optimize');
+
 
 Route::get('/', [HomeController::class, 'welcome']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
     Route::get('/estudiantes/crear', [EstudiantesController::class, 'create'])->name('estudiantes.create');
     Route::get('/estudiantes/crearC', [EstudiantesController::class, 'crearC'])->name('estudiantes.crearC');
     Route::get('/estudiantes/documentation', [EstudiantesController::class, 'updateForm'])->name('estudiantes.updateForm');
@@ -90,7 +101,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/direcciones/{direccion}/edit', [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
 
     Route::post('alerts', [MentorAcademicoController::class, 'alerts'])->name('alerts');
-    Route::resource('directores', DirectorController::class);
+});
+
+// Descargar Anexos
+Route::get('/descargar/{archivo}', function ($archivo) {
+    $path = public_path('storage/anexos/' . $archivo);
+    if (file_exists($path)) {
+        return response()->download($path);
+    } else {
+        abort(404); // Si el archivo no existe, mostrar error 404
+    }
 });
 Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
 

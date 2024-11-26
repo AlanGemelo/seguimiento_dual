@@ -18,6 +18,60 @@
          
             <div  class="row">
                 {{-- Estudiantes Lista --}}
+                <div class="bg-gradient float-end mt-2 mb-2 text-center">
+                    <button class="btn btn-primary" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                        <i class="mdi mdi-download"></i>
+                        Descargar Anexos
+                    </button>
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title justify-content-center" id="exampleModalLongTitle "> Anexos</h5>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Anexo 5.1
+                                        <a href="/descargar/Anexo 5.1 Plan de Formación.docx" class="btn btn-info" data-bs-toggle="tooltip" title="Tooltip">
+                                            <i class="mdi mdi-file-word"></i> 
+                                        </a>
+                                        <a href="/descargar/5.1 Plan de Formación.pdf" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar en PDF">
+                                            <i class="mdi mdi-file-pdf"></i> 
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Anexo 5.4
+                                        <a href="/descargar/Anexo 5.4 Reporte de Actividades.docx" class="btn btn-info">
+                                            <i class="mdi mdi-file-word"></i> 
+                                        </a>
+                                        <a href="/descargar/anexo 5.4 .pdf" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar en PDF">
+                                            <i class="mdi mdi-file-pdf"></i> 
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Anexo 5.5
+                                        <a href="/descargar/Anexo 5.5 Seguimiento y Evaluación.docx" class="btn btn-info">
+                                            <i class="mdi mdi-file-word"></i> 
+                                        </a>
+                                        <a href="/descargar/anexo 5.5.pdf" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar en PDF">
+                                            <i class="mdi mdi-file-pdf"></i> 
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+                                </div>
+                          </div>
+                        </div>
+                      </div>
+               
+               
+                </div>
                 <div 
                     class="col-md-12 grid-margin stretch-card">
                     <div class="card">
@@ -49,7 +103,7 @@
                                     </thead>
                                     <tbody>
                                         @if ($estudiantes->count() === 0)
-                                            <tr class="animate__animated animate__fadeInDown " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                            <tr class="animate__animated animate__fadeInDown " >
                                                 <td colspan="7">
                                                     <div class="alert alert-danger" role="alert">
                                                         No hay registros de estudiantes
@@ -203,6 +257,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">

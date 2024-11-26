@@ -60,7 +60,7 @@ class EmpresaController extends Controller
             $convenioMA = 'convenioMA/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('convenioMA')->getClientOriginalName();
             $convenioMA = $request->file('convenioMA')->storeAs('public', $convenioMA);
         }
-
+        
         $empresa = Empresa::create([
             'nombre' => $request->nombre,
             'direccion' => $request->direccion,
@@ -70,7 +70,7 @@ class EmpresaController extends Controller
             'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
             'email' => $request->email,
             'telefono' => $request->telefono,
-            'direccion_id' => session('direccion')->id ?? Auth::user()->direccion_id,
+            'direccion_id' => $request->direccion_id ?? session('direccion')->id ,
         ]);
 
         return redirect()->route('empresas.index')->with('status', 'Empresa creada');

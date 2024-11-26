@@ -22,7 +22,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="direccion">Direccion <span class="text-danger">*</span></label>
+                                    <label for="direccion">Ubicacion <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="direccion"
                                            name="direccion"
                                            value="{{ old('direccion') }}">
@@ -48,6 +48,27 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                       {{-- Seleccionar Direccion Docencia --}}
+                                       <div class="form-group">
+                                        <label for="direccion_id" class="form-label">Direccion de Carrera <span
+                                                class="text-danger">*</span></label>
+                                        <select  class="form-select" aria-label="Seleccionar Direccion de Carrera"
+                                            name="direccion_id">
+
+                                            @foreach ($direcciones as $direccion)
+                                                @if (session('direccion')->id == $direccion->id)
+                                                    <option value="{{ $direccion->id }}" selected>
+                                                        {{ $direccion->name }}</option>
+                                                @else
+                                                    <option value="{{ $direccion->id }}">{{ $direccion->name }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @error("direccion_id")
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
                                 
                                 {{-- Cargar convenio academico --}}

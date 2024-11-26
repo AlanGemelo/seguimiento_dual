@@ -44,6 +44,7 @@ class EstudiantesController extends Controller
             ->where('activo', true)
             ->where('name', 'LIKE', '%' . $search . '%')
             ->where('direccion_id', session('direccion')->id)
+            ->orderBy('created_at', 'asc')
             ->get();
         $candidatos = Estudiantes::where('activo', false)
             ->where('direccion_id', $direccionId)
@@ -75,6 +76,7 @@ class EstudiantesController extends Controller
         $empresas = Empresa::where('direccion_id', session('direccion')->id)->get();
         $academico = User::where('rol_id', 2)->where('direccion_id', session('direccion')->id)->get();
         $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
+        // $asesores = MentorIndustrial::where('direccion_id', session('direccion')->id)->get();
 
         $situation = [
             ['id' => 0, 'name' => 'Primera vez'],
@@ -135,8 +137,8 @@ class EstudiantesController extends Controller
 
 
             'ine' => ['file', 'mimes:pdf', 'required'],
-            'historial_academico' => ['file', 'mimes:pdf'],
-            'perfil_ingles' => ['file', 'mimes:pdf'],
+            // 'historial_academico' => ['file', 'mimes:pdf'],
+            // 'perfil_ingles' => ['file', 'mimes:pdf'],
             'inicio' => ['date'],
             'fin' => ['date'],
             'direccion_id' => ['required', 'integer', 'exists:' . DireccionCarrera::class . ',id'],
@@ -665,11 +667,10 @@ class EstudiantesController extends Controller
         return response()->json($estudiante);
     }
 
-    public function restoreEstudiante(Estudiantes $id)
+    public function restoreEstudiante( $id)
     {
-        $elemento = Estudiantes::withTrashed()->find($id->matricula);
+        $elemento = Estudiantes::withTrashed()->where('matricula',$id)->first();
         $elemento->restore();
-
         return redirect()->route('estudiantes.index')->with('success', 'Estudiante Restaurado.');
     }
 

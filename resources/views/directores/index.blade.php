@@ -160,7 +160,7 @@
         function deleteDireccion(id) {
      
             let form = document.getElementById('deleteForm')
-            form.action = '/directores/' + id + '/delete'
+            form.action = '/directores/' + id 
             $.ajax({
                 url: '/directores/' + id + '/json',
                 type: 'GET',

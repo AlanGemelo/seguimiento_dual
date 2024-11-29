@@ -44,7 +44,7 @@ class EstudiantesController extends Controller
             ->where('activo', true)
             ->where('name', 'LIKE', '%' . $search . '%')
             ->where('direccion_id', session('direccion')->id)
-            ->get();
+            ->paginate(10);
         $candidatos = Estudiantes::where('activo', false)
             ->where('direccion_id', $direccionId)
             ->get();

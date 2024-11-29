@@ -15,7 +15,9 @@
                     </button>
                 </div>
             @endif
-         
+            <button type="button"  data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
+                Tooltip on top
+              </button>
             <div  class="row">
                 {{-- Estudiantes Lista --}}
                 <div 
@@ -77,6 +79,9 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                {{ $estudiantes->links() }}
+
+
                             </div>
                         </div>
                     </div>
@@ -196,8 +201,6 @@
                         </div>
                     </div>
                 </div>
-            @endif
-        @endif
 
         <div class="modal fade" id="exampleModal2" tabindex="-1"
              aria-labelledby="exampleModalLabel" aria-hidden="true">

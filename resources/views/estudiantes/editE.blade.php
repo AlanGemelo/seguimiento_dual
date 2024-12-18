@@ -20,7 +20,7 @@
 
                                     <div class="col-md-6">
 
-                                        <a id='evaluacion_form_' href="{{ Storage::url($estudiante->evaluacion_form) }}"
+                                        <a id='evaluacion_form_' href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
                                             class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                             Evalucaion de formacion
                                             <span class="mdi mdi-file-pdf-box"></span>
@@ -36,7 +36,7 @@
                                             @error("formato54")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='formato54_' href="{{ Storage::url($estudiante->formato54) }}"
+                                            <a id='formato54_' href="{{ url(Storage::url($estudiante->formato54)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 formato 5.4
                                                 <span class="mdi mdi-file-pdf-box"></span>

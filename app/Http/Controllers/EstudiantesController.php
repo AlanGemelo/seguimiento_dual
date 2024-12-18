@@ -36,6 +36,16 @@ class EstudiantesController extends Controller
 
     public function index()
     {
+        $hoy = Carbon::now('y','m','d');
+        Debugbar::info('Este es un mensaje de información');
+        $fechaLimite = $hoy->copy()->addDays(15);
+
+        $registros = Estudiantes::with('academico','asesorin')
+        ->whereDate('fin_dual','<=', $hoy->addDays(15))
+         ->where('activo',true)->get();
+        $registrosConvenio = Empresa::with('asesorin')->whereDate('fin_conv','<=', $hoy->addDays(15))->get();
+       
+return $registros;
         $search = request('search'); // Obtener el parámetro 'search' de la URL
 
         $direccionId = session('direccion')->id ?? null;
@@ -44,7 +54,7 @@ class EstudiantesController extends Controller
             ->where('activo', true)
             ->where('name', 'LIKE', '%' . $search . '%')
             ->where('direccion_id', session('direccion')->id)
-            ->orderBy('created_at', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
         $candidatos = Estudiantes::where('activo', false)
             ->where('direccion_id', $direccionId)
@@ -255,7 +265,7 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante creado');
     }
 
-    public function candidato(Request $request): RedirectResponse
+    public function candidato(Request $request)
     {
 
 
@@ -329,7 +339,6 @@ class EstudiantesController extends Controller
 
     public function show($id)
     {
-
         $id = Hashids::decode($id);
 
         $estudiante = Estudiantes::with('direccion', 'empresa', 'carrera')->where('matricula', $id)->where('direccion_id', session('direccion')->id)->get();
@@ -349,11 +358,15 @@ class EstudiantesController extends Controller
         return view('estudiantes.showC', compact('estudiante'));
     }
 
-    public function edit($id): View
+    public function edit($id)
     {
+        $situation = [
+            ['id' => 0, 'name' => 'Primera vez'],
+            ['id' => 1, 'name' => 'Renovacion Dual']
+        ];
         $direcciones = DireccionCarrera::all();
         $id = Hashids::decode($id);
-        $estudiante = Estudiantes::where('direccion_id', session('direccion')->id)->where('matricula', $id)->get();
+        $estudiante = Estudiantes::with('empresa')->where('direccion_id', session('direccion')->id)->where('matricula', $id)->get();
         $estudiante = $estudiante[0];
         $empresas = Empresa::where('direccion_id', session('direccion')->id)->get();
         $academicos = User::where('direccion_id', session('direccion')->id)->where('rol_id', 2)->get();
@@ -383,13 +396,15 @@ class EstudiantesController extends Controller
         $industrials = MentorIndustrial::with(['empresa' => function ($query) {
             $query->where('direccion_id', session('direccion')->id);
         }])->get();
-        $vista = Auth::user()->rol_id == 1 ? 'editAdmin' : 'edit';
-
-        return view('estudiantes.' . $vista, compact('estudiante', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres', 'becas', 'tipoBeca', 'direcciones'));
+        $vista = Auth::user()->rol_id == 1 || Auth::user()->rol_id == 4  ? 'editAdmin' : 'edit';
+        
+        return view('estudiantes.' . $vista, compact('estudiante','situation', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres', 'becas', 'tipoBeca', 'direcciones'));
     }
 
     public function update(Request $request, $id)
     {
+        
+
         $request->validate([
             'matricula' => ['integer', 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],
@@ -402,7 +417,6 @@ class EstudiantesController extends Controller
             'fin_dual' => ['date'],
             'fin' => ['date'],
             'inicio' => ['date'],
-
             'ine' => ['file', 'mimes:pdf'],
             'evaluacion_form' => ['file', 'mimes:pdf'],
             'minutas' => ['file', 'mimes:pdf'],
@@ -483,6 +497,7 @@ class EstudiantesController extends Controller
             $formato55 = 'formato55/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato55')->getClientOriginalName();
             $formato55 = $request->file('formato55')->storeAs('public', $formato55);
         }
+
         $estudiantes->fill([
 
             'ine' => $ine ?? $estudiantes->ine,

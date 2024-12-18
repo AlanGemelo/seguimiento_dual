@@ -241,7 +241,7 @@
                 // Realizar la petición AJAX
                 $.ajax({
                     type: 'GET',
-                    url: '/mentores/' + mentorId + '/empresa',
+                    url: 'http://162.240.99.108/~dualticedu/mentores/' + mentorId + '/empresa',
                     success: function(data) {
                         // Limpiar y actualizar el select de empresas
                         var selectAsesorin = $('select[name="asesorin_id"]');

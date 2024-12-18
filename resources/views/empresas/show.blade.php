@@ -1,6 +1,6 @@
-@php use Illuminate\Support\Facades\Storage; @endphp
+@php use Illuminate\Support\Facades\url(Storage; @endphp
 
-@extends("layouts.app")
+@extends("layouts.)app")
 @section("title", "Mostrar Empresa")
 
 @section("content")
@@ -72,7 +72,7 @@
                                                     <h5 class="card-title">Convenio Academico</h5>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ Storage::url($empresa->convenioA) }}"
+                                                    <a href="{{ url(Storage::url($empresa->convenioA)) }}"
                                                         class="btn btn-primary" target="_blank">Ver
                                                         Convenio Academico
                                                         <span class="mdi mdi-file-pdf-box"></span>
@@ -85,7 +85,7 @@
                                                     <h5 class="card-title">Convenio Marco-Empresa</h5>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ Storage::url($empresa->convenioMA) }}"
+                                                    <a href="{{ url(Storage::url($empresa->convenioMA)) }}"
                                                         class="btn btn-primary" target="_blank">Ver
                                                         Convenio Marco-Empresa
                                                         <span class="mdi mdi-file-pdf-box"></span>

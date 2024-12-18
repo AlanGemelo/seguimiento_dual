@@ -31,7 +31,7 @@
                                             <label for="name">Name <span class="text-danger">*</span></label>
                                             <input disabled type="text" class="form-control form-control-lg"
                                                 id="name" placeholder="Juan Perez Hermenegildo" name="name"
-                                                value="{{ old("name", $estudiante->name) }}">
+                                                value="{{ $estudiante->name, old("name") }}">
                                             @error("name")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -139,6 +139,44 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                        {{-- Seleccionar Dirección del estudiante --}}
+                                        <div class="form-group">
+                                            <label for="direccion_id" class="form-label">Dirección de Carrera <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" aria-label="Seleccionar Dirección"
+                                                name="direccion_id" id="direccion_id">
+                                                <option selected>Seleccione una opción</option>
+                                                @foreach ($direcciones as $direccion)
+                                                    <option value="{{ $direccion->id }}"
+                                                        {{ $estudiante->direccion_id == $direccion->id ? "selected" : "" }}>
+                                                        {{ $direccion->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error("direccion_id")
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        {{-- Seleccionar Mentor Académico --}}
+                                        <div class="form-group">
+                                            <label for="academico_id" class="form-label">Mentor Académico <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" aria-label="Seleccionar Académico"
+                                                name="academico_id" id="academico_id">
+                                                <option selected>Seleccione una opción</option>
+                                                @foreach ($academicos as $user)
+                                                    <option value="{{ $user->id }}"
+                                                        {{ $estudiante->academico_id == $user->id ? "selected" : "" }}>
+                                                        {{ $user->titulo }} {{ $user->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error("academico_id")
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
                                         {{-- Seleccionar Carrera del estudiante --}}
                                         <div class="form-group">
                                             <label for="carrera_id" class="form-label">Carrera <span
@@ -159,7 +197,28 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+                                        {{-- Selecciona Beca --}}
 
+                                        <div class="form-group">
+                                            <label for="inicio_dual">Inicio Dual <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="date" class="form-control form-control-lg" name="inicio_dual"
+                                                id="inicio_dual"
+                                                value="{{ $estudiante->inicio_dual, old("inicio_dual") }}">
+                                            @error("inicio_dual")
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+
+                                        </div>
+                                        {{-- Fin Dual --}}
+                                        <div class="form-group">
+                                            <label for="fin_dual">Fin Dual <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control form-control-lg" name="fin_dual"
+                                                id="fin_dual" value="{{ $estudiante->fin_dual, old("fin_dual") }}">
+                                            @error("fin_dual")
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                         <div class="form-group">
                                             <label for="beca" class="form-label">Beca Dual <span
                                                     class="text-danger">*</span></label>
@@ -184,11 +243,10 @@
                                         </div>
                                         {{-- Selecciona Apoyo Economico --}}
 
-                                        <div class="form-group">
+                                        <div class="form-group" id="tipoBeca" style="display: none">
                                             <label for="tipoBeca" class="form-label">Apoyo Economico <span
                                                     class="text-danger">*</span></label>
-                                            <select disabled class="form-select" aria-label="Seleccionar Carrera"
-                                                name="tipoBeca">
+                                            <select disabled class="form-select" aria-label="Seleccionar Carrera" name="tipoBeca">
 
                                                 @foreach ($tipoBeca as $carrera)
                                                     @if ($estudiante->tipoBeca == $carrera["id"])
@@ -208,22 +266,22 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-
                                         {{-- Cargar documento INE --}}
-                                        <div class="form-group ">
-                                            <label for="ine">INE <span class="text-danger">*</span></label>
-
+                                        <div class="form-group">
+                                            <label for="ine">INE<span class="text-danger">*</span></label>
                                             <div
-                                                style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
+                                                style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="ine" placeholder="INE" name="ine"
                                                     value="{{ old("ine") }}">
                                                 @error("ine")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='ine_' href="{{ Storage::url($estudiante->ine) }}"
+                                                <a id='ine_' href="{{ url(Storage::url($estudiante->ine)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
-                                                    INE <span class="mdi mdi-file-pdf-box"></span></a>
+                                                    INE
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
                                                 <button class="btn btn-secondary w-50  " id='ineC'
                                                     onclick="ocultar('ine_','ine','ineC')" type="button">Cambiar
                                                     Documento</button>
@@ -232,18 +290,17 @@
 
                                         {{-- Cargar documento de Aceptación --}}
                                         <div class="form-group">
-                                            <label for="carta_acp">Carta de Aceptación <span
+                                            <label for="carta_acp">Carta de Aceptación<span
                                                     class="text-danger">*</span></label>
                                             <div
-                                                style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                                <input hidden type="file" class="form-control form-control-lg "
-                                                    id="carta_acp" name="carta_acp" ">
-                                                                                  
-                                                                                        @error(" carta_acp") <div
-                                                        class="text-danger">{{ $message }}
-                                                </div>
-                                            @enderror
-                                            <a id='carta_acp_' href="{{ Storage::url($estudiante->carta_acp) }}"
+                                                style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
+                                                <input hidden type="file" class="form-control form-control-lg"
+                                                    id="carta_acp" name="carta_acp"
+                                                    value="{{ old("carta_acp") }}">
+                                                @error("carta_acp")
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            <a id='carta_acp_' href="{{ url(Storage::url($estudiante->carta_acp)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 Carta de Aceptacion
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -256,31 +313,29 @@
                                     </div>
                                     {{-- Cargar documento Minutas --}}
                                     <div class="form-group">
-                                        <label for="minutas">Minutas <span class="text-danger">*</span></label>
+                                        <label for="minutas">Minutas<span class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-
                                             <input hidden type="file" class="form-control form-control-lg"
                                                 id="minutas" placeholder="minutas" name="minutas"
                                                 value="{{ old("minutas") }}">
                                             @error("minutas")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='minutas_' href="{{ Storage::url($estudiante->minutas) }}"
+                                            <a id='minutas_' href="{{ url(Storage::url($estudiante->minutas)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 Minutas
                                                 <span class="mdi mdi-file-pdf-box"></span>
                                             </a>
                                             <button class="btn btn-secondary w-50  " id='minutasC'
-                                                onclick="ocultar('minutas_','minutas','minutasC')" type="button">Cambiar
-                                                Documento</button>
+                                                onclick="ocultar('minutas_','minutas','minutasC')" type="button">Cambiar Documento</button>
 
                                         </div>
                                     </div>
 
                                     {{-- Cargar documento de Plan-Form --}}
                                     <div class="form-group">
-                                        <label for="plan_form">Plan Formacion<span class="text-danger">*</span></label>
+                                        <label for="plan_form">Plan de Formacion<span class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                             <input hidden type="file" class="form-control form-control-lg"
@@ -289,7 +344,7 @@
                                             @error("plan_form")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='plan_form_' href="{{ Storage::url($estudiante->plan_form) }}"
+                                            <a id='plan_form_' href="{{ url(Storage::url($estudiante->plan_form)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 Plan de Formacion
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -313,7 +368,7 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                             <a id='historial_academico_'
-                                                href="{{ Storage::url($estudiante->historial_academico) }}"
+                                                href="{{ url(Storage::url($estudiante->historial_academico)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 HIstorial Academico
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -336,7 +391,7 @@
                                             @error("perfil_ingles")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='perfil_ingles_' href="{{ Storage::url($estudiante->perfil_ingles) }}"
+                                            <a id='perfil_ingles_' href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 Perfil de Ingles
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -357,7 +412,7 @@
                                             @error("formatoA")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='formatoA_' href="{{ Storage::url($estudiante->formatoA) }}"
+                                            <a id='formatoA_' href="{{ url(Storage::url($estudiante->formatoA)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 Formato A
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -378,7 +433,7 @@
                                             @error("formatoB")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='formatoB_' href="{{ Storage::url($estudiante->formatoB) }}"
+                                            <a id='formatoB_' href="{{ url(Storage::url($estudiante->formatoB)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 Formato B
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -399,7 +454,7 @@
                                             @error("formatoC")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='formatoC_' href="{{ Storage::url($estudiante->formatoC) }}"
+                                            <a id='formatoC_' href="{{ url(Storage::url($estudiante->formatoC)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 formato C
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -422,9 +477,9 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                             <a id='evaluacion_form_'
-                                                href="{{ Storage::url($estudiante->evaluacion_form) }}"
+                                                href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
-                                                evaluacion_form
+                                                Evaluacion de Formacion
                                                 <span class="mdi mdi-file-pdf-box"></span>
                                             </a>
                                             <button class="btn btn-secondary w-50  " id='evaluacion_formC'
@@ -443,7 +498,7 @@
                                             @error("formato51")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='formato51_' href="{{ Storage::url($estudiante->formato51) }}"
+                                            <a id='formato51_' href="{{ url(Storage::url($estudiante->formato51)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 formato 5.1
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -464,7 +519,7 @@
                                             @error("formato54")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='formato54_' href="{{ Storage::url($estudiante->formato54) }}"
+                                            <a id='formato54_' href="{{ url(Storage::url($estudiante->formato54)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                 formato 5.4
                                                 <span class="mdi mdi-file-pdf-box"></span>
@@ -485,9 +540,9 @@
                                             @error("formato55")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-                                            <a id='formato55_' href="{{ Storage::url($estudiante->formato55) }}"
+                                            <a id='formato55_' href="{{ url(Storage::url($estudiante->formato55)) }}"
                                                 class=" form-control form-control-lg btn-primary" target="_blank">Ver
-                                                formato 5.1
+                                                formato 5.5
                                                 <span class="mdi mdi-file-pdf-box"></span>
                                             </a>
                                             <button class="btn btn-secondary w-50  " id='formato55C'
@@ -514,10 +569,8 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-
                                 </div>
-
-                        </div>
+                           </div>
                         <div class="mt-3">
                             <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                 type="submit">Editar
@@ -535,6 +588,33 @@
 @endsection
 
 <script>
+        document.getElementById('direccion_id').addEventListener('change', function() {
+        let direccionId = this.value;
+        if (direccionId) {
+            fetch(`/get-carreras-academicos/${direccionId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Limpiar selects
+                    let carreraSelect = document.getElementById('carrera_id');
+                    let academicoSelect = document.getElementById('academico_id');
+                    carreraSelect.innerHTML = '<option selected>Seleccione una opción</option>';
+                    academicoSelect.innerHTML = '<option selected>Seleccione una opción</option>';
+
+                    // Actualizar carreras
+                    data.carreras.forEach(carrera => {
+                        carreraSelect.innerHTML +=
+                            `<option value="${carrera.id}">${carrera.nombre}</option>`;
+                    });
+
+                    // Actualizar académicos
+                    data.academicos.forEach(academico => {
+                        academicoSelect.innerHTML +=
+                            `<option value="${academico.id}">${academico.titulo} ${academico.name}</option>`;
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+    });
     function ocultar(id, id2, text) {
         const elemento = document.getElementById(`${id}`);
         elemento.hidden = !elemento.hidden;

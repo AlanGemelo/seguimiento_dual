@@ -124,9 +124,9 @@
         // hace una peticion ajax para obtener la informacion de la moto
         function deleteEstudiante(id) {
             let form = document.getElementById('deleteForm')
-            form.action = '/mentores/' + id + '/delete'
+            form.action = 'http://162.240.99.108/~dualticedu/mentores/' + id + '/delete'
             $.ajax({
-                url: '/mentores/' + id + '/json',
+                url: 'http://162.240.99.108/~dualticedu/mentores/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.titulo + ', ' + response.name);
@@ -136,9 +136,9 @@
 
         function restoreRegistro(id) {
             let form = document.getElementById('restaurarForm')
-            form.action = '/motos/' + id + '/restaurar'
+            form.action = 'http://162.240.99.108/~dualticedu/motos/' + id + '/restaurar'
             $.ajax({
-                url: '/motos/' + id,
+                url: 'http://162.240.99.108/~dualticedu/motos/' + id,
                 type: 'GET',
                 success: function (response) {
                     //console.log(response.name)

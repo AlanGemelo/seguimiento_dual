@@ -110,15 +110,17 @@ class DirectorController extends Controller
         return redirect()->route('directores.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Director  $director
-     * @return \Illuminate\Http\Response
-     */
+ 
+    public function showJson(Director $id)
+    {
+        return response()->json($id);
+    }
+
     public function destroy(Director $directore)
     {
-        $directore->delete();
+        $user = User::where('email', $directore->email)->first();
+        $user->delete();
+
         return redirect()->route('directores.index');
     }
 }

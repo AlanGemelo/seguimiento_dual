@@ -259,9 +259,9 @@
         // hace una peticion ajax para obtener la informacion de la moto
         function deleteMentor(id) {
             let form = document.getElementById('deleteForm')
-            form.action = '/academicos/' + id + '/delete'
+            form.action = 'http://162.240.99.108/~dualticedu/academicos/' + id + '/delete'
             $.ajax({
-                url: '/academicos/' + id + '/json',
+                url: 'http://162.240.99.108/~dualticedu/academicos/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.titulo + ', ' + response.name);
@@ -272,9 +272,9 @@
         function restoreRegistro(id) {
             let form = document.getElementById('restaurarForm')
 
-            form.action = '/academicos/' + id + '/restaurar'
+            form.action = 'http://162.240.99.108/~dualticedu/academicos/' + id + '/restaurar'
             $.ajax({
-                url: '/academicos/' + id + '/json',
+                url: 'http://162.240.99.108/~dualticedu/academicos/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     //console.log(response.name)
@@ -285,9 +285,9 @@
 
         function destroyMentor(id) {
             let form = document.getElementById('permanentDelete')
-            form.action = '/academicos/' + id + '/force'
+            form.action = 'http://162.240.99.108/~dualticedu/academicos/' + id + '/force'
             $.ajax({
-                url: '/academicos/' + id + '/json',
+                url: 'http://162.240.99.108/~dualticedu/academicos/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     //console.log(response.name)

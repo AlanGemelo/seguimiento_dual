@@ -33,7 +33,7 @@ class HomeController extends Controller
 }
 else if($auth->rol_id == 3){
     
-    $estudiante = Estudiantes::where('user_id', $auth->id)->first();
+    $estudiante = Estudiantes::withTrashed()->where('user_id', $auth->id)->first();
     return view('dashboardEstudiante',compact('estudiante'));
 }
 else if($auth->rol_id == 4){    

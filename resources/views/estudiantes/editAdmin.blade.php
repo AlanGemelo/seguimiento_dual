@@ -87,31 +87,13 @@
                                             <select class="form-select" aria-label="Seleccionar Empresa" name="empresa_id">
 
                                                 @foreach ($empresas as $empresa)
-                                                    <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+                                                    <option value="{{ $empresa->id }}"
+                                                        {{ $estudiante->empresa_id == $empresa->id ? "selected" : "" }}>
+                                                        {{ $empresa->nombre }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                             @error("empresa_id")
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Seleccionar Mentor academico --}}
-                                        <div class="form-group">
-                                            <label for="academico_id" class="form-label">Mentor Academico <span
-                                                    class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Mentor Academico"
-                                                name="academico_id">
-
-                                                @foreach ($academicos as $academico)
-                                                    @if ($estudiante->academico_id == $academico->id)
-                                                        <option value="{{ $academico->id }}" selected>
-                                                            {{ $academico->name }}</option>
-                                                    @else
-                                                        <option value="{{ $academico->id }}">{{ $academico->name }}
-                                                        </option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                            @error("academico_id")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -123,20 +105,15 @@
                                                 name="asesorin_id">
 
                                                 @foreach ($industrials as $industrial)
-                                                    @if ($estudiante->asesorin_id == $industrial->id)
-                                                        <option value="{{ $industrial->id }}" selected>
-                                                            {{ $industrial->name }}</option>
-                                                    @else
-                                                        <option value="{{ $industrial->id }}">{{ $industrial->name }}
-                                                        </option>
-                                                    @endif
+                                                  <option value="{{ $industrial->id }}"
+                                                   {{ $estudiante->asesorin_id == $industrial->id ? "selected": '' }} >
+                                                {{ $industrial->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error("asesorin_id")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
                                         {{-- Seleccionar Dirección del estudiante --}}
                                         <div class="form-group">
                                             <label for="direccion_id" class="form-label">Dirección de Carrera <span
@@ -193,7 +170,6 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
                                         {{-- Selecciona Beca --}}
 
                                         <div class="form-group">
@@ -238,7 +214,7 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                            
+                                        {{-- Selecciona Apoyo Economico --}}
 
                                         <div class="form-group" id="tipoBeca" style="display: none">
                                             <label for="tipoBeca" class="form-label">Apoyo Economico <span
@@ -261,7 +237,6 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
                                     </div>
                                     <div class="col-md-6">
                                         {{-- Cargar documento INE --}}
@@ -270,26 +245,26 @@
                                             <div
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
-                                                    id="ine" placeholder="ine" name="ine"
+                                                    id="ine" placeholder="INE" name="ine"
                                                     value="{{ old("ine") }}">
                                                 @error("ine")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='ine_' href="{{ Storage::url($estudiante->ine) }}"
+                                                <a id='ine_' href="{{ url(Storage::url($estudiante->ine)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
-                                                    Ine
+                                                    INE
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='ineC'
                                                     onclick="ocultar('ine_','ine','ineC')" type="button">Cambiar
                                                     Documento</button>
-
                                             </div>
                                         </div>
 
                                         {{-- Cargar documento de Aceptación --}}
                                         <div class="form-group">
-                                            <label for="carta_acp">Carta de Aceptacion<span class="text-danger">*</span></label>
+                                            <label for="carta_acp">Carta de Aceptación<span
+                                                    class="text-danger">*</span></label>
                                             <div
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
@@ -298,15 +273,14 @@
                                                 @error("carta_acp")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='carta_acp_' href="{{ Storage::url($estudiante->carta_acp) }}"
+                                                <a id='carta_acp_' href="{{ url(Storage::url($estudiante->carta_acp)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     Carta de Aceptacion
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='carta_acpC'
                                                     onclick="ocultar('carta_acp_','carta_acp','carta_acpC')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
@@ -321,15 +295,13 @@
                                                 @error("minutas")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='minutas_' href="{{ Storage::url($estudiante->minutas) }}"
+                                                <a id='minutas_' href="{{ url(Storage::url($estudiante->minutas)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     Minutas
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='minutasC'
-                                                    onclick="ocultar('minutas_','minutas','minutasC')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    onclick="ocultar('minutas_','minutas','minutasC')" type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
@@ -345,15 +317,14 @@
                                                 @error("plan_form")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='plan_form_' href="{{ Storage::url($estudiante->plan_form) }}"
+                                                <a id='plan_form_' href="{{ url(Storage::url($estudiante->plan_form)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     Plan de Formacion
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='plan_formC'
                                                     onclick="ocultar('plan_form_','plan_form','plan_formC')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
@@ -370,15 +341,14 @@
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='historial_academico_'
-                                                    href="{{ Storage::url($estudiante->historial_academico) }}"
+                                                    href="{{ url(Storage::url($estudiante->historial_academico)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     Historial Academico
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='historial_academicoC'
                                                     onclick="ocultar('historial_academico_','historial_academico','historial_academicoC')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
@@ -394,8 +364,7 @@
                                                 @error("perfil_ingles")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='perfil_ingles_'
-                                                    href="{{ Storage::url($estudiante->perfil_ingles) }}"
+                                                <a id='perfil_ingles_' href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     Perfil de Ingles
                                                     <span class="mdi mdi-file-pdf-box"></span>
@@ -418,15 +387,14 @@
                                                 @error("formatoA")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='formatoA_' href="{{ Storage::url($estudiante->formatoA) }}"
+                                                <a id='formatoA_' href="{{ url(Storage::url($estudiante->formatoA)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     formato A
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='formatoAC'
                                                     onclick="ocultar('formatoA_','formatoA','formatoAC')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    type="button">Cambiar  Documento</button>
 
                                             </div>
                                         </div>
@@ -441,7 +409,7 @@
                                                 @error("formatoB")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='formatoB_' href="{{ Storage::url($estudiante->formatoB) }}"
+                                                <a id='formatoB_' href="{{ url(Storage::url($estudiante->formatoB)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     formato B
                                                     <span class="mdi mdi-file-pdf-box"></span>
@@ -464,15 +432,14 @@
                                                 @error("formatoC")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='formatoC_' href="{{ Storage::url($estudiante->formatoC) }}"
+                                                <a id='formatoC_' href="{{ url(Storage::url($estudiante->formatoC)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     Formtato C
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='formatoCC'
                                                     onclick="ocultar('formatoC_','formatoC','formatoCC')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
@@ -488,15 +455,14 @@
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='evaluacion_form_'
-                                                    href="{{ Storage::url($estudiante->evaluacion_form) }}"
+                                                    href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     Evaluacion de Formacion
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='evaluacion_formC'
                                                     onclick="ocultar('evaluacion_form_','evaluacion_form','evaluacion_formC')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
@@ -510,15 +476,14 @@
                                                 @error("formato51")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='formato51_' href="{{ Storage::url($estudiante->formato51) }}"
+                                                <a id='formato51_' href="{{ url(Storage::url($estudiante->formato51)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     formato 5.1
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='formato51C'
                                                     onclick="ocultar('formato51_','formato51','formato51C')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
@@ -532,61 +497,59 @@
                                                 @error("formato54")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='formato54_' href="{{ Storage::url($estudiante->formato54) }}"
+                                                <a id='formato54_' href="{{ url(Storage::url($estudiante->formato54)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     formato 5.4
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='formato54C'
                                                     onclick="ocultar('formato54_','formato54','formato54C')"
-                                                    type="button">Cambiar
-                                                    Documento</button>
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="ine">Formato 5.5<span class="text-danger">*</span></label>
+                                            <label for="formato55">Formato 5.5<span class="text-danger">*</span></label>
                                             <div
                                                 style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
-                                                    id="ine" placeholder="ine" name="ine"
-                                                    value="{{ old("ine") }}">
-                                                @error("ine")
+                                                    id="formato55" placeholder="formato55" name="formato55"
+                                                    value="{{ old("formato55") }}">
+                                                @error("formato55")
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='ine_' href="{{ Storage::url($estudiante->ine) }}"
+                                                <a id='formato55_' href="{{ url(Storage::url($estudiante->formato55)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
-                                                    formato 5.1
+                                                    formato 5.5
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
-                                                <button class="btn btn-secondary w-50  " id='ineC'
-                                                    onclick="ocultar('ine_','ine','ineC')" type="button">Cambiar
+                                                <button class="btn btn-secondary w-50  " id='formato55C'
+                                                    onclick="ocultar('formato55_','formato55','formato55C')" type="button">Cambiar
                                                     Documento</button>
 
                                             </div>
                                         </div>
+                                        
+                                        {{-- Estatus --}}
                                         <div class="form-group">
-                                            <label for="inicio">Fecha Ingreso <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control form-control-lg" name="inicio"
-                                                id="inicio" value="{{ $estudiante->inicio, old("inicio") }}">
-                                            @error("inicio")
+                                            <label for="status" class="form-label">Situacion Dual <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" aria-label="Seleccionar Empresa" name="status">
+                                                <option selected>Seleccione una opcion</option>
+                                                @foreach ($situation as $sit)
+                                                    <option value="{{ $sit["id"] }}"
+                                                     {{ $sit["id"] == $estudiante->status ? "selected": '' }} >
+                                                        {{ $sit["name"] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error("status")
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
-
                                         </div>
-                                        <div class="form-group">
-                                            <label for="fin">Fecha Egreso <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control form-control-lg" name="fin"
-                                                id="fin" value="{{ $estudiante->fin, old("fin") }}">
-                                            @error("fin")
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-
-                                        </div>
-                                        {{-- Inicio Dual --}}
-
-                                    </div>
-
+                                
+                                </div>
+                           </div>
                                     <div class="mt-3">
                                         <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                             type="submit">Editar
@@ -631,7 +594,6 @@
                 .catch(error => console.error('Error fetching data:', error));
         }
     });
-
     function ocultar(id, id2, text) {
         const elemento = document.getElementById(`${id}`);
         elemento.hidden = !elemento.hidden;
@@ -656,6 +618,4 @@
             becitaInput.style.display = 'none';
         }
     }
-
-  
 </script>

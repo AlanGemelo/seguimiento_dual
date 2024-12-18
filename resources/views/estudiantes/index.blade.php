@@ -44,7 +44,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body" style="background: radial-gradient(circle, rgb(43, 151, 0), white);">
+                            <div class="modal-body" >
                                 <ul class="list-group">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         Anexo 5.1
@@ -482,9 +482,9 @@
     // Petición AJAX para obtener la información del estudiante a eliminar
     function deleteEstudiante(matricula, motivo) {
         let form = document.getElementById('deleteForm');
-        form.action = '/estudiantes/' + matricula + '/delete';
+        form.action = 'http://162.240.99.108/~dualticedu/estudiantes/' + matricula + '/delete';
         $.ajax({
-            url: '/estudiantes/' + matricula + '/json',
+            url: 'http://162.240.99.108/~dualticedu/estudiantes/' + matricula + '/json',
             type: 'GET',
             success: function(response) {
                 $('#banner').html('¿Estás seguro de eliminar este registro? ' + response[0].name + ', Matricula: ' + response[0].matricula);
@@ -495,9 +495,9 @@
     // Petición AJAX para restaurar un estudiante eliminado
     function restoreRegistro(id) {
         let form = document.getElementById('restaurarForm');
-        form.action = '/estudiantes/' + id + '/restaurar';
+        form.action = 'http://162.240.99.108/~dualticedu/estudiantes/' + id + '/restaurar';
         $.ajax({
-            url: '/estudiantes/' + id + '/json',
+            url: 'http://162.240.99.108/~dualticedu/estudiantes/' + id + '/json',
             type: 'GET',
             success: function(response) {
                 $('#bannerRestore').html('¿Estás seguro de restaurar este registro? ' + response[0].name + ', Matricula: ' + response[0].matricula);
@@ -508,9 +508,9 @@
     // Petición AJAX para eliminar permanentemente un estudiante
     function destroyMentor(id) {
         let form = document.getElementById('permanentDelete');
-        form.action = '/estudiantes/' + id + '/force';
+        form.action = 'http://162.240.99.108/~dualticedu/estudiantes/' + id + '/force';
         $.ajax({
-            url: '/estudiantes/' + id + '/json',
+            url: 'http://162.240.99.108/~dualticedu/estudiantes/' + id + '/json',
             type: 'GET',
             success: function(response) {
                 $('#bannerDelete').html('¿Estás seguro de restaurar este registro? ' + response[0].name + ', Matricula: ' + response[0].matricula);

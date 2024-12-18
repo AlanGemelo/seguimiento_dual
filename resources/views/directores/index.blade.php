@@ -125,7 +125,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Director Temporalmente</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Director</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -160,9 +160,9 @@
         function deleteDireccion(id) {
      
             let form = document.getElementById('deleteForm')
-            form.action = '/directores/' + id 
+            form.action = 'http://162.240.99.108/~dualticedu/directores/' + id 
             $.ajax({
-                url: '/directores/' + id + '/json',
+                url: 'http://162.240.99.108/~dualticedu/directores/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.nombre);

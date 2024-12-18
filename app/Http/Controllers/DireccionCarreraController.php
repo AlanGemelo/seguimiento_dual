@@ -90,6 +90,7 @@ class DireccionCarreraController extends Controller
     public function update(Request $request, DireccionCarrera $direccion)
     {
         $direccion->update($request->all());
+        
         return redirect()->route('direcciones.index')->with('message', 'Direccion Academico Actualizado Correctamente');
     }
 

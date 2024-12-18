@@ -60,52 +60,28 @@
                                                     <h5 class="card-title">INE</h5>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ Storage::url($estudiante->ine) }}"
+                                                    <a href="{{ url(Storage::url($estudiante->ine)) }}"
                                                        class="btn btn-primary" target="_blank">Ver
                                                         Documento
                                                         <span class="mdi mdi-file-pdf-box"></span>
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>
-                                                    <h5 class="card-title">Evaluacion Formacion</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ Storage::url($estudiante->evaluacion_form) }}"
-                                                       class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                         
                                           
                                                 <td>5</td>
                                                 <td>
                                                     <h5 class="card-title">Historial Academico</h5>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ Storage::url($estudiante->historial_academico) }}"
+                                                    <a href="{{ url(Storage::url($estudiante->historial_academico)) }}"
                                                        class="btn btn-primary" target="_blank">Ver
                                                         Documento
                                                         <span class="mdi mdi-file-pdf-box"></span>
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>
-                                                    <h5 class="card-title">Perfil Ingles</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ Storage::url($estudiante->perfil_ingles) }}"
-                                                       class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                         
                                             </tbody>
                                         </table>
                                     </div>

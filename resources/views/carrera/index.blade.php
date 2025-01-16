@@ -155,9 +155,9 @@
         // hace una peticion ajax para obtener la informacion de la carrera
         function deleteCarrera(id) {
             let form = document.getElementById('deleteForm')
-            form.action = 'http://162.240.99.108/~dualticedu/carreras/' + id + '/delete'
+            form.action = '/carreras/' + id + '/delete'
             $.ajax({
-                url: 'http://162.240.99.108/~dualticedu/carreras/' + id + '/json',
+                url: '/carreras/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.nombre);

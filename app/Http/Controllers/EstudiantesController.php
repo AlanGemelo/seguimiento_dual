@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UniMentorMailable;
 use App\Models\Carrera;
 use App\Models\DireccionCarrera;
 use App\Models\Empresa;
@@ -18,6 +19,7 @@ use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class EstudiantesController extends Controller
 {
@@ -36,16 +38,20 @@ class EstudiantesController extends Controller
 
     public function index()
     {
-        $hoy = Carbon::now('y','m','d');
-        Debugbar::info('Este es un mensaje de información');
-        $fechaLimite = $hoy->copy()->addDays(15);
 
-        $registros = Estudiantes::with('academico','asesorin')
-        ->whereDate('fin_dual','<=', $hoy->addDays(15))
-         ->where('activo',true)->get();
+      
+        $hoy = Carbon::now();
+        // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
+        $registros = Estudiantes::with('academico','asesorin')->whereDate('fin_dual','<=', $hoy->addDays(15))->where('activo',true)->get();
         $registrosConvenio = Empresa::with('asesorin')->whereDate('fin_conv','<=', $hoy->addDays(15))->get();
-       
-return $registros;
+        // Enviar correos por cada registro
+        foreach ($registrosConvenio as $registro) {
+          
+        // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
+        Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,
+        env('APP_URL'),session('direccion')->email,session('direccion')->name));
+        // Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
+    }
         $search = request('search'); // Obtener el parámetro 'search' de la URL
 
         $direccionId = session('direccion')->id ?? null;

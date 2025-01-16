@@ -160,9 +160,9 @@
         function deleteDireccion(id) {
      
             let form = document.getElementById('deleteForm')
-            form.action = 'http://162.240.99.108/~dualticedu/directores/' + id 
+            form.action = '/directores/' + id 
             $.ajax({
-                url: 'http://162.240.99.108/~dualticedu/directores/' + id + '/json',
+                url: '/directores/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.nombre);

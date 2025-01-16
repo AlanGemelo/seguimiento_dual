@@ -124,9 +124,9 @@
         // hace una peticion ajax para obtener la informacion de la moto
         function deleteEstudiante(id) {
             let form = document.getElementById('deleteForm')
-            form.action = 'http://162.240.99.108/~dualticedu/empresas/' + id + '/delete'
+            form.action = '/empresas/' + id + '/delete'
             $.ajax({
-                url: 'http://162.240.99.108/~dualticedu/empresas/' + id + '/json',
+                url: '/empresas/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
                     $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.nombre);

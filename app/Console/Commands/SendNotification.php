@@ -39,20 +39,23 @@ class SendNotification extends Command
     public function handle()
     {
         $hoy = Carbon::now();
-        Log::info('Job ejecutado a las: ' . $hoy.'Desde Local');
+        Log::info('Envio de correos a las: ' . $hoy.'Desde Local');
         // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
         $registros = Estudiantes::with('academico','asesorin')->whereDate('fin_dual','<=', $hoy->addDays(15))->where('activo',true)->get();
         $registrosConvenio = Empresa::with('asesorin')->whereDate('fin_conv','<=', $hoy->addDays(15))->get();
         // Enviar correos por cada registro
         foreach ($registrosConvenio as $registro) {
-            Storage::append("Regostro . $registro->nombre", Carbon::now());
-        Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
+        // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
+        Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,
+        env('APP_URL'),session('direccion')->email,session('direccion')->name));
+        
+        Log::info('Correo enviado a: ' . $registro->email . 'Alumno: ' . $registro->name);
         Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
     }
         foreach ($registros as $registro) {
             Mail::to($registro->academico->email)->send(new DocumentoVencimientoNotification($registro->name,$registro->academico->nombre, $registro->fin_dual, env('APP_URL')));
+            Log::info('Correo enviado a: ' . $registro->academico->email . 'Alumno: ' . $registro->name);
             };
-            Log::info('Registros encontrados: ' . $registros->count());
         
      }
 

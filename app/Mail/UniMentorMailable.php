@@ -15,18 +15,22 @@ class UniMentorMailable extends Mailable
     public $fechaVencimiento;
     public $academico;
     public $enlaceRenovacion;
+    public $fromName;
+    public $fromEmail;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($empresa, $fechaVencimiento, $academico, $enlaceRenovacion)
+    public function __construct($empresa, $fechaVencimiento, $academico, $enlaceRenovacion,$fromEmail,$fromName)
     {
         $this->empresa = $empresa;
         $this->academico = $academico;
         $this->fechaVencimiento = $fechaVencimiento;
         $this->enlaceRenovacion = $enlaceRenovacion;
+        $this->fromEmail = $fromEmail;
+        $this->fromName = $fromName;
     }
 
     /**
@@ -44,5 +48,13 @@ class UniMentorMailable extends Mailable
                 'enlaceRenovacion' => $this->enlaceRenovacion,
                 'fechaVencimiento' => $this->fechaVencimiento,
             ]);
+               // Verificar si se pasó un correo de remitente personalizado
+    if ($this->fromEmail && $this->fromName) {
+        // Si se pasaron, se usan como remitente
+        $mail->from($this->fromEmail, $this->fromName);
+    }
+
+    // Devolver el correo construido
+    return $mail;
     }
 }

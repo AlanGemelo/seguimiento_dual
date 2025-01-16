@@ -482,9 +482,9 @@
     // Petición AJAX para obtener la información del estudiante a eliminar
     function deleteEstudiante(matricula, motivo) {
         let form = document.getElementById('deleteForm');
-        form.action = 'http://162.240.99.108/~dualticedu/estudiantes/' + matricula + '/delete';
+        form.action = '/estudiantes/' + matricula + '/delete';
         $.ajax({
-            url: 'http://162.240.99.108/~dualticedu/estudiantes/' + matricula + '/json',
+            url: '/estudiantes/' + matricula + '/json',
             type: 'GET',
             success: function(response) {
                 $('#banner').html('¿Estás seguro de eliminar este registro? ' + response[0].name + ', Matricula: ' + response[0].matricula);
@@ -495,9 +495,9 @@
     // Petición AJAX para restaurar un estudiante eliminado
     function restoreRegistro(id) {
         let form = document.getElementById('restaurarForm');
-        form.action = 'http://162.240.99.108/~dualticedu/estudiantes/' + id + '/restaurar';
+        form.action = '/estudiantes/' + id + '/restaurar';
         $.ajax({
-            url: 'http://162.240.99.108/~dualticedu/estudiantes/' + id + '/json',
+            url: '/estudiantes/' + id + '/json',
             type: 'GET',
             success: function(response) {
                 $('#bannerRestore').html('¿Estás seguro de restaurar este registro? ' + response[0].name + ', Matricula: ' + response[0].matricula);
@@ -508,9 +508,9 @@
     // Petición AJAX para eliminar permanentemente un estudiante
     function destroyMentor(id) {
         let form = document.getElementById('permanentDelete');
-        form.action = 'http://162.240.99.108/~dualticedu/estudiantes/' + id + '/force';
+        form.action = '/estudiantes/' + id + '/force';
         $.ajax({
-            url: 'http://162.240.99.108/~dualticedu/estudiantes/' + id + '/json',
+            url: '/estudiantes/' + id + '/json',
             type: 'GET',
             success: function(response) {
                 $('#bannerDelete').html('¿Estás seguro de restaurar este registro? ' + response[0].name + ', Matricula: ' + response[0].matricula);

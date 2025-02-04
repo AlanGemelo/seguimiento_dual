@@ -18,21 +18,21 @@ use Illuminate\Support\Facades\Storage;
 class SendNotification extends Command
 {
     /**
-     * The name and signature of the console command.
+     * El nombre y la firma del comando de consola.
      *
      * @var string
      */
     protected $signature = 'job:email';
 
     /**
-     * The console command description.
+     * La descripción del comando de consola.
      *
      * @var string
      */
-    protected $description = 'Envia Correos electronicos cuando se acerca la fecha de vencimiento de la documentacion entragada';
+    protected $description = 'Envía correos electrónicos cuando se acerca la fecha de vencimiento de la documentación entregada';
 
     /**
-     * Execute the console command.
+     * Ejecuta el comando de consola.
      *
      * @return int
      */
@@ -45,19 +45,14 @@ class SendNotification extends Command
         $registrosConvenio = Empresa::with('asesorin')->whereDate('fin_conv','<=', $hoy->addDays(15))->get();
         // Enviar correos por cada registro
         foreach ($registrosConvenio as $registro) {
-        // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
-        Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,
-        env('APP_URL'),session('direccion')->email,session('direccion')->name));
-        
-        Log::info('Correo enviado a: ' . $registro->email . 'Alumno: ' . $registro->name);
-        Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
-    }
+            // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
+            Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin, env('APP_URL'),session('direccion')->email,session('direccion')->name));
+            Log::info('Correo enviado a: ' . $registro->email . 'Alumno: ' . $registro->name);
+            Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
+        }
         foreach ($registros as $registro) {
             Mail::to($registro->academico->email)->send(new DocumentoVencimientoNotification($registro->name,$registro->academico->nombre, $registro->fin_dual, env('APP_URL')));
             Log::info('Correo enviado a: ' . $registro->academico->email . 'Alumno: ' . $registro->name);
-            };
-        
-     }
-
-    
+        }
+    }
 }

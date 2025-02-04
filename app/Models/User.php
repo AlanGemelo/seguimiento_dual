@@ -15,7 +15,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que se pueden asignar masivamente.
      *
      * @var array<int, string>
      */
@@ -30,7 +30,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Los atributos que deben estar ocultos para la serialización.
      *
      * @var array<int, string>
      */
@@ -40,7 +40,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Los atributos que deben ser convertidos a tipos nativos.
      *
      * @var array<string, string>
      */
@@ -48,10 +48,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Relación con el modelo Estudiantes.
+     */
     public function estudiantes()
     {
         return $this->hasMany(Estudiantes::class, 'academico_id', 'id');
     }
+
+    /**
+     * Relación con el modelo DireccionCarrera.
+     */
     public function direccion()
     {
         return $this->hasOne(DireccionCarrera::class, 'id', 'direccion_id');

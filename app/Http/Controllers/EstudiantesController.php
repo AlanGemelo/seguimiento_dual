@@ -36,6 +36,9 @@ class EstudiantesController extends Controller
         $this->middleware('admin')->only('create', 'store', 'delete');
     }
 
+    /**
+     * Muestra la lista de estudiantes.
+     */
     public function index()
     {
 
@@ -86,6 +89,9 @@ class EstudiantesController extends Controller
         return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos','search'));
     }
 
+    /**
+     * Muestra el formulario para crear un nuevo estudiante.
+     */
     public function create(): View
     {
         $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get();
@@ -109,6 +115,10 @@ class EstudiantesController extends Controller
 
         return view('estudiantes.create', compact('empresas', 'academico', 'carreras', 'situation', 'tipoBeca', 'becas', 'direcciones'));
     }
+
+    /**
+     * Muestra el formulario para crear un nuevo candidato.
+     */
     public function crearC(): View
     {
         $direcciones = DireccionCarrera::all();
@@ -131,8 +141,9 @@ class EstudiantesController extends Controller
         return view('estudiantes.createCandidato', compact('academico', 'carreras', 'situation', 'direcciones'));
     }
 
-
-
+    /**
+     * Almacena un nuevo estudiante en la base de datos.
+     */
     public function store(Request $request): RedirectResponse
     {
 
@@ -271,6 +282,9 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante creado');
     }
 
+    /**
+     * Almacena un nuevo candidato en la base de datos.
+     */
     public function candidato(Request $request)
     {
 
@@ -337,12 +351,19 @@ class EstudiantesController extends Controller
 
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante creado');
     }
+
+    /**
+     * Muestra un PDF.
+     */
     public function showPdf($url, $data)
     {
         $pdf = PDF::loadView($url, $data);
         return $pdf->download('invoice.pdf');
     }
 
+    /**
+     * Muestra los detalles de un estudiante.
+     */
     public function show($id)
     {
         $id = Hashids::decode($id);
@@ -353,6 +374,10 @@ class EstudiantesController extends Controller
 
         return view('estudiantes.show', compact('estudiante'));
     }
+
+    /**
+     * Muestra los detalles de un candidato.
+     */
     public function showC($id): View
     {
 
@@ -364,6 +389,9 @@ class EstudiantesController extends Controller
         return view('estudiantes.showC', compact('estudiante'));
     }
 
+    /**
+     * Muestra el formulario para editar un estudiante.
+     */
     public function edit($id)
     {
         $situation = [
@@ -407,6 +435,9 @@ class EstudiantesController extends Controller
         return view('estudiantes.' . $vista, compact('estudiante','situation', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres', 'becas', 'tipoBeca', 'direcciones'));
     }
 
+    /**
+     * Actualiza los datos de un estudiante.
+     */
     public function update(Request $request, $id)
     {
         
@@ -557,6 +588,10 @@ class EstudiantesController extends Controller
 
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');
     }
+
+    /**
+     * Actualiza los documentos duales de un estudiante.
+     */
     public function updateDocDual(Request $request, $id)
     {
 
@@ -580,16 +615,15 @@ class EstudiantesController extends Controller
             'formato54',
         ]));
 
-
-
-        
         return view('dashboardEstudiante', [
             'estudiante' => $estudiantes,
             'success' => 'Estudiante actualizado correctamente.' // Mensaje de éxito
         ]);
     }
 
-
+    /**
+     * Actualiza el formulario de un estudiante.
+     */
     public function updateForm(Request $request, $id)
     {
         $request->validate([
@@ -669,6 +703,9 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');
     }
 
+    /**
+     * Elimina un estudiante.
+     */
     public function destroy($id, Request $request)
     {
 
@@ -681,6 +718,9 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
     }
 
+    /**
+     * Muestra los datos de un estudiante en formato JSON.
+     */
     public function showJson($id): JsonResponse
     {
         $estudiante = Estudiantes::withTrashed()->where('matricula', $id)->get();
@@ -688,6 +728,9 @@ class EstudiantesController extends Controller
         return response()->json($estudiante);
     }
 
+    /**
+     * Restaura un estudiante eliminado.
+     */
     public function restoreEstudiante( $id)
     {
         $elemento = Estudiantes::withTrashed()->where('matricula',$id)->first();
@@ -695,6 +738,9 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('success', 'Estudiante Restaurado.');
     }
 
+    /**
+     * Elimina permanentemente un estudiante.
+     */
     public function forceDelete($id): RedirectResponse
     {
         $estudiante = Estudiantes::onlyTrashed()->where('matricula', $id)->first();

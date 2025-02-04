@@ -6,11 +6,8 @@
         .xd:hover .btn-text {
             display: none;
         }
-
-     
     </style>
     <div class="row">
-
         <div class="col-12 grid-margin">
             @if (session("status"))
                 <div class="alert alert-success alert-dismissible text-dark" role="alert">
@@ -86,7 +83,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
@@ -256,7 +252,6 @@
                                                     <a href="{{ route("estudiantes.edit", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
                                                         class="btn btn-twitter">
                                                         <i class="mdi mdi-arrow-up btn-icon-prepend"></i>
-
                                                     </a>
                                                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                         <button class="btn btn-danger" data-bs-toggle="modal"
@@ -274,7 +269,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">

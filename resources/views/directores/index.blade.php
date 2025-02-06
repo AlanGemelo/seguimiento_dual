@@ -40,6 +40,11 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" id="search" class="form-control" placeholder="Buscar director...">
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -52,9 +57,9 @@
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="directorTable">
                                     @foreach ($directores as $carrera)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " id='aiuda'>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $carrera->nombre }}</td>
                                             <td>{{ $carrera->email }}</td>
@@ -158,9 +163,9 @@
     <script type="application/javascript">
         // hace una peticion ajax para obtener la informacion de la carrera
         function deleteDireccion(id) {
-     
+
             let form = document.getElementById('deleteForm')
-            form.action = '/directores/' + id 
+            form.action = '/directores/' + id
             $.ajax({
                 url: '/directores/' + id + '/json',
                 type: 'GET',
@@ -169,5 +174,20 @@
                 }
             })
         }
+
+        // Filtrar directores
+        document.getElementById('search').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#directorTable tr');
+            rows.forEach(row => {
+                let name = row.cells[1].textContent.toLowerCase();
+                let email = row.cells[2].textContent.toLowerCase();
+                if (name.includes(value) || email.includes(value)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
     </script>
 @endsection

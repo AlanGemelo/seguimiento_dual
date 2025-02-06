@@ -29,7 +29,7 @@
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Programas Educativos</h6>
+                                <h6 class="text-white text-capitalize ps-3">Lista De Programas Educativos UwU</h6>
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
@@ -42,6 +42,11 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <input type="text" id="search" class="form-control" placeholder="Buscar...">
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -52,9 +57,9 @@
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="carreraTable">
                                     @foreach ($carreras as $carrera)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " id='aiuda'>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $carrera->direccion->name }}</td>
                                             <td>{{ $carrera->nombre }}</td>
@@ -165,5 +170,19 @@
             })
         }
 
+        // Filtrar las carreras en la tabla
+        document.getElementById('search').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#carreraTable tr');
+            rows.forEach(row => {
+                let showRow = false;
+                row.querySelectorAll('td').forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(value)) {
+                        showRow = true;
+                    }
+                });
+                row.style.display = showRow ? '' : 'none';
+            });
+        });
     </script>
 @endsection

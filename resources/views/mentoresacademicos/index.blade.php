@@ -43,6 +43,11 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" id="search" class="form-control" placeholder="Buscar mentor...">
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -54,9 +59,9 @@
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="mentorTable">
                                     @foreach($mentores as $mentor)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " id='aiuda'>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $mentor->name }}</td>
                                             <td>{{ $mentor->email }}</td>
@@ -147,7 +152,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($mentoresDeleted as $mentorDeletd)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " id='aiuda'>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $mentorDeletd->titulo }}</td>
                                             <td>{{ $mentorDeletd->name }}</td>
@@ -295,5 +300,19 @@
                 }
             })
         }
+        // Filtrar mentores
+        document.getElementById('search').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#mentorTable tr');
+            rows.forEach(row => {
+                let name = row.cells[1].textContent.toLowerCase();
+                let email = row.cells[2].textContent.toLowerCase();
+                if (name.includes(value) || email.includes(value)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
     </script>
 @endsection

@@ -1,5 +1,5 @@
 @extends("layouts.app")
-@section("title", "Profile")
+@section("title", "Perfil")
 
 @section("content")
     <div class="row">
@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Mi Perfil</h4>
-                            <p class="card-description">Actualiza la información de tu Perfil</p>
+                            <p class="card-description">Actualiza la información de tu perfil</p>
                             <span class="text-danger">* Campos requeridos</span>
                             <div class="dropdown-divider"></div>
                             <form method="post" action="{{ route("profile.update") }}" class="forms-sample">
@@ -30,30 +30,31 @@
                                         class="form-control" id="id" hidden>
                                 </div>
                                 <div class="form-group">
-                                    <label for="id">Nombre</label>
+                                    <label for="name">Nombre</label>
                                     <input type="text" name="name" value="{{ old("name", $user->name) }}"
-                                        class="form-control" id="id">
+                                        class="form-control" id="name">
                                     @error("name")
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">Correo Electronico</label>
+                                    <label for="email">Correo Electrónico</label>
                                     <input type="email" name="email" value="{{ old("email", $user->email) }}"
                                         class="form-control" id="email">
                                     @error("email")
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <button type="submit"
-                                    class="btn btn-primary mr-2 align-items-center justify-content-center">
-                                    <i class="mdi mdi-content-save mdi-16px align-middle"></i>
-                                    Actualizar Informacion
-                                </button>
-                                <a href="{{ route("dashboard") }}"
-                                    class="btn btn-outline-danger  align-items-center justify-content-center">
-                                    <i class="mdi mdi-close-circle-outline mdi-16px align-middle"></i>
-                                    Cancel</a>
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="mdi mdi-content-save mdi-16px align-middle"></i>
+                                        Actualizar Información
+                                    </button>
+                                    <a href="{{ route("dashboard") }}" class="btn btn-outline-danger">
+                                        <i class="mdi mdi-close-circle-outline mdi-16px align-middle"></i>
+                                        Cancelar
+                                    </a>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -62,7 +63,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Actualizar Contraseña</h4>
-                            <p class="card-description"> Actualizar tu Contraseña</p>
+                            <p class="card-description">Actualiza tu contraseña</p>
                             <div class="dropdown-divider"></div>
                             @if ($errors->getBag("updatePassword")->any())
                                 <div class="alert alert-danger">
@@ -78,14 +79,14 @@
                                 @csrf
                                 @method("put")
                                 <div class="form-group">
-                                    <label for="current_password">Contraseña actual:</label>
+                                    <label for="current_password">Contraseña Actual</label>
                                     <input type="password" name="current_password" id="current_password"
                                         class="form-control">
                                     @error("current_password")
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group w-100">
+                                <div class="form-group">
                                     <label for="password">Nueva Contraseña</label>
                                     <input type="password" name="password" id="password" class="form-control">
                                     @error("password")
@@ -93,22 +94,23 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="password_confirmation">Nueva Contraseña</label>
+                                    <label for="password_confirmation">Confirmar Nueva Contraseña</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation"
                                         class="form-control">
                                     @error("password_confirmation")
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <button type="submit"
-                                    class="btn btn-primary mr-2 align-items-center justify-content-center">
-                                    Actualizar Contraseña
-                                    <i class="mdi mdi-lock-outline mdi-16px align-middle"></i>
-                                </button>
-                                <a href="{{ route("dashboard") }}"
-                                    class="btn btn-outline-danger  align-items-center justify-content-center">
-                                    <i class="mdi mdi-close-circle-outline mdi-16px align-middle"></i>
-                                    Cancelar</a>
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="mdi mdi-lock-outline mdi-16px align-middle"></i>
+                                        Actualizar Contraseña
+                                    </button>
+                                    <a href="{{ route("dashboard") }}" class="btn btn-outline-danger">
+                                        <i class="mdi mdi-close-circle-outline mdi-16px align-middle"></i>
+                                        Cancelar
+                                    </a>
+                                </div>
                             </form>
                         </div>
                     </div>

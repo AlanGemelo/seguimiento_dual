@@ -102,6 +102,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <input class="form-control mb-3" id="searchInput" type="text" placeholder="Buscar..." onkeyup="filterTable('searchInput', 'tableBody')">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -112,7 +113,7 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tableBody">
                                     @if ($estudiantes->count() === 0)
                                         <tr class="animate__animated animate__fadeInDown ">
                                             <td colspan="7">
@@ -124,7 +125,7 @@
                                     @else
                                         @foreach ($estudiantes as $estudiante)
                                             <tr class="animate__animated animate__fadeInDown "
-                                                style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                                id='aiuda'>
                                                 <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{ $estudiante->name }}</td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
@@ -217,6 +218,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
+                            <input class="form-control mb-3" id="searchInput" type="text" placeholder="Buscar..." onkeyup="filterTable('searchInput', 'tableBody')">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -227,7 +229,7 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tableBody">
                                     @if ($candidatos->count() === 0)
                                         <tr>
                                             <td colspan="7">
@@ -239,7 +241,7 @@
                                     @else
                                         @foreach ($candidatos as $estudiante)
                                             <tr class="animate__animated animate__fadeInDown "
-                                                style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                                id='aiuda'>
                                                 <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{ $estudiante->name }}</td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
@@ -291,8 +293,7 @@
                                                     seleccione una razón para la baja.</p>
                                                 <select class="form-select" id='selectMotivo'
                                                     aria-label="Seleccionar Motivo" name="status">
-                                                    <option value="" selected>Seleccione razón de la baja
-                                                    </option>
+                                                    <option value="" selected>Seleccione razón de la baja</option>
                                                     @foreach ($situation as $carrera)
                                                         <option value="{{ $carrera["id"] }}">
                                                             {{ $carrera["name"] }}
@@ -342,7 +343,7 @@
                                     <tbody>
                                         @foreach ($estudiantesDeleted as $estudianteDeleted)
                                             <tr class="animate__animated animate__fadeInDown "
-                                                style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                                id='aiuda'>
                                                 <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{ $estudianteDeleted->matricula }}</td>
                                                 <td>{{ $estudianteDeleted->name }}</td>
@@ -510,6 +511,58 @@
                 $('#bannerDelete').html('¿Estás seguro de restaurar este registro? ' + response[0].name + ', Matricula: ' + response[0].matricula);
             }
         });
+    }
+
+
+    // Filtrar tabla
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let input = document.getElementById('searchInput');
+        let filter = input.value.toLowerCase();
+        let tableBody = document.getElementById('tableBody');
+        let rows = tableBody.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            let cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
+                    match = true;
+                    break;
+                }
+            }
+
+            if (match) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    });
+
+    function filterTable(inputId, tableBodyId) {
+        let input = document.getElementById(inputId);
+        let filter = input.value.toLowerCase();
+        let tableBody = document.getElementById(tableBodyId);
+        let rows = tableBody.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            let cells = rows[i].getElementsByTagName('td');
+            let match = false;
+
+            for (let j = 0; j < cells.length; j++) {
+                if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
+                    match = true;
+                    break;
+                }
+            }
+
+            if (match) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
     }
 </script>
 @endsection

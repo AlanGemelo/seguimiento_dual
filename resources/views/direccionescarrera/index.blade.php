@@ -42,6 +42,11 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" id="search" class="form-control" placeholder="Buscar dirección...">
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -52,9 +57,9 @@
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="direccionTable">
                                     @foreach ($direcciones as $carrera)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " id='aiuda'>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $carrera->name }}</td>
                                             <td>{{ $carrera->email }}</td>
@@ -157,7 +162,7 @@
     <script type="application/javascript">
         // hace una peticion ajax para obtener la informacion de la carrera
         function deleteDireccion(id) {
-     
+
             let form = document.getElementById('deleteForm')
             form.action = '/direcciones/' + id + '/delete'
             $.ajax({
@@ -168,5 +173,20 @@
                 }
             })
         }
+
+        // Filtrar direcciones
+        document.getElementById('search').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#direccionTable tr');
+            rows.forEach(row => {
+                let name = row.cells[1].textContent.toLowerCase();
+                let email = row.cells[2].textContent.toLowerCase();
+                if (name.includes(value) || email.includes(value)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
     </script>
 @endsection

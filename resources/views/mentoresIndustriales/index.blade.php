@@ -43,6 +43,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <input class="form-control mb-3" id="searchInput" type="text" placeholder="Buscar...">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
@@ -53,9 +54,9 @@
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tableBody">
                                     @foreach($mentoresIndustriales as $mentor)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " style="animation-delay: {{ $loop->index * 0.25 }}s;">
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " id='aiuda'>
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $mentor->titulo }}</td>
                                             <td> {{ $mentor->name }}</td>
@@ -146,5 +147,31 @@
                 }
             })
         }
+
+        // Filtrar tabla
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let input = document.getElementById('searchInput');
+            let filter = input.value.toLowerCase();
+            let tableBody = document.getElementById('tableBody');
+            let rows = tableBody.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName('td');
+                let match = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                if (match) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
     </script>
 @endsection

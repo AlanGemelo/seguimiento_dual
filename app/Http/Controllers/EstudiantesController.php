@@ -42,14 +42,14 @@ class EstudiantesController extends Controller
     public function index()
     {
 
-      
+
         $hoy = Carbon::now();
         // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
         $registros = Estudiantes::with('academico','asesorin')->whereDate('fin_dual','<=', $hoy->addDays(15))->where('activo',true)->get();
         $registrosConvenio = Empresa::with('asesorin')->whereDate('fin_conv','<=', $hoy->addDays(15))->get();
         // Enviar correos por cada registro
         foreach ($registrosConvenio as $registro) {
-          
+
         // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
         Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,
         env('APP_URL'),session('direccion')->email,session('direccion')->name));
@@ -431,7 +431,7 @@ class EstudiantesController extends Controller
             $query->where('direccion_id', session('direccion')->id);
         }])->get();
         $vista = Auth::user()->rol_id == 1 || Auth::user()->rol_id == 4  ? 'editAdmin' : 'edit';
-        
+
         return view('estudiantes.' . $vista, compact('estudiante','situation', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres', 'becas', 'tipoBeca', 'direcciones'));
     }
 
@@ -440,7 +440,7 @@ class EstudiantesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
 
         $request->validate([
             'matricula' => ['integer', 'min:8'],

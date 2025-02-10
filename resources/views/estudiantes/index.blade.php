@@ -218,7 +218,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <input class="form-control mb-3" id="searchInput" type="text" placeholder="Buscar..." onkeyup="filterTable('searchInput', 'tableBody')">
+                            <input class="form-control mb-3" id="searchInputCandidatos" type="text" placeholder="Buscar..." onkeyup="filterTable('searchInputCandidatos', 'tableBodyCandidatos')">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -229,7 +229,7 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tableBody">
+                                <tbody id="tableBodyCandidatos">
                                     @if ($candidatos->count() === 0)
                                         <tr>
                                             <td colspan="7">
@@ -314,73 +314,74 @@
                         </div>
                     </div>
                 </div>
-        </div>
-        {{-- Eliminados Lista --}}
-        @if ($estudiantesDeleted->count() !== 0)
-            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes Eliminados</h6>
+            </div>
+            {{-- Eliminados Lista --}}
+            @if ($estudiantesDeleted->count() !== 0)
+                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                    <div class="col-lg-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
+                                    <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes Eliminados</h6>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive  ">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Matricula</th>
-                                            <th>Estudiante</th>
-                                            <th>CURP</th>
-                                            <th>Fecha de Nacimiento</th>
-                                            <th>Cuatrimestre</th>
-                                            <th>Motivo</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($estudiantesDeleted as $estudianteDeleted)
-                                            <tr class="animate__animated animate__fadeInDown "
-                                                id='aiuda'>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $estudianteDeleted->matricula }}</td>
-                                                <td>{{ $estudianteDeleted->name }}</td>
-                                                <td>{{ $estudianteDeleted->curp }}</td>
-                                                <td>{{ $estudianteDeleted->fecha_na }}</td>
-                                                <td>{{ $estudianteDeleted->cuatrimestre }}</td>
-                                                <td>{{ $estudianteDeleted->status_text }}</td>
-                                                <td>
-                                                    <button
-                                                        class="btn btn-rounded-success btn-sm align-content-md-center align-items-center align-self-center"
-                                                        title="Restore" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal3" data-bs-placement="top"
-                                                        onclick="restoreRegistro({{ $estudianteDeleted->matricula }})">
-                                                        Reactivar &nbsp;&nbsp;
-                                                        <i class="mdi mdi-backup-restore"></i>
-                                                    </button>
-                                                    <button
-                                                        class="btn btn-danger btn-sm align-content-md-center align-items-center align-self-center"
-                                                        data-bs-toggle="modal" data-bs-target="#exampleModal2"
-                                                        data-bs-placement="top" title="Eliminar Permanentemente"
-                                                        type="button"
-                                                        onclick="destroyMentor({{ $estudianteDeleted->matricula }})">
-                                                        Eliminar &nbsp;&nbsp;
-                                                        <i class="mdi mdi-delete"></i>
-                                                    </button>
-                                                </td>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <input class="form-control mb-3" id="searchInputEliminados" type="text" placeholder="Buscar..." onkeyup="filterTable('searchInputEliminados', 'tableBodyEliminados')">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Matricula</th>
+                                                <th>Estudiante</th>
+                                                <th>CURP</th>
+                                                <th>Fecha de Nacimiento</th>
+                                                <th>Cuatrimestre</th>
+                                                <th>Motivo</th>
+                                                <th>Acciones</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody id="tableBodyEliminados">
+                                            @foreach ($estudiantesDeleted as $estudianteDeleted)
+                                                <tr class="animate__animated animate__fadeInDown "
+                                                    id='aiuda'>
+                                                    <td>{{ $loop->index + 1 }}</td>
+                                                    <td>{{ $estudianteDeleted->matricula }}</td>
+                                                    <td>{{ $estudianteDeleted->name }}</td>
+                                                    <td>{{ $estudianteDeleted->curp }}</td>
+                                                    <td>{{ $estudianteDeleted->fecha_na }}</td>
+                                                    <td>{{ $estudianteDeleted->cuatrimestre }}</td>
+                                                    <td>{{ $estudianteDeleted->status_text }}</td>
+                                                    <td>
+                                                        <button
+                                                            class="btn btn-rounded-success btn-sm align-content-md-center align-items-center align-self-center"
+                                                            title="Restore" data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModal3" data-bs-placement="top"
+                                                            onclick="restoreRegistro({{ $estudianteDeleted->matricula }})">
+                                                            Reactivar &nbsp;&nbsp;
+                                                            <i class="mdi mdi-backup-restore"></i>
+                                                        </button>
+                                                        <button
+                                                            class="btn btn-danger btn-sm align-content-md-center align-items-center align-self-center"
+                                                            data-bs-toggle="modal" data-bs-target="#exampleModal2"
+                                                            data-bs-placement="top" title="Eliminar Permanentemente"
+                                                            type="button"
+                                                            onclick="destroyMentor({{ $estudianteDeleted->matricula }})">
+                                                            Eliminar &nbsp;&nbsp;
+                                                            <i class="mdi mdi-delete"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endif
-        @endif
-    </div>
+        </div>
     </div>
     </div>
     </div>

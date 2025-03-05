@@ -9,6 +9,7 @@ use App\Models\Carrera;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DireccionCarreraController extends Controller
 {
@@ -90,7 +91,7 @@ class DireccionCarreraController extends Controller
     public function update(Request $request, DireccionCarrera $direccion)
     {
         $direccion->update($request->all());
-        
+
         return redirect()->route('direcciones.index')->with('message', 'Direccion Academico Actualizado Correctamente');
     }
 
@@ -103,7 +104,7 @@ class DireccionCarreraController extends Controller
     public function destroy(DireccionCarrera $direccion)
     {
 
-        
+
         try {
             $direccion->delete();
 

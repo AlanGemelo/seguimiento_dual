@@ -72,6 +72,23 @@
                         </li>
                     @endif
                 @endif
+                <!-- Nuevo apartado de Anexos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('anexo1_1.*') || request()->routeIs('anexo1_2.*') || request()->routeIs('anexo1_3.*') || request()->routeIs('anexo2_1.*') ? 'active' : '' }}" href="#" id="anexosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="mdi mdi-file-document"></i> Anexos
+                    </a>
+                    <ul class="dropdown-menu text-center" aria-labelledby="anexosDropdown">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">Anexo 1</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item {{ request()->routeIs('anexo1_1.*') ? 'active' : '' }}" href="{{ route('anexo1_1.index') }}">Anexo 1.1: Planeación y Difusión de la ED</a></li>
+                                <li><a class="dropdown-item {{ request()->routeIs('anexo1_2.*') ? 'active' : '' }}" href="{{ route('anexo1_2.index') }}">Anexo 1.2: Programa de Difusión de la ED</a></li>
+                                <li><a class="dropdown-item {{ request()->routeIs('anexo1_3.*') ? 'active' : '' }}" href="{{ route('anexo1_3.index') }}">Anexo 1.3: Formato de Registro de Interesados</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="dropdown-item {{ request()->routeIs('anexo2_1.*') ? 'active' : '' }}" href="{{ route('anexo2_1.index') }}">Anexo 2.1: Evaluación y Selección de la UE</a></li>
+                    </ul>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-sm-none d-lg-block">
                 <li class="nav-item dropdown">
@@ -169,31 +186,31 @@
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var dropdowns = document.querySelectorAll('.nav-item.dropdown');
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdowns = document.querySelectorAll('.nav-item.dropdown');
 
-        dropdowns.forEach(function(dropdown) {
-            dropdown.addEventListener('click', function(event) {
-                event.stopPropagation();
-                var menu = this.querySelector('.dropdown-menu');
-                var isOpen = menu.classList.contains('show');
-                closeAllDropdowns();
-                if (!isOpen) {
-                    menu.classList.add('show');
-                }
-            });
-        });
-
-        document.addEventListener('click', function() {
+    dropdowns.forEach(function(dropdown) {
+        dropdown.addEventListener('click', function(event) {
+            event.stopPropagation();
+            var menu = this.querySelector('.dropdown-menu');
+            var isOpen = menu.classList.contains('show');
             closeAllDropdowns();
+            if (!isOpen) {
+                menu.classList.add('show');
+            }
         });
-
-        function closeAllDropdowns() {
-            var menus = document.querySelectorAll('.dropdown-menu');
-            menus.forEach(function(menu) {
-                menu.classList.remove('show');
-            });
-        }
     });
+
+    document.addEventListener('click', function() {
+        closeAllDropdowns();
+    });
+
+    function closeAllDropdowns() {
+        var menus = document.querySelectorAll('.dropdown-menu');
+        menus.forEach(function(menu) {
+            menu.classList.remove('show');
+        });
+    }
+});
 </script>
 

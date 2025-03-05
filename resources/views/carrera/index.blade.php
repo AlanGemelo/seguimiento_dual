@@ -29,7 +29,7 @@
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Programas Educativos uWu </h6>
+                                <h6 class="text-white text-capitalize ps-3">Lista De Programas Educativos  </h6>
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}

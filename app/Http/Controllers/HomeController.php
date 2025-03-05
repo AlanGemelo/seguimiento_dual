@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -32,11 +33,11 @@ class HomeController extends Controller
     return view('dashboardSuperAdmin', compact(['estudiantes','mentores','direcciones']));
 }
 else if($auth->rol_id == 3){
-    
+
     $estudiante = Estudiantes::withTrashed()->where('user_id', $auth->id)->first();
     return view('dashboardEstudiante',compact('estudiante'));
 }
-else if($auth->rol_id == 4){    
+else if($auth->rol_id == 4){
     return view('dashboard', compact(['estudiantes','mentores']));
 }
 else{

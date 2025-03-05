@@ -13,7 +13,7 @@
                     </button>
                 </div>
             @endif
-      
+
             @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                 <div class="row">
                     <div class="col-lg-4 d-flex flex-column">
@@ -33,6 +33,7 @@
                         </div>
                     </div>
             @endif
+            
 
             <div class="col-lg-4 d-flex flex-column ">
                 <div class="row flex-grow">
@@ -66,7 +67,7 @@
                     </div>
                 </div>
             </div>
-      
+
 
             {{-- <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
                 <div class="bg-gray-800 text-white py-4 px-6 rounded-t-lg text-center">
@@ -81,7 +82,7 @@
                     </p>
                     <p class="text-gray-700">Agradecemos su atención a este asunto.</p>
                 </div>
-              
+
 
 
             </div>
@@ -105,9 +106,9 @@
                 </div>
             </div> --}}
 
-        
+
         </div>
     </div>
     </div>
 @endsection
- 
+

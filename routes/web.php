@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Anexo1_1Controller;
+use App\Http\Controllers\Anexo1_2Controller;
+use App\Http\Controllers\Anexo1_3Controller;
+use App\Http\Controllers\Anexo2_1Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +24,8 @@ Route::resource('directores', DirectorController::class);
 Route::get('/optimize', function () {
     Artisan::call('optimize:clear');
     Debugbar::addMessage('Comando generado', 'listo!!');
-
-    // return 'EL gemelo es mi pastor y lo chapulin no a de faltar';
-
 })->name('optimize');
+Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
 
 
 Route::get('/', [HomeController::class, 'welcome']);
@@ -99,21 +101,72 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/direcciones/{direccion}/delete', [DireccionCarreraController::class, 'destroy'])->name('direcciones.destroy');
     Route::get('/direcciones/crear', [DireccionCarreraController::class, 'create'])->name('direcciones.create');
     Route::get('/direcciones/{direccion}/edit', [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
-    
+
     Route::get('/directores/{id}/json', [DirectorController::class, 'showJson'])->name('direcciones.showJson');
     Route::post('alerts', [MentorAcademicoController::class, 'alerts'])->name('alerts');
-});
 
-// Descargar Anexos
-Route::get('/descargar/{archivo}', function ($archivo) {
-    $path = public_path('storage/anexos/' . $archivo);
-    if (file_exists($path)) {
-        return response()->download($path);
-    } else {
-        abort(404); // Si el archivo no existe, mostrar error 404
-    }
-});
-Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
 
+
+    // Rutas para Anexo 1.1
+    Route::get('/anexo1_1', [Anexo1_1Controller::class, 'index'])->name('anexo1_1.index');
+    Route::get('/anexo1_1/create', [Anexo1_1Controller::class, 'create'])->name('anexo1_1.create');
+    Route::post('/anexo1_1', [Anexo1_1Controller::class, 'store'])->name('anexo1_1.store');
+    Route::get('/anexo1_1/{anexo1_1}/edit', [Anexo1_1Controller::class, 'edit'])->name('anexo1_1.edit');
+    Route::put('/anexo1_1/{anexo1_1}', [Anexo1_1Controller::class, 'update'])->name('anexo1_1.update');
+    Route::delete('/anexo1_1/{anexo1_1}', [Anexo1_1Controller::class, 'destroy'])->name('anexo1_1.destroy');
+    Route::get('/anexo1_1/{anexo1_1}/pdf', [Anexo1_1Controller::class, 'generatePdf'])->name('anexo1_1.generatePdf');
+    Route::get('/anexo1_1/{anexo1_1}/word', [Anexo1_1Controller::class, 'generateWord'])->name('anexo1_1.generateWord');
+
+    // Rutas para Anexo 1.2
+    Route::get('/anexo1_2', [Anexo1_2Controller::class, 'index'])->name('anexo1_2.index');
+    Route::get('/anexo1_2/create', [Anexo1_2Controller::class, 'create'])->name('anexo1_2.create');
+    Route::post('/anexo1_2', [Anexo1_2Controller::class, 'store'])->name('anexo1_2.store');
+    Route::get('/anexo1_2/{anexo1_2}/edit', [Anexo1_2Controller::class, 'edit'])->name('anexo1_2.edit');
+    Route::put('/anexo1_2/{anexo1_2}', [Anexo1_2Controller::class, 'update'])->name('anexo1_2.update');
+    Route::delete('/anexo1_2/{anexo1_2}', [Anexo1_2Controller::class, 'destroy'])->name('anexo1_2.destroy');
+    Route::get('/anexo1_2/{anexo1_2}/pdf', [Anexo1_2Controller::class, 'generatePdf'])->name('anexo1_2.generatePdf');
+    Route::get('/anexo1_2/{anexo1_2}/word', [Anexo1_2Controller::class, 'generateWord'])->name('anexo1_2.generateWord');
+
+    // Rutas para Anexo 1.3
+    Route::get('/anexo1_3', [Anexo1_3Controller::class, 'index'])->name('anexo1_3.index');
+    Route::get('/anexo1_3/create', [Anexo1_3Controller::class, 'create'])->name('anexo1_3.create');
+    Route::post('/anexo1_3', [Anexo1_3Controller::class, 'store'])->name('anexo1_3.store');
+    Route::get('/anexo1_3/{anexo1_3}/edit', [Anexo1_3Controller::class, 'edit'])->name('anexo1_3.edit');
+    Route::put('/anexo1_3/{anexo1_3}', [Anexo1_3Controller::class, 'update'])->name('anexo1_3.update');
+    Route::delete('/anexo1_3/{anexo1_3}', [Anexo1_3Controller::class, 'destroy'])->name('anexo1_3.destroy');
+    Route::get('/anexo1_3/{anexo1_3}/pdf', [Anexo1_3Controller::class, 'generatePdf'])->name('anexo1_3.generatePdf');
+    Route::get('/anexo1_3/{anexo1_3}/word', [Anexo1_3Controller::class, 'generateWord'])->name('anexo1_3.generateWord');
+
+    // Rutas para Anexo 2.1
+    Route::get('/anexo2_1', [Anexo2_1Controller::class, 'index'])->name('anexo2_1.index');
+    Route::get('/anexo2_1/create', [Anexo2_1Controller::class, 'create'])->name('anexo2_1.create');
+    Route::post('/anexo2_1', [Anexo2_1Controller::class, 'store'])->name('anexo2_1.store');
+    Route::get('/anexo2_1/{anexo2_1}/edit', [Anexo2_1Controller::class, 'edit'])->name('anexo2_1.edit');
+    Route::put('/anexo2_1/{anexo2_1}', [Anexo2_1Controller::class, 'update'])->name('anexo2_1.update');
+    Route::delete('/anexo2_1/{anexo2_1}', [Anexo2_1Controller::class, 'destroy'])->name('anexo2_1.destroy');
+    Route::get('/anexo2_1/{anexo2_1}/pdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
+    Route::get('/anexo2_1/{anexo2_1}/word', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
+
+
+
+    // Rutas para la Navegación Principal
+    Route::get('/anexos', function () {
+        return view('anexos.index');
+    })->name('anexos.index');
+
+    Route::get('/', function () {
+        return redirect()->route('anexos.index');
+    });
+
+
+    Route::get('/descargar/{archivo}', function ($archivo) {
+        $path = public_path('storage/anexos/' . $archivo);
+        if (file_exists($path)) {
+            return response()->download($path);
+        } else {
+            abort(404); // Si el archivo no existe, mostrar error 404
+        }
+    });
+});
 
 require __DIR__ . '/auth.php';

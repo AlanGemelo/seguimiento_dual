@@ -24,7 +24,7 @@ class CarreraController extends Controller
     {
         $carreras = Carrera::with('direccion')->where('direccion_id',session('direccion')->id)->get();
         return view('carrera.index', compact('carreras'));
-    } 
+    }
 
     public function store(Request $request)
     {
@@ -46,9 +46,9 @@ class CarreraController extends Controller
         $request->validate([
             'nombre' => ['required', 'min:2', 'max:255', 'string'],
             'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id']
-            
+
         ]);
-        
+
         // $id = Hashids::decode($id);
 
         $id->update($request->all());

@@ -146,6 +146,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/anexo2_1/{anexo2_1}', [Anexo2_1Controller::class, 'destroy'])->name('anexo2_1.destroy');
     Route::get('/anexo2_1/{anexo2_1}/pdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
     Route::get('/anexo2_1/{anexo2_1}/word', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
+    Route::get('/anexo2_1/export/pdf', [Anexo2_1Controller::class, 'exportPDF'])->name('anexo2_1.export.pdf');
+    Route::get('/anexo2_1/export/word', [Anexo2_1Controller::class, 'exportWord'])->name('anexo2_1.export.word');
 
 
 

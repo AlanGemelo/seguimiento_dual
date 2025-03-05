@@ -84,9 +84,14 @@
                                 <li><a class="dropdown-item {{ request()->routeIs('anexo1_1.*') ? 'active' : '' }}" href="{{ route('anexo1_1.index') }}">Anexo 1.1: Planeación y Difusión de la ED</a></li>
                                 <li><a class="dropdown-item {{ request()->routeIs('anexo1_2.*') ? 'active' : '' }}" href="{{ route('anexo1_2.index') }}">Anexo 1.2: Programa de Difusión de la ED</a></li>
                                 <li><a class="dropdown-item {{ request()->routeIs('anexo1_3.*') ? 'active' : '' }}" href="{{ route('anexo1_3.index') }}">Anexo 1.3: Formato de Registro de Interesados</a></li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Anexo 2</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item {{ request()->routeIs('anexo2_1.*') ? 'active' : '' }}" href="{{ route('anexo2_1.index') }}">Anexo 2.1: Evaluación y Selección de la UE</a></li>
+                                    </ul>
+                                </li>
+                            </li>
                             </ul>
-                        </li>
-                        <li><a class="dropdown-item {{ request()->routeIs('anexo2_1.*') ? 'active' : '' }}" href="{{ route('anexo2_1.index') }}">Anexo 2.1: Evaluación y Selección de la UE</a></li>
                     </ul>
                 </li>
             </ul>

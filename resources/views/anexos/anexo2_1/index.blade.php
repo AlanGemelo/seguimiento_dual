@@ -4,7 +4,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h3>Anexo 2.1 - Evaluación y Selección de la UE</h3>
+            <h3>Anexo 2.1 - Evaluación de la UE</h3>
             <a href="{{ route('anexo2_1.create') }}" class="btn btn-primary">Crear Nuevo</a>
         </div>
         <div class="card-body">
@@ -12,7 +12,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Fecha de Creación</th>
+                        <th>Unidad Económica</th>
+                        <th>Periodo</th>
+                        <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -20,7 +22,9 @@
                     @foreach($anexos as $anexo)
                         <tr>
                             <td>{{ $anexo->id }}</td>
-                            <td>{{ $anexo->created_at }}</td>
+                            <td>{{ $anexo->unidad_economica }}</td>
+                            <td>{{ $anexo->periodo }}</td>
+                            <td>{{ $anexo->fecha }}</td>
                             <td>
                                 <a href="{{ route('anexo2_1.edit', $anexo->id) }}" class="btn btn-warning">Editar</a>
                                 <form action="{{ route('anexo2_1.destroy', $anexo->id) }}" method="POST" style="display:inline-block;">

@@ -202,51 +202,49 @@ window.onclick = function(event) {
 </script>
 
 <style>
-    .is-invalid {
-        border-color: red;
-    }
-    .invalid-feedback {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@endsection</style>    }        to { opacity: 1; }        from { opacity: 0; }    @keyframes fadeIn {    }        background-color: #0056b3;    .btn-help:hover {    }        box-shadow: 0 5px 15px rgba(0,0,0,0.3);        font-size: 16px;        border-radius: 50px;        padding: 10px 20px;        border: none;        color: white;        background-color: #007bff;    .btn-help {    }        cursor: pointer;        text-decoration: none;        color: black;    .close:focus {    .close:hover,    }        font-weight: bold;        font-size: 28px;        float: right;        color: #aaa;    .close {    }        animation: fadeIn 0.5s;        border-radius: 10px;        box-shadow: 0 5px 15px rgba(0,0,0,0.3);        width: 80%;        border: 1px solid #888;        padding: 20px;        margin: 5% auto;        background-color: #fefefe;    .modal-content {    }        color: red;
+.is-invalid {
+    border-color: red;
+}
+.invalid-feedback {
+    color: red;
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    animation: fadeIn 0.5s;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.btn-help {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.btn-help:hover {
+    background-color: #0056b3;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+@endsection

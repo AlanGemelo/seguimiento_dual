@@ -15,7 +15,8 @@
         "laravel/tinker": "^2.7",
         "opcodesio/log-viewer": "^3.1",
         "realrashid/sweet-alert": "^7.1",
-        "vinkla/hashids": "^10.0"
+        "vinkla/hashids": "^10.0",
+        "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

@@ -16,7 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('hola', function () {
+    return response()->json(['message' => 'Hola, mundo!']);
+});
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('login', [AuthController::class, 'login']);
+Route::middleware('jwt.auth')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('user', [AuthController::class, 'user']);
+    Route::get('direcciones/select/{direccion}', [DireccionCarreraController::class, 'select']);
+    Route::apiResource('direcciones', DireccionCarreraController::class);
+});
+
 

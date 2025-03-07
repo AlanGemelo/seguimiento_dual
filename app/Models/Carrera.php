@@ -15,10 +15,12 @@ class Carrera extends Model
         'email',
         'telefono',
     ];
+
     public function direccion()
     {
         return $this->belongsTo(DireccionCarrera::class, 'direccion_id', 'id');
     }
+
     public function estudiantes()
     {
         return $this->hasMany(Estudiantes::class, 'carrera_id', 'id');

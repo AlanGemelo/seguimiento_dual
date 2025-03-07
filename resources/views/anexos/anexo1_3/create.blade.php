@@ -4,7 +4,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h3>Anexo 1.3 - Encuesta a Unidades Económicas</h3>
+            <h3>Anexo 1.3 -  Formato de Registro de Interesados de UE y Estudiantes ED</h3>
         </div>
         <div class="card-body">
             <form action="{{ route('anexo1_3.store') }}" method="POST" id="anexo1_3_form">

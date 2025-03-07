@@ -7,17 +7,22 @@ class CreateAnexo21Table extends Migration
 {
     public function up()
     {
-        Schema::create('anexo_2_1', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('anexo2_1', function (Blueprint $table) {
+            $table->id();
             $table->string('unidad_economica');
             $table->string('periodo');
             $table->date('fecha');
-            $table->longText('seccion_1'); // Cambiado a LONGTEXT
-            $table->longText('seccion_2'); // Cambiado a LONGTEXT
-            $table->longText('seccion_3'); // Cambiado a LONGTEXT
+            $table->longText('seccion_1');
+            $table->longText('seccion_2');
+            $table->longText('seccion_3');
+            $table->string('aplicador');
+            $table->foreignId('autorizo')->constrained('users');
+            $table->float('nivel_vulnerabilidad')->nullable();
+            $table->string('resultado_definitivo')->nullable();
             $table->timestamps();
         });
     }
+
 
     public function down()
     {

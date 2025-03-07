@@ -121,7 +121,7 @@ class Anexo1_3Controller extends Controller
     {
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
-        $section->addText('Anexo 1.3 - Encuesta a Unidades Económicas');
+        $section->addText('Anexo 1.3 -  Formato de Registro de Interesados de UE y Estudiantes ED');
         $section->addText('Fecha de Realización: ' . \Carbon\Carbon::parse($anexo1_3->fecha_realizacion)->format('d/m/Y'));
         $section->addText('Lugar: ' . $anexo1_3->lugar);
         $section->addText('Razón Social: ' . $anexo1_3->razon_social);

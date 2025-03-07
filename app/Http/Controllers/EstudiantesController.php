@@ -749,4 +749,20 @@ class EstudiantesController extends Controller
         //
         return redirect()->route('estudiantes.index')->with('success', 'Estudiante Eliminado Correctamente.');
     }
+
+    public function exportPdf($matricula)
+    {
+        $estudiante = Estudiantes::findOrFail($matricula);
+        $data = [
+            'no' => $estudiante->matricula,
+            'nombre' => $estudiante->name,
+            'programa_educativo' => $estudiante->carrera->nombre,
+            'le_queda_claro' => 'SI', // Suponiendo que siempre es "SI"
+            'le_interesa' => 'SI', // Suponiendo que siempre es "SI"
+            'no_interesado' => '', // Suponiendo que no hay razón para no estar interesado
+        ];
+
+        $pdf = Pdf::loadView('estudiantes.pdf', $data);
+        return $pdf->download('estudiante_' . $estudiante->matricula . '.pdf');
+    }
 }

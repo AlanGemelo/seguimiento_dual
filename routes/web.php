@@ -9,6 +9,7 @@ use App\Http\Controllers\Anexo1_1Controller;
 use App\Http\Controllers\Anexo1_2Controller;
 use App\Http\Controllers\Anexo1_3Controller;
 use App\Http\Controllers\Anexo2_1Controller;
+use App\Http\Controllers\EmpresaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/carreras/{id}/delete', [CarreraController::class, 'destroy'])->name('carreras.destroy');
     Route::get('/carreras/{id}/editar', [CarreraController::class, 'edit'])->name('carreras.edit');
     Route::resource('estadisticas', EstadisticaController::class);
+    Route::get('estadisticas/exportExcel', [EstadisticaController::class, 'exportExcel'])->name('estadisticas.exportExcel');
+    Route::get('estadisticas/mentor/{mentorId}', [EstadisticaController::class, 'getEstudiantesPorMentor']);
+    Route::get('estadisticas/empresa/{empresaId}', [EstadisticaController::class, 'getEstudiantesPorEmpresa']);
+    Route::get('estadisticas/carrera/{carreraId}', [EstadisticaController::class, 'getEstudiantesPorCarrera']);
+    Route::get('estadisticas/mentor/{mentorId}/excel', [EstadisticaController::class, 'exportEstudiantesPorMentorExcel']);
+    Route::get('estadisticas/empresa/{empresaId}/excel', [EstadisticaController::class, 'exportEstudiantesPorEmpresaExcel']);
+    Route::get('estadisticas/carrera/{carreraId}/excel', [EstadisticaController::class, 'exportEstudiantesPorCarreraExcel']);
+    Route::get('estadisticas/mentor/{mentorId}/pdf', [EstadisticaController::class, 'exportEstudiantesPorMentorPdf']);
+    Route::get('estadisticas/empresa/{empresaId}/pdf', [EstadisticaController::class, 'exportEstudiantesPorEmpresaPdf']);
+    Route::get('estadisticas/carrera/{carreraId}/pdf', [EstadisticaController::class, 'exportEstudiantesPorCarreraPdf']);
+    Route::get('estadisticas/status/{status}', [EstadisticaController::class, 'getEstudiantesPorStatus']);
+    Route::get('estadisticas/beca/{beca}', [EstadisticaController::class, 'getEstudiantesPorBeca']);
+    Route::get('estadisticas/status/{status}/excel', [EstadisticaController::class, 'exportEstudiantesPorStatusExcel']);
+    Route::get('estadisticas/beca/{beca}/excel', [EstadisticaController::class, 'exportEstudiantesPorBecaExcel']);
 
     Route::get('/direcciones', [DireccionCarreraController::class, 'index'])->name('direcciones.index');
     Route::post('/direcciones', [DireccionCarreraController::class, 'store'])->name('direcciones.store');
@@ -146,19 +161,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/anexo2_1/{anexo2_1}', [Anexo2_1Controller::class, 'destroy'])->name('anexo2_1.destroy');
     Route::get('/anexo2_1/{anexo2_1}/pdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
     Route::get('/anexo2_1/{anexo2_1}/word', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
-    Route::get('/anexo2_1/export/pdf', [Anexo2_1Controller::class, 'exportPDF'])->name('anexo2_1.export.pdf');
-    Route::get('/anexo2_1/export/word', [Anexo2_1Controller::class, 'exportWord'])->name('anexo2_1.export.word');
 
-
+    // Rutas para Anexo 2.1 con Stepper
+    Route::get('/anexo2_1/stepper', [Anexo2_1Controller::class, 'showStepper'])->name('anexo2_1.stepper');
+    Route::post('/anexo2_1/stepper', [Anexo2_1Controller::class, 'storeStepper'])->name('anexo2_1.storeStepper');
 
     // Rutas para la Navegación Principal
-    Route::get('/anexos', function () {
-        return view('anexos.index');
-    })->name('anexos.index');
+    // Route::get('/anexos', function () {
+    //     return view('anexos.index');
+    // })->name('anexos.index');
 
-    Route::get('/', function () {
-        return redirect()->route('anexos.index');
-    });
+    // Route::get('/', function () {
+    //     return redirect()->route('anexos.index');
+    // });
 
 
     Route::get('/descargar/{archivo}', function ($archivo) {
@@ -169,6 +184,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
             abort(404); // Si el archivo no existe, mostrar error 404
         }
     });
+
+    Route::resource('empresas', EmpresaController::class);
+    Route::get('empresas/interesadas', [EmpresaController::class, 'interesadas'])->name('empresas.interesadas');
+    Route::get('empresas/{empresa}/darAlta', [EmpresaController::class, 'darAlta'])->name('empresas.darAlta');
+    Route::patch('empresas/{empresa}/registrar', [EmpresaController::class, 'registrar'])->name('empresas.registrar');
+    Route::get('empresas/{empresa}/downloadPDF', [EmpresaController::class, 'downloadPDF'])->name('empresas.downloadPDF');
+    Route::get('empresas/exportUeiPdf', [EmpresaController::class, 'exportUeiPdf'])->name('empresas.exportUeiPdf');
+
+    Route::resource('anexo2_1', Anexo2_1Controller::class);
+    Route::get('anexo2_1/{anexo2_1}/generatePdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
+    Route::get('anexo2_1/{anexo2_1}/generateWord', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
 });
 
 require __DIR__ . '/auth.php';

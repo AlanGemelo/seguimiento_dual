@@ -63,4 +63,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(DireccionCarrera::class, 'id', 'direccion_id');
     }
+
+    /**
+     * Scope para obtener mentores académicos.
+     */
+    public function scopeMentoresAcademicos($query)
+    {
+        return $query->where('rol_id', 2);
+    }
 }

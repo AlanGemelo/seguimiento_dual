@@ -22,7 +22,7 @@ class Anexo1_1Controller extends Controller
     public function create()
     {
         $carreras = Carrera::where('direccion_id', session('direccion')->id)->get();
-        $users = User::whereIn('rol_id', [2, 3, 4])->get();
+        $users = User::whereIn('rol_id', [2])->get();
         $directors = Director::where('direccion_id', session('direccion')->id)->get();
         return view('anexos.anexo1_1.create', compact('carreras', 'users', 'directors'));
     }

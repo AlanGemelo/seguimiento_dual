@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Anexo2_1 extends Model
 {
     use HasFactory;
-    protected $table = 'anexo_2_1';
+    protected $table = 'anexo2_1';
 
     protected $fillable = [
         'unidad_economica',
@@ -16,12 +16,21 @@ class Anexo2_1 extends Model
         'fecha',
         'seccion_1',
         'seccion_2',
-        'seccion_3'
+        'seccion_3',
+        'aplicador',
+        'autorizo',
+        'nivel_vulnerabilidad',
+        'resultado_definitivo',
     ];
 
     protected $casts = [
         'seccion_1' => 'array',
         'seccion_2' => 'array',
-        'seccion_3' => 'array'
+        'seccion_3' => 'array',
     ];
+
+    public function autorizoUser()
+    {
+        return $this->belongsTo(User::class, 'autorizo');
+    }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anexo 1.2 - Actividades a Desarrollar</title>
+    <title>Anexo 1.2 - Programa de Difusión de la ED</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,16 +61,16 @@
             <th>ACTIVIDAD</th>
             <th>RESPONSABLE</th>
             <th>UNIDAD DE MEDIDA</th>
-        <th>META</th>
+            <th>META</th>
             <th>PERIODO</th>
         </tr>
         @foreach($anexo1_2->actividades as $actividad)
         <tr>
-            <td>{{ $actividad['actividad'] }}</td>
-            <td>{{ $actividad['responsable'] }}</td>
-            <td>{{ $actividad['unidad_medida'] }}</td>
-            <td>{{ $actividad['meta'] }}</td>
-            <td>{{ $actividad['periodo'] }}</td>
+            <td>{{ is_array($actividad['actividad']) ? implode(', ', $actividad['actividad']) : $actividad['actividad'] }}</td>
+            <td>{{ is_array($actividad['responsable']) ? implode(', ', $actividad['responsable']) : $actividad['responsable'] }}</td>
+            <td>{{ is_array($actividad['unidad_medida']) ? implode(', ', $actividad['unidad_medida']) : $actividad['unidad_medida'] }}</td>
+            <td>{{ is_array($actividad['meta']) ? implode(', ', $actividad['meta']) : $actividad['meta'] }}</td>
+            <td>{{ is_array($actividad['periodo']) ? implode(', ', $actividad['periodo']) : $actividad['periodo'] }}</td>
         </tr>
         @endforeach
     </table>

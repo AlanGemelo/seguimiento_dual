@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Editar Empresa')
+@section('title', 'Dar de Alta Empresa')
 
 @section('content')
 <div class="row">
@@ -8,10 +8,10 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Editar Empresa</h4>
+                        <h4 class="card-title">Dar de Alta Empresa</h4>
                         <span class="text-danger">* Son campos requeridos</span>
                         <div class="dropdown-divider"></div>
-                        <form class="pt-3" action="{{ route('empresas.update', $empresa->id) }}" method="post">
+                        <form class="pt-3" action="{{ route('empresas.registrar', $empresa->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             <div class="form-group">

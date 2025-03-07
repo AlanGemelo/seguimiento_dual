@@ -4,7 +4,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h3>Editar Anexo 1.3 - Encuesta a Unidades Económicas</h3>
+            <h3>Editar Anexo 1.3 -  Formato de Registro de Interesados de UE y Estudiantes ED</h3>
             <!-- Botón de Ayuda -->
             <button type="button" class="btn btn-help" onclick="openHelpModal()">
                 ¿Necesitas ayuda? 🔍

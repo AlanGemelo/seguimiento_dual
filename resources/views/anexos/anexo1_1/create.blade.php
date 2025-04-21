@@ -39,27 +39,18 @@
                     </div>
                     <div class="col-md-6">
                         <label for="responsable_programa_id" class="form-label">Responsable del Programa Educativo</label>
-                        <select class="form-control @error('responsable_programa_id') is-invalid @enderror" id="responsable_programa_id" name="responsable_programa_id" required>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ old('responsable_programa_id') == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                        <select class="form-control" id="responsable_programa_id" name="responsable_programa_id" required>
+                            @foreach($directores as $director)
+                                <option value="{{ $director->id }}">{{ $director->nombre }}</option>
                             @endforeach
                         </select>
-                        @error('responsable_programa_id')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="responsable_academico_id" class="form-label">Responsable Académico de la IE</label>
-                        <select class="form-control @error('responsable_academico_id') is-invalid @enderror" id="responsable_academico_id" name="responsable_academico_id" required>
-                            @foreach($directors as $director)
-                                <option value="{{ $director->id }}" {{ old('responsable_academico_id') == $director->id ? 'selected' : '' }}>{{ $director->nombre }}</option>
-                            @endforeach
-                        </select>
-                        @error('responsable_academico_id')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                        <input type="text" class="form-control" value="{{ $responsableAcademico->name }}" disabled>
+                        <input type="hidden" name="responsable_academico_id" value="{{ $responsableAcademico->id }}">
                     </div>
                 </div>
                 <div class="mb-3">

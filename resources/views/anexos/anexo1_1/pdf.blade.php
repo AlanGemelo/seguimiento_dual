@@ -107,14 +107,14 @@
     <div class="signature">
         <p><strong>ELABORA</strong></p>
         <p>_______________________________</p>
-        <p>{{ $anexo1_1->responsablePrograma->name }}</p>
+        <p>{{ $anexo1_1->responsablePrograma->nombre }}</p>
         <p>Responsable del Programa Educativo</p>
     </div>
 
     <div class="signature">
         <p><strong>AUTORIZA</strong></p>
         <p>_______________________________</p>
-        <p>{{ $anexo1_1->responsableAcademico->nombre }}</p>
+        <p>{{ $anexo1_1->responsableAcademico->name }}</p>
         <p>Responsable Académico en la IE</p>
     </div>
 

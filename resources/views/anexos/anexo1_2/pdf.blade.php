@@ -77,12 +77,12 @@
 
     <div class="signature">
         <p>ELABORÓ</p>
-        <p>{{ optional($anexo1_2->quienElaboro)->name }}</p>
+        <p>{{ $anexo1_2->quienElaboro->nombre }}</p>
     </div>
 
     <div class="signature">
-        <p>AUTORIZÓ</p>
-        <p>{{ $anexo1_2->nombre_firma_ie }}</p>
+        <p>RESPONSABLE DE LA IE</p>
+        <p>{{ $responsableIE->name }}</p>
     </div>
 </body>
 </html>

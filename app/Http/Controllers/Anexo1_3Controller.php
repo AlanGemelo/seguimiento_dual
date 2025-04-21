@@ -19,8 +19,8 @@ class Anexo1_3Controller extends Controller
 
     public function create()
     {
-        $users = User::all();
-        return view('anexos.anexo1_3.create', compact('users'));
+        $responsableIE = User::find(1); // Cargar el usuario con ID 1
+        return view('anexos.anexo1_3.create', compact('responsableIE'));
     }
 
     public function store(Request $request)
@@ -69,8 +69,8 @@ class Anexo1_3Controller extends Controller
 
     public function edit(Anexo1_3 $anexo1_3)
     {
-        $users = User::all();
-        return view('anexos.anexo1_3.edit', compact('anexo1_3', 'users'));
+        $responsableIE = User::find(1); // Cargar el usuario con ID 1
+        return view('anexos.anexo1_3.edit', compact('anexo1_3', 'responsableIE'));
     }
 
     public function update(Request $request, Anexo1_3 $anexo1_3)

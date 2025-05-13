@@ -36,13 +36,13 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'host' => env('MAIL_HOST', 'smtp.office365.com'), // Cambiado a Outlook
+            'port' => env('MAIL_PORT', 587), // El puerto 587 es el correcto para Outlook con TLS
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'), // El cifrado TLS es el adecuado para Outlook
+            'username' => env('MAIL_USERNAME'), // Debe coincidir con tu dirección de correo de Outlook
+            'password' => env('MAIL_PASSWORD'), // La contraseña de tu cuenta de correo
             'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'auth_mode' => null,
         ],
 
         'ses' => [
@@ -91,10 +91,11 @@ return [
     |
     */
 
-    'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
-    ],
+  'from' => [
+    'address' => env('MAIL_FROM_ADDRESS', 'SistemasDual@outlook.com'), // Cambia a tu dirección de correo
+    'name' => env('MAIL_FROM_NAME', 'Universidad Tecnologica del Valle de Toluca'), // Cambia al nombre que quieres mostrar
+],
+
 
     /*
     |--------------------------------------------------------------------------

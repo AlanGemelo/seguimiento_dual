@@ -2,11 +2,17 @@
 
 namespace App\Console;
 
+use App\Jobs\EnviarRecordatoriosJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        Commands\SendNotification::class,
+    ];
+    
+    
     /**
      * Define the application's command schedule.
      *
@@ -15,8 +21,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('job:email')->everyFiveMinutes();
     }
+    
 
     /**
      * Register the commands for the application.

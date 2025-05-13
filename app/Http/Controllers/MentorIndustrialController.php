@@ -8,15 +8,22 @@ use App\Models\MentorIndustrial;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 use Vinkla\Hashids\Facades\Hashids;
 
 class MentorIndustrialController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 
     public function index()
     {
-        $mentoresIndustriales = MentorIndustrial::all();
-
+        
+$mentoresIndustriales = MentorIndustrial::with(['empresa'])->whereHas('empresa',function ($query){
+            $query->where('direccion_id',session('direccion')->id);
+})->get();
         return view('mentoresIndustriales.index', compact('mentoresIndustriales'));
     }
 
@@ -48,32 +55,35 @@ class MentorIndustrialController extends Controller
     public function show($id)
     {
         $id = Hashids::decode($id);
-        $mentorIndustrial=MentorIndustrial::find($id);
-        $mentorIndustrial=$mentorIndustrial[0];
+        $mentorIndustrial = MentorIndustrial::find($id);
+        $mentorIndustrial = $mentorIndustrial[0];
         return view('mentoresIndustriales.show', compact('mentorIndustrial'));
     }
 
     public function edit($id)
     {
         $id = Hashids::decode($id);
-        $mentorIndustrial=MentorIndustrial::find($id);
-        $mentorIndustrial=$mentorIndustrial[0];
+        $mentorIndustrial = MentorIndustrial::find($id);
+        $mentorIndustrial = $mentorIndustrial[0];
 
         $empresas = Empresa::all();
 
         return view('mentoresIndustriales.edit', compact('mentorIndustrial', 'empresas'));
     }
 
-    public function update(Request $request, MentorIndustrial $mentorIndustrial)
+    public function update(Request $request, MentorIndustrial $mentorIndustrial, $id)
     {
         $request->validate([
             'titulo' =>  ['string', 'max:255'],
             'name' => ['string', 'max:255'],
             'empresa_id' => ['integer', 'exists:' . Empresa::class . ',id'],
         ]);
-
-        $mentorIndustrial->update($request->all());
-
+        $mentorIndustrial->find($id)->update($request->all());
+        // $mentorIndustrial->find($id)->update([
+        //     'titulo' => $request->titulo,
+        //     'name' => $request->name,
+        //     'empresa_id' => $request->empresa_id
+        // ]);
         return redirect()->route('mentores.index')->with('status', 'Mentor industrial actualizado');
     }
 
@@ -81,7 +91,7 @@ class MentorIndustrialController extends Controller
     public function destroy($id)
     {
         try {
-            $id=MentorIndustrial::find($id);
+            $id = MentorIndustrial::find($id);
             $id->delete();
 
             return redirect()->route('mentores.index')->with('status', 'Mentor industrial eliminado');
@@ -105,9 +115,9 @@ class MentorIndustrialController extends Controller
         return response()->json($mentor);
     }
 
-    public function showForEmpresa($id):JsonResponse
+    public function showForEmpresa($id): JsonResponse
     {
-        $mentores=MentorIndustrial::where('empresa_id', $id)->get();
+        $mentores = MentorIndustrial::where('empresa_id', $id)->get();
 
         return response()->json($mentores);
     }

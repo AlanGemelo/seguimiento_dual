@@ -21,7 +21,9 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png')}}"/>
 </head>
 <body>
-@yield('content')
+<div class="animate__animated animate__rubberBand animate__infinite">
+    @yield('content')
+</div>
 <!-- container-scroller -->
 <!-- plugins:js -->
 <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>

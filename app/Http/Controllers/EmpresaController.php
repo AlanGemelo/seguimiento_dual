@@ -2,121 +2,184 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DireccionCarrera;
 use App\Models\Empresa;
 use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
+use App\Models\Anexo2_1;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Vinkla\Hashids\Facades\Hashids;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EmpresaController extends Controller
 {
-
     public function __construct()
     {
-        $this->middleware('admin')->except('showJson');
+        $this->middleware('admin');
     }
 
     public function index()
     {
-        $empresas = Empresa::all();
-
-        return view('empresas.index', compact('empresas'));
+        $empresas = Empresa::where('status', 1)->get();
+        $empresasInteresadas = Empresa::where('status', 0)->get();
+        return view('empresas.index', compact('empresas', 'empresasInteresadas'));
     }
 
-    public function create()
+    public function interesadas()
     {
-        $mentores=MentorIndustrial::all();
+        $empresas = Empresa::where('status', 0)->get();
+        return view('empresas.interesadas', compact('empresas'));
+    }
 
-        return view('empresas.create', compact('mentores'));
+    public function create(Request $request)
+    {
+        $direcciones = DireccionCarrera::where('id',session('direccion')->id)->get(); // Asegúrate de obtener las direcciones
+        $anexo2_1 = Anexo2_1::find($request->anexo2_1_id);
+        return view('empresas.create', compact('anexo2_1','direcciones'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => ['required', 'string', 'max:255'],
-            'direccion' => ['required', 'string', 'max:255'],
-            'inicio_conv' => ['required', 'date'],
-            'fin_conv' => ['required', 'date'],
+            'nombre' => 'required|string|max:255',
+            'unidad_economica' => 'required|string|max:255',
+            'fecha_registro' => 'required|date',
+            'razon_social' => 'required|string|max:255',
+            'nombre_representante' => 'required|string|max:255',
+            'cargo_representante' => 'required|string|max:255',
+            'actividad_economica' => 'required|string|max:255',
+            'tamano_ue' => 'required|integer',
+            'folio' => 'required|string|max:255',
         ]);
 
-        $empresa = Empresa::create([
-            'nombre' => $request->nombre,
-            'direccion' => $request->direccion,
-            'inicio_conv' => Carbon::parse($request->inicio_conv)->format("Y-m-d"),
-            'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
-        ]);
+        $empresa = Empresa::create($request->all());
 
-        return redirect()->route('empresas.index')->with('status', 'Empresa creada');
+        return redirect()->route('empresas.index')->with('success', 'Empresa interesada creada exitosamente.');
     }
 
     public function show($id)
     {
         $id = Hashids::decode($id);
-        $empresa=Empresa::find($id);
-        $empresa=$empresa[0];
+        if (empty($id)) {
+            return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
+        }
+        $empresa = Empresa::find($id[0]);
+        if (!$empresa) {
+            return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
+        }
 
         return view('empresas.show', compact('empresa'));
     }
 
-    public function edit($id)
+    public function edit(Empresa $empresa)
     {
-        $id = Hashids::decode($id);
-        $empresa=Empresa::find($id);
-        $empresa=$empresa[0];
-
-        $estudiantes = Estudiantes::all();
-
-        return view('empresas.edit', compact('empresa', 'estudiantes'));
+        $direcciones = DireccionCarrera::all(); // Asegúrate de obtener las direcciones
+        return view('empresas.edit', compact('empresa', 'direcciones'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Empresa $empresa)
     {
         $request->validate([
-            'nombre' => ['required', 'string', 'max:255'],
-            'direccion' => ['required', 'string', 'max:255'],
-            'inicio_conv' => ['required', 'date'],
-            'fin_conv' => ['required', 'date'],
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
+            'direccion' => 'required|string',
+            'telefono' => 'required|string|size:10',
+            'inicio_conv' => 'required|date',
+            'fin_conv' => 'required|date',
+            'ine' => 'nullable|file|mimes:pdf,jpg',
+            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
+            'convenioA' => 'nullable|file|mimes:pdf,jpg',
+            'convenioMA' => 'nullable|file|mimes:pdf,jpg',
+            // Nuevos campos
+            'unidad_economica' => 'nullable|string|max:255',
+            'fecha_registro' => 'nullable|date',
+            'razon_social' => 'nullable|string|max:255',
+            'nombre_representante' => 'nullable|string|max:255',
+            'cargo_representante' => 'nullable|string|max:255',
+            'actividad_economica' => 'nullable|string|max:255',
+            'tamano_ue' => 'nullable|integer',
+            'folio' => 'nullable|string|max:255',
         ]);
 
-        $empresa=Empresa::find($id);
+        $empresa->update($request->all());
 
-        $empresa->update([
-            'nombre' => $request->nombre,
-            'direccion' => $request->direccion,
-            'inicio_conv' => Carbon::parse($request->inicio_conv)->format("Y-m-d"),
-            'fin_conv' => Carbon::parse($request->fin_conv)->format("Y-m-d"),
-        ]);
-
-        return redirect()->route('empresas.index')->with('status', 'Empresa actualizada');
+        return redirect()->route('empresas.index')->with('success', 'Empresa actualizada exitosamente.');
     }
 
-    public function destroy($id)
+    public function destroy(Empresa $empresa)
     {
-        try {
-            $carrera = Empresa::find($id);
-            $carrera->delete();
-
-            return redirect()->route('empresas.index')->with('status', 'Carrera Eliminada');
-        } catch (QueryException $e) {
-            $errorCode = $e->errorInfo[1];
-
-            if ($errorCode == 1451) {
-                // Error de integridad referencial (clave foránea)
-                return redirect()->route('empresas.index')->with('statusError', 'No se puede eliminar la Empresa. Primero elimina los mentores academicos asociados');
-            }
-
-            // Otro tipo de error, puedes manejarlo según tus necesidades
-            return redirect()->route('empresas.index')->with('statusError', 'Error al eliminar la Empresa: ' . $e->getMessage());
-        }
+        $empresa->delete();
+        return redirect()->route('empresas.index')->with('success', 'Empresa eliminada exitosamente.');
     }
 
     public function showJson($id): JsonResponse
     {
         $empresa = Empresa::find($id);
-
         return response()->json($empresa);
+    }
+
+    public function downloadPDF(Empresa $empresa)
+    {
+        return response()->json($empresa);
+        $data = [
+            'unidad_economica' => $empresa->unidad_economica,
+            'fecha_registro' => $empresa->fecha_registro,
+            'razon_social' => $empresa->razon_social,
+            'nombre_representante' => $empresa->nombre_representante,
+            'cargo_representante' => $empresa->cargo_representante,
+            'telefono' => $empresa->telefono,
+            'correo_electronico' => $empresa->email,
+            'domicilio' => $empresa->direccion,
+            'actividad_economica' => $empresa->actividad_economica,
+            'tamano_ue' => $empresa->tamano_ue,
+            'folio' => $empresa->folio,
+        ];
+
+        $pdf = Pdf::loadView('empresas.pdf', $data);
+        return $pdf->download('empresa_' . $empresa->id . '.pdf');
+    }
+
+    public function darAlta(Empresa $empresa)
+    {
+        $direcciones = DireccionCarrera::all(); // Asegúrate de obtener las direcciones
+        return view('empresas.darAlta', compact('empresa', 'direcciones'));
+    }
+
+    public function registrar(Request $request, Empresa $empresa)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
+            'direccion' => 'required|string',
+            'telefono' => 'required|string|size:10',
+            'inicio_conv' => 'required|date',
+            'fin_conv' => 'required|date',
+            'ine' => 'nullable|file|mimes:pdf,jpg',
+            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
+            'convenioA' => 'nullable|file|mimes:pdf,jpg',
+            'convenioMA' => 'nullable|file|mimes:pdf,jpg',
+            'folio' => 'nullable|string|max:255',
+        ]);
+
+        $empresa->update($request->all());
+        $empresa->status = 1; // Cambiar el estado a registrada
+        $empresa->save();
+
+        return redirect()->route('empresas.index')->with('success', 'Empresa registrada exitosamente.');
+    }
+
+    public function exportUeiPdf()
+    {
+        $empresasInteresadas = Empresa::where('status', 0)->get();
+        $data = [
+            'empresas' => $empresasInteresadas
+        ];
+
+        $pdf = Pdf::loadView('empresas.uei_pdf', $data);
+        return $pdf->download('uei_interesadas.pdf');
     }
 }

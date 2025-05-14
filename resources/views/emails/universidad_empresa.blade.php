@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alerta de Vencimiento de Convenio</title>
+    <title>Alerta de Vencimiento de Convenio Local</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -97,7 +97,7 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>Alerta de Vencimiento de Convenio</h1>
+            <h1>Alerta de Vencimiento de Convenio Local</h1>
         </div>
         <div class="content">
             <p>Estimado(a) <strong>{{ $academico->name }}</strong>,</p>

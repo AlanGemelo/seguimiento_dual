@@ -19,8 +19,9 @@ class Anexo1_3Controller extends Controller
 
     public function create()
     {
-        $users = User::all();
-        return view('anexos.anexo1_3.create', compact('users'));
+        $responsableIE = User::get(); // Cargar el usuario con ID 1
+
+        return view('anexos.anexo1_3.create', compact('responsableIE'));
     }
 
     public function store(Request $request)
@@ -69,12 +70,12 @@ class Anexo1_3Controller extends Controller
 
     public function edit(Anexo1_3 $anexo1_3)
     {
-        $users = User::all();
-        return view('anexos.anexo1_3.edit', compact('anexo1_3', 'users'));
-    }
+        $responsableIE = User::find(1); // Cargar el usuario con ID 1
+            return view('anexos.anexo1_3.edit', compact('anexo1_3', 'responsableIE'));
+        }
 
-    public function update(Request $request, Anexo1_3 $anexo1_3)
-    {
+        public function update(Request $request, Anexo1_3 $anexo1_3)
+        {
         $validatedData = $request->validate([
             'fecha_realizacion' => 'required|date',
             'lugar' => 'required|string',
@@ -113,7 +114,9 @@ class Anexo1_3Controller extends Controller
 
     public function generatePdf(Anexo1_3 $anexo1_3)
     {
-        $pdf = Pdf::loadView('anexos.anexo1_3.pdf', compact('anexo1_3'));
+        $responsableIE = User::find(1); // Cargar el usuario con ID 1
+
+        $pdf = Pdf::loadView('anexos.anexo1_3.pdf', compact('anexo1_3','responsableIE'));
         return $pdf->download('anexo1_3.pdf');
     }
 

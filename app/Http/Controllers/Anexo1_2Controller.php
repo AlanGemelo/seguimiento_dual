@@ -20,9 +20,10 @@ class Anexo1_2Controller extends Controller
 
     public function create()
     {
-        $users = User::whereIn('rol_id', [2, 3, 4])->get();
-        $directors = Director::where('direccion_id', session('direccion')->id)->get();
-        return view('anexos.anexo1_2.create', compact('users', 'directors'));
+        $directores = Director::all(); // Cargar todos los directores
+        $responsableIE = User::find(1); // Usuario con ID 1
+        $responsableAcademico = User::find(1); // Usuario con ID 1 como responsable académico
+        return view('anexos.anexo1_2.create', compact('directores', 'responsableIE', 'responsableAcademico'));
     }
 
     public function store(Request $request)
@@ -31,14 +32,21 @@ class Anexo1_2Controller extends Controller
 
         $validatedData = $request->validate([
             'fecha_elaboracion' => 'required|date',
-            'quien_elaboro_id' => 'required|exists:users,id',
-            'nombre_firma_ie' => 'required|string',
+            'quien_elaboro_id' => 'required|exists:directors,id', // Validar relación con la tabla directors
+            'nombre_firma_ie' => 'required|string', // Usuario con ID 1
             'actividades' => 'required|array',
+            'actividades.*.actividad' => 'required|string',
+            'actividades.*.responsable' => 'required|string',
+            'actividades.*.unidad_medida' => 'required|string',
+            'actividades.*.meta' => 'required|string',
+            'actividades.*.periodo' => 'required|array',
+            'actividades.*.presupuesto' => 'required|numeric|min:0',
         ]);
 
         Log::info('Validaciones pasadas:', $validatedData);
 
         try {
+            $validatedData['actividades'] = json_encode($validatedData['actividades']); // Convertir actividades a JSON
             Anexo1_2::create($validatedData);
             Log::info('Registro creado exitosamente.');
             return redirect()->route('anexo1_2.index')->with('success', 'Registro creado exitosamente.');
@@ -50,9 +58,9 @@ class Anexo1_2Controller extends Controller
 
     public function edit(Anexo1_2 $anexo1_2)
     {
-        $users = User::whereIn('rol_id', [2, 3, 4])->get();
-        $directors = Director::where('direccion_id', session('direccion')->id)->get();
-        return view('anexos.anexo1_2.edit', compact('anexo1_2', 'users', 'directors'));
+        $directores = Director::all(); // Cargar todos los directores
+        $responsableIE = User::find(1); // Usuario con ID 1
+        return view('anexos.anexo1_2.edit', compact('anexo1_2', 'directores', 'responsableIE'));
     }
 
     public function update(Request $request, Anexo1_2 $anexo1_2)
@@ -62,7 +70,7 @@ class Anexo1_2Controller extends Controller
         $validatedData = $request->validate([
             'fecha_elaboracion' => 'required|date',
             'quien_elaboro_id' => 'required|exists:users,id',
-            'nombre_firma_ie' => 'required|string',
+            'nombre_firma_ie' => 'required|string', // Cambiado de nombre_firma_ie a nombre_firma_ie
             'actividades' => 'required|array',
         ]);
 
@@ -90,12 +98,16 @@ class Anexo1_2Controller extends Controller
 
     public function generatePdf(Anexo1_2 $anexo1_2)
     {
-        $pdf = Pdf::loadView('anexos.anexo1_2.pdf', compact('anexo1_2'));
+        $responsableAcademico = User::find(1); // Cargar el usuario con ID 1
+        $responsableIE = User::find(1); // Definir correctamente la variable $responsableIE
+        $pdf = Pdf::loadView('anexos.anexo1_2.pdf', compact('anexo1_2', 'responsableAcademico', 'responsableIE'));
         return $pdf->download('anexo1_2.pdf');
     }
 
     public function generateWord(Anexo1_2 $anexo1_2)
     {
+        $responsableAcademico = User::find(1); // Cargar el usuario con ID 1
+        $responsableIE = User::find(1); // Definir correctamente la variable $responsableIE
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
 

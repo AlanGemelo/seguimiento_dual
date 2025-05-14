@@ -26,21 +26,20 @@
                     <label for="fecha_elaboracion" class="form-label">Fecha de Elaboración</label>
                     <input type="date" class="form-control" id="fecha_elaboracion" name="fecha_elaboracion" value="{{ $anexo1_1->fecha_elaboracion->format('Y-m-d') }}" required>
                 </div>
-                <div class="mb-3">
-                    <label for="responsable_programa_id" class="form-label">Responsable del Programa Educativo</label>
-                    <select class="form-control" id="responsable_programa_id" name="responsable_programa_id" required>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ $anexo1_1->responsable_programa_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="responsable_academico_id" class="form-label">Responsable Académico</label>
-                    <select class="form-control" id="responsable_academico_id" name="responsable_academico_id" required>
-                        @foreach($directors as $director)
-                            <option value="{{ $director->id }}" {{ $anexo1_1->responsable_academico_id == $director->id ? 'selected' : '' }}>{{ $director->nombre }}</option>
-                        @endforeach
-                    </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="responsable_programa_id" class="form-label">Responsable del Programa Educativo</label>
+                        <select class="form-control" id="responsable_programa_id" name="responsable_programa_id" required>
+                            @foreach($directores as $director)
+                                <option value="{{ $director->id }}" {{ $anexo1_1->responsable_programa_id == $director->id ? 'selected' : '' }}>{{ $director->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="responsable_academico_id" class="form-label">Responsable Académico de la IE</label>
+                        <input type="text" class="form-control" value="{{ $responsableAcademico->name }}" disabled>
+                        <input type="hidden" name="responsable_academico_id" value="{{ $responsableAcademico->id }}">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="competencias" class="form-label">Competencias</label>

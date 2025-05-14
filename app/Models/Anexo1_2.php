@@ -14,16 +14,25 @@ class Anexo1_2 extends Model
         'fecha_elaboracion',
         'quien_elaboro_id',
         'nombre_firma_ie',
-        'actividades'
+        'actividades',
     ];
-
     protected $casts = [
         'actividades' => 'array'
     ];
 
     public function quienElaboro()
     {
-        return $this->belongsTo(User::class, 'quien_elaboro_id');
+        return $this->belongsTo(Director::class, 'quien_elaboro_id'); // Relación con la tabla directors
+    }
+
+    public function responsablePrograma()
+    {
+        return $this->belongsTo(Director::class, 'responsable_programa_id');
+    }
+
+    public function responsableAcademico()
+    {
+        return $this->belongsTo(User::class, 'responsable_academico_id');
     }
 
     public function getNombreQuienElaboro()

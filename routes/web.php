@@ -24,6 +24,9 @@ use App\Http\Controllers\EmpresaController;
 Route::resource('directores', DirectorController::class);
 Route::get('/optimize', function () {
     Artisan::call('optimize:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+
     Debugbar::addMessage('Comando generado', 'listo!!');
 })->name('optimize');
 Route::get('/migrate', function () {
@@ -96,7 +99,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/carreras/{id}', [CarreraController::class, 'update'])->name('carreras.update');
     Route::delete('/carreras/{id}/delete', [CarreraController::class, 'destroy'])->name('carreras.destroy');
     Route::get('/carreras/{id}/editar', [CarreraController::class, 'edit'])->name('carreras.edit');
-    Route::resource('estadisticas', EstadisticaController::class);
+    Route::resource('estadisticas', EstadisticaController::class)->except(['show']);
     Route::get('estadisticas/exportExcel', [EstadisticaController::class, 'exportExcel'])->name('estadisticas.exportExcel');
     Route::get('estadisticas/mentor/{mentorId}', [EstadisticaController::class, 'getEstudiantesPorMentor']);
     Route::get('estadisticas/empresa/{empresaId}', [EstadisticaController::class, 'getEstudiantesPorEmpresa']);
@@ -111,6 +114,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('estadisticas/beca/{beca}', [EstadisticaController::class, 'getEstudiantesPorBeca']);
     Route::get('estadisticas/status/{status}/excel', [EstadisticaController::class, 'exportEstudiantesPorStatusExcel']);
     Route::get('estadisticas/beca/{beca}/excel', [EstadisticaController::class, 'exportEstudiantesPorBecaExcel']);
+    Route::get('/estadisticas/filtro/excel', [EstadisticaController::class, 'filtroEstudiantes']);
+    Route::get('/estadisticas/filtro', [EstadisticaController::class, 'filtroEstudiantes']);
+    Route::get('/estadisticas/graficas', [EstadisticaController::class, 'getGraficasData']);
 
     Route::get('/direcciones', [DireccionCarreraController::class, 'index'])->name('direcciones.index');
     Route::post('/direcciones', [DireccionCarreraController::class, 'store'])->name('direcciones.store');

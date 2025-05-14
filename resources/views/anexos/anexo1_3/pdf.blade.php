@@ -155,7 +155,7 @@
 
     <div class="signature">
         <p>_______________________________</p>
-        <p>{{ optional($anexo1_3->quienElaboro)->name }}</p>
+        <p>{{ $responsableIE->name }}</p>
         <p>Elaboró</p>
     </div>
 </body>

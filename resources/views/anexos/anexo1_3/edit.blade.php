@@ -125,11 +125,8 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="quien_elaboro_id" class="form-label">Quién Elaboró</label>
-                        <select class="form-control" id="quien_elaboro_id" name="quien_elaboro_id" required>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ $user->id == auth()->user()->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" class="form-control" value="{{ $responsableIE->name }}" disabled>
+                        <input type="hidden" name="quien_elaboro_id" value="{{ $responsableIE->id }}">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success">Guardar</button>

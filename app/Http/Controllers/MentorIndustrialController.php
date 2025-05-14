@@ -21,10 +21,11 @@ class MentorIndustrialController extends Controller
     public function index()
     {
 
-$mentoresIndustriales = MentorIndustrial::with(['empresa'])->whereHas('empresa',function ($query){
+$mentores = MentorIndustrial::with(['empresa','estudiantes'])->whereHas('empresa',function ($query){
             $query->where('direccion_id',session('direccion')->id);
 })->get();
-        return view('mentoresIndustriales.index', compact('mentoresIndustriales'));
+
+        return view('mentoresIndustriales.index', compact('mentores'));
     }
 
 
@@ -38,18 +39,20 @@ $mentoresIndustriales = MentorIndustrial::with(['empresa'])->whereHas('empresa',
     public function store(Request $request)
     {
         $request->validate([
-            'titulo' =>  ['required', 'string', 'max:255'],
+            'titulo' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
-            'empresa_id' => ['required', 'integer', 'exists:' . Empresa::class . ',id'],
+            'puesto' => ['required', 'string', 'max:255'],
+            'empresa_id' => ['required', 'integer'],
         ]);
 
         MentorIndustrial::create([
             'titulo' => $request->titulo,
             'name' => $request->name,
+            'puesto' => $request->puesto,
             'empresa_id' => $request->empresa_id,
         ]);
 
-        return redirect()->route('mentores.index')->with('status', 'Mentor industrial creado');
+        return redirect()->route('mentores.index')->with('message', 'Mentor Industrial creado correctamente');
     }
 
     public function show($id)
@@ -71,20 +74,24 @@ $mentoresIndustriales = MentorIndustrial::with(['empresa'])->whereHas('empresa',
         return view('mentoresIndustriales.edit', compact('mentorIndustrial', 'empresas'));
     }
 
-    public function update(Request $request, MentorIndustrial $mentorIndustrial, $id)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'titulo' =>  ['string', 'max:255'],
-            'name' => ['string', 'max:255'],
-            'empresa_id' => ['integer', 'exists:' . Empresa::class . ',id'],
+            'titulo' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'puesto' => ['required', 'string', 'max:255'],
+            'empresa_id' => ['required', 'integer'],
         ]);
-        $mentorIndustrial->find($id)->update($request->all());
-        // $mentorIndustrial->find($id)->update([
-        //     'titulo' => $request->titulo,
-        //     'name' => $request->name,
-        //     'empresa_id' => $request->empresa_id
-        // ]);
-        return redirect()->route('mentores.index')->with('status', 'Mentor industrial actualizado');
+
+        $mentor = MentorIndustrial::findOrFail($id);
+        $mentor->update([
+            'titulo' => $request->titulo,
+            'name' => $request->name,
+            'puesto' => $request->puesto,
+            'empresa_id' => $request->empresa_id,
+        ]);
+
+        return redirect()->route('mentores.index')->with('message', 'Mentor Industrial actualizado correctamente');
     }
 
 

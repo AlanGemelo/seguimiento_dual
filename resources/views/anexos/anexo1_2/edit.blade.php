@@ -7,6 +7,42 @@
             <h3>Editar Anexo 1.2 - Programa de Difusión de la ED</h3>
         </div>
         <div class="card-body">
+            @if ($errors->any())
+                <div>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <script>
+                    window.onload = function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: '{{ session('success') }}',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    };
+                </script>
+            @endif
+
+            @if (session('error'))
+                <script>
+                    window.onload = function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Error!',
+                            text: '{{ session('error') }}',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    };
+                </script>
+            @endif
+
             <form action="{{ route('anexo1_2.update', $anexo1_2->id) }}" method="POST" id="anexo1_2_form">
                 @csrf
                 @method('PUT')
@@ -18,10 +54,28 @@
                     <div class="col-md-6">
                         <label for="quien_elaboro_id" class="form-label">Quién Elaboró</label>
                         <select class="form-control" id="quien_elaboro_id" name="quien_elaboro_id" required>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ $anexo1_2->quien_elaboro_id == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                            @foreach($directores as $director)
+                                <option value="{{ $director->id }}" {{ $anexo1_2->quien_elaboro_id == $director->id ? 'selected' : '' }}>{{ $director->nombre }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="responsable_programa_id" class="form-label">Responsable del Programa Educativo</label>
+                        <select class="form-control" id="responsable_programa_id" name="responsable_programa_id" required>
+                            @foreach($directores as $director)
+                                <option value="{{ $director->id }}" {{ $anexo1_2->responsable_programa_id == $director->id ? 'selected' : '' }}>{{ $director->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="nombre_firma_ie" class="form-label">Nombre del Responsable de la IE</label>
+                        <input type="text" class="form-control" value="{{ $responsableIE->name }}" disabled>
+                        <input type="hidden" name="nombre_firma_ie" value="{{ $responsableIE->id }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="responsable_academico_id" class="form-label">Responsable Académico de la IE</label>
+                        <input type="text" class="form-control" value="{{ $responsableAcademico->name }}" disabled>
+                        <input type="hidden" name="responsable_academico_id" value="{{ $responsableAcademico->id }}">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -174,6 +228,8 @@ window.onclick = function(event) {
     }
 }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
     .is-invalid {

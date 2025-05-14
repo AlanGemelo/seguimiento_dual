@@ -45,4 +45,12 @@ class Empresa extends Model
     {
         return $this->belongsTo(DireccionCarrera::class, 'direccion_id', 'id');
     }
+
+    /**
+     * Relación con el modelo Estudiantes.
+     */
+    public function estudiantes()
+    {
+        return $this->hasMany(Estudiantes::class, 'empresa_id');
+    }
 }

@@ -42,7 +42,6 @@ class EstudiantesController extends Controller
     public function index()
     {
 
-
         $hoy = Carbon::now();
         // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
         $registros = Estudiantes::with('academico','asesorin')->whereDate('fin_dual','<=', $hoy->addDays(15))->where('activo',true)->get();
@@ -83,8 +82,6 @@ class EstudiantesController extends Controller
         ];
 
         $hoy = Carbon::now();
-
-        // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
 
         return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos','search'));
     }
@@ -287,8 +284,6 @@ class EstudiantesController extends Controller
      */
     public function candidato(Request $request)
     {
-
-
         $request->validate([
             'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],

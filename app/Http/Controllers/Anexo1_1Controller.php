@@ -21,10 +21,10 @@ class Anexo1_1Controller extends Controller
 
     public function create()
     {
-        $carreras = Carrera::where('direccion_id', session('direccion')->id)->get();
-        $users = User::whereIn('rol_id', [2])->get();
-        $directors = Director::where('direccion_id', session('direccion')->id)->get();
-        return view('anexos.anexo1_1.create', compact('carreras', 'users', 'directors'));
+        $directores = Director::all(); // Cargar todos los directores
+        $carreras = Carrera::all(); // Cargar las carreras
+        $responsableAcademico = User::find(1); // Cargar el usuario con ID 1
+        return view('anexos.anexo1_1.create', compact('directores', 'carreras', 'responsableAcademico'));
     }
 
     public function store(Request $request)
@@ -35,8 +35,8 @@ class Anexo1_1Controller extends Controller
             'institucion_educativa' => 'required|string',
             'programa_educativo_id' => 'required|exists:carreras,id',
             'fecha_elaboracion' => 'required|date',
-            'responsable_programa_id' => 'required|exists:users,id',
-            'responsable_academico_id' => 'required|exists:directors,id',
+            'responsable_programa_id' => 'required|exists:directors,id',
+            'responsable_academico_id' => 'required|exists:users,id',
             'competencias' => 'required|array',
             'competencias.*.competencia' => 'required|string',
             'competencias.*.actividad' => 'required|string',
@@ -44,10 +44,12 @@ class Anexo1_1Controller extends Controller
             'competencias.*.cuatrimestre' => 'required|integer|min:1|max:11',
         ]);
 
-        Log::info('Datos validados en store:', $validatedData);
+        Log::info('Validaciones pasadas:', $validatedData);
 
         try {
+            $validatedData['competencias'] = json_encode($validatedData['competencias']); // Convertir competencias a JSON
             Anexo1_1::create($validatedData);
+            Log::info('Registro creado exitosamente.');
             return redirect()->route('anexo1_1.index')->with('success', 'Registro creado exitosamente.');
         } catch (\Exception $e) {
             Log::error('Error al guardar el registro en store:', ['error' => $e->getMessage()]);
@@ -55,12 +57,13 @@ class Anexo1_1Controller extends Controller
         }
     }
 
-    public function edit(Anexo1_1 $anexo1_1)
+    public function edit($id)
     {
-        $carreras = Carrera::where('direccion_id', session('direccion')->id)->get();
-        $users = User::whereIn('rol_id', [2, 3, 4])->get();
-        $directors = Director::where('direccion_id', session('direccion')->id)->get();
-        return view('anexos.anexo1_1.edit', compact('anexo1_1', 'carreras', 'users', 'directors'));
+        $anexo1_1 = Anexo1_1::findOrFail($id);
+        $directores = Director::all(); // Cargar todos los directores
+        $carreras = Carrera::all(); // Cargar las carreras
+        $responsableAcademico = User::find(1); // Cargar el usuario con ID 1
+        return view('anexos.anexo1_1.edit', compact('anexo1_1', 'directores', 'carreras', 'responsableAcademico'));
     }
 
     public function update(Request $request, Anexo1_1 $anexo1_1)
@@ -71,8 +74,8 @@ class Anexo1_1Controller extends Controller
             'institucion_educativa' => 'required|string',
             'programa_educativo_id' => 'required|exists:carreras,id',
             'fecha_elaboracion' => 'required|date',
-            'responsable_programa_id' => 'required|exists:users,id',
-            'responsable_academico_id' => 'required|exists:directors,id',
+            'responsable_programa_id' => 'required|exists:directors,id',
+            'responsable_academico_id' => 'required|exists:users,id',
             'competencias' => 'required|array',
             'competencias.*.competencia' => 'required|string',
             'competencias.*.actividad' => 'required|string',
@@ -80,9 +83,10 @@ class Anexo1_1Controller extends Controller
             'competencias.*.cuatrimestre' => 'required|integer|min:1|max:11',
         ]);
 
-        Log::info('Datos validados en update:', $validatedData);
+        Log::info('Validaciones pasadas en update:', $validatedData);
 
         try {
+            $validatedData['competencias'] = json_encode($validatedData['competencias']); // Convertir competencias a JSON
             $anexo1_1->update($validatedData);
             return redirect()->route('anexo1_1.index')->with('success', 'Registro actualizado exitosamente.');
         } catch (\Exception $e) {

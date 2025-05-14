@@ -30,6 +30,14 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
+                                    <label for="puesto">Puesto de trabajo <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="puesto"
+                                           placeholder="Ejemplo: Jefe de Producción" name="puesto" value="{{ old('puesto') }}">
+                                    @error('puesto')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
                                     <label for="empresa_id" class="form-label">Empresa <span class="text-danger">*</span></label>
                                     <select class="form-select"
                                             aria-label="Seleccionar Empresa" name="empresa_id">

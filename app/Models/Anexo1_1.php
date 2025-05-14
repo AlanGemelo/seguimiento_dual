@@ -34,7 +34,7 @@ class Anexo1_1 extends Model
 
     public function responsablePrograma()
     {
-        return $this->belongsTo(User::class, 'responsable_programa_id');
+        return $this->belongsTo(Director::class, 'responsable_programa_id');
     }
 
     public function responsableAcademico()

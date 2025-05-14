@@ -13,11 +13,16 @@ class MentorIndustrial extends Model
     protected $fillable = [
         'titulo',
         'name',
+        'puesto',
         'empresa_id',
     ];
 
     public function empresa(): BelongsTo
     {
         return $this->belongsTo(Empresa::class);
+    }
+    public function estudiantes()
+    {
+        return $this->hasMany(Estudiantes::class, 'asesorin_id', 'id');
     }
 }

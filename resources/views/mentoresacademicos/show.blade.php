@@ -39,14 +39,14 @@
                                     <div    class="card h-100 shadow-lg`">
                                         <div    class="card-body d-flex flex-column justify-content-between">
                                             <h5 class="card-title align-center">{{ $estudiante->name }}</h5>
-                                       
+
                                             <a href="{{ route('estudiantes.show',Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"   class="btn btn-primary mt-auto">Ver detalles</a>
                                         </div>
                                     </div>
                                 </div>
                                 @endforeach
                             </div>
-                     
+
                         </div>
                     </div>
                 </div>

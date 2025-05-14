@@ -19,51 +19,54 @@
                     <div class="col-lg-4 d-flex flex-column">
                         <div class="row flex-grow">
                             <div class="col-12 grid-margin stretch-card">
-
-                                <div class="card card-rounded">
-                                    <div class="card-body">
-                                        <h4 class="text-secondary">Mentores Registrados: {{ $mentores }}</h4>
+                                <div class="card card-rounded shadow-lg border-0">
+                                    <div class="card-body text-center">
+                                        <h4 class="text-secondary font-weight-bold mb-3">Mentores Registrados</h4>
+                                        <h2 class="text-primary display-4">{{ $mentores }}</h2>
                                         <br>
-                                        <a type="button" class="btn btn-success"
-                                            href="{{ route('mentores.create') }}">Crear Mentor <i
-                                                class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
+                                        <a type="button" class="btn btn-success btn-lg btn-block"
+                                            href="{{ route('mentores.create') }}">
+                                            <i class="mdi mdi-account-plus mdi-24px align-middle"></i> Crear Mentor
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
             @endif
-            
 
-            <div class="col-lg-4 d-flex flex-column ">
+            <div class="col-lg-4 d-flex flex-column">
                 <div class="row flex-grow">
                     <div class="col-12 grid-margin stretch-card">
-                        <div class="card card-rounded">
-                            <div class="card-body">
-                                <h4 class="text-secondary">Estudiantes Registrados: {{ $estudiantes }}</h4>
+                        <div class="card card-rounded shadow-lg border-0">
+                            <div class="card-body text-center">
+                                <h4 class="text-secondary font-weight-bold mb-3">Estudiantes Registrados</h4>
+                                <h2 class="text-primary display-4">{{ $estudiantes }}</h2>
                                 <br>
-                                <a type="button" class="btn btn-success" href="{{ route('estudiantes.create') }}">Crear
-                                    Estudiante <i
-                                        class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
+                                <a type="button" class="btn btn-success btn-lg btn-block"
+                                    href="{{ route('estudiantes.create') }}">
+                                    <i class="mdi mdi-account-plus mdi-24px align-middle"></i> Crear Estudiante
+                                </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 d-flex flex-column ">
+
+            <div class="col-lg-4 d-flex flex-column">
                 <div class="row flex-grow">
                     <div class="col-12 grid-margin stretch-card">
-                        <div class="card card-rounded">
-                            <div class="card-body">
-                                <h4 class="text-secondary">Documentacion por vencer</h4>
+                        <div class="card card-rounded shadow-lg border-0">
+                            <div class="card-body text-center">
+                                <h4 class="text-secondary font-weight-bold mb-3">Documentación por vencer</h4>
+                                <h2 class="text-warning display-4"><i class="mdi mdi-alert-circle-outline"></i></h2>
                                 <br>
-                                <a type="button" class="btn btn-success" href="{{ route('estudiantes.index') }}">
-                                    Actualizar Documentacion Estudiante <i
-                                        class="mdi mdi-account-plus mdi-16px align-middle btn-icon-prepend"></i></a>
+                                <a type="button" class="btn btn-success btn-lg btn-block"
+                                    href="{{ route('estudiantes.index') }}">
+                                    <i class="mdi mdi-file-document-box mdi-24px align-middle"></i> Actualizar Documentación
+                                </a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

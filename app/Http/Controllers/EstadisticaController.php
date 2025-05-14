@@ -17,8 +17,10 @@ class EstadisticaController extends Controller
 {
     public function index()
     {
+        $direccionId = session('direccion')->id;
+
         // Gráfica de Estudiantes por Empresa
-        $empresas = Empresa::withCount('estudiantes')->get();
+        $empresas = Empresa::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
         $chartEmpresa = (new LarapexChart)->pieChart()
             ->setTitle('Estudiantes por Empresa')
             ->setLabels($empresas->pluck('nombre')->toArray())
@@ -26,7 +28,7 @@ class EstadisticaController extends Controller
             ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
         // Gráfica de Estudiantes por Carrera
-        $carreras = Carrera::withCount('estudiantes')->get();
+        $carreras = Carrera::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
         $chartCarrera = (new LarapexChart)->pieChart()
             ->setTitle('Estudiantes por Carrera')
             ->setLabels($carreras->pluck('nombre')->toArray())
@@ -34,7 +36,7 @@ class EstadisticaController extends Controller
             ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
         // Gráfica de Estudiantes por Mentor Académico
-        $mentores = User::mentoresAcademicos()->withCount('estudiantes')->get();
+        $mentores = User::mentoresAcademicos()->where('direccion_id', $direccionId)->withCount('estudiantes')->get();
         $chartMentor = (new LarapexChart)->pieChart()
             ->setTitle('Estudiantes por Mentor Académico')
             ->setLabels($mentores->pluck('name')->toArray())
@@ -42,7 +44,8 @@ class EstadisticaController extends Controller
             ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
         // Gráfica de Estudiantes Becados
-        $becas = Estudiantes::select('beca', \DB::raw('count(*) as count'))
+        $becas = Estudiantes::where('direccion_id', $direccionId)
+            ->select('beca', \DB::raw('count(*) as count'))
             ->groupBy('beca')
             ->get();
         $chartBeca = (new LarapexChart)->pieChart()
@@ -57,38 +60,55 @@ class EstadisticaController extends Controller
 
     public function getEstudiantesPorStatus($status)
     {
-        $estudiantes = Estudiantes::where('status', $status)->get();
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('status', $status)
+            ->where('direccion_id', $direccionId)
+            ->get();
         return response()->json($estudiantes);
     }
 
     public function getEstudiantesPorBeca($beca)
     {
+        $direccionId = session('direccion')->id;
         $becaValue = $beca === 'becados' ? 1 : 0;
-        $estudiantes = Estudiantes::where('beca', $becaValue)->get();
+        $estudiantes = Estudiantes::where('beca', $becaValue)
+            ->where('direccion_id', $direccionId)
+            ->get();
         return response()->json($estudiantes);
     }
 
     public function getEstudiantesPorMentor($mentorId)
     {
-        $estudiantes = Estudiantes::where('academico_id', $mentorId)->get();
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('academico_id', $mentorId)
+            ->where('direccion_id', $direccionId)
+            ->get();
         return response()->json($estudiantes);
     }
 
     public function getEstudiantesPorEmpresa($empresaId)
     {
-        $estudiantes = Estudiantes::where('empresa_id', $empresaId)->get();
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('empresa_id', $empresaId)
+            ->where('direccion_id', $direccionId)
+            ->get();
         return response()->json($estudiantes);
     }
 
     public function getEstudiantesPorCarrera($carreraId)
     {
-        $estudiantes = Estudiantes::where('carrera_id', $carreraId)->where('direccion_id', session('direccion')->id)->get();
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('carrera_id', $carreraId)
+            ->where('direccion_id', $direccionId)
+            ->get();
         return response()->json($estudiantes);
     }
 
     public function exportEstudiantesPorStatusExcel($status)
     {
+        $direccionId = session('direccion')->id;
         $estudiantes = Estudiantes::where('status', $status)
+            ->where('direccion_id', $direccionId)
             ->with(['empresa', 'academico', 'asesorin', 'carrera'])
             ->get();
         return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_status.xlsx');
@@ -96,8 +116,10 @@ class EstadisticaController extends Controller
 
     public function exportEstudiantesPorBecaExcel($beca)
     {
+        $direccionId = session('direccion')->id;
         $becaValue = $beca === 'becados' ? 1 : 0;
         $estudiantes = Estudiantes::where('beca', $becaValue)
+            ->where('direccion_id', $direccionId)
             ->with(['empresa', 'academico', 'asesorin', 'carrera'])
             ->get();
         return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_beca.xlsx');
@@ -105,7 +127,9 @@ class EstadisticaController extends Controller
 
     public function exportEstudiantesPorEmpresaExcel($empresaId)
     {
+        $direccionId = session('direccion')->id;
         $estudiantes = Estudiantes::where('empresa_id', $empresaId)
+            ->where('direccion_id', $direccionId)
             ->with(['empresa', 'academico', 'asesorin', 'carrera'])
             ->get();
         return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_empresa.xlsx');
@@ -113,7 +137,9 @@ class EstadisticaController extends Controller
 
     public function exportEstudiantesPorMentorExcel($mentorId)
     {
+        $direccionId = session('direccion')->id;
         $estudiantes = Estudiantes::where('academico_id', $mentorId)
+            ->where('direccion_id', $direccionId)
             ->with(['empresa', 'academico', 'asesorin', 'carrera'])
             ->get();
         return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_mentor.xlsx');
@@ -121,7 +147,9 @@ class EstadisticaController extends Controller
 
     public function exportEstudiantesPorCarreraExcel($carreraId)
     {
+        $direccionId = session('direccion')->id;
         $estudiantes = Estudiantes::where('carrera_id', $carreraId)
+            ->where('direccion_id', $direccionId)
             ->with(['empresa', 'academico', 'asesorin', 'carrera'])
             ->get();
         return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_carrera.xlsx');
@@ -129,13 +157,20 @@ class EstadisticaController extends Controller
 
     public function exportExcel()
     {
-        return Excel::download(new EstadisticasExport, 'estadisticas.xlsx');
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('direccion_id', $direccionId)->get();
+        return Excel::download(new EstadisticasExport($estudiantes), 'estadisticas.xlsx');
     }
 
     public function exportEstudiantesPorEmpresaPdf($empresaId)
     {
-        $empresa = Empresa::findOrFail($empresaId);
-        $estudiantes = Estudiantes::where('empresa_id', $empresaId)->get();
+        $direccionId = session('direccion')->id;
+        $empresa = Empresa::where('id', $empresaId)
+            ->where('direccion_id', $direccionId)
+            ->firstOrFail();
+        $estudiantes = Estudiantes::where('empresa_id', $empresaId)
+            ->where('direccion_id', $direccionId)
+            ->get();
 
         $pdf = Pdf::loadView('estadistica.estudiantes_empresa_pdf', compact('empresa', 'estudiantes'));
         return $pdf->download('estudiantes_empresa.pdf');
@@ -143,8 +178,13 @@ class EstadisticaController extends Controller
 
     public function exportEstudiantesPorMentorPdf($mentorId)
     {
-        $mentor = User::findOrFail($mentorId);
-        $estudiantes = Estudiantes::where('academico_id', $mentorId)->get();
+        $direccionId = session('direccion')->id;
+        $mentor = User::where('id', $mentorId)
+            ->where('direccion_id', $direccionId)
+            ->firstOrFail();
+        $estudiantes = Estudiantes::where('academico_id', $mentorId)
+            ->where('direccion_id', $direccionId)
+            ->get();
 
         $pdf = Pdf::loadView('estadistica.estudiantes_mentor_pdf', compact('mentor', 'estudiantes'));
         return $pdf->download('estudiantes_mentor.pdf');
@@ -152,8 +192,13 @@ class EstadisticaController extends Controller
 
     public function exportEstudiantesPorCarreraPdf($carreraId)
     {
-        $carrera = Carrera::findOrFail($carreraId);
-        $estudiantes = Estudiantes::where('carrera_id', $carreraId)->get();
+        $direccionId = session('direccion')->id;
+        $carrera = Carrera::where('id', $carreraId)
+            ->where('direccion_id', $direccionId)
+            ->firstOrFail();
+        $estudiantes = Estudiantes::where('carrera_id', $carreraId)
+            ->where('direccion_id', $direccionId)
+            ->get();
 
         $pdf = Pdf::loadView('estadistica.estudiantes_carrera_pdf', compact('carrera', 'estudiantes'));
         return $pdf->download('estudiantes_carrera.pdf');
@@ -161,7 +206,10 @@ class EstadisticaController extends Controller
 
     public function filtroEstudiantes(Request $request)
     {
-        $query = Estudiantes::query()->with(['empresa', 'academico', 'asesorin', 'carrera']);
+        $direccionId = session('direccion')->id;
+        $query = Estudiantes::query()
+            ->where('direccion_id', $direccionId)
+            ->with(['empresa', 'academico', 'asesorin', 'carrera']);
 
         if ($request->filled('empresa_id')) {
             $query->where('empresa_id', $request->empresa_id);

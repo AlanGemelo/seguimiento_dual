@@ -28,6 +28,7 @@
                                 <th>Email</th>
                                 <th>Teléfono</th>
                                 <th>Fecha de Registro</th>
+                                <th>Inicio - Termino del convenio </th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -38,6 +39,7 @@
                                     <td>{{ $empresa->email }}</td>
                                     <td>{{ $empresa->telefono }}</td>
                                     <td>{{ $empresa->fecha_registro }}</td>
+                                    <td>{{ $empresa->inicio_conv }}  -  {{ $empresa->fin_conv }}</td>
                                     <td>
                                         <a href="{{ route('empresas.edit', $empresa->id) }}" class="btn btn-warning">Editar</a>
                                         <form action="{{ route('empresas.destroy', $empresa->id) }}" method="POST" style="display:inline-block;">

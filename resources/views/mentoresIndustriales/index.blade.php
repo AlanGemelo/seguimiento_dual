@@ -29,8 +29,8 @@
                     <div class="card">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores Industriales</h6>
-                                @if(Auth::user()->rol_id === 1)
+                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores de Unidad Economica</h6>
+                                @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
                                         <a href="{{route('mentores.create')}}" class="btn btn-primary"
@@ -43,38 +43,40 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <input class="form-control mb-3" id="searchInput" type="text" placeholder="Buscar...">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Nombre</th>
+                                        <th>Puesto</th>
                                         <th>Empresa</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($mentoresIndustriales as $mentor)
+                                    @foreach($mentores as $mentor)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $mentor->titulo }} {{ $mentor->name }}</td>
+                                            <td>{{ $mentor->titulo }}.      {{ $mentor->name }}</td>
+                                            <td>{{ $mentor->puesto }}</td>
                                             <td>{{ $mentor->empresa->nombre }}</td>
                                             <td>
                                                 <a href="{{ route('mentores.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                   class="btn btn-facebook">
-                                                    <i class="mdi mdi-account-details btn-icon-prepend"></i>
-                                                </a>
-                                                @if(Auth::user()->rol_id === 1)
-                                                    <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                       class="btn btn-twitter">
-                                                        <i class="mdi mdi-account-edit btn-icon-prepend"></i>
-                                                    </a>
-                                                    <button class="btn btn-danger" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal1"
-                                                            onclick="deleteEstudiante({{ $mentor->id }})">
-                                                        <i class="mdi mdi-delete btn-icon-prepend"></i>
-                                                    </button>
-                                                @endif
-                                            </td>
+                                                    class="btn btn-facebook">
+                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
+                                                 </a>
+                                                 @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                                     <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                        class="btn btn-twitter">
+                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
+                                                     </a>
+                                                     <button class="btn btn-danger" data-bs-toggle="modal"
+                                                             data-bs-target="#exampleModal1"
+                                                             onclick="deleteEstudiante({{ $mentor->id }})">
+                                                         <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                     </button>
+                                                 @endif                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -144,5 +146,31 @@
                 }
             })
         }
+
+        // Filtrar tabla
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let input = document.getElementById('searchInput');
+            let filter = input.value.toLowerCase();
+            let tableBody = document.getElementById('tableBody');
+            let rows = tableBody.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName('td');
+                let match = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                if (match) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
     </script>
 @endsection

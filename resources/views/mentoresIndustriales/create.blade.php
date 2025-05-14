@@ -8,13 +8,13 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Crear Mentor Industrial</h4>
+                            <h4 class="card-title">Crear Mentor de Unidad Economica</h4>
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
                             <form class="pt-3" action="{{ route('mentores.store') }}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="titulo">Titulo <span class="text-danger">*</span></label>
+                                    <label for="titulo">Grado <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="titulo"
                                            placeholder="" name="titulo" value="{{ old('titulo') }}">
                                     @error('titulo')
@@ -22,10 +22,18 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Name <span class="text-danger">*</span></label>
+                                    <label for="name">Nombre <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="name"
                                            placeholder="" name="name" value="{{ old('name') }}">
                                     @error('name')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="puesto">Puesto de trabajo <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="puesto"
+                                           placeholder="Ejemplo: Jefe de Producción" name="puesto" value="{{ old('puesto') }}">
+                                    @error('puesto')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>

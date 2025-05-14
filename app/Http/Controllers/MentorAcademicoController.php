@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactMail;
+use App\Mail\DocumentoVencimientoNotification;
+use App\Models\DireccionCarrera;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -17,30 +21,54 @@ class MentorAcademicoController extends Controller
     {
         $this->middleware('admin')->except('showJson');
     }
-
-    public function index(): View
+    public function alerts()
     {
-        $mentores = User::where('rol_id', 2)->get();
-        $mentoresDeleted = User::onlyTrashed()->where('rol_id', 2)->get();
+   
+        return redirect()->route('estudiantes.index')->with('message', 'Correo enviado correctamente');
+        
+    }
+
+    public function index()
+    {
+     $mentores = User::where('rol_id', 2)->with('direccion')->where('direccion_id',session('direccion')->id)->get();
+        $mentoresDeleted = User::onlyTrashed()->where('direccion_id',session('direccion')->id)->where('rol_id', 2)->get();
+
+     
+// $nombreAlumno = 'Juan Pérez';
+// $fechaVencimiento = '2024-09-25'; // Ejemplo de fecha de vencimiento
+// $enlaceSistema = 'https://tusistema.com/login';
+
+// // Envía el correo
+// Mail::to('al222010229@utvtol.edu.mx')->send(new DocumentoVencimientoNotification($nombreAlumno, $fechaVencimiento, $fechaVencimiento,'google.com'));
+
 
         return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
     }
 
     public function create(): View
     {
-        return view('mentoresacademicos.create');
+        $direcciones = DireccionCarrera::all();
+        return view('mentoresacademicos.create', compact('direcciones'));
     }
 
     public function store(Request $request)
     {
-        $request->validate(['titulo' => ['required', 'string', 'max:255'], 'name' => ['required', 'string', 'max:255'], 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],]);
+        $request->validate(['titulo' => ['required', 'string', 'max:255'], 'name' => ['required', 'string', 'max:255'], 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class], 'direccion_id' => ['required', 'integer'],]);
 
-        $user = User::create(['titulo' => $request->titulo, 'name' => $request->name, 'email' => $request->email, 'password' => Hash::make('12345678'), 'rol_id' => 2, 'carrera_id' => 2]);
+        $user = User::create(['titulo' => $request->titulo, 'name' => $request->name, 'email' => $request->email, 'password' => Hash::make('12345678'), 'rol_id' => 2, 'carrera_id' => 2,'direccion_id' => $request->direccion_id]);
 
         return redirect()->route('academicos.index')->with('message', 'Mentor Academico creado Correctamente');
     }
 
     public function show($id): View
+    {
+        $id = Hashids::decode($id);
+        $mentor = User::with(['direccion','estudiantes'])->find($id);
+        $mentor = $mentor[0];
+
+        return view('mentoresacademicos.show', compact('mentor'));
+    }
+    public function showE($id): View
     {
         $id = Hashids::decode($id);
         $mentor = User::find($id);
@@ -52,17 +80,17 @@ class MentorAcademicoController extends Controller
     public function edit($id): View
     {
         $id = Hashids::decode($id);
-        $mentor = User::find($id);
+        $mentor = User::with('direccion')->find($id);
         $mentor = $mentor[0];
+        $direcciones = DireccionCarrera::all();
 
-        return view('mentoresacademicos.edit', compact('mentor'));
+        return view('mentoresacademicos.edit', compact('mentor','direcciones'));
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
-        $request->validate(['titulo' => ['string', 'max:255'], 'name' => ['min:3', 'string', 'max:255'], 'email' => ['required', 'string', 'email', 'max:255'],]);
+        $request->validate(['titulo' => ['string', 'max:255'], 'name' => ['min:3', 'string', 'max:255'], 'email' => ['required', 'string', 'email', 'max:255'], 'direccion_id' => ['required', 'integer'],]);
 
-//        dd($request->all());
         $mentor = User::find($id);
         if ($request->email !== $mentor->email) {
             $request->validate(['email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]]);
@@ -70,6 +98,7 @@ class MentorAcademicoController extends Controller
         }
         $mentor->update($request->all());
 
+      
         return redirect()->route('academicos.index');
     }
 

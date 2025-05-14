@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carrera;
+use App\Models\DireccionCarrera;
 use App\Models\Empresa;
 use App\Models\Estudiantes;
+use Google\Cloud\Core\Batch\Retry;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -13,38 +16,42 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class CarreraController extends Controller
 {
+    public function __construct(){
+        $this->middleware('admin');
+    }
 
     public function index()
     {
-        $carreras = Carrera::where('id', '<>', 1)->get();
-
+        $carreras = Carrera::with('direccion')->where('direccion_id',session('direccion')->id)->get();
         return view('carrera.index', compact('carreras'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => ['required', 'min:2', 'max:255', 'string']
+            'nombre' => ['required', 'min:2', 'max:255', 'string'],
+            'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id']
         ]);
-
+        $direcciones = DireccionCarrera::all();
         Carrera::create([
-            'nombre' => $request->nombre
+            'nombre' => $request->nombre,
+            'direccion_id' => $request->direccion_id
         ]);
 
-        return redirect()->route('carreras.index');
+        return redirect()->route('carreras.index',compact('direcciones'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Carrera $id)
     {
         $request->validate([
-            'nombre' => ['required', 'min:2', 'max:255', 'string']
+            'nombre' => ['required', 'min:2', 'max:255', 'string'],
+            'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id']
+
         ]);
 
-        $id = Hashids::decode($id);
-        $carreras = Carrera::find($id);
-        $carreras = $carreras[$id];
+        // $id = Hashids::decode($id);
 
-        $carreras->update($request->all());
+        $id->update($request->all());
 
         return redirect()->route('carreras.index')->with('status', 'Carrera Actualizada');
     }
@@ -74,16 +81,25 @@ class CarreraController extends Controller
 
         return response()->json($carrera);
     }
+    public function show(Carrera $carrera): View
+    {
+        $direcciones = DireccionCarrera::all();
+        return view('carrera.show', compact('carrera','direcciones'));
+
+        return response()->json($carrera);
+    }
 
     public function create()
     {
-        return view('carrera.create');
+        $direcciones = DireccionCarrera::all();
+        return view('carrera.create',compact('direcciones'));
     }
 
-    public function edit($id)
+    public function edit(Carrera $id)
     {
-        $carrera = Carrera::find($id);
-
-        return view('carrera.edit', compact('carrera'));
+$id->load('direccion');
+$carrera = $id;
+$direcciones = DireccionCarrera::get();
+        return view('carrera.edit', compact('carrera','direcciones'));
     }
 }

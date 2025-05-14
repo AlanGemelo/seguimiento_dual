@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Carrera;
+use App\Models\DireccionCarrera;
 use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -24,6 +25,10 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        DireccionCarrera::create([
+            'name' => 'Ingeniería en Sistemas Computacionales',
+            'email' => 'tics@utvtol.edu.mx',
+        ]);
         Roles::create([
                 'name' => 'Administrador'
         ]);
@@ -31,18 +36,45 @@ class DatabaseSeeder extends Seeder
         Roles::create([
             'name' => 'Mentor'
         ]);
+        Roles::create([
+            'name' => 'Estudiante'
+        ]);
+        Roles::create([
+            'name' => 'Director'
+        ]);
 
         Carrera::create([
-            'nombre' => 'admin'
+            'nombre' => 'IDGS Desarrollo de Software',
+            'direccion_id' => 1,
         ]);
 
         User::create([
             'titulo' => 'Admin',
-            'name'=> 'Admin Dual',
+            'name'=> 'Super Admin',
             'email' => 'admin@seguimiento.utvt.com',
             'password' => Hash::make('12345678'),
             'rol_id' => 1,
-            'carrera_id' => 1
+            'carrera_id' => 1,
+            'direccion_id' => 1,
         ]);
+        User::create([
+            'titulo' => 'Ingeniero',
+            'name'=> 'Roberto Vinicio',
+            'email' => 'asesor@gmail.com',
+            'password' => Hash::make('12345678'),
+            'rol_id' => 2,
+            'carrera_id' => 1,
+            'direccion_id' => 1,
+        ]);
+        User::create([
+            'titulo' => 'Ingeniero Director',
+            'name'=> 'CArlos Milan',
+            'email' => 'charly@gmail.com',
+            'password' => Hash::make('12345678'),
+            'rol_id' => 4,
+            'carrera_id' => 1,
+            'direccion_id' => 1,
+        ]);
+     
     }
 }

@@ -3,41 +3,210 @@
 <h1 align="center">Proyecto de Gestión de Alumnos Duales - UTVT</h1>
 
 <p align="center">
-  <img alt="Proyecto Banner" src="./public/assets/images/Logo-utvt.png">
+  <img alt="Proyecto Banner" src="./public/assets/images/Logo-utvt.png" width="300">
 </p>
 
-<!-- Descripción -->
-<h3 align="center">🌐 Descripción:</h3>
-<p align="center">Este proyecto tiene como objetivo mejorar la experiencia de registros de alumnos duales en la UTVT mediante una plataforma integral. Desde el registro de los alumnos anexando su documentacion necesaria, hasta la generación de informes personalizados, estamos dando forma a una nueva forma de la gestión educativa.</p>
+---
 
-<!-- Características Destacadas -->
-<h3 align="center">🚀 Características Destacadas:</h3>
-<ul align="center">
-  <li><strong>Gestión Integral:</strong> Carga de documentos, notificaciones automáticas, y seguimiento de progreso, todo en un solo lugar.</li>
-  <li><strong>Notificaciones Personalizadas:</strong> Mantente al tanto con recordatorios automáticos y eventos importantes.</li>
-  <li><strong>Acceso Seguro:</strong> Garantizamos que cada usuario vea solo la información relevante a su rol.</li>
-</ul>
+## 📚 Descripción General
 
-<!-- Tecnologías Utilizadas -->
-<h3 align="center">🛠️ Tecnologías Utilizadas:</h3>
+El **Proyecto de Gestión de Alumnos Duales - UTVT** es una plataforma integral desarrollada para optimizar el registro, seguimiento y administración de estudiantes inscritos en el modelo educativo dual de la Universidad Tecnológica del Valle de Toluca. El sistema permite la gestión eficiente de documentos, usuarios, roles y reportes, garantizando seguridad, trazabilidad y facilidad de uso para todos los actores involucrados.
+
+---
+
+## 🚀 Características Principales
+
+- **Gestión Integral de Estudiantes:** Registro, edición y seguimiento de alumnos duales.
+- **Carga y Validación de Documentos:** Soporte para anexos, formatos y archivos requeridos.
+- **Roles y Permisos:** Acceso segmentado para Administradores, Directores, Mentores y Estudiantes.
+- **Notificaciones Automatizadas:** Alertas por correo y en plataforma sobre eventos y vencimientos.
+- **Reportes Personalizados:** Generación de informes por carrera, periodo, empresa, etc.
+- **Panel de Control Dinámico:** Estadísticas y visualización de avances en tiempo real.
+- **Soporte Multiplataforma:** Compatible con Windows, Linux y macOS.
+- **Contenerización con Docker:** Despliegue sencillo y reproducible en cualquier entorno.
+
+---
+
+## 🏗️ Arquitectura y Tecnologías
+
+- **Frontend:** Blade, HTML5, CSS3, JavaScript, TailwindCSS
+- **Backend:** Laravel 10.x (PHP 8.1+)
+- **Base de Datos:** MySQL/MariaDB
+- **Herramientas DevOps:** Docker, GitHub Actions (CI/CD)
+- **Testing:** PHPUnit, Laravel Test Suite
+- **Gestión de Dependencias:** Composer, npm
+
+---
+
+## 📦 Estructura del Proyecto
+
+```
+.
+├── app/                # Lógica de aplicación (Modelos, Controladores, etc.)
+├── bootstrap/          # Arranque de Laravel
+├── config/             # Archivos de configuración
+├── database/           # Migraciones, seeders y factories
+├── public/             # Archivos públicos y punto de entrada web
+├── resources/          # Vistas Blade, assets y traducciones
+├── routes/             # Definición de rutas web y API
+├── storage/            # Archivos generados y logs
+├── tests/              # Pruebas unitarias y de integración
+├── vendor/             # Dependencias de Composer
+├── .env.example        # Ejemplo de configuración de entorno
+├── documentation.md    # Manual técnico y de usuario
+└── README.md           # Este archivo
+```
+
+---
+
+## ⚙️ Instalación y Puesta en Marcha
+
+Consulta la [documentación técnica completa](./documentation.md) para detalles avanzados.  
+A continuación, se resumen los pasos esenciales para la instalación local:
+
+### 1. Requisitos Previos
+
+- PHP >= 8.1
+- Composer
+- Node.js >= 16 y npm
+- MySQL o MariaDB
+- Git
+- Extensiones PHP: mbstring, openssl, pdo, tokenizer, xml, ctype, json, bcmath, fileinfo
+
+### 2. Clonar el Repositorio
+
+```sh
+git clone https://github.com/Du-F23/seguimiento_dual.git
+cd seguimiento_dual
+```
+
+### 3. Instalar Dependencias
+
+```sh
+composer install
+npm install
+```
+
+### 4. Configurar Variables de Entorno
+
+```sh
+cp .env.example .env
+```
+Edita `.env` con tus credenciales de base de datos y correo.
+
+### 5. Generar Key de la Aplicación
+
+```sh
+php artisan key:generate
+```
+
+### 6. Migrar y Poblar la Base de Datos
+
+```sh
+php artisan migrate --seed
+```
+
+### 7. Crear Enlace de Almacenamiento
+
+```sh
+php artisan storage:link
+```
+
+### 8. Compilar Recursos Frontend
+
+Para desarrollo:
+```sh
+npm run dev
+```
+Para producción:
+```sh
+npm run build
+```
+
+### 9. Levantar el Servidor de Desarrollo
+
+```sh
+php artisan serve
+```
+Accede a [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 🧪 Pruebas
+
+Ejecuta las pruebas unitarias y de integración con:
+
+```sh
+php artisan test
+```
+o
+```sh
+./vendor/bin/phpunit
+```
+
+---
+
+## 🐳 Despliegue con Docker (Opcional)
+
+Si prefieres usar Docker, asegúrate de tener Docker y Docker Compose instalados.  
+Ejemplo básico:
+
+```sh
+docker-compose up -d
+```
+Configura las variables de entorno para los contenedores según sea necesario.
+
+---
+
+## 🔒 Seguridad y Buenas Prácticas
+
+- No subas el archivo `.env` al repositorio.
+- Cambia las contraseñas predeterminadas tras la instalación.
+- Configura correctamente los permisos de archivos y carpetas (`storage`, `bootstrap/cache`).
+- Mantén actualizado el framework y las dependencias.
+- Revisa los logs en `storage/logs/laravel.log` ante cualquier incidencia.
+
+---
+
+## 👥 Contribución
+
+Las contribuciones son bienvenidas. Por favor, sigue estos pasos:
+
+1. Haz un fork del repositorio.
+2. Crea una rama para tu feature o fix (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza tus cambios y escribe pruebas si aplica.
+4. Haz commit y push a tu rama.
+5. Abre un Pull Request detallando tus cambios.
+
+Consulta la [guía de contribución](./CONTRIBUTING.md) si está disponible.
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](./LICENSE) para más detalles.
+
+---
+
+## 📖 Documentación
+
+- [Manual Técnico y de Usuario](./documentation.md)
+- [Documentación Oficial de Laravel](https://laravel.com/docs)
+
+---
+
+## 🆘 Soporte
+
+Para dudas técnicas, incidencias o soporte, contacta al área de TI de la universidad o abre un issue en este repositorio.
+
+---
+
+## 🚧 Estado del Proyecto
+
+Actualmente estamos en la fase de desarrollo activo. Se recomienda no usar en producción hasta la publicación de la versión estable.
+
+---
+
 <p align="center">
-  <strong>Frontend:</strong> Blade, HTML, CSS, JavaScript<br>
-  <strong>Backend:</strong> Laravel, MySQL<br>
-  <strong>Herramientas Adicionales:</strong> GitHub Actions para CI/CD, Docker para la contenerización.
-</p>
-
-
-<!-- Documentación -->
-<h3 align="center">📖 Documentación:</h3>
-<p align="center">Para obtener información detallada sobre el uso y configuración del proyecto, consulta nuestra <a href="./documentation.md">documentación</a>.</p>
-
-<!-- Estado del Proyecto -->
-<h3 align="center">🚧 Estado del Proyecto:</h3>
-<p align="center">Actualmente estamos en la fase de desarrollo activo. 
-    
-
-
-<!-- Agradecimientos -->
-<p align="center">
-  <strong>¡Gracias por tu Interés y Colaboración en este Emocionante Viaje Educativo! 🚀</strong>
+  <strong>¡Gracias por tu interés y colaboración en este emocionante viaje educativo! 🚀</strong>
 </p>

@@ -26,6 +26,10 @@ Route::get('/optimize', function () {
     Artisan::call('optimize:clear');
     Debugbar::addMessage('Comando generado', 'listo!!');
 })->name('optimize');
+Route::get('/migrate', function () {
+    Artisan::call('migrate');
+    Debugbar::addMessage('Migraciones  generado', 'listo!!');
+})->name('migrate');
 Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
 
 

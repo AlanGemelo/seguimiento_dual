@@ -8,7 +8,7 @@ use App\Models\MentorIndustrial;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
+//use RealRashid\SweetAlert\Facades\Alert;
 use Vinkla\Hashids\Facades\Hashids;
 
 class MentorIndustrialController extends Controller
@@ -20,7 +20,7 @@ class MentorIndustrialController extends Controller
 
     public function index()
     {
-        
+
 $mentoresIndustriales = MentorIndustrial::with(['empresa'])->whereHas('empresa',function ($query){
             $query->where('direccion_id',session('direccion')->id);
 })->get();

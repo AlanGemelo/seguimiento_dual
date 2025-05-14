@@ -9,7 +9,7 @@
             <div class="card shadow-lg">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                        <h4 class="text-white text-capitalize ps-3">Estadísticas Generales</h4>
+                        <h4 class="text-white text-capitalize ps-3">Estadísticas Generales de la Direccion: {{ session('direccion')->name }}</h4>
                     </div>
                 </div>
                 <div class="card-body">
@@ -133,52 +133,7 @@
                 <div class="card-body">
                     <form id="filtroEstudiantesForm">
                         <div class="row mb-4">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="empresaSelectFiltro" class="form-label text-dark">Empresa</label>
-                                    <select id="empresaSelectFiltro" name="empresa_id" class="form-select border border-dark rounded">
-                                        <option value="">Seleccione una Empresa</option>
-                                        @foreach($empresas as $empresa)
-                                            <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="mentorSelectFiltro" class="form-label text-dark">Mentor Académico</label>
-                                    <select id="mentorSelectFiltro" name="academico_id" class="form-select border border-dark rounded">
-                                        <option value="">Seleccione un Mentor Académico</option>
-                                        @foreach($mentores as $mentor)
-                                            <option value="{{ $mentor->id }}">{{ $mentor->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="carreraSelectFiltro" class="form-label text-dark">Carrera</label>
-                                    <select id="carreraSelectFiltro" name="carrera_id" class="form-select border border-dark rounded">
-                                        <option value="">Seleccione una Carrera</option>
-                                        @foreach($carreras as $carrera)
-                                            <option value="{{ $carrera->id }}">{{ $carrera->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="tipoBecaSelect" class="form-label text-dark">Tipo de Beca</label>
-                                    <select id="tipoBecaSelect" name="tipoBeca" class="form-select border border-dark rounded">
-                                        <option value="">Seleccione un Tipo de Beca</option>
-                                        <option value="0">Apoyo por Empresa</option>
-                                        <option value="1">Beca Dual Comecyt</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="estatusSelect" class="form-label text-dark">Estatus del Estudiante</label>
                                     <select id="estatusSelect" name="estatus" class="form-select border border-dark rounded">
@@ -193,10 +148,55 @@
                             </div>
                         </div>
                         <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="empresaSelectFiltro" class="form-label text-dark">Empresa</label>
+                                    <select id="empresaSelectFiltro" name="empresa_id" class="form-select border border-dark rounded" disabled>
+                                        <option value="">Seleccione una Empresa</option>
+                                        @foreach($empresas as $empresa)
+                                            <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="mentorSelectFiltro" class="form-label text-dark">Mentor Académico</label>
+                                    <select id="mentorSelectFiltro" name="academico_id" class="form-select border border-dark rounded" disabled>
+                                        <option value="">Seleccione un Mentor Académico</option>
+                                        @foreach($mentores as $mentor)
+                                            <option value="{{ $mentor->id }}">{{ $mentor->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="carreraSelectFiltro" class="form-label text-dark">Carrera</label>
+                                    <select id="carreraSelectFiltro" name="carrera_id" class="form-select border border-dark rounded" disabled>
+                                        <option value="">Seleccione una Carrera</option>
+                                        @foreach($carreras as $carrera)
+                                            <option value="{{ $carrera->id }}">{{ $carrera->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tipoBecaSelect" class="form-label text-dark">Tipo de Beca</label>
+                                    <select id="tipoBecaSelect" name="tipoBeca" class="form-select border border-dark rounded" disabled>
+                                        <option value="">Seleccione un Tipo de Beca</option>
+                                        <option value="0">Apoyo por Empresa</option>
+                                        <option value="1">Beca Dual Comecyt</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="fechaFiltro" class="form-label text-dark">Filtrar por Fechas</label>
-                                    <select id="fechaFiltro" name="fechaFiltro" class="form-select border border-dark rounded">
+                                    <select id="fechaFiltro" name="fechaFiltro" class="form-select border border-dark rounded" disabled>
                                         <option value="">Seleccione una Opción</option>
                                         <option value="inicio">Fecha de Inicio en la IE</option>
                                         <option value="fin">Fecha de Fin en la IE</option>
@@ -205,19 +205,23 @@
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row mb-4">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="fechaInicio" class="form-label text-dark">Fecha de Inicio</label>
-                                    <input type="date" id="fechaInicio" name="fechaInicio" class="form-control border border-dark rounded">
+                                    <input type="date" id="fechaInicio" name="fechaInicio" class="form-control border border-dark rounded" disabled>
                                 </div>
-                                <div class="form-group mt-3">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label for="fechaFin" class="form-label text-dark">Fecha de Fin</label>
-                                    <input type="date" id="fechaFin" name="fechaFin" class="form-control border border-dark rounded">
+                                    <input type="date" id="fechaFin" name="fechaFin" class="form-control border border-dark rounded" disabled>
                                 </div>
                             </div>
                         </div>
                         <div class="text-center mt-3">
-                            <button type="button" id="exportFiltroExcel" class="btn btn-success text-white">Exportar a Excel</button>
+                            <button type="button" id="exportFiltroExcel" class="btn btn-success text-white" disabled>Exportar a Excel</button>
                         </div>
                     </form>
                     <div id="estudiantesFiltro" class="mt-4"></div>
@@ -225,6 +229,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('estatusSelect').addEventListener('change', function() {
+            let isEnabled = this.value !== '';
+            document.getElementById('empresaSelectFiltro').disabled = !isEnabled;
+            document.getElementById('mentorSelectFiltro').disabled = !isEnabled;
+            document.getElementById('carreraSelectFiltro').disabled = !isEnabled;
+            document.getElementById('tipoBecaSelect').disabled = !isEnabled;
+            document.getElementById('fechaFiltro').disabled = !isEnabled;
+            document.getElementById('fechaInicio').disabled = !isEnabled;
+            document.getElementById('fechaFin').disabled = !isEnabled;
+            document.getElementById('exportFiltroExcel').disabled = !isEnabled;
+        });
+    </script>
 </div>
 
 <div class="container mt-5">

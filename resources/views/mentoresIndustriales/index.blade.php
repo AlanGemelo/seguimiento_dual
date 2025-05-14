@@ -48,36 +48,35 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Grado </th>
                                         <th>Nombre</th>
+                                        <th>Puesto</th>
                                         <th>Empresa</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="tableBody">
-                                    @foreach($mentoresIndustriales as $mentor)
-                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " id='aiuda'>
+                                    <tbody>
+                                    @foreach($mentores as $mentor)
+                                        <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $mentor->titulo }}</td>
-                                            <td> {{ $mentor->name }}</td>
+                                            <td>{{ $mentor->titulo }}.      {{ $mentor->name }}</td>
+                                            <td>{{ $mentor->puesto }}</td>
                                             <td>{{ $mentor->empresa->nombre }}</td>
                                             <td>
                                                 <a href="{{ route('mentores.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                   class="btn btn-facebook">
-                                                    <i class="mdi mdi-account-details btn-icon-prepend"></i>
-                                                </a>
-                                                @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                    <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                       class="btn btn-twitter">
-                                                        <i class="mdi mdi-account-edit btn-icon-prepend"></i>
-                                                    </a>
-                                                    <button class="btn btn-danger" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal1"
-                                                            onclick="deleteEstudiante({{ $mentor->id }})">
-                                                        <i class="mdi mdi-delete btn-icon-prepend"></i>
-                                                    </button>
-                                                @endif
-                                            </td>
+                                                    class="btn btn-facebook">
+                                                     <i class="mdi mdi-account-details btn-icon-prepend"></i>
+                                                 </a>
+                                                 @if(Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                                     <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                        class="btn btn-twitter">
+                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
+                                                     </a>
+                                                     <button class="btn btn-danger" data-bs-toggle="modal"
+                                                             data-bs-target="#exampleModal1"
+                                                             onclick="deleteEstudiante({{ $mentor->id }})">
+                                                         <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                     </button>
+                                                 @endif                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>

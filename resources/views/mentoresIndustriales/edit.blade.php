@@ -11,7 +11,7 @@
                             <h4 class="card-title">Editar Mentor de Unidad Economica</h4>
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
-                       
+
                             <form class="pt-3" action="{{ route('mentores.update', $mentorIndustrial->id) }}" method="post">
                                 @csrf
                                 @method('PATCH')
@@ -45,6 +45,14 @@
                                         @endforeach
                                     </select>
                                     @error('empresa_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="puesto">Puesto de trabajo <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="puesto"
+                                           placeholder="Ejemplo: Jefe de Producción" name="puesto" value="{{ old('puesto', $mentorIndustrial->puesto) }}">
+                                    @error('puesto')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>

@@ -24,6 +24,9 @@ use App\Http\Controllers\EmpresaController;
 Route::resource('directores', DirectorController::class);
 Route::get('/optimize', function () {
     Artisan::call('optimize:clear');
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+
     Debugbar::addMessage('Comando generado', 'listo!!');
 })->name('optimize');
 Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');

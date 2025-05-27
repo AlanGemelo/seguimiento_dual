@@ -21,6 +21,7 @@ use App\Http\Controllers\EmpresaController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::resource('directores', DirectorController::class);
 Route::get('/optimize', function () {
     Artisan::call('optimize:clear');

@@ -19,30 +19,27 @@ class HomeController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function dashboard(){
+    public function dashboard()
+    {
         $direccion = DireccionCarrera::find(Auth::user()->direccion_id);
 
         session()->put('direccion',  $direccion ?? '');
         $estudiantes = Estudiantes::count();
         $mentores = MentorIndustrial::count();
         $auth = Auth::user();
-        if($auth->rol_id == 1 )
-        {
+        if ($auth->rol_id == 1) {
             session()->forget('direccion');
             $direcciones = DireccionCarrera::all();
-    return view('dashboardSuperAdmin', compact(['estudiantes','mentores','direcciones']));
-}
-else if($auth->rol_id == 3){
+            return view('dashboardSuperAdmin', compact(['estudiantes', 'mentores', 'direcciones']));
+            //return view('admin.dashboard', compact(['estudiantes', 'mentores', 'direcciones']));
+        } else if ($auth->rol_id == 3) {
 
-    $estudiante = Estudiantes::withTrashed()->where('user_id', $auth->id)->first();
-    return view('dashboardEstudiante',compact('estudiante'));
-}
-else if($auth->rol_id == 4){
-    return view('dashboard', compact(['estudiantes','mentores']));
-}
-else{
-        return view('dashboard', compact(['estudiantes','mentores']));
-
-    }
+            $estudiante = Estudiantes::withTrashed()->where('user_id', $auth->id)->first();
+            return view('dashboardEstudiante', compact('estudiante'));
+        } else if ($auth->rol_id == 4) {
+            return view('dashboard', compact(['estudiantes', 'mentores']));
+        } else {
+            return view('dashboard', compact(['estudiantes', 'mentores']));
+        }
     }
 }

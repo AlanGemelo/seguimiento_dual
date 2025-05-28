@@ -16,7 +16,7 @@
                                 @method("PATCH")
                                 <div class="form-group">
                                     <label for="nombre">Nombre <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="nombre" placeholder=""
+                                    <input type="text"data-tipo="text" class="form-control form-control-lg" id="nombre" placeholder=""
                                         name="nombre" value="{{ $direccion->nombre, old("nombre") }}">
 
                                 </div>
@@ -46,7 +46,7 @@
 
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        type="submit">Editar
+                                        type="submit">Actualizar
                                     </button>
                                 </div>
                             </form>

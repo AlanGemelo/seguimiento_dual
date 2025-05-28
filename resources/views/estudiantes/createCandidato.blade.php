@@ -30,8 +30,8 @@
                                         {{-- matricula --}}
                                         <div class="form-group">
                                             <label for="matricula">Matricula <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control form-control-lg" id="matricula"
-                                                name="matricula" value="{{ old('matricula') }}">
+                                            <input type="text" data-tipo="numbers" class="form-control form-control-lg"
+                                                id="matricula" name="matricula" value="{{ old('matricula') }}">
                                             @error('matricula')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -39,7 +39,8 @@
                                         {{-- Nombre del estudiante --}}
                                         <div class="form-group">
                                             <label for="name">Nombre <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="name"
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="name"
                                                 placeholder="Juan Perez Hermenegildo" name="name"
                                                 value="{{ old('name') }}">
                                             @error('name')
@@ -49,8 +50,9 @@
                                         {{-- CURP --}}
                                         <div class="form-group">
                                             <label for="curp">CURP<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="curp"
-                                                name="curp" value="{{ old('curp') }}">
+                                            <input type="text" data-tipo="curp"
+                                                class="form-control form-control-lg uppercase" id="curp" name="curp"
+                                                value="{{ old('curp') }}">
                                             @error('curp')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -114,24 +116,31 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-
-
-
-
                                     </div>
                                     <div class="col-md-6">
                                         {{-- Email Estudiante --}}
 
                                         <div class="form-group">
-                                            <label for="email">Correo Electronico <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control form-control-lg" id="email"
-                                                   name="email" autocomplete="email"
-                                                   value="{{ old('email') }}">
+                                            <label for="email">Escribe tu dirección de correo <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"
+                                                        style="color:black; height: 100%;">al</span>
+                                                </div>
+                                                <input type="text" data-tipo="numbers"
+                                                    class="form-control form-control-lg" id="email" name="email"
+                                                    placeholder="No. Matricula" value="{{ old('email') }}" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"
+                                                        style="color:black; height: 100%;">@utvtol.edu.mx</span>
+                                                </div>
+                                            </div>
                                             @error('email')
-                                            <div class="text-danger">{{ $message }}</div>
+                                                <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+
 
                                         {{-- Fecha de Ingreso --}}
                                         <div class="form-group">
@@ -181,8 +190,6 @@
                                             @enderror
                                         </div>
 
-
-
                                         {{-- Cargar documento de Historial Academico --}}
                                         <div class="form-group">
                                             <label for="historial_academico">Historial Academico<span
@@ -194,12 +201,6 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-
-                                      
-
-
-
                                     </div>
 
 
@@ -259,7 +260,7 @@
                             selectAsesorin.empty();
                             selectAsesorin.append(
                                 '<option value="" selected disabled>No hay asesores industriales disponibles</option>'
-                                );
+                            );
                         }
                     },
                     error: function(xhr, status, error) {

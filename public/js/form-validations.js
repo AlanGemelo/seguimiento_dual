@@ -1,6 +1,36 @@
 console.log("✅ form-validations.js cargado");
 
 document.addEventListener("DOMContentLoaded", function () {
+    
+    //Text UpperCase
+    document.querySelectorAll(".uppercase").forEach(function (input) {
+        input.addEventListener("input", function () {
+            this.value = this.value.toUpperCase();
+        });
+    });
+
+    // Validation for numbers
+    const numbersInputs = document.querySelectorAll(
+        'input[data-tipo="numbers"]'
+    );
+    numbersInputs.forEach(function (input) {
+        input.addEventListener("keypress", function (e) {
+            const key = e.key;
+            if (!/^[0-9\s]$/.test(key)) {
+                e.preventDefault();
+            }
+        });
+
+        input.addEventListener("paste", function (e) {
+            const pastedData = (
+                e.clipboardData || window.clipboardData
+            ).getData("text");
+            if (/[\d]/.test(pastedData)) {
+                e.preventDefault();
+            }
+        });
+    });
+
     // Validation for school enrollment number
     const matriculaInput = document.getElementById("matricula");
     if (matriculaInput) {
@@ -43,7 +73,85 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // Validation for email
+    const emailInputs = document.querySelectorAll('input[data-tipo="email"]');
+    emailInputs.forEach(function (input) {
+        input.maxLength = 64;
+
+        input.addEventListener("keypress", function (e) {
+            const key = e.key;
+            if (!/^[a-zA-Z0-9&Ññ]$/.test(key)) {
+                e.preventDefault();
+                return;
+            }
+
+            if (input.value.length >= 18) {
+                e.preventDefault();
+            }
+        });
+
+        input.addEventListener("paste", function (e) {
+            const pastedData = (
+                e.clipboardData || window.clipboardData
+            ).getData("text");
+
+            if (!/^[a-zA-Z0-9&Ññ]*$/.test(pastedData)) {
+                e.preventDefault();
+                return;
+            }
+
+            if ((input.value + pastedData).length > 18) {
+                e.preventDefault();
+            }
+        });
+
+        input.addEventListener("blur", function () {
+            const emailValue = input.value.trim().toUpperCase();
+
+            const emailRegex = /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/;
+        });
+    });
+
     // Validation for CURP
+    const curpInputs = document.querySelectorAll('input[data-tipo="curp"]');
+    curpInputs.forEach(function (input) {
+        input.maxLength = 18;
+
+        input.addEventListener("keypress", function (e) {
+            const key = e.key;
+            if (!/^[a-zA-Z0-9&Ññ]$/.test(key)) {
+                e.preventDefault();
+                return;
+            }
+
+            if (input.value.length >= 18) {
+                e.preventDefault();
+            }
+        });
+
+        input.addEventListener("paste", function (e) {
+            const pastedData = (
+                e.clipboardData || window.clipboardData
+            ).getData("text");
+
+            if (!/^[a-zA-Z0-9&Ññ]*$/.test(pastedData)) {
+                e.preventDefault();
+                return;
+            }
+
+            if ((input.value + pastedData).length > 18) {
+                e.preventDefault();
+            }
+        });
+
+        input.addEventListener("blur", function () {
+            const rfcValue = input.value.trim().toUpperCase();
+
+            const rfcRegex = /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/;
+        });
+    });
+
+    // Validation for rfc
     const rfcInputs = document.querySelectorAll('input[data-tipo="rfc"]');
     rfcInputs.forEach(function (input) {
         input.maxLength = 18;
@@ -155,9 +263,12 @@ document.addEventListener("DOMContentLoaded", function () {
     fechaEgresoInput.addEventListener("blur", () => {
         if (fechaEgresoInput.value && fechaIngresoInput.value) {
             if (fechaEgresoInput.value < fechaIngresoInput.value) {
-                
                 fechaEgresoInput.value = "";
             }
         }
     });
+
+    //Validation for Address
+
+    const addressInput = document.getElementById("direccion");
 });

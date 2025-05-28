@@ -16,21 +16,22 @@
                                 @method('PATCH')
                                 <div class="form-group">
                                     <label for="name">Nombre <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="name"
-                                           placeholder="" name="name" value="{{ $direccion->name, old('name') }}">
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
+                                        id="name" placeholder="" name="name"
+                                        value="{{ $direccion->name, old('name') }}">
 
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Correo Electronico <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="email"
-                                           placeholder="" name="email" value="{{ $direccion->email, old('email') }}">
+                                    <input type="text" class="form-control form-control-lg" id="email" placeholder=""
+                                        name="email" value="{{ $direccion->email, old('email') }}">
 
                                 </div>
-                              
-                       
+
+
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                            type="submit">Editar
+                                        type="submit">Actualizar
                                     </button>
                                 </div>
                             </form>

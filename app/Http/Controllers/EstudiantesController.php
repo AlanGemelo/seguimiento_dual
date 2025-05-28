@@ -295,13 +295,11 @@ class EstudiantesController extends Controller
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
             'cuatrimestre' => ['integer', 'required',],
-
             'ine' => ['file', 'mimes:pdf'],
             'historial_academico' => ['file', 'mimes:pdf'],
             'inicio' => ['date'],
             'fin' => ['date'],
             'direccion_id' => ['required', 'integer', 'exists:' . DireccionCarrera::class . ',id'],
-
             'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
 
@@ -323,7 +321,7 @@ class EstudiantesController extends Controller
         $user = User::create([
             'titulo' => 'Estudiante',
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => 'al' . $request->email . '@utvtol.edu.mx',
             'password' => Hash::make($request->matricula),
             'rol_id' => 3,
             'carrera_id' => $request->carrera_id,

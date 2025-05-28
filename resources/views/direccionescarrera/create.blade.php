@@ -25,31 +25,31 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="name">Nombre de la Direccion<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="name" name="name"
-                                    value="{{ old('name') }}">
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg" id="name" name="name"
+                                        value="{{ old('name') }}">
                                     @error('name')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Correo <span class="text-danger">*</span></label>
                                     <input type="email" class="form-control form-control-lg" id="email" name="email"
-                                    value="{{ old('email') }}">
+                                        value="{{ old('email') }}">
                                     @error('email')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                </div>
-                                <div class="mt-3">
-                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        type="submit">Guardar
-                                    </button>
-                                </div>
-                            </form>
                         </div>
+                        <div class="mt-3">
+                            <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                type="submit">Guardar
+                            </button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

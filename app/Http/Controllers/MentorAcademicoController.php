@@ -23,23 +23,22 @@ class MentorAcademicoController extends Controller
     }
     public function alerts()
     {
-   
+
         return redirect()->route('estudiantes.index')->with('message', 'Correo enviado correctamente');
-        
     }
 
     public function index()
     {
-     $mentores = User::where('rol_id', 2)->with('direccion')->where('direccion_id',session('direccion')->id)->get();
-        $mentoresDeleted = User::onlyTrashed()->where('direccion_id',session('direccion')->id)->where('rol_id', 2)->get();
+        $mentores = User::where('rol_id', 2)->with('direccion')->where('direccion_id', session('direccion')->id)->get();
+        $mentoresDeleted = User::onlyTrashed()->where('direccion_id', session('direccion')->id)->where('rol_id', 2)->get();
 
-     
-// $nombreAlumno = 'Juan Pérez';
-// $fechaVencimiento = '2024-09-25'; // Ejemplo de fecha de vencimiento
-// $enlaceSistema = 'https://tusistema.com/login';
 
-// // Envía el correo
-// Mail::to('al222010229@utvtol.edu.mx')->send(new DocumentoVencimientoNotification($nombreAlumno, $fechaVencimiento, $fechaVencimiento,'google.com'));
+        // $nombreAlumno = 'Juan Pérez';
+        // $fechaVencimiento = '2024-09-25'; // Ejemplo de fecha de vencimiento
+        // $enlaceSistema = 'https://tusistema.com/login';
+
+        // // Envía el correo
+        // Mail::to('al222010229@utvtol.edu.mx')->send(new DocumentoVencimientoNotification($nombreAlumno, $fechaVencimiento, $fechaVencimiento,'google.com'));
 
 
         return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
@@ -53,17 +52,37 @@ class MentorAcademicoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['titulo' => ['required', 'string', 'max:255'], 'name' => ['required', 'string', 'max:255'], 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class], 'direccion_id' => ['required', 'integer'],]);
+        $username = str_replace(['@utvtol.edu.mx', ' '], '', $request->email);
+        $emailCompleto = $username . '@utvtol.edu.mx';
+        $request->merge([
+            'email' => $emailCompleto
+        ]);
 
-        $user = User::create(['titulo' => $request->titulo, 'name' => $request->name, 'email' => $request->email, 'password' => Hash::make('12345678'), 'rol_id' => 2, 'carrera_id' => 2,'direccion_id' => $request->direccion_id]);
+        $request->validate([
+            'titulo' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'direccion_id' => ['required', 'integer'],
+        ]);
 
-        return redirect()->route('academicos.index')->with('message', 'Mentor Academico creado Correctamente');
+        $user = User::create([
+            'titulo' => $request->titulo,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make('12345678'), 
+            'rol_id' => 2,
+            'carrera_id' => 2,
+            'direccion_id' => $request->direccion_id,
+        ]);
+
+        return redirect()->route('academicos.index')->with('message', 'Mentor Académico creado correctamente');
     }
+
 
     public function show($id): View
     {
         $id = Hashids::decode($id);
-        $mentor = User::with(['direccion','estudiantes'])->find($id);
+        $mentor = User::with(['direccion', 'estudiantes'])->find($id);
         $mentor = $mentor[0];
 
         return view('mentoresacademicos.show', compact('mentor'));
@@ -84,7 +103,7 @@ class MentorAcademicoController extends Controller
         $mentor = $mentor[0];
         $direcciones = DireccionCarrera::all();
 
-        return view('mentoresacademicos.edit', compact('mentor','direcciones'));
+        return view('mentoresacademicos.edit', compact('mentor', 'direcciones'));
     }
 
     public function update(Request $request, $id): RedirectResponse
@@ -98,7 +117,7 @@ class MentorAcademicoController extends Controller
         }
         $mentor->update($request->all());
 
-      
+
         return redirect()->route('academicos.index');
     }
 
@@ -109,7 +128,6 @@ class MentorAcademicoController extends Controller
             $mentor->delete();
 
             return redirect()->route('academicos.index')->with('messageDelete', 'Mentor Academico Eliminado Correctamente');
-
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
 

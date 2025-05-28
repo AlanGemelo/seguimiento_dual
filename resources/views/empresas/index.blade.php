@@ -33,21 +33,25 @@
                             </tr>
                         </thead>
                         <tbody id="empresaTable">
-                            @foreach($empresas as $empresa)
+                            @foreach ($empresas as $empresa)
                                 <tr>
                                     <td>{{ $empresa->nombre }}</td>
                                     <td>{{ $empresa->email }}</td>
                                     <td>{{ $empresa->telefono }}</td>
                                     <td>{{ $empresa->fecha_registro }}</td>
-                                    <td>{{ $empresa->inicio_conv }}  -  {{ $empresa->fin_conv }}</td>
+                                    <td>{{ $empresa->inicio_conv }} - {{ $empresa->fin_conv }}</td>
                                     <td>
-                                        <a href="{{ route('empresas.edit', $empresa->id) }}" class="btn btn-warning">Editar</a>
-                                        <form action="{{ route('empresas.destroy', $empresa->id) }}" method="POST" style="display:inline-block;">
+                                        <a href="{{ route('empresas.edit', $empresa->id) }}"
+                                            class="btn btn-warning">Editar</a>
+                                        <form action="{{ route('empresas.destroy', $empresa->id) }}" method="POST"
+                                            style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de eliminar esta empresa?')">Eliminar</button>
+                                            <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('¿Está seguro de eliminar esta empresa?')">Eliminar</button>
                                         </form>
-                                        <a href="{{ route('empresas.downloadPDF', $empresa->id) }}" class="btn btn-info">PDF</a>
+                                        <a href="{{ route('empresas.downloadPDF', $empresa->id) }}"
+                                            class="btn btn-info">PDF</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -87,14 +91,15 @@
                             </tr>
                         </thead>
                         <tbody id="empresaInteresadasTable">
-                            @foreach($empresasInteresadas as $empresa)
+                            @foreach ($empresasInteresadas as $empresa)
                                 <tr>
                                     <td>{{ $empresa->unidad_economica }}</td>
                                     <td>{{ $empresa->email }}</td>
                                     <td>{{ $empresa->telefono }}</td>
                                     <td>{{ $empresa->fecha_registro }}</td>
                                     <td>
-                                        <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success">Dar de Alta</a>
+                                        <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success">Dar
+                                            de Alta</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -106,32 +111,32 @@
     </div>
 
     <script>
-    document.getElementById('search').addEventListener('keyup', function() {
-        let value = this.value.toLowerCase();
-        let rows = document.querySelectorAll('#empresaTable tr');
-        rows.forEach(row => {
-            let showRow = false;
-            row.querySelectorAll('td').forEach(cell => {
-                if (cell.textContent.toLowerCase().includes(value)) {
-                    showRow = true;
-                }
+        document.getElementById('search').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#empresaTable tr');
+            rows.forEach(row => {
+                let showRow = false;
+                row.querySelectorAll('td').forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(value)) {
+                        showRow = true;
+                    }
+                });
+                row.style.display = showRow ? '' : 'none';
             });
-            row.style.display = showRow ? '' : 'none';
         });
-    });
 
-    document.getElementById('searchInteresadas').addEventListener('keyup', function() {
-        let value = this.value.toLowerCase();
-        let rows = document.querySelectorAll('#empresaInteresadasTable tr');
-        rows.forEach(row => {
-            let showRow = false;
-            row.querySelectorAll('td').forEach(cell => {
-                if (cell.textContent.toLowerCase().includes(value)) {
-                    showRow = true;
-                }
+        document.getElementById('searchInteresadas').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#empresaInteresadasTable tr');
+            rows.forEach(row => {
+                let showRow = false;
+                row.querySelectorAll('td').forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(value)) {
+                        showRow = true;
+                    }
+                });
+                row.style.display = showRow ? '' : 'none';
             });
-            row.style.display = showRow ? '' : 'none';
         });
-    });
     </script>
 @endsection

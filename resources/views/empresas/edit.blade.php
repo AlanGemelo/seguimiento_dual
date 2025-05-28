@@ -37,7 +37,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="telefono">Teléfono <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="telefono" name="telefono" value="{{ old('telefono', $empresa->telefono) }}" required maxlength="10">
+                                <input type="text" data-tipo="numbers" class="form-control form-control-lg" id="telefono" name="telefono" value="{{ old('telefono', $empresa->telefono) }}" required maxlength="10">
                                 @error('telefono')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror

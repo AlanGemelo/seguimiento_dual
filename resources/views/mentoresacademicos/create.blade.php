@@ -13,43 +13,55 @@
                             <form class="pt-3" action="{{ route('academicos.store') }}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="titulo">Titulo <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="titulo" placeholder=" Ingeniero en sistemas" name="titulo" value="{{ old('titulo') }}">
+                                    <label for="titulo">Grado académico <span class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
+                                        id="titulo" placeholder="Ej. Ingeniero en TIC" name="titulo"
+                                        value="{{ old('titulo') }}">
                                     @error('titulo')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="name" placeholder="Juan Perez Hermenegildo" name="name" value="{{ old('name') }}">
+                                    <label for="name">Nombre <span class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
+                                        id="name" placeholder="Juan Perez Hermenegildo" name="name"
+                                        value="{{ old('name') }}">
                                     @error('name')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Correo Electronico <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control form-control-lg" id="email" placeholder="user@utvtol.edu.mx" name="email" value="{{ old('email') }}">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control form-control-lg" id="email"
+                                            placeholder="nombre_de_usuario" name="email" value="{{ old('email') }}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"
+                                                style="color:black; height: 100%;">@utvtol.edu.mx</span>
+                                        </div>
+                                    </div>
+
                                     @error('email')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                     {{-- Seleccionar Docencia del estudiante--}}
-                                     <div class="form-group">
-                                        <label for="direccion_id" class="form-label">Direccion de Carrera <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" aria-label="Seleccionar Empresa"
-                                                name="direccion_id">
-                                            <option selected>Seleccione una opcion</option>
-                                            @foreach ($direcciones as $carrera)
-                                                <option value="{{ $carrera->id }}">{{ $carrera->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('direccion_id')
+                                {{-- Seleccionar Docencia del estudiante --}}
+                                <div class="form-group">
+                                    <label for="direccion_id" class="form-label">Direccion de Carrera <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id">
+                                        <option selected>Seleccione una opcion</option>
+                                        @foreach ($direcciones as $carrera)
+                                            <option value="{{ $carrera->id }}">{{ $carrera->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('direccion_id')
                                         <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                    @enderror
+                                </div>
                                 <div class="mt-3">
-                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">Guardar</button>
+                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                        type="submit">Guardar</button>
                                 </div>
                             </form>
                         </div>
@@ -59,4 +71,3 @@
         </div>
     </div>
 @endsection
-

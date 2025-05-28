@@ -32,8 +32,7 @@
                                         <div class="form-group">
                                             <label for="matricula">Matrícula <span class="text-danger">*</span></label>
                                             <input type="text" data-tipo="numbers" class="form-control form-control-lg"
-                                                id="matricula" name="matricula" value="{{ old('matricula') }}"
-                                                 >
+                                                id="matricula" name="matricula" value="{{ old('matricula') }}">
                                             @error('matricula')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -42,7 +41,7 @@
                                         {{-- Nombre del estudiante --}}
                                         <div class="form-group">
                                             <label for="name">Nombre<span class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="text" class="form-control form-control-lg"
+                                            <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
                                                 id="name" placeholder="Juan Perez Hermenegildo" name="name"
                                                 value="{{ old('name') }}">
                                             @error('name')
@@ -52,7 +51,7 @@
                                         {{-- CURP --}}
                                         <div class="form-group">
                                             <label for="curp">CURP<span class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="rfc" class="form-control form-control-lg"
+                                            <input type="text" data-tipo="curp" class="form-control form-control-lg uppercase"
                                                 id="curp" name="curp" value="{{ old('curp') }}">
                                             @error('curp')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -366,6 +365,10 @@
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar
                                     </button>
+                                    <a href="{{ route('estudiantes.index') }}"
+                                        class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn" style="margin-left: 10%">
+                                        Cancelar y volver
+                                    </a>
                                 </div>
                         </div>
                         </form>

@@ -31,16 +31,17 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="razon_social" class="form-label">Razón Social</label>
-                            <input type="text" class="form-control @error('razon_social') is-invalid @enderror"
-                                id="razon_social" name="razon_social" required value="{{ old('razon_social') }}">
+                            <input type="text" data-tipo="text"
+                                class="form-control @error('razon_social') is-invalid @enderror" id="razon_social"
+                                name="razon_social" required value="{{ old('razon_social') }}">
                             @error('razon_social')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="rfc" class="form-label">RFC</label>
-                            <input type="text" class="form-control @error('rfc') is-invalid @enderror" id="rfc"
-                                name="rfc" required pattern="[A-Z0-9]{13}" value="{{ old('rfc') }}">
+                            <input type="text" data-tipo="rfc" class="form-control uppercase @error('rfc') is-invalid @enderror"
+                                id="rfc" name="rfc" required pattern="[A-Z0-9]{13}" value="{{ old('rfc') }}">
                             @error('rfc')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -57,7 +58,8 @@
                         </div>
                         <div class="col-md-6">
                             <label for="nombre_representante" class="form-label">Nombre del Representante</label>
-                            <input type="text" class="form-control @error('nombre_representante') is-invalid @enderror"
+                            <input type="text" data-tipo="text"
+                                class="form-control @error('nombre_representante') is-invalid @enderror"
                                 id="nombre_representante" name="nombre_representante" required
                                 value="{{ old('nombre_representante') }}">
                             @error('nombre_representante')
@@ -68,7 +70,8 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="cargo_representante" class="form-label">Cargo del Representante</label>
-                            <input type="text" class="form-control @error('cargo_representante') is-invalid @enderror"
+                            <input type="text" data-tipo="text"
+                                class="form-control @error('cargo_representante') is-invalid @enderror"
                                 id="cargo_representante" name="cargo_representante" required
                                 value="{{ old('cargo_representante') }}">
                             @error('cargo_representante')
@@ -77,8 +80,9 @@
                         </div>
                         <div class="col-md-6">
                             <label for="telefono" class="form-label">Teléfono</label>
-                            <input type="text" class="form-control @error('telefono') is-invalid @enderror"
-                                id="telefono" name="telefono" required pattern="\d{10}" value="{{ old('telefono') }}">
+                            <input type="text" data-tipo="numbers"
+                                class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono"
+                                required pattern="\d{10}" value="{{ old('telefono') }}">
                             @error('telefono')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -96,7 +100,8 @@
                         </div>
                         <div class="col-md-6">
                             <label for="actividad_economica" class="form-label">Actividad Económica</label>
-                            <input type="text" class="form-control @error('actividad_economica') is-invalid @enderror"
+                            <input type="text" data-tipo="text"
+                                class="form-control @error('actividad_economica') is-invalid @enderror"
                                 id="actividad_economica" name="actividad_economica" required
                                 value="{{ old('actividad_economica') }}">
                             @error('actividad_economica')
@@ -107,7 +112,7 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="numero_empleados" class="form-label">Número de Empleados</label>
-                            <input type="number" class="form-control @error('numero_empleados') is-invalid @enderror"
+                            <input type="number" data-tipo="numbers" class="form-control @error('numero_empleados') is-invalid @enderror"
                                 id="numero_empleados" name="numero_empleados" required
                                 value="{{ old('numero_empleados') }}">
                             @error('numero_empleados')
@@ -142,7 +147,7 @@
                         </div>
                         <div class="col-md-6" id="numero_estudiantes_row" style="display: none;">
                             <label for="numero_estudiantes" class="form-label">Número de Estudiantes</label>
-                            <input type="number" class="form-control @error('numero_estudiantes') is-invalid @enderror"
+                            <input type="number" data-tipo="numbers" class="form-control @error('numero_estudiantes') is-invalid @enderror"
                                 id="numero_estudiantes" name="numero_estudiantes"
                                 value="{{ old('numero_estudiantes') }}">
                             @error('numero_estudiantes')

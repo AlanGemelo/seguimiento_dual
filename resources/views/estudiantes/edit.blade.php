@@ -20,7 +20,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="matricula">Matricula <span class="text-danger">*</span></label>
-                                            <input disabled type="number" class="form-control form-control-lg"
+                                            <input type="text" data-tipo="numbers" class="form-control form-control-lg"
                                                 id="matricula" name="matricula"
                                                 value="{{ old('matricula', $estudiante->matricula) }}">
                                             @error('matricula')
@@ -28,7 +28,7 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="name">Name <span class="text-danger">*</span></label>
+                                            <label for="name">Nombre: <span class="text-danger">*</span></label>
                                             <input disabled type="text" class="form-control form-control-lg"
                                                 id="name" placeholder="Juan Perez Hermenegildo" name="name"
                                                 value="{{ $estudiante->name, old('name') }}">

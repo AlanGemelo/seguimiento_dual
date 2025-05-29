@@ -41,8 +41,9 @@
                                         {{-- Nombre del estudiante --}}
                                         <div class="form-group">
                                             <label for="name">Nombre<span class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
-                                                id="name" placeholder="Juan Perez Hermenegildo" name="name"
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="name"
+                                                placeholder="Juan Perez Hermenegildo" name="name"
                                                 value="{{ old('name') }}">
                                             @error('name')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -51,8 +52,9 @@
                                         {{-- CURP --}}
                                         <div class="form-group">
                                             <label for="curp">CURP<span class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="curp" class="form-control form-control-lg uppercase"
-                                                id="curp" name="curp" value="{{ old('curp') }}">
+                                            <input type="text" data-tipo="curp"
+                                                class="form-control form-control-lg uppercase" id="curp" name="curp"
+                                                value="{{ old('curp') }}">
                                             @error('curp')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -79,6 +81,8 @@
                                                 <option value="6">6</option>
                                                 <option value="7">7</option>
                                                 <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
                                             </select>
                                             @error('cuatrimestre')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -366,7 +370,8 @@
                                         type="submit">Guardar
                                     </button>
                                     <a href="{{ route('estudiantes.index') }}"
-                                        class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn" style="margin-left: 10%">
+                                        class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn"
+                                        style="margin-left: 10%">
                                         Cancelar y volver
                                     </a>
                                 </div>

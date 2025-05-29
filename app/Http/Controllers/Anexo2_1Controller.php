@@ -125,7 +125,7 @@ class Anexo2_1Controller extends Controller
         $suma2 = array_sum($data['seccion_2']);
         $suma3 = array_sum($data['seccion_3']);
 
-        $porcentaje1 = ($suma1 / 8) * 100;
+        $porcentaje1 = ($suma1 / 4) * 100;
         $porcentaje2 = ($suma2 / 18) * 100;
         $porcentaje3 = ($suma3 / 9) * 100;
 
@@ -134,7 +134,7 @@ class Anexo2_1Controller extends Controller
         return $promedio;
     }
 
-    private function interpretarResultado($promedio)
+    /* private function interpretarResultado($promedio)
     {
         if ($promedio <= 45) {
             return 'Alta Vulnerabilidad; Unidad Económica no viable para incorporarse a ED.';
@@ -143,7 +143,20 @@ class Anexo2_1Controller extends Controller
         } else {
             return 'Baja Vulnerabilidad; Unidad Económica apta para incorporar a ED.';
         }
+    } */
+
+    private function interpretarResultado($promedio)
+    {
+        if ($promedio <= 48) {
+            return 'Alta Vulnerabilidad: La Unidad Económica no es viable para incorporarse al sistema de Educación Dual.';
+        } elseif ($promedio <= 68) {
+            return 'Mediana Vulnerabilidad: La Unidad Económica tiene opción de incorporarse al sistema de Educación Dual, pero requiere mejoras.';
+        } else {
+            return 'Baja Vulnerabilidad: La Unidad Económica es apta para incorporarse al sistema de Educación Dual.';
+        }
     }
+
+
 
     public function store(Request $request)
     {
@@ -175,12 +188,13 @@ class Anexo2_1Controller extends Controller
 
         // Determinar el resultado definitivo
         if ($nivel_vulnerabilidad <= 48) {
-            $resultado_definitivo = 'Alta Vulnerabilidad';
+            $resultado_definitivo = 'Alta Vulnerabilidad: La Unidad Económica no es viable para incorporarse al sistema de Educación Dual.';
         } elseif ($nivel_vulnerabilidad <= 68) {
-            $resultado_definitivo = 'Mediana Vulnerabilidad';
+            $resultado_definitivo = 'Mediana Vulnerabilidad: La Unidad Económica tiene opción de incorporarse al sistema de Educación Dual, pero requiere mejoras.';
         } else {
-            $resultado_definitivo = 'Baja Vulnerabilidad';
+            $resultado_definitivo = 'Baja Vulnerabilidad: La Unidad Económica es apta para incorporarse al sistema de Educación Dual.';
         }
+
 
         // Agregar los campos calculados a los datos validados
         $validatedData['nivel_vulnerabilidad'] = $nivel_vulnerabilidad;

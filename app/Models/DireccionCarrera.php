@@ -12,14 +12,14 @@ class DireccionCarrera extends Model
         'name',
         'email',
         'telefono',
-      
     ];
+
     public function programas()
     {
         return $this->hasMany(Carrera::class, 'direccion_id', 'id');
-
     }
-    public function director(){
+    public function director()
+    {
         return $this->hasOne(Director::class, 'direccion_id', 'id');
     }
 }

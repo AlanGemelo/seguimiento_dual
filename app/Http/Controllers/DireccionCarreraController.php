@@ -29,6 +29,7 @@ class DireccionCarreraController extends Controller
 
         return view('carrera.index', compact('carreras'));
     }
+
     public function index()
     {
         $direcciones = DireccionCarrera::all();
@@ -51,8 +52,14 @@ class DireccionCarreraController extends Controller
      * @param  \App\Http\Requests\StoreDireccionCarreraRequest  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
+        $username = str_replace(['@utvtol.edu.mx', ' '], '', $request->email);
+        $emailCompleto = $username . '@utvtol.edu.mx';
+        $request->merge([
+            'email' => $emailCompleto
+        ]);
         $direccion = DireccionCarrera::create($request->all());
         return redirect()->route('direcciones.index', compact('direccion'));
     }
@@ -65,7 +72,6 @@ class DireccionCarreraController extends Controller
      */
     public function show(DireccionCarrera $direccion)
     {
-
         $direccion->load('programas', 'director');
         return view('direccionescarrera.show', compact('direccion'));
     }
@@ -78,7 +84,6 @@ class DireccionCarreraController extends Controller
      */
     public function edit(DireccionCarrera $direccion)
     {
-
         return view('direccionescarrera.edit', compact('direccion'));
     }
 
@@ -92,7 +97,6 @@ class DireccionCarreraController extends Controller
     public function update(Request $request, DireccionCarrera $direccion)
     {
         $direccion->update($request->all());
-
         return redirect()->route('direcciones.index')->with('message', 'Direccion Academico Actualizado Correctamente');
     }
 
@@ -104,8 +108,6 @@ class DireccionCarreraController extends Controller
      */
     public function destroy(DireccionCarrera $direccion)
     {
-
-
         try {
             $direccion->delete();
 

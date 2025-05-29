@@ -35,7 +35,6 @@ Route::get('/migrate', function () {
     Artisan::call('migrate');
     Debugbar::addMessage('Migraciones  generado', 'listo!!');
 })->name('migrate');
-Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
 
 
 Route::get('/', [HomeController::class, 'welcome']);
@@ -131,11 +130,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/direcciones/{direccion}/delete', [DireccionCarreraController::class, 'destroy'])->name('direcciones.destroy');
     Route::get('/direcciones/crear', [DireccionCarreraController::class, 'create'])->name('direcciones.create');
     Route::get('/direcciones/{direccion}/edit', [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
-    
+    Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
+
     //Rutas RESTful 
     Route::resource('directores', DirectorController::class);
     Route::get('/directores/{id}/json', [DirectorController::class, 'showJson'])->name('direcciones.showJson');
-    
+
     Route::post('alerts', [MentorAcademicoController::class, 'alerts'])->name('alerts');
 
     // Rutas para Anexo 1.1

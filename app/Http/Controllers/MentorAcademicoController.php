@@ -69,7 +69,7 @@ class MentorAcademicoController extends Controller
             'titulo' => $request->titulo,
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make('12345678'), 
+            'password' => Hash::make('12345678'),
             'rol_id' => 2,
             'carrera_id' => 2,
             'direccion_id' => $request->direccion_id,

@@ -159,11 +159,11 @@ class Anexo2_1Controller extends Controller
         ]);
 
         // Calcular el nivel de vulnerabilidad
-        $puntos_seccion_1 = array_sum($validatedData['seccion_1']);
+        $puntos_seccion_1 = array_sum(array_map('intval', $validatedData['seccion_1']));
         $puntos_seccion_2 = array_sum($validatedData['seccion_2']);
         $puntos_seccion_3 = array_sum($validatedData['seccion_3']);
 
-        $max_seccion_1 = 8; // Máximo de puntos en Sección 1
+        $max_seccion_1 = 4; // Máximo de puntos en Sección 1
         $max_seccion_2 = 18; // Máximo de puntos en Sección 2
         $max_seccion_3 = 9; // Máximo de puntos en Sección 3
 

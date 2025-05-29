@@ -72,36 +72,36 @@
                             <tbody>
                                 <tr>
                                     <td>¿La UE está legalmente constituida?</td>
-                                    <td><input type="radio" name="seccion_1[legalmente_constituida]" value="Sí"
+                                    <td><input type="radio" name="seccion_1[legalmente_constituida]" value="1"
                                             {{ old('seccion_1.legalmente_constituida') == 'Sí' ? 'checked' : '' }}
                                             required></td>
-                                    <td><input type="radio" name="seccion_1[legalmente_constituida]" value="No"
+                                    <td><input type="radio" name="seccion_1[legalmente_constituida]" value="0"
                                             {{ old('seccion_1.legalmente_constituida') == 'No' ? 'checked' : '' }}
                                             required></td>
                                 </tr>
                                 <tr>
                                     <td>¿La UE está dispuesta a firmar el Convenio Específico de Cooperación?</td>
-                                    <td><input type="radio" name="seccion_1[convenio_cooperacion]" value="Sí"
+                                    <td><input type="radio" name="seccion_1[convenio_cooperacion]" value="1"
                                             {{ old('seccion_1.convenio_cooperacion') == 'Sí' ? 'checked' : '' }} required>
                                     </td>
-                                    <td><input type="radio" name="seccion_1[convenio_cooperacion]" value="No"
+                                    <td><input type="radio" name="seccion_1[convenio_cooperacion]" value="0"
                                             {{ old('seccion_1.convenio_cooperacion') == 'No' ? 'checked' : '' }} required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>¿La UE está dispuesta a firmar el Convenio de Aprendizaje?</td>
-                                    <td><input type="radio" name="seccion_1[convenio_aprendizaje]" value="Sí"
+                                    <td><input type="radio" name="seccion_1[convenio_aprendizaje]" value="1"
                                             {{ old('seccion_1.convenio_aprendizaje') == 'Sí' ? 'checked' : '' }} required>
                                     </td>
-                                    <td><input type="radio" name="seccion_1[convenio_aprendizaje]" value="No"
+                                    <td><input type="radio" name="seccion_1[convenio_aprendizaje]" value="0"
                                             {{ old('seccion_1.convenio_aprendizaje') == 'No' ? 'checked' : '' }} required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>¿La UE está dispuesta a firmar el Convenio Marco de Colaboración?</td>
-                                    <td><input type="radio" name="seccion_1[convenio_marco]" value="Sí"
+                                    <td><input type="radio" name="seccion_1[convenio_marco]" value="1"
                                             {{ old('seccion_1.convenio_marco') == 'Sí' ? 'checked' : '' }} required></td>
-                                    <td><input type="radio" name="seccion_1[convenio_marco]" value="No"
+                                    <td><input type="radio" name="seccion_1[convenio_marco]" value="0"
                                             {{ old('seccion_1.convenio_marco') == 'No' ? 'checked' : '' }} required></td>
                                 </tr>
                             </tbody>
@@ -257,6 +257,7 @@
             const progressContainer = document.getElementById('progress-container');
             const porcentaje = calcularPorcentaje(); // Implementar esta función para calcular el porcentaje
             progressBar.style.width = porcentaje + '%';
+            console.log("Posentaje calculado en barra: ", porcentaje);
             progressBar.textContent = porcentaje.toFixed(2) + '%';
 
             if (porcentaje <= 45) {
@@ -275,6 +276,7 @@
 
             progressContainer.style.display = 'block';
             progressBar.style.transition = 'width 1s';
+
         });
 
         function calcularPorcentaje() {
@@ -283,11 +285,13 @@
             const seccion2 = document.querySelectorAll('input[name^="seccion_2"]:checked');
             const seccion3 = document.querySelectorAll('input[name^="seccion_3"]:checked');
 
-            const puntosSeccion1 = Array.from(seccion1).reduce((acc, input) => acc + (input.value === 'Sí' ? 1 : 0), 0);
+            //  const puntosSeccion1 = Array.from(seccion1).reduce((acc, input) => acc + (input.value === 'Sí' ? 1 : 0), 0);
+            const puntosSeccion1 = Array.from(seccion1).reduce((acc, input) => acc + parseInt(input.value), 0);
             const puntosSeccion2 = Array.from(seccion2).reduce((acc, input) => acc + parseInt(input.value), 0);
             const puntosSeccion3 = Array.from(seccion3).reduce((acc, input) => acc + parseInt(input.value), 0);
 
-            const maxSeccion1 = 8;
+          //const maxSeccion1 = 8;
+            const maxSeccion1 = 4;
             const maxSeccion2 = 18;
             const maxSeccion3 = 9;
 

@@ -30,8 +30,8 @@ class HomeController extends Controller
         if ($auth->rol_id == 1) {
             session()->forget('direccion');
             $direcciones = DireccionCarrera::all();
-            return view('dashboardSuperAdmin', compact(['estudiantes', 'mentores', 'direcciones']));
-            //return view('admin.dashboard', compact(['estudiantes', 'mentores', 'direcciones']));
+            //return view('dashboardSuperAdmin', compact(['estudiantes', 'mentores', 'direcciones']));
+            return view('admin.dashboard', compact(['estudiantes', 'mentores', 'direcciones']));
         } else if ($auth->rol_id == 3) {
 
             $estudiante = Estudiantes::withTrashed()->where('user_id', $auth->id)->first();

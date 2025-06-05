@@ -12,13 +12,34 @@
     <div class="d-flex">
         <!-- Sidebar -->
         <div class="sidebar col-2">
-            <div class="sliderbar-header" style="text-align: center;">
-                <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" style="width: 40%;">
+            <div class="sidebar__logo" style="text-align: center; height: 12%;">
+                <a href="" style="padding: 0;">
+                    <img src="{{ asset('assets/images/loo-blanco.png') }}" alt="Logo" style="width: 50%; padding:0">
+                </a>
             </div>
-            <div class="silderbar-content">
+            <div class="sidebar__user-info p-2" style="background-color: red;">
+                <div class="row align-items-center">
+                    <!-- Columna del ícono -->
+                    <div class="col-auto">
+                        <div class="icon-user rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px; font-weight: bold;">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </div>
+                    </div>
+
+                    <!-- Columna de información -->
+                    <div class="col">
+                        <div class="info-user">
+                            <p class="user-rol mb-0">{{ Auth::user()->rol_id }}</p>
+                            <p class="user-name mb-0">{{ Auth::user()->email }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar__nav">
                 <a href="#">Inicio</a>
-                <a href="#">Usuarios</a>
-                <a href="#">Configuración</a>
+                <a href="#">Perfil</a>
                 <a href="#">Cerrar sesión</a>
             </div>
         </div>
@@ -32,7 +53,8 @@
                     <span>Bienvenido, {{ Auth::user()->name }}</span>
                 </div>
                 <div class="profile">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="perfil" style="width: 25%; margin-left:15px">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="perfil"
+                        style="width: 25%; margin-left:15px">
                 </div>
             </nav>
             <!-- Content -->

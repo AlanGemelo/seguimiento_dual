@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'en_MX',
 
     /*
     |--------------------------------------------------------------------------
@@ -181,7 +181,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-      //  RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        //  RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         ArielMejiaDev\LarapexCharts\LarapexChartsServiceProvider::class,

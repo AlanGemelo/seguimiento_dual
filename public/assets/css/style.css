@@ -1,0 +1,40 @@
+body {
+    overflow-x: hidden;
+}
+hr {
+    background-color: #004d40;
+}
+
+.navbar-header{
+    font-weight: bold;
+    font-size: large;
+}
+.navbar-custom {
+    background-color: #ffffff !important;
+    height: 10%;
+}
+.sidebar {
+    height: 100vh;
+    background-color: #006837;
+
+}
+.sidebar a {
+    color: white;
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+}
+.sidebar a:hover {
+    background-color: #495057;
+}
+
+#section-dashboard {
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+main {
+    background-color: #f5f5f5;
+    min-height: 80%;
+    margin: 0px;
+}

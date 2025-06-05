@@ -1,7 +1,7 @@
-@extends("layouts.app")
-@section("title", "Editar Estudiante")
+@extends('layouts.app')
+@section('title', 'Editar Estudiante')
 
-@section("content")
+@section('content')
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="row">
@@ -12,34 +12,37 @@
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
                             <form class="pt-3"
-                                action="{{ route("estudiantes.update", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                action="{{ route('estudiantes.update', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
                                 method="post" enctype="multipart/form-data">
                                 @csrf
-                                @method("PATCH")
+                                @method('PATCH')
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="matricula">Matricula <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control form-control-lg" id="matricula"
-                                                name="matricula" value="{{ old("matricula", $estudiante->matricula) }}">
-                                            @error("matricula")
+                                            <input type="text" data-tipo="numbers" class="form-control form-control-lg"
+                                                id="matricula" name="matricula"
+                                                value="{{ old('matricula', $estudiante->matricula) }}">
+                                            @error('matricula')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="name">Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="name"
+                                            <label for="name">Nombre <span class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="name"
                                                 placeholder="Juan Perez Hermenegildo" name="name"
-                                                value="{{ old("name", $estudiante->name) }}">
-                                            @error("name")
+                                                value="{{ old('name', $estudiante->name) }}">
+                                            @error('name')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="curp">CURP <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="curp"
-                                                name="curp" value="{{ old("curp", $estudiante->curp) }}">
-                                            @error("curp")
+                                            <input type="text" data-tipo="curp"
+                                                class="form-control form-control-lg uppercase" id="curp" name="curp"
+                                                value="{{ old('curp', $estudiante->curp) }}">
+                                            @error('curp')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -47,8 +50,8 @@
                                             <label for="fecha_na">Fecha de Nacimiento <span
                                                     class="text-danger">*</span></label>
                                             <input type="date" class="form-control form-control-lg" name="fecha_na"
-                                                id="fecha_na" value="{{ old("fecha_na", $estudiante->fecha_na) }}">
-                                            @error("fecha_na")
+                                                id="fecha_na" value="{{ old('fecha_na', $estudiante->fecha_na) }}">
+                                            @error('fecha_na')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -67,7 +70,7 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            @error("cuatrimestre")
+                                            @error('cuatrimestre')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -76,8 +79,8 @@
                                                     class="text-danger">*</span></label>
                                             <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
                                                 placeholder="Integrador" name="nombre_proyecto"
-                                                value="{{ $estudiante->nombre_proyecto, old("nombre_proyecto") }}">
-                                            @error("nombre_proyecto")
+                                                value="{{ $estudiante->nombre_proyecto, old('nombre_proyecto') }}">
+                                            @error('nombre_proyecto')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -88,12 +91,12 @@
 
                                                 @foreach ($empresas as $empresa)
                                                     <option value="{{ $empresa->id }}"
-                                                        {{ $estudiante->empresa_id == $empresa->id ? "selected" : "" }}>
+                                                        {{ $estudiante->empresa_id == $empresa->id ? 'selected' : '' }}>
                                                         {{ $empresa->nombre }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error("empresa_id")
+                                            @error('empresa_id')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -105,12 +108,12 @@
                                                 name="asesorin_id">
 
                                                 @foreach ($industrials as $industrial)
-                                                  <option value="{{ $industrial->id }}"
-                                                   {{ $estudiante->asesorin_id == $industrial->id ? "selected": '' }} >
-                                                {{ $industrial->name }}</option>
+                                                    <option value="{{ $industrial->id }}"
+                                                        {{ $estudiante->asesorin_id == $industrial->id ? 'selected' : '' }}>
+                                                        {{ $industrial->name }}</option>
                                                 @endforeach
                                             </select>
-                                            @error("asesorin_id")
+                                            @error('asesorin_id')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -123,12 +126,12 @@
                                                 <option selected>Seleccione una opción</option>
                                                 @foreach ($direcciones as $direccion)
                                                     <option value="{{ $direccion->id }}"
-                                                        {{ $estudiante->direccion_id == $direccion->id ? "selected" : "" }}>
+                                                        {{ $estudiante->direccion_id == $direccion->id ? 'selected' : '' }}>
                                                         {{ $direccion->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error("direccion_id")
+                                            @error('direccion_id')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -142,12 +145,12 @@
                                                 <option selected>Seleccione una opción</option>
                                                 @foreach ($academicos as $user)
                                                     <option value="{{ $user->id }}"
-                                                        {{ $estudiante->academico_id == $user->id ? "selected" : "" }}>
+                                                        {{ $estudiante->academico_id == $user->id ? 'selected' : '' }}>
                                                         {{ $user->titulo }} {{ $user->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error("academico_id")
+                                            @error('academico_id')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -161,12 +164,12 @@
                                                 <option selected>Seleccione una opción</option>
                                                 @foreach ($carreras as $carrera)
                                                     <option value="{{ $carrera->id }}"
-                                                        {{ $estudiante->carrera_id == $carrera->id ? "selected" : "" }}>
+                                                        {{ $estudiante->carrera_id == $carrera->id ? 'selected' : '' }}>
                                                         {{ $carrera->nombre }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error("carrera_id")
+                                            @error('carrera_id')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -177,8 +180,8 @@
                                                     class="text-danger">*</span></label>
                                             <input type="date" class="form-control form-control-lg" name="inicio_dual"
                                                 id="inicio_dual"
-                                                value="{{ $estudiante->inicio_dual, old("inicio_dual") }}">
-                                            @error("inicio_dual")
+                                                value="{{ $estudiante->inicio_dual, old('inicio_dual') }}">
+                                            @error('inicio_dual')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
 
@@ -187,8 +190,8 @@
                                         <div class="form-group">
                                             <label for="fin_dual">Fin Dual <span class="text-danger">*</span></label>
                                             <input type="date" class="form-control form-control-lg" name="fin_dual"
-                                                id="fin_dual" value="{{ $estudiante->fin_dual, old("fin_dual") }}">
-                                            @error("fin_dual")
+                                                id="fin_dual" value="{{ $estudiante->fin_dual, old('fin_dual') }}">
+                                            @error('fin_dual')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -199,18 +202,18 @@
                                                 onchange="mostrarInput()" name="beca">
 
                                                 @foreach ($becas as $carrera)
-                                                    @if ($estudiante->beca == $carrera["id"])
-                                                        <option value="{{ $carrera["id"] }}" selected>
-                                                            {{ $carrera["name"] }}
+                                                    @if ($estudiante->beca == $carrera['id'])
+                                                        <option value="{{ $carrera['id'] }}" selected>
+                                                            {{ $carrera['name'] }}
                                                         </option>
                                                     @else
-                                                        <option value="{{ $carrera["id"] }}">
-                                                            {{ $carrera["name"] }}
+                                                        <option value="{{ $carrera['id'] }}">
+                                                            {{ $carrera['name'] }}
                                                         </option>
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            @error("beca")
+                                            @error('beca')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -222,18 +225,18 @@
                                             <select class="form-select" aria-label="Seleccionar Carrera" name="tipoBeca">
 
                                                 @foreach ($tipoBeca as $carrera)
-                                                    @if ($estudiante->tipoBeca == $carrera["id"])
-                                                        <option value="{{ $carrera["id"] }}" selected>
-                                                            {{ $carrera["name"] }}
+                                                    @if ($estudiante->tipoBeca == $carrera['id'])
+                                                        <option value="{{ $carrera['id'] }}" selected>
+                                                            {{ $carrera['name'] }}
                                                         </option>
                                                     @else
-                                                        <option value="{{ $carrera["id"] }}">
-                                                            {{ $carrera["name"] }}
+                                                        <option value="{{ $carrera['id'] }}">
+                                                            {{ $carrera['name'] }}
                                                         </option>
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            @error("tipoBeca")
+                                            @error('tipoBeca')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -246,8 +249,8 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="ine" placeholder="INE" name="ine"
-                                                    value="{{ old("ine") }}">
-                                                @error("ine")
+                                                    value="{{ old('ine') }}">
+                                                @error('ine')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='ine_' href="{{ url(Storage::url($estudiante->ine)) }}"
@@ -269,8 +272,8 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="carta_acp" placeholder="carta_acp" name="carta_acp"
-                                                    value="{{ old("carta_acp") }}">
-                                                @error("carta_acp")
+                                                    value="{{ old('carta_acp') }}">
+                                                @error('carta_acp')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='carta_acp_' href="{{ url(Storage::url($estudiante->carta_acp)) }}"
@@ -291,8 +294,8 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="minutas" placeholder="minutas" name="minutas"
-                                                    value="{{ old("minutas") }}">
-                                                @error("minutas")
+                                                    value="{{ old('minutas') }}">
+                                                @error('minutas')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='minutas_' href="{{ url(Storage::url($estudiante->minutas)) }}"
@@ -301,20 +304,22 @@
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='minutasC'
-                                                    onclick="ocultar('minutas_','minutas','minutasC')" type="button">Cambiar Documento</button>
+                                                    onclick="ocultar('minutas_','minutas','minutasC')"
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
 
                                         {{-- Cargar documento de Plan-Form --}}
                                         <div class="form-group">
-                                            <label for="plan_form">Plan de Formacion<span class="text-danger">*</span></label>
+                                            <label for="plan_form">Plan de Formacion<span
+                                                    class="text-danger">*</span></label>
                                             <div
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="plan_form" placeholder="plan_form" name="plan_form"
-                                                    value="{{ old("plan_form") }}">
-                                                @error("plan_form")
+                                                    value="{{ old('plan_form') }}">
+                                                @error('plan_form')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='plan_form_' href="{{ url(Storage::url($estudiante->plan_form)) }}"
@@ -336,8 +341,8 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="historial_academico" placeholder="historial_academico"
-                                                    name="historial_academico" value="{{ old("historial_academico") }}">
-                                                @error("historial_academico")
+                                                    name="historial_academico" value="{{ old('historial_academico') }}">
+                                                @error('historial_academico')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='historial_academico_'
@@ -360,11 +365,12 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="perfil_ingles" placeholder="perfil_ingles" name="perfil_ingles"
-                                                    value="{{ old("perfil_ingles") }}">
-                                                @error("perfil_ingles")
+                                                    value="{{ old('perfil_ingles') }}">
+                                                @error('perfil_ingles')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-                                                <a id='perfil_ingles_' href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
+                                                <a id='perfil_ingles_'
+                                                    href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
                                                     class=" form-control form-control-lg btn-primary" target="_blank">Ver
                                                     Perfil de Ingles
                                                     <span class="mdi mdi-file-pdf-box"></span>
@@ -383,8 +389,8 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="formatoA" placeholder="formatoA" name="formatoA"
-                                                    value="{{ old("formatoA") }}">
-                                                @error("formatoA")
+                                                    value="{{ old('formatoA') }}">
+                                                @error('formatoA')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='formatoA_' href="{{ url(Storage::url($estudiante->formatoA)) }}"
@@ -394,7 +400,7 @@
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='formatoAC'
                                                     onclick="ocultar('formatoA_','formatoA','formatoAC')"
-                                                    type="button">Cambiar  Documento</button>
+                                                    type="button">Cambiar Documento</button>
 
                                             </div>
                                         </div>
@@ -405,8 +411,8 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="formatoB" placeholder="formatoB" name="formatoB"
-                                                    value="{{ old("formatoB") }}">
-                                                @error("formatoB")
+                                                    value="{{ old('formatoB') }}">
+                                                @error('formatoB')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='formatoB_' href="{{ url(Storage::url($estudiante->formatoB)) }}"
@@ -428,8 +434,8 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="formatoC" placeholder="formatoC" name="formatoC"
-                                                    value="{{ old("formatoC") }}">
-                                                @error("formatoC")
+                                                    value="{{ old('formatoC') }}">
+                                                @error('formatoC')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='formatoC_' href="{{ url(Storage::url($estudiante->formatoC)) }}"
@@ -450,8 +456,8 @@
                                                 style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="evaluacion_form" placeholder="evaluacion_form"
-                                                    name="evaluacion_form" value="{{ old("evaluacion_form") }}">
-                                                @error("evaluacion_form")
+                                                    name="evaluacion_form" value="{{ old('evaluacion_form') }}">
+                                                @error('evaluacion_form')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='evaluacion_form_'
@@ -472,8 +478,8 @@
                                                 style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="formato51" placeholder="formato51" name="formato51"
-                                                    value="{{ old("formato51") }}">
-                                                @error("formato51")
+                                                    value="{{ old('formato51') }}">
+                                                @error('formato51')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='formato51_' href="{{ url(Storage::url($estudiante->formato51)) }}"
@@ -493,8 +499,8 @@
                                                 style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="formato54" placeholder="formato54" name="formato54"
-                                                    value="{{ old("formato54") }}">
-                                                @error("formato54")
+                                                    value="{{ old('formato54') }}">
+                                                @error('formato54')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='formato54_' href="{{ url(Storage::url($estudiante->formato54)) }}"
@@ -514,8 +520,8 @@
                                                 style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                 <input hidden type="file" class="form-control form-control-lg"
                                                     id="formato55" placeholder="formato55" name="formato55"
-                                                    value="{{ old("formato55") }}">
-                                                @error("formato55")
+                                                    value="{{ old('formato55') }}">
+                                                @error('formato55')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                                 <a id='formato55_' href="{{ url(Storage::url($estudiante->formato55)) }}"
@@ -524,12 +530,13 @@
                                                     <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                                 <button class="btn btn-secondary w-50  " id='formato55C'
-                                                    onclick="ocultar('formato55_','formato55','formato55C')" type="button">Cambiar
+                                                    onclick="ocultar('formato55_','formato55','formato55C')"
+                                                    type="button">Cambiar
                                                     Documento</button>
 
                                             </div>
                                         </div>
-                                        
+
                                         {{-- Estatus --}}
                                         <div class="form-group">
                                             <label for="status" class="form-label">Situacion Dual <span
@@ -537,31 +544,36 @@
                                             <select class="form-select" aria-label="Seleccionar Empresa" name="status">
                                                 <option selected>Seleccione una opcion</option>
                                                 @foreach ($situation as $sit)
-                                                    <option value="{{ $sit["id"] }}"
-                                                     {{ $sit["id"] == $estudiante->status ? "selected": '' }} >
-                                                        {{ $sit["name"] }}
+                                                    <option value="{{ $sit['id'] }}"
+                                                        {{ $sit['id'] == $estudiante->status ? 'selected' : '' }}>
+                                                        {{ $sit['name'] }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error("status")
+                                            @error('status')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                
-                                </div>
-                           </div>
-                                    <div class="mt-3">
-                                        <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                            type="submit">Editar
-                                        </button>
+
                                     </div>
                                 </div>
+                                <div class="mt-3 ">
+                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                        type="submit">Actualizar
+                                    </button>
+
+                                    <a href="{{ route('estudiantes.index') }}"
+                                        class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn" style="margin-left: 10%">
+                                        Cancelar y volver
+                                    </a>
+                                </div>
                         </div>
-                        </form>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </div>
 @endsection
@@ -594,6 +606,7 @@
                 .catch(error => console.error('Error fetching data:', error));
         }
     });
+
     function ocultar(id, id2, text) {
         const elemento = document.getElementById(`${id}`);
         elemento.hidden = !elemento.hidden;

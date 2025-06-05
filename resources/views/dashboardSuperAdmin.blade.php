@@ -7,51 +7,52 @@
                 <div class="alert alert-success alert-dismissible text-dark" role="alert">
                     <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
                         {{ session('status') }}.</span>
-                   
+
                 </div>
             @endif
             @if (session('error'))
-            <div class="alert alert-info alert-dismissible fade show" role="alert">
-                <strong>!Por favooor!!!</strong> Selecciona una direccion para continuar.
-           
-              </div>
-              
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <strong>!Por favooor!!!</strong> Selecciona una direccion para continuar.
+
+                </div>
             @endif
-          
-        
-        
+
             <div class="container my-5">
                 <div class="row">
-                    @foreach($direcciones as $direccion)
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <a href="{{ route('direcciones.select', $direccion->id) }}" class="card-link" style="text-decoration: none">
+                    @foreach ($direcciones as $direccion)
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <a href="{{ route('direcciones.select', $direccion->id) }}" class="card-link"
+                                style="text-decoration: none">
 
-                        <div class="card shadow card-hover animate__animated animate__flipInY" style="animation-delay: {{ $loop->index * 0.5 }}s; height: 100%;">
-                            <div class="card-body d-flex flex-column justify-content-between">
-                                <!-- Ícono -->
-                                <div class="d-flex justify-content-center mb-3">
-                                    <i class="mdi mdi-school btn-icon-prepend" style="font-size: 2rem;"></i>
+                                <div class="card shadow card-hover animate__animated animate__flipInY"
+                                    style="animation-delay: {{ $loop->index * 0.5 }}s; height: 100%;">
+                                    <div class="card-body d-flex flex-column justify-content-between">
+                                        <!-- Ícono -->
+                                        <div class="d-flex justify-content-center mb-3">
+                                            <i class="mdi mdi-school btn-icon-prepend" style="font-size: 2rem;"></i>
+                                        </div>
+                                        <!-- Nombre de la dirección -->
+                                        <h5 class="card-title text-center">{{ $direccion->name }}</h5>
+                                        <!-- Programas educativos -->
+                                        <p class="card-text text-muted text-center">
+                                            Programas educativos disponibles: {{ $direccion->programas->count() }}
+                                            <!-- Ejemplo -->
+                                        </p>
+                                        <!-- Botón interactivo -->
+                                        <div class="d-flex justify-content-center mt-auto">
+                                            <a href="{{ route('direcciones.select', $direccion->id) }}"
+                                                class="btn btn-primary btn-gradient">
+                                                Ver Programas
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- Nombre de la dirección -->
-                                <h5 class="card-title text-center">{{ $direccion->name }}</h5>
-                                <!-- Programas educativos -->
-                                <p class="card-text text-muted text-center">
-                                    Programas educativos disponibles: {{ $direccion->programas->count() }} <!-- Ejemplo -->
-                                </p>
-                                <!-- Botón interactivo -->
-                                <div class="d-flex justify-content-center mt-auto">
-                                    <a href="{{ route('direcciones.select', $direccion->id) }}" class="btn btn-primary btn-gradient">
-                                        Ver Programas
-                                    </a>
-                                </div>
-                            </div>
+                            </a>
                         </div>
-                        </a>
-                    </div>
                     @endforeach
                 </div>
             </div>
-      
+
 
             {{-- <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
                 <div class="bg-gray-800 text-white py-4 px-6 rounded-t-lg text-center">
@@ -90,9 +91,8 @@
                 </div>
             </div> --}}
 
-        
+
         </div>
     </div>
-    </div>
-@endsection
 
+@endsection

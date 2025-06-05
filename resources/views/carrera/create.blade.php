@@ -25,7 +25,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="nombre">Nombre del Programa Educativo<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="nombre" name="nombre"
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg" id="nombre" name="nombre"
                                         value="{{ old('nombre') }}">
                                     @error('nombre')
                                         <div class="text-danger">{{ $message }}</div>

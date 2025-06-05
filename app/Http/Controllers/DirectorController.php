@@ -11,8 +11,9 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class DirectorController extends Controller
 {
-    public function __construct(){
-    $this->middleware('admin');
+    public function __construct()
+    {
+        $this->middleware('admin');
     }
     /**
      * Display a listing of the resource.
@@ -21,6 +22,7 @@ class DirectorController extends Controller
      */
     public function index()
     {
+
         $directores = Director::with('direccion')->get();
         return view('directores.index', ['directores' => $directores]);
     }
@@ -33,10 +35,12 @@ class DirectorController extends Controller
     public function create()
     {
         $DireccionConDirector = Director::get('direccion_id')->pluck('direccion_id');
-        $direcciones = DireccionCarrera::whereNotIn('id',$DireccionConDirector)->get();
-        return response()->json($direcciones);
-        return view('directores.create',compact('direcciones'));
+        $direcciones = DireccionCarrera::whereNotIn('id', $DireccionConDirector)->get();
+
+        //return response()->json($direcciones); 
+        return view('directores.create', compact('direcciones')); 
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -49,7 +53,7 @@ class DirectorController extends Controller
         Director::create($request->all());
         User::create([
             'titulo' => 'Director',
-            'name'=> $request->nombre,
+            'name' => $request->nombre,
             'email' => $request->email,
             'password' => bcrypt(12345678),
             'rol_id' => 4,
@@ -57,7 +61,6 @@ class DirectorController extends Controller
             'direccion_id' => $request->direccion_id,
         ]);
         return redirect()->route('directores.index');
-        
     }
 
     /**
@@ -66,7 +69,7 @@ class DirectorController extends Controller
      * @param  \App\Models\Director  $director
      * @return \Illuminate\Http\Response
      */
-    public function show( $directore)
+    public function show($directore)
     {
         $directore = Hashids::decode($directore);
         $directore = Director::findOrFail($directore)->first();
@@ -80,13 +83,13 @@ class DirectorController extends Controller
      * @param  \App\Models\Director  $director
      * @return \Illuminate\Http\Response
      */
-    public function edit( $directore)
+    public function edit($directore)
     {
         $directore = Hashids::decode($directore);
-        $directore = Director::findOrFail($directore)->first(); 
+        $directore = Director::findOrFail($directore)->first();
         $direcciones = DireccionCarrera::all();
-        
-         $directore->load('direccion');
+
+        $directore->load('direccion');
         return view('directores.edit', ['direccion' => $directore, 'direcciones' => $direcciones]);
     }
 
@@ -99,18 +102,18 @@ class DirectorController extends Controller
      */
     public function update(UpdateDirectorRequest $request, Director $directore)
     {
-        
+
         User::where('email', $directore->email)->update([
             'name' => $request->nombre,
             'email' => $request->email,
             'direccion_id' => $request->direccion_id,
         ]);
         $directore->update($request->all());
-        
+
         return redirect()->route('directores.index');
     }
 
- 
+
     public function showJson(Director $id)
     {
         return response()->json($id);

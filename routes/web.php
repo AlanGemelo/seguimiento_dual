@@ -21,7 +21,9 @@ use App\Http\Controllers\EmpresaController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::resource('directores', DirectorController::class);
+
+
+
 Route::get('/optimize', function () {
     Artisan::call('optimize:clear');
     Artisan::call('config:clear');
@@ -33,7 +35,6 @@ Route::get('/migrate', function () {
     Artisan::call('migrate');
     Debugbar::addMessage('Migraciones  generado', 'listo!!');
 })->name('migrate');
-Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
 
 
 Route::get('/', [HomeController::class, 'welcome']);
@@ -74,7 +75,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/empresas', [EmpresaController::class, 'index'])->name('empresas.index');
     Route::get('/empresas/crear', [EmpresaController::class, 'create'])->name('empresas.create');
+    // Route::post('/empresas/registrar', [EmpresaController::class, 'registrar'])->name('empresas.registrar');
     Route::post('/empresas', [EmpresaController::class, 'store'])->name('empresas.store');
+    //Route::post('/empresas/store', [EmpresaController::class, 'store'])->name('empresas.store');
     Route::get('/empresas/{id}/show', [EmpresaController::class, 'show'])->name('empresas.show');
     Route::get('/empresas/{id}/json', [EmpresaController::class, 'showJson'])->name('empresas.showJson');
     Route::get('/empresas/{id}/editar', [EmpresaController::class, 'edit'])->name('empresas.edit');
@@ -100,6 +103,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/carreras/{id}/delete', [CarreraController::class, 'destroy'])->name('carreras.destroy');
     Route::get('/carreras/{id}/editar', [CarreraController::class, 'edit'])->name('carreras.edit');
     Route::resource('estadisticas', EstadisticaController::class)->except(['show']);
+
     Route::get('estadisticas/exportExcel', [EstadisticaController::class, 'exportExcel'])->name('estadisticas.exportExcel');
     Route::get('estadisticas/mentor/{mentorId}', [EstadisticaController::class, 'getEstudiantesPorMentor']);
     Route::get('estadisticas/empresa/{empresaId}', [EstadisticaController::class, 'getEstudiantesPorEmpresa']);
@@ -126,11 +130,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/direcciones/{direccion}/delete', [DireccionCarreraController::class, 'destroy'])->name('direcciones.destroy');
     Route::get('/direcciones/crear', [DireccionCarreraController::class, 'create'])->name('direcciones.create');
     Route::get('/direcciones/{direccion}/edit', [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
+    Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
 
+    //Rutas RESTful 
+    Route::resource('directores', DirectorController::class);
     Route::get('/directores/{id}/json', [DirectorController::class, 'showJson'])->name('direcciones.showJson');
+
     Route::post('alerts', [MentorAcademicoController::class, 'alerts'])->name('alerts');
-
-
 
     // Rutas para Anexo 1.1
     Route::get('/anexo1_1', [Anexo1_1Controller::class, 'index'])->name('anexo1_1.index');

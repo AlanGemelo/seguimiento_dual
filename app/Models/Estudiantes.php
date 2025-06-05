@@ -13,7 +13,7 @@ class Estudiantes extends Model
     use HasFactory, SoftDeletes;
 
     protected $primaryKey = 'matricula';
-      public function getStatusTextAttribute()
+    public function getStatusTextAttribute()
     {
         $statuses = [
             0 => 'Reprobacion',

@@ -44,16 +44,22 @@ class EstudiantesController extends Controller
 
         $hoy = Carbon::now();
         // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
-        $registros = Estudiantes::with('academico','asesorin')->whereDate('fin_dual','<=', $hoy->addDays(15))->where('activo',true)->get();
-        $registrosConvenio = Empresa::with('asesorin')->whereDate('fin_conv','<=', $hoy->addDays(15))->get();
+        $registros = Estudiantes::with('academico', 'asesorin')->whereDate('fin_dual', '<=', $hoy->addDays(15))->where('activo', true)->get();
+        $registrosConvenio = Empresa::with('asesorin')->whereDate('fin_conv', '<=', $hoy->addDays(15))->get();
         // Enviar correos por cada registro
-        foreach ($registrosConvenio as $registro) {
+        // foreach ($registrosConvenio as $registro) {
 
-        // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
-        Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,
-        env('APP_URL'),session('direccion')->email,session('direccion')->name));
-        // Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
-    }
+        //     // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
+        //     Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable(
+        //         $registro,
+        //         $registro->fin_conv,
+        //         $registro->asesorin,
+        //         env('APP_URL'),
+        //         session('direccion')->email,
+        //         session('direccion')->name
+        //     ));
+        //     // Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
+        // }
         $search = request('search'); // Obtener el parámetro 'search' de la URL
 
         $direccionId = session('direccion')->id ?? null;
@@ -67,7 +73,9 @@ class EstudiantesController extends Controller
         $candidatos = Estudiantes::where('activo', false)
             ->where('direccion_id', $direccionId)
             ->get();
-        $academico = User::where('rol_id', 2)->where('direccion_id', $direccionId)->get();
+        //  $academico = User::where('rol_id', 2)->where('direccion_id', $direccionId)->get();
+        $academico = User::where('rol_id', 2)->where('direccion_id', $direccionId)->first();
+
         $estudiantesDeleted = Estudiantes::where('direccion_id', $direccionId)->with('academico', 'carrera')->onlyTrashed()->get();
 
         $situation = [
@@ -83,13 +91,13 @@ class EstudiantesController extends Controller
 
         $hoy = Carbon::now();
 
-        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos','search'));
+        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos', 'search'));
     }
 
     /**
      * Muestra el formulario para crear un nuevo estudiante.
      */
-    public function create(): View
+    public function create()
     {
         $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get();
         $empresas = Empresa::where('direccion_id', session('direccion')->id)->get();
@@ -118,7 +126,7 @@ class EstudiantesController extends Controller
      */
     public function crearC(): View
     {
-        $direcciones = DireccionCarrera::all();
+        $direcciones = DireccionCarrera::where("id", session('direccion')->id)->get();
         $academico = User::where('direccion_id', session('direccion')->id)->where('rol_id', 2)->get();
         $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
 
@@ -146,7 +154,7 @@ class EstudiantesController extends Controller
 
 
         $request->validate([
-            'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:8'],
+            'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:9'],
             'name' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
@@ -158,15 +166,12 @@ class EstudiantesController extends Controller
             'academico_id' => ['required', 'integer', 'exists:' . User::class . ',id'],
             'asesorin_id' => ['required', 'integer', 'exists:' . MentorIndustrial::class . ',id'],
             'status' => ['required', 'integer'],
-
-
             'ine' => ['file', 'mimes:pdf', 'required'],
             // 'historial_academico' => ['file', 'mimes:pdf'],
             // 'perfil_ingles' => ['file', 'mimes:pdf'],
             'inicio' => ['date'],
             'fin' => ['date'],
             'direccion_id' => ['required', 'integer', 'exists:' . DireccionCarrera::class . ',id'],
-
             'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
 
@@ -233,7 +238,7 @@ class EstudiantesController extends Controller
         $user = User::create([
             'titulo' => 'Estudiante',
             'name' => $request->name,
-            'email' => $request->email ?? ('al' . $request->matricula . '@gmail.com'),
+            'email' => $request->email ?? ('al' . $request->matricula . '@utvtol.edu.mx'),
             'password' => Hash::make($request->matricula),
             'rol_id' => 3,
             'carrera_id' => $request->carrera_id,
@@ -290,13 +295,11 @@ class EstudiantesController extends Controller
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
             'cuatrimestre' => ['integer', 'required',],
-
             'ine' => ['file', 'mimes:pdf'],
             'historial_academico' => ['file', 'mimes:pdf'],
             'inicio' => ['date'],
             'fin' => ['date'],
             'direccion_id' => ['required', 'integer', 'exists:' . DireccionCarrera::class . ',id'],
-
             'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
 
@@ -318,7 +321,7 @@ class EstudiantesController extends Controller
         $user = User::create([
             'titulo' => 'Estudiante',
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => 'al' . $request->email . '@utvtol.edu.mx',
             'password' => Hash::make($request->matricula),
             'rol_id' => 3,
             'carrera_id' => $request->carrera_id,
@@ -393,7 +396,7 @@ class EstudiantesController extends Controller
             ['id' => 0, 'name' => 'Primera vez'],
             ['id' => 1, 'name' => 'Renovacion Dual']
         ];
-        $direcciones = DireccionCarrera::all();
+        $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get();
         $id = Hashids::decode($id);
         $estudiante = Estudiantes::with('empresa')->where('direccion_id', session('direccion')->id)->where('matricula', $id)->get();
         $estudiante = $estudiante[0];
@@ -427,7 +430,7 @@ class EstudiantesController extends Controller
         }])->get();
         $vista = Auth::user()->rol_id == 1 || Auth::user()->rol_id == 4  ? 'editAdmin' : 'edit';
 
-        return view('estudiantes.' . $vista, compact('estudiante','situation', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres', 'becas', 'tipoBeca', 'direcciones'));
+        return view('estudiantes.' . $vista, compact('estudiante', 'situation', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres', 'becas', 'tipoBeca', 'direcciones'));
     }
 
     /**
@@ -546,7 +549,7 @@ class EstudiantesController extends Controller
             'formato54' => $formato54 ?? $estudiantes->formato54,
             'formato55' => $formato55 ?? $estudiantes->formato55,
             'activo' => true,
-            'beca'=> $request->beca,
+            'beca' => $request->beca,
 
         ]);
         $estudiantes->save();
@@ -568,17 +571,17 @@ class EstudiantesController extends Controller
 
         ]));
 
-     if (User::find($estudiantes->user_id) === null) {
-        User::create([
-            'titulo' => 'Estudiante',
-            'name' => $request->name,
-            'email' => 'al' . $request->matricula . '@gmail.com',
-            'password' => Hash::make('12345678'),
-            'rol_id' => 3,
-            'carrera_id' => $request->carrera_id,
-            'direccion_id' => $request->direccion_id,
-        ]);
-     }
+        if (User::find($estudiantes->user_id) === null) {
+            User::create([
+                'titulo' => 'Estudiante',
+                'name' => $request->name,
+                'email' => 'al' . $request->matricula . '@gmail.com',
+                'password' => Hash::make('12345678'),
+                'rol_id' => 3,
+                'carrera_id' => $request->carrera_id,
+                'direccion_id' => $request->direccion_id,
+            ]);
+        }
 
 
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');
@@ -726,9 +729,9 @@ class EstudiantesController extends Controller
     /**
      * Restaura un estudiante eliminado.
      */
-    public function restoreEstudiante( $id)
+    public function restoreEstudiante($id)
     {
-        $elemento = Estudiantes::withTrashed()->where('matricula',$id)->first();
+        $elemento = Estudiantes::withTrashed()->where('matricula', $id)->first();
         $elemento->restore();
         return redirect()->route('estudiantes.index')->with('success', 'Estudiante Restaurado.');
     }

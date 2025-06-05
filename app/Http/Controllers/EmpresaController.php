@@ -37,12 +37,63 @@ class EmpresaController extends Controller
 
     public function create(Request $request)
     {
-        $direcciones = DireccionCarrera::where('id',session('direccion')->id)->get(); // Asegúrate de obtener las direcciones
+        $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get(); // Asegúrate de obtener las direcciones
         $anexo2_1 = Anexo2_1::find($request->anexo2_1_id);
-        return view('empresas.create', compact('anexo2_1','direcciones'));
+        return view('empresas.create', compact('anexo2_1', 'direcciones'));
     }
 
-    public function store(Request $request)
+    public function registrar(Request $request, Empresa $empresa)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
+            'direccion' => 'required|string',
+            'telefono' => 'required|string|size:10',
+            'inicio_conv' => 'required|date',
+            'fin_conv' => 'required|date',
+            //'ine' => 'nullable|file|mimes:pdf,jpg',
+            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
+            'convenioA' => 'nullable|file|mimes:pdf,jpg',
+            'convenioMA' => 'nullable|file|mimes:pdf,jpg',
+            // 'folio' => 'nullable|string|max:255',
+        ]);
+
+        $empresa->update($request->all());
+        $empresa->status = 1; // Cambiar el estado a registrada
+        $empresa->save();
+
+        return redirect()->route('empresas.index')->with('success', 'Empresa registrada exitosamente.');
+    }
+
+    public function store(Request $request, Empresa $empresa)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
+            'direccion' => 'required|string',
+            'telefono' => 'required|string|size:10',
+            'inicio_conv' => 'required|date',
+            'fin_conv' => 'required|date',
+            //'ine' => 'nullable|file|mimes:pdf,jpg',
+            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
+            'convenioA' => 'nullable|file|mimes:pdf,jpg',
+            'convenioMA' => 'nullable|file|mimes:pdf,jpg',
+            // 'unidad_economica' => 'required|string|max:255',
+            // 'fecha_registro' => 'required|date',
+            //'razon_social' => 'required|string|max:255',
+            //'nombre_representante' => 'required|string|max:255',
+            //'cargo_representante' => 'required|string|max:255',
+            //'actividad_economica' => 'required|string|max:255',
+            //'tamano_ue' => 'required|integer',
+            //'folio' => 'required|string|max:255',
+        ]);
+
+        $empresa = Empresa::create($request->all());
+        $empresa->status = 1; // Cambiar el estado a registrada
+        return redirect()->route('empresas.index')->with('success', 'Empresa interesada creada exitosamente.');
+    }
+
+    /* public function store(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
@@ -59,7 +110,7 @@ class EmpresaController extends Controller
         $empresa = Empresa::create($request->all());
 
         return redirect()->route('empresas.index')->with('success', 'Empresa interesada creada exitosamente.');
-    }
+    } */
 
     public function show($id)
     {
@@ -149,28 +200,6 @@ class EmpresaController extends Controller
         return view('empresas.darAlta', compact('empresa', 'direcciones'));
     }
 
-    public function registrar(Request $request, Empresa $empresa)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
-            'direccion' => 'required|string',
-            'telefono' => 'required|string|size:10',
-            'inicio_conv' => 'required|date',
-            'fin_conv' => 'required|date',
-            'ine' => 'nullable|file|mimes:pdf,jpg',
-            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
-            'convenioA' => 'nullable|file|mimes:pdf,jpg',
-            'convenioMA' => 'nullable|file|mimes:pdf,jpg',
-            'folio' => 'nullable|string|max:255',
-        ]);
-
-        $empresa->update($request->all());
-        $empresa->status = 1; // Cambiar el estado a registrada
-        $empresa->save();
-
-        return redirect()->route('empresas.index')->with('success', 'Empresa registrada exitosamente.');
-    }
 
     public function exportUeiPdf()
     {

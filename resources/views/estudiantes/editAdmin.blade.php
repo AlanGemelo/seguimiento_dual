@@ -28,12 +28,36 @@
                                             @enderror
                                         </div>
                                         <div class="form-group">
-                                            <label for="name">Nombre <span class="text-danger">*</span></label>
+                                            <label for="name">Nombre(s) <span class="text-danger">*</span></label>
                                             <input type="text" data-tipo="text"
                                                 class="form-control form-control-lg uppercase" id="name"
-                                                placeholder="Juan Perez Hermenegildo" name="name"
+                                                placeholder="Ingrese su(s) nombre(s) completo(s)" name="name"
                                                 value="{{ old('name', $estudiante->name) }}">
                                             @error('name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="apellidoP">Apellido Paterno <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="apellidoP"
+                                                placeholder="Ingrese su apellido paterno" name="apellidoP"
+                                                value="{{ old('apellidoP', $estudiante->apellidoP) }}">
+                                            @error('apellidoP')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="apellidoM">Apellido Materno <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="apellidoM"
+                                                placeholder="Ingrese su apellido materno" name="apellidoM"
+                                                value="{{ old('apellidoM', $estudiante->apellidoM) }}">
+                                            @error('apellidoM')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -87,7 +111,8 @@
                                         <div class="form-group">
                                             <label for="empresa_id" class="form-label">Empresa <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa" name="empresa_id">
+                                            <select class="form-select" aria-label="Seleccionar Empresa"
+                                                name="empresa_id">
 
                                                 @foreach ($empresas as $empresa)
                                                     <option value="{{ $empresa->id }}"
@@ -563,7 +588,8 @@
                                     </button>
 
                                     <a href="{{ route('estudiantes.index') }}"
-                                        class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn" style="margin-left: 10%">
+                                        class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn"
+                                        style="margin-left: 10%">
                                         Cancelar y volver
                                     </a>
                                 </div>

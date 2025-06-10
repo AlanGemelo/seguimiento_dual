@@ -38,12 +38,36 @@
                                         </div>
                                         {{-- Nombre del estudiante --}}
                                         <div class="form-group">
-                                            <label for="name">Nombre <span class="text-danger">*</span></label>
+                                            <label for="name">Nombre(s) <span class="text-danger">*</span></label>
                                             <input type="text" data-tipo="text"
                                                 class="form-control form-control-lg uppercase" id="name"
-                                                placeholder="Juan Perez Hermenegildo" name="name"
+                                                placeholder="Ingrese su(s) nombre(s)" name="name"
                                                 value="{{ old('name') }}">
                                             @error('name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="apellidoP">Apellido Paterno <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="apellidoP"
+                                                placeholder="Ingrese su apellido paterno" name="apellidoP"
+                                                value="{{ old('apellidoP') }}">
+                                            @error('apellidoP')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="apellidoM">Apellido Materno <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="apellidoM"
+                                                placeholder="Ingrese su apellido materno" name="apellidoM"
+                                                value="{{ old('apellidoM') }}">
+                                            @error('apellidoM')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -79,6 +103,8 @@
                                                 <option value="6">6</option>
                                                 <option value="7">7</option>
                                                 <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
                                             </select>
                                             @error('cuatrimestre')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -87,8 +113,8 @@
                                         <div class="form-group">
                                             <label for="direccion_id" class="form-label">Direccion de Carrera <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id"
-                                                id="direccion_id">
+                                            <select class="form-select" aria-label="Seleccionar Empresa"
+                                                name="direccion_id" id="direccion_id">
                                                 <option selected>Seleccione una opcion</option>
                                                 @foreach ($direcciones as $direccion)
                                                     <option value="{{ $direccion->id }}">{{ $direccion->name }}</option>
@@ -102,8 +128,8 @@
                                         <div class="form-group" id="carrera_select" style="display: none;">
                                             <label for="carrera_id" class="form-label">Carrera <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa" name="carrera_id"
-                                                id="carrera_id">
+                                            <select class="form-select" aria-label="Seleccionar Empresa"
+                                                name="carrera_id" id="carrera_id">
                                                 <option selected>Seleccione una opcion</option>
                                                 @foreach ($carreras as $carrera)
                                                     <option value="{{ $carrera->id }}"

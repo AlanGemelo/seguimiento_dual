@@ -62,14 +62,16 @@ class EstudiantesController extends Controller
         // }
         $search = request('search'); // Obtener el parámetro 'search' de la URL
 
-        $direccionId = session('direccion')->id ?? null;
+        // $direccionId = session('direccion')->id ?? null;
+        $direccionId = session('direccion')?->id ?? null;
 
         $estudiantes = Estudiantes::with('academico', 'carrera')
             ->where('activo', true)
             ->where('name', 'LIKE', '%' . $search . '%')
-            ->where('direccion_id', session('direccion')->id)
+            ->where('direccion_id', $direccionId)
             ->orderBy('name', 'asc')
             ->get();
+
         $candidatos = Estudiantes::where('activo', false)
             ->where('direccion_id', $direccionId)
             ->get();
@@ -156,6 +158,8 @@ class EstudiantesController extends Controller
         $request->validate([
             'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:9'],
             'name' => ['string', 'min:3', 'max:255'],
+            'apellidoP' => ['string', 'min:3', 'max:255'],
+            'apellidoM' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
             'cuatrimestre' => ['integer', 'required'],
@@ -238,6 +242,8 @@ class EstudiantesController extends Controller
         $user = User::create([
             'titulo' => 'Estudiante',
             'name' => $request->name,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
             'email' => $request->email ?? ('al' . $request->matricula . '@utvtol.edu.mx'),
             'password' => Hash::make($request->matricula),
             'rol_id' => 3,
@@ -249,6 +255,8 @@ class EstudiantesController extends Controller
         Estudiantes::create([
             'matricula' => $request->matricula,
             'name' => $request->name,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
             'curp' => $request->curp,
             'fecha_na' => Carbon::parse($request->fecha_na)->format("Y-m-d"),
             'activo' => true,
@@ -292,6 +300,8 @@ class EstudiantesController extends Controller
         $request->validate([
             'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],
+            'apellidoP' => ['string', 'min:3', 'max:255'],
+            'apellidoM' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
             'cuatrimestre' => ['integer', 'required',],
@@ -321,6 +331,8 @@ class EstudiantesController extends Controller
         $user = User::create([
             'titulo' => 'Estudiante',
             'name' => $request->name,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
             'email' => 'al' . $request->email . '@utvtol.edu.mx',
             'password' => Hash::make($request->matricula),
             'rol_id' => 3,
@@ -332,6 +344,8 @@ class EstudiantesController extends Controller
         Estudiantes::create([
             'matricula' => $request->matricula,
             'name' => $request->name,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
             'curp' => $request->curp,
             'fecha_na' => Carbon::parse($request->fecha_na)->format("Y-m-d"),
             'activo' => false,
@@ -438,11 +452,11 @@ class EstudiantesController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-
         $request->validate([
             'matricula' => ['integer', 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],
+            'apellidoP' => ['string', 'min:3', 'max:255'],
+            'apellidoM' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
             'beca' => ['integer'],
@@ -575,7 +589,9 @@ class EstudiantesController extends Controller
             User::create([
                 'titulo' => 'Estudiante',
                 'name' => $request->name,
-                'email' => 'al' . $request->matricula . '@gmail.com',
+                'apellidoP' => $request->apellidoP,
+                'apellidoM' => $request->apellidoM,
+                'email' => 'al' . $request->matricula . '@utvtol.edu.mx',
                 'password' => Hash::make('12345678'),
                 'rol_id' => 3,
                 'carrera_id' => $request->carrera_id,
@@ -753,7 +769,7 @@ class EstudiantesController extends Controller
         $estudiante = Estudiantes::findOrFail($matricula);
         $data = [
             'no' => $estudiante->matricula,
-            'nombre' => $estudiante->name,
+            'nombre' => $estudiante->name . ' ' . $estudiante->apellidoP . ' ' . $estudiante->apellidoM,
             'programa_educativo' => $estudiante->carrera->nombre,
             'le_queda_claro' => 'SI', // Suponiendo que siempre es "SI"
             'le_interesa' => 'SI', // Suponiendo que siempre es "SI"

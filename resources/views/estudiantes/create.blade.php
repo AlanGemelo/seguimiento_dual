@@ -40,15 +40,40 @@
 
                                         {{-- Nombre del estudiante --}}
                                         <div class="form-group">
-                                            <label for="name">Nombre<span class="text-danger">*</span></label>
+                                            <label for="name">Nombre(s) <span class="text-danger">*</span></label>
                                             <input type="text" data-tipo="text"
                                                 class="form-control form-control-lg uppercase" id="name"
-                                                placeholder="Juan Perez Hermenegildo" name="name"
+                                                placeholder="Ingrese su(s) nombre(s)" name="name"
                                                 value="{{ old('name') }}">
                                             @error('name')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="apellidoP">Apellido Paterno <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="apellidoP"
+                                                placeholder="Ingrese su apellido paterno" name="apellidoP"
+                                                value="{{ old('apellidoP') }}">
+                                            @error('apellidoP')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="apellidoM">Apellido Materno <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="apellidoM"
+                                                placeholder="Ingrese su apellido materno" name="apellidoM"
+                                                value="{{ old('apellidoM') }}">
+                                            @error('apellidoM')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
                                         {{-- CURP --}}
                                         <div class="form-group">
                                             <label for="curp">CURP<span class="text-danger">*</span></label>
@@ -92,8 +117,8 @@
                                         <div class="form-group">
                                             <label for="nombre_proyecto">Nombre del Proyecto <span
                                                     class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
-                                                placeholder="Integrador" name="nombre_proyecto"
+                                            <input type="text" class="form-control form-control-lg"
+                                                id="nombre_proyecto" placeholder="Integrador" name="nombre_proyecto"
                                                 value="{{ old('nombre_proyecto') }}">
                                             @error('nombre_proyecto')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -103,8 +128,8 @@
                                         <div class="form-group">
                                             <label for="empresa_id" class="form-label">Empresa <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa" name="empresa_id"
-                                                id="empresa_id">
+                                            <select class="form-select" aria-label="Seleccionar Empresa"
+                                                name="empresa_id" id="empresa_id">
                                                 <option value="NULL" selected>Seleccione una opcion</option>
                                                 @foreach ($empresas as $empresa)
                                                     <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
@@ -416,9 +441,15 @@
 
                             // Agregar las opciones recibidas en la respuesta AJAX al select
                             $.each(data, function(index, asesorin) {
-                                selectAsesorin.append('<option value="' + asesorin.id +
-                                    '">' + asesorin.name + '</option>');
+                                selectAsesorin.append(
+                                    '<option value="' + asesorin.id + '">' +
+                                    asesorin.name + ' ' + asesorin.apellidoP + ' ' +
+                                    asesorin.apellidoM +
+                                    '</option>'
+                                );
                             });
+
+
                         } else {
                             selectAsesorin.empty();
                             selectAsesorin.append(

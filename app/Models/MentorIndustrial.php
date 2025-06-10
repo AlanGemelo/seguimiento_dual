@@ -13,6 +13,8 @@ class MentorIndustrial extends Model
     protected $fillable = [
         'titulo',
         'name',
+        'apellidoP',
+        'apellidoM',
         'puesto',
         'empresa_id',
     ];

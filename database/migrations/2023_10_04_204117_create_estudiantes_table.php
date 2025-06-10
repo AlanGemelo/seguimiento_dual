@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('estudiantes', function (Blueprint $table) {
             $table->bigInteger('matricula')->primary()->unique();
             $table->string('name')->default(NULL);
+            $table->String('apellidoP');
+            $table->String('apellidoM');
             $table->string('curp')->default(NULL);
             $table->date('fecha_na');
             $table->boolean('activo')->default(false);

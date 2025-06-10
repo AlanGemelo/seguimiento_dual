@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class DireccionCarrera extends Model
 {
     use HasFactory;
+
+    protected $table = 'direccion_carreras';
+
     protected $fillable = [
         'name',
         'email',

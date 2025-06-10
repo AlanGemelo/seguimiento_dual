@@ -34,10 +34,7 @@
                                     {{-- Button del modal --}}
                                     <a href="{{ route('directores.create') }}" class="btn btn-primary"
                                         title="Agregar una nueva Direccion de Carrera">
-                                            <i class="mdi mdi-account-edit btn-icon-prepend"></i>
-                                        </a>
-
-                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                        <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                     </a>
                                 </div>
                             </div>
@@ -66,24 +63,25 @@
                                             <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
                                                 id='aiuda'>
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $carrera->nombre }}</td>
+                                                <td>{{ $carrera->nombre . ' ' . $carrera->apellidoP . ' ' . $carrera->apellidoM }}
+                                                </td>
                                                 <td>{{ $carrera->email }}</td>
                                                 <td>{{ $carrera->direccion->name }}</td>
                                                 <td>
                                                     <a href="{{ route('directores.show', Vinkla\Hashids\Facades\Hashids::encode($carrera->id)) }}"
                                                         class="btn btn-facebook">
-                                                        <i class="mdi mdi-account-details btn-icon-prepend"></i>
+                                                        <i class="mdi mdi-eye btn-icon-prepend"></i>
                                                     </a>
                                                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                        <button class="btn btn-danger" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal1"
-                                                            onclick="deleteDireccion({{ $carrera->id }})">
-                                                            <i class="mdi mdi-delete btn-icon-prepend"></i>
-                                                        </button>
                                                         <a href="{{ route('directores.edit', Vinkla\Hashids\Facades\Hashids::encode($carrera->id)) }}"
                                                             class="btn btn-twitter">
                                                             <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                         </a>
+                                                        <button class="btn btn-danger" data-bs-toggle="modal"
+                                                            data-bs-target="#exampleModal1"
+                                                            onclick="deleteDireccion('{{ Vinkla\Hashids\Facades\Hashids::encode($carrera->id) }}')">
+                                                            <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                        </button>
                                                     @endif
                                                 </td>
                                             </tr>

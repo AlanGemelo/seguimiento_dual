@@ -26,14 +26,35 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Nombre <span class="text-danger">*</span></label>
-                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
-                                        id="name" placeholder="" name="name"
-                                        value="{{ $mentorIndustrial->name, old('name') }}">
+                                    <label for="name">Nombre(s) <span class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
+                                        id="name" placeholder="Ingrese su(s) nombre(s)" name="name"
+                                        value="{{ old('name', $mentorIndustrial->name ?? '') }}">
                                     @error('name')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="apellidoP">Apellido Paterno <span class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
+                                        id="apellidoP" placeholder="Ingrese su apellido paterno" name="apellidoP"
+                                        value="{{ old('apellidoP', $mentorIndustrial->apellidoP ?? '') }}">
+                                    @error('apellidoP')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="apellidoM">Apellido Materno <span class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
+                                        id="apellidoM" placeholder="Ingrese su apellido materno" name="apellidoM"
+                                        value="{{ old('apellidoM', $mentorIndustrial->apellidoM ?? '') }}">
+                                    @error('apellidoM')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="form-group">
                                     <label for="empresa_id" class="form-label">Empresa <span
                                             class="text-danger">*</span></label>
@@ -42,7 +63,8 @@
                                         <option selected>Seleccione una opcion</option>
                                         @foreach ($empresas as $empresa)
                                             @if ($empresa->id == $mentorIndustrial->empresa_id)
-                                                <option selected value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+                                                <option selected value="{{ $empresa->id }}">{{ $empresa->nombre }}
+                                                </option>
                                             @else
                                                 <option value={{ $empresa->id }}>{{ $empresa->nombre }}</option>
                                             @endif
@@ -63,7 +85,7 @@
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        type="submit">Editar
+                                        type="submit">ACTUALIZAR
                                     </button>
                                 </div>
                             </form>

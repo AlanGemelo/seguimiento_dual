@@ -127,8 +127,8 @@
                                             <tr class="animate__animated animate__fadeInDown "
                                                 id='aiuda'>
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $estudiante->name }}</td>
-                                                <td>{{ $estudiante->carrera->nombre }}</td>
+                                                <td>{{ $estudiante->name .' '. $estudiante->apellidoP .' '.$estudiante->apellidoM}}</td>
+                                                <td>{{ $estudiante->carrera->nombre}}</td>
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
                                                     <a href="{{ route("estudiantes.show", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
@@ -243,7 +243,7 @@
                                             <tr class="animate__animated animate__fadeInDown "
                                                 id='aiuda'>
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $estudiante->name }}</td>
+                                                <td>{{ $estudiante->name .' '. $estudiante->apellidoP .' '. $estudiante->apellidoM }}</td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
@@ -347,7 +347,7 @@
                                                     id='aiuda'>
                                                     <td>{{ $loop->index + 1 }}</td>
                                                     <td>{{ $estudianteDeleted->matricula }}</td>
-                                                    <td>{{ $estudianteDeleted->name }}</td>
+                                                    <td>{{ $estudianteDeleted->name .' '. $estudiante->apellidoP .' '. $estudiante->apellidoM}}</td>
                                                     <td>{{ $estudianteDeleted->curp }}</td>
                                                     <td>{{ $estudianteDeleted->fecha_na }}</td>
                                                     <td>{{ $estudianteDeleted->cuatrimestre }}</td>

@@ -24,7 +24,8 @@ class StoreDirectorRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'email' => ['required', 'string', 'regex:/^[a-zA-Z0-9._-]+$/'],
+            
         ];
     }
 }

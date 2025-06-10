@@ -61,6 +61,8 @@ class MentorAcademicoController extends Controller
         $request->validate([
             'titulo' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
+            'apellidoP' => ['required', 'string', 'min:3', 'max:255'],
+            'apellidoM' => ['required', 'string', 'min:3', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'direccion_id' => ['required', 'integer'],
         ]);
@@ -68,6 +70,8 @@ class MentorAcademicoController extends Controller
         $user = User::create([
             'titulo' => $request->titulo,
             'name' => $request->name,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
             'email' => $request->email,
             'password' => Hash::make('12345678'),
             'rol_id' => 2,
@@ -108,7 +112,14 @@ class MentorAcademicoController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
-        $request->validate(['titulo' => ['string', 'max:255'], 'name' => ['min:3', 'string', 'max:255'], 'email' => ['required', 'string', 'email', 'max:255'], 'direccion_id' => ['required', 'integer'],]);
+        $request->validate([
+            'titulo' => ['string', 'max:255'],
+            'name' => ['min:3', 'string', 'max:255'],
+            'apellidoP' => ['string', 'min:3', 'max:255'],
+            'apellidoM' => ['string', 'min:3', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'direccion_id' => ['required', 'integer'],
+        ]);
 
         $mentor = User::find($id);
         if ($request->email !== $mentor->email) {

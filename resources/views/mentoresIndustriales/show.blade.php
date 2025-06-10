@@ -12,23 +12,38 @@
                             <div class="dropdown-divider"></div>
                             <div class="form-group">
                                 <label for="titulo">Grado</label>
-                                <input type="text" class="form-control form-control-lg" id="titulo"
-                                       placeholder="" name="titulo" value="{{ $mentorIndustrial->titulo }}" disabled>
+                                <input type="text" class="form-control form-control-lg" id="titulo" placeholder=""
+                                    name="titulo" value="{{ $mentorIndustrial->titulo }}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="name">Nombre</label>
                                 <input type="text" class="form-control form-control-lg" id="name"
-                                       placeholder="" name="name" value="{{ $mentorIndustrial->name }}" disabled>
+                                    placeholder="Nombre(s)" name="name" value="{{ $mentorIndustrial->name }}" disabled>
                             </div>
+
+                            <div class="form-group">
+                                <label for="apellidoP">Apellido Paterno</label>
+                                <input type="text" class="form-control form-control-lg" id="apellidoP"
+                                    placeholder="Apellido paterno" name="apellidoP"
+                                    value="{{ $mentorIndustrial->apellidoP }}" disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apellidoM">Apellido Materno</label>
+                                <input type="text" class="form-control form-control-lg" id="apellidoM"
+                                    placeholder="Apellido materno" name="apellidoM"
+                                    value="{{ $mentorIndustrial->apellidoM }}" disabled>
+                            </div>
+
                             <div class="form-group">
                                 <label for="name">Empresa</label>
-                                <input type="text" class="form-control form-control-lg" id="name"
-                                       placeholder="" name="name" value="{{ $mentorIndustrial->empresa->nombre }}" disabled>
+                                <input type="text" class="form-control form-control-lg" id="name" placeholder=""
+                                    name="name" value="{{ $mentorIndustrial->empresa->nombre }}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="puesto">Puesto de trabajo</label>
-                                <input type="text" class="form-control form-control-lg" id="puesto"
-                                       name="puesto" value="{{ $mentorIndustrial->puesto }}" disabled>
+                                <input type="text" class="form-control form-control-lg" id="puesto" name="puesto"
+                                    value="{{ $mentorIndustrial->puesto }}" disabled>
                             </div>
                             {{-- Estudiantes asignados --}}
                             <div class="dropdown-divider my-4"></div>
@@ -39,14 +54,19 @@
                             <div class="row">
                                 @forelse($mentorIndustrial->estudiantes as $estudiante)
                                     <div class="col-md-4 mb-4">
-                                        <div class="card h-100 shadow-sm border-0" style="border-radius:14px;background:#f7faf9;">
+                                        <div class="card h-100 shadow-sm border-0"
+                                            style="border-radius:14px;background:#f7faf9;">
                                             <div class="card-body d-flex flex-column justify-content-between">
                                                 <h5 class="card-title" style="color:#46c35f;">{{ $estudiante->name }}</h5>
-                                                <p class="mb-1"><strong>Matrícula:</strong> {{ $estudiante->matricula }}</p>
-                                                <p class="mb-1"><strong>Proyecto:</strong> {{ $estudiante->nombre_proyecto ?? 'Sin proyecto' }}</p>
-                                                <p class="mb-3"><strong>Cuatrimestre:</strong> {{ $estudiante->cuatrimestre }}</p>
+                                                <p class="mb-1"><strong>Matrícula:</strong> {{ $estudiante->matricula }}
+                                                </p>
+                                                <p class="mb-1"><strong>Proyecto:</strong>
+                                                    {{ $estudiante->nombre_proyecto ?? 'Sin proyecto' }}</p>
+                                                <p class="mb-3"><strong>Cuatrimestre:</strong>
+                                                    {{ $estudiante->cuatrimestre }}</p>
                                                 <a href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                                   class="btn btn-success mt-auto" style="background:#46c35f;border:none;">Ver detalles</a>
+                                                    class="btn btn-success mt-auto"
+                                                    style="background:#46c35f;border:none;">Ver detalles</a>
                                             </div>
                                         </div>
                                     </div>

@@ -22,4 +22,8 @@ class DireccionCarrera extends Model
     {
         return $this->hasOne(Director::class, 'direccion_id', 'id');
     }
+    public function empresas()
+    {
+    return $this->belongsToMany(Empresa::class, 'empresa_direccion', 'direccion_id', 'empresa_id');
+    }
 }

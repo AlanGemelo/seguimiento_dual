@@ -37,14 +37,16 @@ class EmpresaController extends Controller
 
     public function create(Request $request)
     {
-        $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get(); // Asegúrate de obtener las direcciones
+        $direcciones = DireccionCarrera::get(); 
+        //dd($direcciones);// Asegúrate de obtener las direcciones
+        //$direcciones = DireccionCarrera::where('id',session('direccion')->id)->get();
         $anexo2_1 = Anexo2_1::find($request->anexo2_1_id);
-        return view('empresas.create', compact('anexo2_1', 'direcciones'));
+        return view('empresas.create', compact('direcciones'));
     }
 
     public function registrar(Request $request, Empresa $empresa)
     {
-        $request->validate([
+        $data = $request->validate([
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:empresas,email,' . $empresa->id,
             'direccion' => 'required|string',
@@ -52,13 +54,17 @@ class EmpresaController extends Controller
             'inicio_conv' => 'required|date',
             'fin_conv' => 'required|date',
             //'ine' => 'nullable|file|mimes:pdf,jpg',
-            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
+            'direcciones_ids' => 'required|array',
+            'direcciones_ids.*' => 'exists:direccion_carreras,id',
             'convenioA' => 'nullable|file|mimes:pdf,jpg',
             'convenioMA' => 'nullable|file|mimes:pdf,jpg',
             // 'folio' => 'nullable|string|max:255',
         ]);
 
-        $empresa->update($request->all());
+        $empresa->update($request->except('direcciones_ids'));
+        if (isset($data['direcciones_ids']) && !empty($data['direcciones_ids'])) {
+        $empresa->direcciones()->sync($data['direcciones_ids']);
+        }
         $empresa->status = 1; // Cambiar el estado a registrada
         $empresa->save();
 
@@ -67,7 +73,7 @@ class EmpresaController extends Controller
 
     public function store(Request $request, Empresa $empresa)
     {
-        $request->validate([
+        $data = $request->validate([
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:empresas,email,' . $empresa->id,
             'direccion' => 'required|string',
@@ -75,7 +81,8 @@ class EmpresaController extends Controller
             'inicio_conv' => 'required|date',
             'fin_conv' => 'required|date',
             //'ine' => 'nullable|file|mimes:pdf,jpg',
-            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
+            'direcciones_ids' => 'required|array',
+            'direcciones_ids.*' => 'exists:direccion_carreras,id',
             'convenioA' => 'nullable|file|mimes:pdf,jpg',
             'convenioMA' => 'nullable|file|mimes:pdf,jpg',
             // 'unidad_economica' => 'required|string|max:255',
@@ -88,7 +95,10 @@ class EmpresaController extends Controller
             //'folio' => 'required|string|max:255',
         ]);
 
-        $empresa = Empresa::create($request->all());
+        $empresa = Empresa::create($request->except('direcciones_ids'));
+        if (isset($data['direcciones_ids']) && !empty($data['direcciones_ids'])) {
+        $empresa->direcciones()->sync($data['direcciones_ids']);
+        }
         $empresa->status = 1; // Cambiar el estado a registrada
         return redirect()->route('empresas.index')->with('success', 'Empresa interesada creada exitosamente.');
     }
@@ -175,7 +185,7 @@ class EmpresaController extends Controller
 
     public function downloadPDF(Empresa $empresa)
     {
-        return response()->json($empresa);
+        //return response()->json($empresa);
         $data = [
             'unidad_economica' => $empresa->unidad_economica,
             'fecha_registro' => $empresa->fecha_registro,

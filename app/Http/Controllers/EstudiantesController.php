@@ -39,7 +39,8 @@ class EstudiantesController extends Controller
     /**
      * Muestra la lista de estudiantes.
      */
-    public function index()
+    
+    public function index(Request $request)
     {
 
         $hoy = Carbon::now();
@@ -49,6 +50,7 @@ class EstudiantesController extends Controller
         // Enviar correos por cada registro
         // foreach ($registrosConvenio as $registro) {
 
+<<<<<<< Updated upstream
         //     // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
         //     Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable(
         //         $registro,
@@ -61,6 +63,22 @@ class EstudiantesController extends Controller
         //     // Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
         // }
         $search = request('search'); // Obtener el parámetro 'search' de la URL
+=======
+        // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
+        //Mail::to('alanortega.dp@gmail.com')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,
+        //env('APP_URL'),session('direccion')->email,session('direccion')->name));
+        // Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
+    }
+        $search = $request->input('search');
+        $searchCandidatos = $request->input('search_candidatos');
+        $searchAcademicos = $request->input('search_academicos');
+        $searchEliminados = $request->input('search_eliminados');
+
+        $pageEstudiantes = $request->input('page_estudiantes', 1);
+        $pageCandidatos = $request->input('page_candidatos', 1);
+        $pageAcademicos = $request->input('page_academicos', 1);
+        $pageEliminados = $request->input('page_eliminados', 1);
+>>>>>>> Stashed changes
 
         $direccionId = session('direccion')->id ?? null;
 
@@ -69,14 +87,21 @@ class EstudiantesController extends Controller
             ->where('name', 'LIKE', '%' . $search . '%')
             ->where('direccion_id', session('direccion')->id)
             ->orderBy('name', 'asc')
-            ->get();
+            ->simplePaginate(10, ['*'], 'page_estudiantes', $pageEstudiantes);
         $candidatos = Estudiantes::where('activo', false)
+            ->where('name', 'LIKE', '%' . $searchCandidatos . '%')
             ->where('direccion_id', $direccionId)
+<<<<<<< Updated upstream
             ->get();
         //  $academico = User::where('rol_id', 2)->where('direccion_id', $direccionId)->get();
         $academico = User::where('rol_id', 2)->where('direccion_id', $direccionId)->first();
 
         $estudiantesDeleted = Estudiantes::where('direccion_id', $direccionId)->with('academico', 'carrera')->onlyTrashed()->get();
+=======
+            ->simplePaginate(10, ['*'], 'page_candidatos', $pageCandidatos);
+        $academico = User::where('rol_id', 2)->where('name', 'LIKE', '%' . $searchAcademicos . '%')->where('direccion_id', $direccionId)->simplePaginate(10, ['*'], 'page_academicos', $pageAcademicos);
+        $estudiantesDeleted = Estudiantes::where('direccion_id', $direccionId)->with('academico', 'carrera')->onlyTrashed()->where('name', 'LIKE', '%' . $searchEliminados . '%')->simplePaginate(10, ['*'], 'page_eliminados', $pageEliminados);
+>>>>>>> Stashed changes
 
         $situation = [
             ['id' => 0, 'name' => 'Reprobacion'],
@@ -91,7 +116,11 @@ class EstudiantesController extends Controller
 
         $hoy = Carbon::now();
 
+<<<<<<< Updated upstream
         return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos', 'search'));
+=======
+        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos','search','searchCandidatos','searchAcademicos','searchEliminados'));
+>>>>>>> Stashed changes
     }
 
     /**

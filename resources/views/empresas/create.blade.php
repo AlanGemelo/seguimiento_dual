@@ -54,25 +54,27 @@
                                 </div>
                                 {{-- Seleccionar Direccion Docencia --}}
                                 <div class="form-group">
-                                    <label for="direccion_id" class="form-label">Direccion de Carrera <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-select" aria-label="Seleccionar Direccion de Carrera"
-                                        name="direccion_id">
-
+                                <label for="direcciones_ids" class="form-label">Direcciones de Carrera <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="direcciones_ids" name="direcciones_ids[]" multiple aria-label="Seleccionar Direcciones de Carrera" size="5">
                                         @foreach ($direcciones as $direccion)
-                                            @if (session('direccion')->id == $direccion->id)
-                                                <option value="{{ $direccion->id }}" selected>
-                                                    {{ $direccion->name }}</option>
-                                            @else
-                                                <option value="{{ $direccion->id }}">{{ $direccion->name }}
-                                                </option>
-                                            @endif
+                                           @if($direccion)
+                                            <option value="{{ $direccion->id }}"
+                                                @if(
+                                                (is_array(old('direcciones_ids')) && in_array($direccion->id, old('direcciones_ids'))) || 
+                                                (!old() && session()->has('direccion') && session('direccion')->id == $direccion->id)
+                                                ) selected @endif>
+                                                {{ $direccion->name }}
+                                            </option>
+                                                @endif
                                         @endforeach
                                     </select>
-                                    @error('direccion_id')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                <small class="form-text text-muted">
+                                    Mantén presionada la tecla Ctrl (Windows) o Command (Mac) para seleccionar múltiples opciones
+                                </small>
+                                @error('direcciones_ids')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
 
                                 {{-- Cargar convenio academico --}}
                                 <div class="form-group">

@@ -102,7 +102,9 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <input class="form-control mb-3" id="searchInput" type="text" placeholder="Buscar..." onkeyup="filterTable('searchInput', 'tableBody')">
+                            <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
+                                <input type="text" class="form-control" name="search" value="{{ $search }}" placeholder="Buscar estudiantes..." onkeydown="if(event.key === 'Enter') this.form.submit()">
+                            </form>
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -126,7 +128,7 @@
                                         @foreach ($estudiantes as $estudiante)
                                             <tr class="animate__animated animate__fadeInDown "
                                                 id='aiuda'>
-                                                <td>{{ $loop->index + 1 }}</td>
+                                                <td>{{ ($estudiantes->currentPage() - 1) * $estudiantes->perPage() + $loop->iteration }}</td>
                                                 <td>{{ $estudiante->name }}</td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
@@ -152,6 +154,9 @@
                                     @endif
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $estudiantes->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -218,13 +223,16 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <input class="form-control mb-3" id="searchInputCandidatos" type="text" placeholder="Buscar..." onkeyup="filterTable('searchInputCandidatos', 'tableBodyCandidatos')">
+                            <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
+                                <input type="text" class="form-control" name="search_candidatos" value="{{ $search_candidatos ?? '' }}" placeholder="Buscar candidatos..." onkeydown="if(event.key === 'Enter') this.form.submit()">
+                            </form>
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Candidato</th>
                                         <th class="align-center">Carrera</th>
+                                        <th>Email</th>
                                         <th>Cuatrimestre</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -242,9 +250,10 @@
                                         @foreach ($candidatos as $estudiante)
                                             <tr class="animate__animated animate__fadeInDown "
                                                 id='aiuda'>
-                                                <td>{{ $loop->index + 1 }}</td>
+                                                <td>{{ ($candidatos->currentPage() - 1) * $candidatos->perPage() + $loop->iteration }}</td>
                                                 <td>{{ $estudiante->name }}</td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
+                                                <td>{{ $estudiante->email }}</td>
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
                                                     <a href="{{ route("estudiantes.showC", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
@@ -268,6 +277,9 @@
                                     @endif
                                 </tbody>
                             </table>
+                            <div class="d-flex justify-content-center mt-4">
+                                {{ $candidatos->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -327,7 +339,9 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <input class="form-control mb-3" id="searchInputEliminados" type="text" placeholder="Buscar..." onkeyup="filterTable('searchInputEliminados', 'tableBodyEliminados')">
+                                    <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
+                                        <input type="text" id="searchInput" class="form-control" name="search_eliminados" value="{{ $search_eliminados ?? '' }}" placeholder="Buscar candidatos..." onkeydown="if(event.key === 'Enter') this.form.submit()">
+                                    </form>
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
@@ -345,7 +359,7 @@
                                             @foreach ($estudiantesDeleted as $estudianteDeleted)
                                                 <tr class="animate__animated animate__fadeInDown "
                                                     id='aiuda'>
-                                                    <td>{{ $loop->index + 1 }}</td>
+                                                    <td>{{ ($estudiantesDeleted->currentPage() - 1) * $estudiantesDeleted->perPage() + $loop->iteration }}</td>
                                                     <td>{{ $estudianteDeleted->matricula }}</td>
                                                     <td>{{ $estudianteDeleted->name }}</td>
                                                     <td>{{ $estudianteDeleted->curp }}</td>
@@ -375,6 +389,9 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <div class="d-flex justify-content-center mt-4">
+                                        {{ $estudiantesDeleted->links() }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

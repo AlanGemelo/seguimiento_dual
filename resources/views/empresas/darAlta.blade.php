@@ -29,9 +29,22 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="direccion">Dirección <span class="text-danger">*</span></label>
-                                <textarea class="form-control form-control-lg" id="direccion" name="direccion" required>{{ old('direccion', $empresa->direccion) }}</textarea>
-                                @error('direccion')
+                                <label for="direcciones_ids" class="form-label">Direcciones de Carrera <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="direcciones_ids" name="direcciones_ids[]" multiple aria-label="Seleccionar Direcciones de Carrera" size="5">
+                                        @foreach ($direcciones as $direccion)
+                                            <option value="{{ $direccion->id }}"
+                                                @if((is_array(old('direcciones_ids')) && in_array($direccion->id, old('direcciones_ids'))) || 
+                                                    (!old() && session('direccion')->id == $direccion->id))
+                                                    selected
+                                                @endif>
+                                            {{ $direccion->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                <small class="form-text text-muted">
+                                    Mantén presionada la tecla Ctrl (Windows) o Command (Mac) para seleccionar múltiples opciones
+                                </small>
+                                @error('direcciones_ids')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>

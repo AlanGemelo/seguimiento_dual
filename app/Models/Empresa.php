@@ -21,7 +21,6 @@ class Empresa extends Model
         'inicio_conv',
         'fin_conv',
         'ine',
-        'direccion_id',
         'convenioA',
         'convenioMA',
         // Nuevos campos
@@ -43,7 +42,7 @@ class Empresa extends Model
 
     public function direcciones()
     {
-        return $this->belongsTo(DireccionCarrera::class, 'direccion_id', 'id');
+    return $this->belongsToMany(DireccionCarrera::class, 'empresa_direccion', 'empresa_id', 'direccion_id');
     }
 
     /**
@@ -53,4 +52,14 @@ class Empresa extends Model
     {
         return $this->hasMany(Estudiantes::class, 'empresa_id');
     }
+
+    public function up()
+{
+    $empresas = Empresa::whereNotNull('direccion_id')->get();
+    
+    foreach ($empresas as $empresa) {
+        $empresa->direcciones()->attach($empresa->direccion_id);
+    }
+}
+
 }

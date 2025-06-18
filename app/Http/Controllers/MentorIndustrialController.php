@@ -21,9 +21,9 @@ class MentorIndustrialController extends Controller
     public function index()
     {
 
-$mentores = MentorIndustrial::with(['empresa','estudiantes'])->whereHas('empresa',function ($query){
-            $query->where('direccion_id',session('direccion')->id);
-})->get();
+        $mentores = MentorIndustrial::with(['empresa', 'estudiantes'])->whereHas('empresa', function ($query) {
+            $query->where('direccion_id', session('direccion')->id);
+        })->get();
 
         return view('mentoresIndustriales.index', compact('mentores'));
     }
@@ -41,6 +41,8 @@ $mentores = MentorIndustrial::with(['empresa','estudiantes'])->whereHas('empresa
         $request->validate([
             'titulo' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
+            'apellidoP' => ['required', 'string', 'min:3', 'max:255'],
+            'apellidoM' => ['required', 'string', 'min:3', 'max:255'],
             'puesto' => ['required', 'string', 'max:255'],
             'empresa_id' => ['required', 'integer'],
         ]);
@@ -48,6 +50,8 @@ $mentores = MentorIndustrial::with(['empresa','estudiantes'])->whereHas('empresa
         MentorIndustrial::create([
             'titulo' => $request->titulo,
             'name' => $request->name,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
             'puesto' => $request->puesto,
             'empresa_id' => $request->empresa_id,
         ]);
@@ -79,6 +83,8 @@ $mentores = MentorIndustrial::with(['empresa','estudiantes'])->whereHas('empresa
         $request->validate([
             'titulo' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
+            'apellidoP' => ['string', 'min:3', 'max:255'],
+            'apellidoM' => ['string', 'min:3', 'max:255'],
             'puesto' => ['required', 'string', 'max:255'],
             'empresa_id' => ['required', 'integer'],
         ]);
@@ -87,6 +93,8 @@ $mentores = MentorIndustrial::with(['empresa','estudiantes'])->whereHas('empresa
         $mentor->update([
             'titulo' => $request->titulo,
             'name' => $request->name,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
             'puesto' => $request->puesto,
             'empresa_id' => $request->empresa_id,
         ]);

@@ -28,6 +28,8 @@ class Estudiantes extends Model
     protected $fillable = [
         'matricula',
         'name',
+        'apellidoP',
+        'apellidoM',
         'curp',
         'status',
         'fecha_na',

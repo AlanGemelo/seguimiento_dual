@@ -128,9 +128,15 @@
                                         @foreach ($estudiantes as $estudiante)
                                             <tr class="animate__animated animate__fadeInDown "
                                                 id='aiuda'>
+<<<<<<< HEAD
                                                 <td>{{ ($estudiantes->currentPage() - 1) * $estudiantes->perPage() + $loop->iteration }}</td>
                                                 <td>{{ $estudiante->name }}</td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
+=======
+                                                <td>{{ $loop->index + 1 }}</td>
+                                                <td>{{ $estudiante->name .' '. $estudiante->apellidoP .' '.$estudiante->apellidoM}}</td>
+                                                <td>{{ $estudiante->carrera->nombre}}</td>
+>>>>>>> 5464019d97484d811f05f235ee9cfc97bd3eb9b5
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
                                                     <a href="{{ route("estudiantes.show", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
@@ -250,8 +256,8 @@
                                         @foreach ($candidatos as $estudiante)
                                             <tr class="animate__animated animate__fadeInDown "
                                                 id='aiuda'>
-                                                <td>{{ ($candidatos->currentPage() - 1) * $candidatos->perPage() + $loop->iteration }}</td>
-                                                <td>{{ $estudiante->name }}</td>
+
+                                                <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
                                                 <td>{{ $estudiante->email }}</td>
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
@@ -361,7 +367,7 @@
                                                     id='aiuda'>
                                                     <td>{{ ($estudiantesDeleted->currentPage() - 1) * $estudiantesDeleted->perPage() + $loop->iteration }}</td>
                                                     <td>{{ $estudianteDeleted->matricula }}</td>
-                                                    <td>{{ $estudianteDeleted->name }}</td>
+                                                    <td>{{ $estudianteDeleted->name .' '. $estudiante->apellidoP .' '. $estudiante->apellidoM}}</td>
                                                     <td>{{ $estudianteDeleted->curp }}</td>
                                                     <td>{{ $estudianteDeleted->fecha_na }}</td>
                                                     <td>{{ $estudianteDeleted->cuatrimestre }}</td>

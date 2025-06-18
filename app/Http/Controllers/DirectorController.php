@@ -35,11 +35,12 @@ class DirectorController extends Controller
     public function create()
     {
         $DireccionConDirector = Director::get('direccion_id')->pluck('direccion_id');
-        $direcciones = DireccionCarrera::whereNotIn('id', $DireccionConDirector)->get();
-
+        //$direcciones = DireccionCarrera::whereNotIn('id', $DireccionConDirector)->get();
+        $direcciones = DireccionCarrera::with('director')->get();
         //return response()->json($direcciones); 
-        return view('directores.create', compact('direcciones')); 
+        return view('directores.create', compact('direcciones'));
     }
+
 
 
     /**
@@ -50,18 +51,29 @@ class DirectorController extends Controller
      */
     public function store(StoreDirectorRequest $request)
     {
+        $username = preg_replace('/\s+/', '', $request->email);
+        $username = str_replace('@utvtol.edu.mx', '', $username);
+
+        $emailCompleto = $username . '@utvtol.edu.mx';
+
+        $request->merge(['email' => $emailCompleto]);
+
         Director::create($request->all());
         User::create([
-            'titulo' => 'Director',
-            'name' => $request->nombre,
-            'email' => $request->email,
-            'password' => bcrypt(12345678),
-            'rol_id' => 4,
-            'carrera_id' => $request->carrera_id,
+            'titulo'       => 'Director',
+            'name'         => $request->nombre,
+            'apellidoP'    => $request->apellidoP,
+            'apellidoM'    => $request->apellidoM,
+            'email'        => $emailCompleto,
+            'password'     => bcrypt('12345678'),
+            'rol_id'       => 4,
+            'carrera_id'   => $request->carrera_id,
             'direccion_id' => $request->direccion_id,
         ]);
+
         return redirect()->route('directores.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -105,7 +117,10 @@ class DirectorController extends Controller
 
         User::where('email', $directore->email)->update([
             'name' => $request->nombre,
+            'apellidoP' => $request->apellidoP,
+            'apellidoM' => $request->apellidoM,
             'email' => $request->email,
+
             'direccion_id' => $request->direccion_id,
         ]);
         $directore->update($request->all());
@@ -119,11 +134,27 @@ class DirectorController extends Controller
         return response()->json($id);
     }
 
-    public function destroy(Director $directore)
-    {
-        $user = User::where('email', $directore->email)->first();
-        $user->delete();
 
-        return redirect()->route('directores.index');
+    public function destroy($id)
+    {
+        $decoded = Hashids::decode($id);
+        if (count($decoded) === 0) {
+            abort(404);
+        }
+        $directorId = $decoded[0];
+
+        $directore = Director::find($directorId);
+        if (!$directore) {
+            abort(404);
+        }
+
+        $user = User::where('email', $directore->email)->first();
+        if ($user) {
+            $user->delete();
+        }
+
+        $directore->delete();
+
+        return redirect()->route('directores.index')->with('status', 'Director eliminado correctamente.');
     }
 }

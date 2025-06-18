@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('directors', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->String('apellidoP');
+            $table->String('apellidoM');
             $table->string('email');
             // $table->foreignId('user_id')->constrained('users');
             $table->foreignId('direccion_id')->constrained('direccion_carreras');

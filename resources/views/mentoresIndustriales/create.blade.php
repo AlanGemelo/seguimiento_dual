@@ -16,16 +16,35 @@
                                 <div class="form-group">
                                     <label for="titulo">Grado académico <span class="text-danger">*</span></label>
                                     <input type="text" data-tipo="text" class="form-control form-control-lg"
-                                        id="titulo" placeholder="Ej. Ingeniero en TIC" name="titulo"
+                                        id="titulo" placeholder="Ej. Licenciado, Ingeniero, Doctor" name="titulo"
                                         value="{{ old('titulo') }}">
                                     @error('titulo')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Nombre <span class="text-danger">*</span></label>
-                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
-                                        id="name" placeholder="" name="name" value="{{ old('name') }}">
+                                    <label for="name">Nombre(s) <span class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
+                                        id="name" placeholder="Ingrese su(s) nombre(s)" name="name"
+                                        value="{{ old('name') }}">
+                                    @error('name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="apellidoP">Apellido Paterno <span class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
+                                        id="apellidoP" placeholder="Ingrese su apellido paterno" name="apellidoP"
+                                        value="{{ old('apellidoP') }}">
+                                    @error('name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="apellidoM">Apellido Materno <span class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
+                                        id="apellidoM" placeholder="Ingrese su apellido Materno" name="apellidoM"
+                                        value="{{ old('apellidoM') }}">
                                     @error('name')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror

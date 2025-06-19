@@ -128,15 +128,11 @@
                                         @foreach ($estudiantes as $estudiante)
                                             <tr class="animate__animated animate__fadeInDown "
                                                 id='aiuda'>
-<<<<<<< HEAD
-                                                <td>{{ ($estudiantes->currentPage() - 1) * $estudiantes->perPage() + $loop->iteration }}</td>
-                                                <td>{{ $estudiante->name }}</td>
-                                                <td>{{ $estudiante->carrera->nombre }}</td>
-=======
+
                                                 <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{ $estudiante->name .' '. $estudiante->apellidoP .' '.$estudiante->apellidoM}}</td>
                                                 <td>{{ $estudiante->carrera->nombre}}</td>
->>>>>>> 5464019d97484d811f05f235ee9cfc97bd3eb9b5
+
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
                                                     <a href="{{ route("estudiantes.show", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"

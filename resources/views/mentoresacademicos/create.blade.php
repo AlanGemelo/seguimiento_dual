@@ -72,7 +72,9 @@
                                     <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id">
                                         <option selected>Seleccione una opcion</option>
                                         @foreach ($direcciones as $carrera)
-                                            <option value="{{ $carrera->id }}">{{ $carrera->name }}</option>
+                                            <option value="{{ $carrera->id }}"
+                                                 data-direccion="{{  $carrera->direccion_id }}">
+                                                {{ $carrera->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('direccion_id')
@@ -82,6 +84,8 @@
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar</button>
+                                       <x-cancel-button url="{{ route('academicos.index') }}" />
+                                            
                                 </div>
                             </form>
                         </div>

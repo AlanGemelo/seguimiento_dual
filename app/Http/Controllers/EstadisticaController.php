@@ -12,58 +12,105 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EstadisticasExport;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class EstadisticaController extends Controller
 {
+
     public function index()
     {
-        $direccionId = session('direccion')->id;
+        $user = Auth::user();
 
-        // Gráfica de Estudiantes por Empresa
-        $empresas = Empresa::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
-        $chartEmpresa = (new LarapexChart)->pieChart()
-            ->setTitle('Estudiantes por Empresa')
-            ->setLabels($empresas->pluck('nombre')->toArray())
-            ->setDataset($empresas->pluck('estudiantes_count')->toArray())
-            ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+        if ($user->rol_id === 1) {
+            // Gráfica de Estudiantes por Empresa
+            $empresas = Empresa::withCount('estudiantes')->get();
+            $chartEmpresa = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Empresa')
+                ->setLabels($empresas->pluck('nombre')->toArray())
+                ->setDataset($empresas->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
-        // Gráfica de Estudiantes por Carrera
-        $carreras = Carrera::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
-        $chartCarrera = (new LarapexChart)->pieChart()
-            ->setTitle('Estudiantes por Carrera')
-            ->setLabels($carreras->pluck('nombre')->toArray())
-            ->setDataset($carreras->pluck('estudiantes_count')->toArray())
-            ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+            // Gráfica de Estudiantes por Carrera
+            $carreras = Carrera::withCount('estudiantes')->get();
+            $chartCarrera = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Carrera')
+                ->setLabels($carreras->pluck('nombre')->toArray())
+                ->setDataset($carreras->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
-        // Gráfica de Estudiantes por Mentor Académico
-        $mentores = User::mentoresAcademicos()->where('direccion_id', $direccionId)->withCount('estudiantes')->get();
-        $chartMentor = (new LarapexChart)->pieChart()
-            ->setTitle('Estudiantes por Mentor Académico')
-            ->setLabels($mentores->pluck('name')->toArray())
-            ->setDataset($mentores->pluck('estudiantes_count')->toArray())
-            ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+            // Gráfica de Estudiantes por Mentor Académico
+            $mentores = User::mentoresAcademicos()->withCount('estudiantes')->get();
+            $chartMentor = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Mentor Académico')
+                ->setLabels($mentores->pluck('name')->toArray())
+                ->setDataset($mentores->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
-        // Gráfica de Estudiantes Becados
-        $becas = Estudiantes::where('direccion_id', $direccionId)
-            ->select('beca', \DB::raw('count(*) as count'))
-            ->groupBy('beca')
-            ->get();
-        $chartBeca = (new LarapexChart)->pieChart()
-            ->setTitle('Estudiantes Becados')
-            ->setLabels($becas->pluck('beca')->map(fn($beca) => $beca ? 'Becados' : 'Sin Beca')->toArray())
-            ->setDataset($becas->pluck('count')->toArray())
-            ->setColors(['#FF6384', '#36A2EB']);
+            // Gráfica de Estudiantes Becados
+            $becas = Estudiantes::select('beca', \DB::raw('count(*) as count'))
+                ->groupBy('beca')
+                ->get();
+            $chartBeca = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes Becados')
+                ->setLabels($becas->pluck('beca')->map(fn($beca) => $beca ? 'Becados' : 'Sin Beca')->toArray())
+                ->setDataset($becas->pluck('count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB']);
+        } else {
+            $direccionId = session('direccion')->id;
 
-        // Enviar variables a la vista
+            // Gráfica de Estudiantes por Empresa
+            $empresas = Empresa::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
+            $chartEmpresa = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Empresa')
+                ->setLabels($empresas->pluck('nombre')->toArray())
+                ->setDataset($empresas->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+
+            // Gráfica de Estudiantes por Carrera
+            $carreras = Carrera::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
+            $chartCarrera = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Carrera')
+                ->setLabels($carreras->pluck('nombre')->toArray())
+                ->setDataset($carreras->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+
+            // Gráfica de Estudiantes por Mentor Académico
+            $mentores = User::mentoresAcademicos()->where('direccion_id', $direccionId)->withCount('estudiantes')->get();
+            $chartMentor = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Mentor Académico')
+                ->setLabels($mentores->pluck('name')->toArray())
+                ->setDataset($mentores->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+
+            // Gráfica de Estudiantes Becados
+            $becas = Estudiantes::where('direccion_id', $direccionId)
+                ->select('beca', \DB::raw('count(*) as count'))
+                ->groupBy('beca')
+                ->get();
+            $chartBeca = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes Becados')
+                ->setLabels($becas->pluck('beca')->map(fn($beca) => $beca ? 'Becados' : 'Sin Beca')->toArray())
+                ->setDataset($becas->pluck('count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB']);
+        }
+
         return view('Estadistica.index', compact('chartEmpresa', 'chartCarrera', 'chartMentor', 'chartBeca', 'mentores', 'empresas', 'carreras'));
     }
 
     public function getEstudiantesPorStatus($status)
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('status', $status)
-            ->where('direccion_id', $direccionId)
-            ->get();
+        $user = Auth::user();
+
+        if ($user->rol_id === 1) {
+            $estudiantes = Estudiantes::where('status', $status)->get();
+        } else {
+            $direccionId = session('direccion')->id;
+            $estudiantes = Estudiantes::where('status', $status)
+                ->where('direccion_id', $direccionId)
+                ->get();
+        }
+
+
         return response()->json($estudiantes);
     }
 

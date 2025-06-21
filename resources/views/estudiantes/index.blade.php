@@ -1,7 +1,7 @@
-@extends("layouts.app")
-@section("title", "Estudiantes")
+@extends('layouts.app')
+@section('title', 'Estudiantes')
 
-@section("content")
+@section('content')
     <style>
         .xd:hover .btn-text {
             display: none;
@@ -9,10 +9,10 @@
     </style>
     <div class="row">
         <div class="col-12 grid-margin">
-            @if (session("status"))
+            @if (session('status'))
                 <div class="alert alert-success alert-dismissible text-dark" role="alert">
                     <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
-                        {{ session("status") }}.</span>
+                        {{ session('status') }}.</span>
                     <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
                         aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -41,7 +41,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body" >
+                            <div class="modal-body">
                                 <ul class="list-group">
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         Anexo 5.1
@@ -89,11 +89,11 @@
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
                             <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes</h6>
-                            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 2 || Auth::user()->rol_id === 4)
                                 <div class="float-end">
                                     {{-- Button del modal --}}
-                                    <a href="{{ route("estudiantes.create") }}" class="btn btn-primary"
-                                        title="Agregar una nueva Moto">
+                                    <a href="{{ route('estudiantes.create') }}" class="btn btn-primary"
+                                        title="Agregar una nueva estudiante">
                                         <i class="mdi mdi-plus-circle-outline"></i>
                                     </a>
                                 </div>
@@ -103,7 +103,9 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
-                                <input type="text" class="form-control" name="search" value="{{ $search }}" placeholder="Buscar estudiantes..." onkeydown="if(event.key === 'Enter') this.form.submit()">
+                                <input type="text" class="form-control" name="search" value="{{ $search }}"
+                                    placeholder="Buscar estudiantes..."
+                                    onkeydown="if(event.key === 'Enter') this.form.submit()">
                             </form>
                             <table class="table table-hover">
                                 <thead>
@@ -126,20 +128,20 @@
                                         </tr>
                                     @else
                                         @foreach ($estudiantes as $estudiante)
-                                            <tr class="animate__animated animate__fadeInDown "
-                                                id='aiuda'>
+                                            <tr class="animate__animated animate__fadeInDown " id='aiuda'>
 
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $estudiante->name .' '. $estudiante->apellidoP .' '.$estudiante->apellidoM}}</td>
-                                                <td>{{ $estudiante->carrera->nombre}}</td>
+                                                <td>{{ $estudiante->name . ' ' . $estudiante->apellidoP . ' ' . $estudiante->apellidoM }}
+                                                </td>
+                                                <td>{{ $estudiante->carrera->nombre }}</td>
 
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
-                                                    <a href="{{ route("estudiantes.show", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                                    <a href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
                                                         class="btn btn-facebook">
                                                         <i class="mdi mdi-eye btn-icon-prepend"></i>
                                                     </a>
-                                                    <a href="{{ route("estudiantes.edit", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                                    <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
                                                         class="btn btn-twitter">
                                                         <i class="mdi mdi-account-edit btn-icon-prepend"></i>
                                                     </a>
@@ -159,6 +161,7 @@
                             <div class="d-flex justify-content-center mt-4">
                                 {{ $estudiantes->links() }}
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -177,7 +180,7 @@
                                         <div class="col-md-12">
                                             <form action="" id="deleteForm" method="POST">
                                                 @csrf
-                                                @method("DELETE")
+                                                @method('DELETE')
                                                 <p id="banner">¿Estás seguro de eliminar este registro?</p>
                                                 <hr>
                                                 <p id="warningMessage" style="color: red; display: none;">Por favor,
@@ -186,8 +189,8 @@
                                                     aria-label="Seleccionar Motivo" name="status">
                                                     <option value="" selected>Seleccione razón de la baja</option>
                                                     @foreach ($situation as $carrera)
-                                                        <option value="{{ $carrera["id"] }}">
-                                                            {{ $carrera["name"] }}
+                                                        <option value="{{ $carrera['id'] }}">
+                                                            {{ $carrera['name'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -215,7 +218,7 @@
                             @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                 <div class="float-end">
                                     {{-- Button del modal --}}
-                                    <a href="{{ route("estudiantes.crearC") }}" class="btn btn-primary"
+                                    <a href="{{ route('estudiantes.crearC') }}" class="btn btn-primary"
                                         title="Agregar un nuevo candidato">
                                         <i class="mdi mdi-plus-circle-outline"></i>
                                     </a>
@@ -226,7 +229,9 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
-                                <input type="text" class="form-control" name="search_candidatos" value="{{ $search_candidatos ?? '' }}" placeholder="Buscar candidatos..." onkeydown="if(event.key === 'Enter') this.form.submit()">
+                                <input type="text" class="form-control" name="search_candidatos"
+                                    value="{{ $search_candidatos ?? '' }}" placeholder="Buscar candidatos..."
+                                    onkeydown="if(event.key === 'Enter') this.form.submit()">
                             </form>
                             <table class="table table-hover">
                                 <thead>
@@ -250,19 +255,22 @@
                                         </tr>
                                     @else
                                         @foreach ($candidatos as $estudiante)
-                                            <tr class="animate__animated animate__fadeInDown "
-                                                id='aiuda'>
+                                            <tr class="animate__animated animate__fadeInDown " id='aiuda'>
 
                                                 <td>{{ $loop->index + 1 }}</td>
+                                                <td>{{ $estudiante->name . ' ' . $estudiante->apellidoP . ' ' . $estudiante->apellidoM }}
+                                                </td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
-                                                <td>{{ $estudiante->email }}</td>
+                                                <td>{{ $estudiante->usuario?->email ?? 'Sin correo' }}</td>
+
+
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
-                                                    <a href="{{ route("estudiantes.showC", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                                    <a href="{{ route('estudiantes.showC', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
                                                         class="btn btn-facebook">
                                                         <i class="mdi mdi-eye btn-icon-prepend"></i>
                                                     </a>
-                                                    <a href="{{ route("estudiantes.edit", Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                                    <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
                                                         class="btn btn-twitter">
                                                         <i class="mdi mdi-arrow-up btn-icon-prepend"></i>
                                                     </a>
@@ -300,7 +308,7 @@
                                         <div class="col-md-12">
                                             <form action="" id="deleteForm" method="POST">
                                                 @csrf
-                                                @method("DELETE")
+                                                @method('DELETE')
                                                 <p id="banner">¿Estás seguro de eliminar este registro?</p>
                                                 <hr>
                                                 <p id="warningMessage" style="color: red; display: none;">Por favor,
@@ -309,8 +317,8 @@
                                                     aria-label="Seleccionar Motivo" name="status">
                                                     <option value="" selected>Seleccione razón de la baja</option>
                                                     @foreach ($situation as $carrera)
-                                                        <option value="{{ $carrera["id"] }}">
-                                                            {{ $carrera["name"] }}
+                                                        <option value="{{ $carrera['id'] }}">
+                                                            {{ $carrera['name'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -328,79 +336,82 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            {{-- Eliminados Lista --}}
-            @if ($estudiantesDeleted->count() !== 0)
-                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                    <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                                <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                    <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes Eliminados</h6>
-                                </div>
+        </div>
+        {{-- Eliminados Lista --}}
+        @if ($estudiantesDeleted->count() !== 0)
+            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
+                                <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes Eliminados</h6>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
-                                        <input type="text" id="searchInput" class="form-control" name="search_eliminados" value="{{ $search_eliminados ?? '' }}" placeholder="Buscar candidatos..." onkeydown="if(event.key === 'Enter') this.form.submit()">
-                                    </form>
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Matricula</th>
-                                                <th>Estudiante</th>
-                                                <th>CURP</th>
-                                                <th>Fecha de Nacimiento</th>
-                                                <th>Cuatrimestre</th>
-                                                <th>Motivo</th>
-                                                <th>Acciones</th>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
+                                    <input type="text" id="searchInput" class="form-control" name="search_eliminados"
+                                        value="{{ $search_eliminados ?? '' }}" placeholder="Buscar candidatos..."
+                                        onkeydown="if(event.key === 'Enter') this.form.submit()">
+                                </form>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Matricula</th>
+                                            <th>Estudiante</th>
+                                            <th>CURP</th>
+                                            <th>Fecha de Nacimiento</th>
+                                            <th>Cuatrimestre</th>
+                                            <th>Motivo</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBodyEliminados">
+                                        @foreach ($estudiantesDeleted as $estudianteDeleted)
+                                            <tr class="animate__animated animate__fadeInDown " id='aiuda'>
+                                                <td>{{ ($estudiantesDeleted->currentPage() - 1) * $estudiantesDeleted->perPage() + $loop->iteration }}
+                                                </td>
+                                                <td>{{ $estudianteDeleted->matricula }}</td>
+                                                <td>{{ $estudianteDeleted->name . ' ' . $estudiante->apellidoP . ' ' . $estudiante->apellidoM }}
+                                                </td>
+                                                <td>{{ $estudianteDeleted->curp }}</td>
+                                                <td>{{ $estudianteDeleted->fecha_na }}</td>
+                                                <td>{{ $estudianteDeleted->cuatrimestre }}</td>
+                                                <td>{{ $estudianteDeleted->status_text }}</td>
+                                                <td>
+                                                    <button
+                                                        class="btn btn-rounded-success btn-sm align-content-md-center align-items-center align-self-center"
+                                                        title="Restore" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal3" data-bs-placement="top"
+                                                        onclick="restoreRegistro({{ $estudianteDeleted->matricula }})">
+                                                        Reactivar &nbsp;&nbsp;
+                                                        <i class="mdi mdi-backup-restore"></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-danger btn-sm align-content-md-center align-items-center align-self-center"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModal2"
+                                                        data-bs-placement="top" title="Eliminar Permanentemente"
+                                                        type="button"
+                                                        onclick="destroyMentor({{ $estudianteDeleted->matricula }})">
+                                                        Eliminar &nbsp;&nbsp;
+                                                        <i class="mdi mdi-delete"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody id="tableBodyEliminados">
-                                            @foreach ($estudiantesDeleted as $estudianteDeleted)
-                                                <tr class="animate__animated animate__fadeInDown "
-                                                    id='aiuda'>
-                                                    <td>{{ ($estudiantesDeleted->currentPage() - 1) * $estudiantesDeleted->perPage() + $loop->iteration }}</td>
-                                                    <td>{{ $estudianteDeleted->matricula }}</td>
-                                                    <td>{{ $estudianteDeleted->name .' '. $estudiante->apellidoP .' '. $estudiante->apellidoM}}</td>
-                                                    <td>{{ $estudianteDeleted->curp }}</td>
-                                                    <td>{{ $estudianteDeleted->fecha_na }}</td>
-                                                    <td>{{ $estudianteDeleted->cuatrimestre }}</td>
-                                                    <td>{{ $estudianteDeleted->status_text }}</td>
-                                                    <td>
-                                                        <button
-                                                            class="btn btn-rounded-success btn-sm align-content-md-center align-items-center align-self-center"
-                                                            title="Restore" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal3" data-bs-placement="top"
-                                                            onclick="restoreRegistro({{ $estudianteDeleted->matricula }})">
-                                                            Reactivar &nbsp;&nbsp;
-                                                            <i class="mdi mdi-backup-restore"></i>
-                                                        </button>
-                                                        <button
-                                                            class="btn btn-danger btn-sm align-content-md-center align-items-center align-self-center"
-                                                            data-bs-toggle="modal" data-bs-target="#exampleModal2"
-                                                            data-bs-placement="top" title="Eliminar Permanentemente"
-                                                            type="button"
-                                                            onclick="destroyMentor({{ $estudianteDeleted->matricula }})">
-                                                            Eliminar &nbsp;&nbsp;
-                                                            <i class="mdi mdi-delete"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <div class="d-flex justify-content-center mt-4">
-                                        {{ $estudiantesDeleted->links() }}
-                                    </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-center mt-4">
+                                    {{ $estudiantesDeleted->links() }}
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
             @endif
-        </div>
+        @endif
+    </div>
     </div>
     </div>
     </div>
@@ -417,7 +428,7 @@
                             <div class="col-md-12">
                                 <form action="" id="permanentDelete" method="POST">
                                     @csrf
-                                    @method("DELETE")
+                                    @method('DELETE')
                                     <p id="bannerDelete">¿Estás seguro de eliminar este registro?</p>
                                     <div class="modal-footer">
                                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar
@@ -445,7 +456,7 @@
                             <div class="col-md-12">
                                 <form action="" id="restaurarForm" method="POST">
                                     @csrf
-                                    @method("PATCH")
+                                    @method('PATCH')
                                     <p id="bannerRestore">¿Estás seguro de restaurar este registro?</p>
                                     <div class="modal-footer">
                                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar

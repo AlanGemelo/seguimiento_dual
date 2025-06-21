@@ -28,8 +28,8 @@
                             Empresas
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="empresasDropdown">
-                            <li><a class="dropdown-item" href="{{ route("empresas.index") }}">Empresa</a></li>
-                            <li><a class="dropdown-item" href="{{ route("mentores.index") }}">Mentor Industrial</a></li>
+                            <li><a class="dropdown-item" href="{{ route("empresas.index") }}">Empresas</a></li>
+                            <li><a class="dropdown-item" href="{{ route("mentores.index") }}">Mentores Industriales</a></li>
                         </ul>
                     </li>
                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
@@ -39,10 +39,10 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="direccionDropdown">
                                 @if (Auth::user()->rol_id === 1)
-                                    <li><a class="dropdown-item" href="{{ route("direcciones.index") }}">Dirección Carrera</a></li>
-                                    <li><a class="dropdown-item" href="{{ route("directores.index") }}">Director de Carrera</a></li>
+                                    <li><a class="dropdown-item" href="{{ route("direcciones.index") }}">Direccines Carrera</a></li>
+                                    <li><a class="dropdown-item" href="{{ route("directores.index") }}">Directores de Carrera</a></li>
                                 @endif
-                                <li><a class="dropdown-item" href="{{ route("carreras.index") }}">Programa Educativo</a></li>
+                                <li><a class="dropdown-item" href="{{ route("carreras.index") }}">Programas Educativos</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">

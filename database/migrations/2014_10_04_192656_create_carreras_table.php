@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('carreras', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('grado_academico');
             $table->string('nombre');
             $table->foreignId('direccion_id')->constrained('direccion_carreras');
-
             $table->timestamps();
         });
     }

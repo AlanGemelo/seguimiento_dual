@@ -15,6 +15,34 @@
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">
+                                    <label for="name">Grado Académico <span class="text-danger">*</span></label>
+                                    <select class="form-control form-control-lg" id="grado_academico" name="grado_academico"
+                                        required>
+                                        <option value="" disabled
+                                            {{ old('grado_academico', $carrera->grado_academico ?? '') == '' ? 'selected' : '' }}>
+                                            Seleccione el nivel educativo
+                                        </option>
+                                         <option value="Técnico Superior Universitario"
+                                            {{ old('grado_academico', $carrera->grado_academico ?? '') == 'Técnico Superior Universitario' ? 'selected' : '' }}>
+                                            Técnico Superior Universitario (TSU)
+                                        </option>
+                                        <option value="Licenciatura"
+                                            {{ old('grado_academico', $carrera->grado_academico ?? '') == 'Licenciatura' ? 'selected' : '' }}>
+                                            Licenciatura
+                                        </option>
+                                        <option value="Ingeniería"
+                                            {{ old('grado_academico', $carrera->grado_academico ?? '') == 'Ingeniería' ? 'selected' : '' }}>
+                                            Ingeniería
+                                        </option>
+                                       
+                                    </select>
+
+                                    @error('grado_academico')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
                                     <label for="name">Nombre del Programa Educativo <span
                                             class="text-danger">*</span></label>
                                     <input type="text" data-tipo="text" class="form-control form-control-lg"
@@ -24,7 +52,7 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                {{-- Seleccionar Docencia del estudiante --}}
+
                                 <div class="form-group">
                                     <label for="direccion_id" class="form-label">Direccion de Carrera <span
                                             class="text-danger">*</span></label>
@@ -44,8 +72,9 @@
 
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        type="submit">Editar
+                                        type="submit">Actualizar
                                     </button>
+                                    <x-back-button url="{{ route('carreras.index') }}" />
                                 </div>
                             </form>
                         </div>

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\Auth;
 
 class MentorAcademicoController extends Controller
 {
@@ -27,22 +28,31 @@ class MentorAcademicoController extends Controller
         return redirect()->route('estudiantes.index')->with('message', 'Correo enviado correctamente');
     }
 
-    public function index()
-    {
-        $mentores = User::where('rol_id', 2)->with('direccion')->where('direccion_id', session('direccion')->id)->get();
-        $mentoresDeleted = User::onlyTrashed()->where('direccion_id', session('direccion')->id)->where('rol_id', 2)->get();
+   public function index()
+{
+    $user = Auth::user();
 
+    // Si es administrador
+    if ($user->rol_id === 1) {
+        $mentores = User::where('rol_id', 2)->with('direccion')->get();
+        $mentoresDeleted = User::onlyTrashed()->where('rol_id', 2)->get();
+    } else {
+        // Si no es administrador, filtra por su dirección
+        $direccionId = session('direccion')->id ?? null;
 
-        // $nombreAlumno = 'Juan Pérez';
-        // $fechaVencimiento = '2024-09-25'; // Ejemplo de fecha de vencimiento
-        // $enlaceSistema = 'https://tusistema.com/login';
+        $mentores = User::where('rol_id', 2)
+            ->with('direccion')
+            ->where('direccion_id', $direccionId)
+            ->get();
 
-        // // Envía el correo
-        // Mail::to('al222010229@utvtol.edu.mx')->send(new DocumentoVencimientoNotification($nombreAlumno, $fechaVencimiento, $fechaVencimiento,'google.com'));
-
-
-        return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
+        $mentoresDeleted = User::onlyTrashed()
+            ->where('rol_id', 2)
+            ->where('direccion_id', $direccionId)
+            ->get();
     }
+
+    return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
+}
 
     public function create(): View
     {

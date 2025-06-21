@@ -10,6 +10,7 @@ class Carrera extends Model
     use HasFactory;
 
     protected $fillable = [
+        'grado_academico',
         'nombre',
         'direccion_id',
         'email',

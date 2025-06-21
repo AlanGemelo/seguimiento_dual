@@ -84,6 +84,8 @@
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar
                                     </button>
+
+                                    <x-back-button url="{{ route('directores.index') }}" />
                                 </div>
                             </form>
                         </div>

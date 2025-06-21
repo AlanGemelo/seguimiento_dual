@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+
 
 class EstudiantesController extends Controller
 {
@@ -33,20 +35,30 @@ class EstudiantesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('admin')->only('create', 'store', 'delete');
+        $this->middleware('admin')->only('delete');
+        // Permitir create y store para admin y mentor académico
+        $this->middleware(function ($request, $next) {
+            if (auth()->user()->rol_id === 1 || auth()->user()->rol_id === 2) {
+                return $next($request);
+            }
+            abort(403, 'No tienes permiso para acceder a esta página');
+        })->only(['create', 'store']);
     }
 
     /**
      * Muestra la lista de estudiantes.
      */
-    
+
     public function index(Request $request)
     {
 
+        
+        
         $hoy = Carbon::now();
         // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
         $registros = Estudiantes::with('academico', 'asesorin')->whereDate('fin_dual', '<=', $hoy->addDays(15))->where('activo', true)->get();
         $registrosConvenio = Empresa::with('asesorin')->whereDate('fin_conv', '<=', $hoy->addDays(15))->get();
+
         // Enviar correos por cada registro
         // foreach ($registrosConvenio as $registro) {
         // Mail::to('al222010229@utvtol.edu.mx')->send(new UniMentorMailable($registro, $registro->fin_conv,$registro->asesorin,env('APP_URL')));
@@ -66,17 +78,18 @@ class EstudiantesController extends Controller
         // $direccionId = session('direccion')->id ?? null;
         $direccionId = session('direccion')?->id ?? null;
 
-        $estudiantes = Estudiantes::with('academico', 'carrera')
+        $estudiantes = Estudiantes::with('academico', 'carrera', 'usuario')
             ->where('activo', true)
             ->where('name', 'LIKE', '%' . $search . '%')
             ->where('direccion_id', $direccionId)
             ->orderBy('name', 'asc')
-            ->get();
-
+            ->paginate(10);
+Log::info('El ID de dirección es: ' . $direccionId);
         $candidatos = Estudiantes::where('activo', false)
             ->where('name', 'LIKE', '%' . $searchCandidatos . '%')
             ->where('direccion_id', $direccionId)
             ->simplePaginate(10, ['*'], 'page_candidatos', $pageCandidatos);
+
         $academico = User::where('rol_id', 2)->where('name', 'LIKE', '%' . $searchAcademicos . '%')->where('direccion_id', $direccionId)->simplePaginate(10, ['*'], 'page_academicos', $pageAcademicos);
         $estudiantesDeleted = Estudiantes::where('direccion_id', $direccionId)->with('academico', 'carrera')->onlyTrashed()->where('name', 'LIKE', '%' . $searchEliminados . '%')->simplePaginate(10, ['*'], 'page_eliminados', $pageEliminados);
 
@@ -93,33 +106,57 @@ class EstudiantesController extends Controller
 
         $hoy = Carbon::now();
 
-        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos','search','searchCandidatos','searchAcademicos','searchEliminados'));
+        return view('estudiantes.index', compact('estudiantes', 'estudiantesDeleted', 'situation', 'becas', 'academico', 'candidatos', 'search', 'searchCandidatos', 'searchAcademicos', 'searchEliminados'));
     }
-        
+
 
     /**
      * Muestra el formulario para crear un nuevo estudiante.
      */
     public function create()
     {
-        $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get();
-        $empresas = Empresa::where('direccion_id', session('direccion')->id)->get();
-        $academico = User::where('rol_id', 2)->where('direccion_id', session('direccion')->id)->get();
-        $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
-        // $asesores = MentorIndustrial::where('direccion_id', session('direccion')->id)->get();
+        $user = Auth::user();
 
-        $situation = [
-            ['id' => 0, 'name' => 'Primera vez'],
-            ['id' => 1, 'name' => 'Renovacion Dual']
-        ];
-        $tipoBeca = [
-            ['id' => 0, 'name' => 'Apoyo por Empresa'],
-            ['id' => 1, 'name' => 'Beca Dual Comecyt']
-        ];
-        $becas = [
-            ['id' => 0, 'name' => 'Si'],
-            ['id' => 1, 'name' => 'No']
-        ];
+        if ($user->rol_id === 1) {
+            $direcciones = DireccionCarrera::get();
+            $empresas = Empresa::get();
+            $academico = User::get();
+            $carreras =  Carrera::get();
+            // $asesores = MentorIndustrial::where('direccion_id', session('direccion')->id)->get();
+
+            $situation = [
+                ['id' => 0, 'name' => 'Primera vez'],
+                ['id' => 1, 'name' => 'Renovacion Dual']
+            ];
+            $tipoBeca = [
+                ['id' => 0, 'name' => 'Apoyo por Empresa'],
+                ['id' => 1, 'name' => 'Beca Dual Comecyt']
+            ];
+            $becas = [
+                ['id' => 0, 'name' => 'Si'],
+                ['id' => 1, 'name' => 'No']
+            ];
+        } else {
+
+            $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get();
+            $empresas = Empresa::where('direccion_id', session('direccion')->id)->get();
+            $academico = User::where('rol_id', 2)->where('direccion_id', session('direccion')->id)->get();
+            $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
+            // $asesores = MentorIndustrial::where('direccion_id', session('direccion')->id)->get();
+
+            $situation = [
+                ['id' => 0, 'name' => 'Primera vez'],
+                ['id' => 1, 'name' => 'Renovacion Dual']
+            ];
+            $tipoBeca = [
+                ['id' => 0, 'name' => 'Apoyo por Empresa'],
+                ['id' => 1, 'name' => 'Beca Dual Comecyt']
+            ];
+            $becas = [
+                ['id' => 0, 'name' => 'Si'],
+                ['id' => 1, 'name' => 'No']
+            ];
+        }
 
         return view('estudiantes.create', compact('empresas', 'academico', 'carreras', 'situation', 'tipoBeca', 'becas', 'direcciones'));
     }
@@ -129,22 +166,44 @@ class EstudiantesController extends Controller
      */
     public function crearC(): View
     {
-        $direcciones = DireccionCarrera::where("id", session('direccion')->id)->get();
-        $academico = User::where('direccion_id', session('direccion')->id)->where('rol_id', 2)->get();
-        $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
+        $user = Auth::user();
 
-        $situation = [
-            ['id' => 0, 'name' => 'Primera vez'],
-            ['id' => 1, 'name' => 'Renovacion Dual']
-        ];
-        $tipoBeca = [
-            ['id' => 0, 'name' => 'Apoyo por Empresa'],
-            ['id' => 1, 'name' => 'Beca Dual Comecyt']
-        ];
-        $becas = [
-            ['id' => 0, 'name' => 'Si'],
-            ['id' => 1, 'name' => 'No']
-        ];
+        if ($user->rol_id === 1) {
+            $direcciones = DireccionCarrera::get();
+            $academico = User::get();
+            $carreras =  Carrera::get();
+
+            $situation = [
+                ['id' => 0, 'name' => 'Primera vez'],
+                ['id' => 1, 'name' => 'Renovacion Dual']
+            ];
+            $tipoBeca = [
+                ['id' => 0, 'name' => 'Apoyo por Empresa'],
+                ['id' => 1, 'name' => 'Beca Dual Comecyt']
+            ];
+            $becas = [
+                ['id' => 0, 'name' => 'Si'],
+                ['id' => 1, 'name' => 'No']
+            ];
+        } else {
+            $direcciones = DireccionCarrera::where("id", session('direccion')->id)->get();
+            $academico = User::where('direccion_id', session('direccion')->id)->where('rol_id', 2)->get();
+            $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
+
+            $situation = [
+                ['id' => 0, 'name' => 'Primera vez'],
+                ['id' => 1, 'name' => 'Renovacion Dual']
+            ];
+            $tipoBeca = [
+                ['id' => 0, 'name' => 'Apoyo por Empresa'],
+                ['id' => 1, 'name' => 'Beca Dual Comecyt']
+            ];
+            $becas = [
+                ['id' => 0, 'name' => 'Si'],
+                ['id' => 1, 'name' => 'No']
+            ];
+        }
+
 
         return view('estudiantes.createCandidato', compact('academico', 'carreras', 'situation', 'direcciones'));
     }

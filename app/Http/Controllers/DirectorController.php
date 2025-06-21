@@ -67,7 +67,7 @@ class DirectorController extends Controller
             'email'        => $emailCompleto,
             'password'     => bcrypt('12345678'),
             'rol_id'       => 4,
-            'carrera_id'   => $request->carrera_id,
+            'carrera_id'   => $request->null,
             'direccion_id' => $request->direccion_id,
         ]);
 

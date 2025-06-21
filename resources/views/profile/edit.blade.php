@@ -30,10 +30,26 @@
                                         class="form-control" id="id" hidden>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Nombre</label>
+                                    <label for="name">Nombre (s)</label>
                                     <input type="text" data-tipo="text" name="name" value="{{ old('name', $user->name) }}"
                                         class="form-control" id="name">
                                     @error('name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                      <div class="form-group">
+                                    <label for="apellidoP">Apellido Paterno</label>
+                                    <input type="text" data-tipo="text" name="apellidoP" value="{{ old('apellidoP', $user->apellidoP) }}"
+                                        class="form-control" id="apellidoP">
+                                    @error('apellidoP')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                      <div class="form-group">
+                                    <label for="apellidoM">Apellido Materno</label>
+                                    <input type="text" data-tipo="text" name="apellidoM" value="{{ old('apellidoM', $user->apellidoM) }}"
+                                        class="form-control" id="apellidoM">
+                                    @error('apellidoM')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>

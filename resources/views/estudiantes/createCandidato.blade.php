@@ -133,8 +133,8 @@
                                                 <option selected>Seleccione una opcion</option>
                                                 @foreach ($carreras as $carrera)
                                                     <option value="{{ $carrera->id }}"
-                                                        data-direccion="{{ $carrera->direccion_id }}">
-                                                        {{ $carrera->nombre }}
+                                                        data-direccion="{{  $carrera->direccion_id }}">
+                                                        {{ $carrera->grado_academico . ' en ' . $carrera->nombre }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -217,9 +217,9 @@
                                         </div>
 
                                         {{-- Cargar documento de Historial Academico --}}
+                                       <p  class="h6 bg-green-700">(Opccional)</p>
                                         <div class="form-group">
-                                            <label for="historial_academico">Historial Academico<span
-                                                    class="text-danger">*</span></label>
+                                            <label for="historial_academico">Historial Academico</label>
                                             <input type="file" class="form-control form-control-lg"
                                                 id="historial_academico" placeholder="historial_academico"
                                                 name="historial_academico" value="{{ old('historial_academico') }}">
@@ -237,6 +237,8 @@
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar
                                     </button>
+
+                                    <x-back-button url="{{ route('estudiantes.index') }}"/>   
                                 </div>
                         </div>
                         </form>

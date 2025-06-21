@@ -13,32 +13,52 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\Auth;
 
 class CarreraController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('admin');
     }
 
     public function index()
     {
-        $carreras = Carrera::with('direccion')->where('direccion_id',session('direccion')->id)->get();
+        $user = Auth::user();
+
+        // Si es administrador o tiene rol que debe ver todo (por ejemplo rol_id 1)
+        if ($user->rol_id === 1) {
+            $carreras = Carrera::with('direccion')->get();
+        }
+        // Si es un usuario con dirección asignada en sesión
+        elseif (session()->has('direccion') && session('direccion') !== null) {
+            $carreras = Carrera::with('direccion')
+                ->where('direccion_id', session('direccion')->id)
+                ->get();
+        }
+        // Otro caso: no tiene permiso o no se puede mostrar nada
+        else {
+            $carreras = collect();
+        }
+
         return view('carrera.index', compact('carreras'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'grado_academico' => ['required', 'in:Licenciatura,Ingeniería,Técnico Superior Universitario'],
             'nombre' => ['required', 'min:2', 'max:255', 'string'],
             'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id']
         ]);
         $direcciones = DireccionCarrera::all();
         Carrera::create([
+            'grado_academico' => $request->grado_academico,
             'nombre' => $request->nombre,
             'direccion_id' => $request->direccion_id
         ]);
 
-        return redirect()->route('carreras.index',compact('direcciones'));
+        return redirect()->route('carreras.index', compact('direcciones'));
     }
 
     public function update(Request $request, Carrera $id)
@@ -60,7 +80,7 @@ class CarreraController extends Controller
     {
         try {
             $carrera = Carrera::find($id);
-            $carrera -> delete();
+            $carrera->delete();
             return redirect()->route('carreras.index')->with('status', 'Carrera Eliminada');
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
@@ -81,10 +101,11 @@ class CarreraController extends Controller
 
         return response()->json($carrera);
     }
+
     public function show(Carrera $carrera): View
     {
         $direcciones = DireccionCarrera::all();
-        return view('carrera.show', compact('carrera','direcciones'));
+        return view('carrera.show', compact('carrera', 'direcciones'));
 
         return response()->json($carrera);
     }
@@ -92,14 +113,14 @@ class CarreraController extends Controller
     public function create()
     {
         $direcciones = DireccionCarrera::all();
-        return view('carrera.create',compact('direcciones'));
+        return view('carrera.create', compact('direcciones'));
     }
 
     public function edit(Carrera $id)
     {
-$id->load('direccion');
-$carrera = $id;
-$direcciones = DireccionCarrera::get();
-        return view('carrera.edit', compact('carrera','direcciones'));
+        $id->load('direccion');
+        $carrera = $id;
+        $direcciones = DireccionCarrera::get();
+        return view('carrera.edit', compact('carrera', 'direcciones'));
     }
 }

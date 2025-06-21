@@ -63,11 +63,11 @@
                         </a>
                         <ul class="dropdown-menu text-center" aria-labelledby="empresasDropdown">
                             <li><a class="dropdown-item {{ request()->routeIs('empresas.*') ? 'active' : '' }}"
-                                    href="{{ route('empresas.index') }}"><i class="mdi mdi-domain"></i> Empresa</a>
+                                    href="{{ route('empresas.index') }}"><i class="mdi mdi-domain"></i> Empresas</a>
                             </li>
                             <li><a class="dropdown-item {{ request()->routeIs('mentores.*') ? 'active' : '' }}"
-                                    href="{{ route('mentores.index') }}"><i class="mdi mdi-account-tie"></i> Mentor
-                                    Industrial</a></li>
+                                    href="{{ route('mentores.index') }}"><i class="mdi mdi-account-tie"></i> Mentores 
+                                    Industriales</a></li>
                         </ul>
                     </li>
                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
@@ -75,7 +75,7 @@
                             <a class="nav-link dropdown-toggle {{ request()->routeIs('direcciones.*') || request()->routeIs('directores.*') || request()->routeIs('carreras.*') ? 'active' : '' }}"
                                 href="#" id="direccionDropdown" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                <i class="mdi mdi-map-marker"></i> Dirección de Carrera
+                                <i class="mdi mdi-map-marker"></i> Direcciones de Carrera
                             </a>
                             <ul class="dropdown-menu text-center" aria-labelledby="direccionDropdown">
                                 @if (Auth::user()->rol_id === 1)
@@ -87,8 +87,8 @@
                                             Director de Carrera</a></li>
                                 @endif
                                 <li><a class="dropdown-item {{ request()->routeIs('carreras.*') ? 'active' : '' }}"
-                                        href="{{ route('carreras.index') }}"><i class="mdi mdi-book-open"></i> Programa
-                                        Educativo</a></li>
+                                        href="{{ route('carreras.index') }}"><i class="mdi mdi-book-open"></i> Programas
+                                        Educativos</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">

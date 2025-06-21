@@ -7,7 +7,7 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Mentor Academico</h4>
+                            <h4 class="card-title">Datos del Mentor Académico</h4>
                             <div class="dropdown-divider"></div>
                             <div class="form-group">
                                 <label for="titulo">Título</label>
@@ -64,7 +64,7 @@
                                     </div>
                                 @endforeach
                             </div>
-
+                            <x-back-button url="{{ route('academicos.index') }}"/>
                         </div>
                     </div>
                 </div>

@@ -83,6 +83,7 @@
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Actualizar</button>
+                                        <x-cancel-button url="{{ route('academicos.index') }}" />
                                 </div>
                             </form>
                         </div>

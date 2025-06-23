@@ -74,6 +74,7 @@
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar
                                     </button>
+                                    <x-cancel-button url="{{ route ('mentores.index') }}"/>
                                 </div>
                             </form>
                         </div>

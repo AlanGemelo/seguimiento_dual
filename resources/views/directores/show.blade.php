@@ -1,52 +1,63 @@
 @extends('layouts.app')
 @section('title', 'Director de Carrera')
 @section('content')
-    <div class="row">
-        <div class="col-12 grid-margin">
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Director de carrera</h4>
-                            <div class="dropdown-divider"></div>
-                            <div class="form-group">
-                                <label for="nombre">Nombre(s)</label>
-                                <input type="text" class="form-control form-control-lg" id="nombre"
-                                    placeholder="Su(s) nombre(s)" name="nombre" value="{{ $director->nombre }}" disabled>
-                            </div>
+       <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card shadow">
+                    <!-- Encabezado -->
+                    <x-section-header title="Datos del Director de Carrera"
+                        description="Visualización de la información personal del Director de Carrera." />
 
-                            <div class="form-group">
-                                <label for="apellidoP">Apellido Paterno</label>
-                                <input type="text" class="form-control form-control-lg" id="apellidoP"
-                                    placeholder="Su apellido paterno" name="apellidoP" value="{{ $director->apellidoP }}"
-                                    disabled>
-                            </div>
+                    <div class="card-body">
+                        <!-- Información General -->
+                        <div class="mb-4">
+                            <h5 class="section-title">Identificación del Mentor Académico</h5>
+                            <div class="dropdown-divider mb-4"></div>
+                            <div class="row">
 
-                            <div class="form-group">
-                                <label for="apellidoM">Apellido Materno</label>
-                                <input type="text" class="form-control form-control-lg" id="apellidoM"
-                                    placeholder="Su apellido materno" name="apellidoM" value="{{ $director->apellidoM }}"
-                                    disabled>
-                            </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="email" class="form-label">Correo electrónico institucional</label>
+                                    <input type="email" class="form-control" value="{{ $director->email ?? 'N/A' }}"
+                                        disabled>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="email">Correo Electronico</label>
-                                <input type="email" class="form-control form-control-lg" id="email"
-                                    placeholder="Su dirección de correo electrónico" name="email"
-                                    value="{{ $director->email }}" disabled>
-                            </div>
-                            <div class="form-group">
-                                <label for="direccion_id">Direccion de Carrera</label>
-                                <input type="direccion_id" class="form-control form-control-lg" id="direccion_id"
-                                    placeholder="Nombre de la dirección o carrera" name="direccion_id"
-                                    value="{{ $director->direccion->name }}" disabled>
-                            </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="nombre" class="form-label">Nombre(s)</label>
+                                        <input type="text" class="form-control" value="{{ $director->nombre }}" disabled>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="apellidoP" class="form-label">Apellido Paterno</label>
+                                        <input type="text" class="form-control" value="{{ $director->apellidoP }}"
+                                            disabled>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="apellidoM" class="form-label">Apellido Materno</label>
+                                        <input type="text" class="form-control" value="{{ $director->apellidoM }}"
+                                            disabled>
+                                    </div>
+                                </div>
 
+                                <h5 class="section-title mt-4">Información Académica</h5>
+                                <div class="dropdown-divider mb-4"></div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="cuatrimestre" class="form-label">Dirección de carrera</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $director->direccion->name ?? 'N/A' }}" disabled>
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- Botón de regreso -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <x-back-button url="{{ route('academicos.index') }}" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 @endsection

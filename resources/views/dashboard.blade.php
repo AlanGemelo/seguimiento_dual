@@ -21,12 +21,12 @@
                             <div class="col-12 grid-margin stretch-card">
                                 <div class="card card-rounded shadow-lg border-0">
                                     <div class="card-body text-center">
-                                        <h4 class="text-secondary font-weight-bold mb-3">Mentores Registrados</h4>
+                                        <h4 class="text-secondary font-weight-bold mb-3">Mentores Industriales Registrados</h4>
                                         <h2 class="text-primary display-4">{{ $mentores }}</h2>
                                         <br>
                                         <a type="button" class="btn btn-success btn-lg btn-block"
                                             href="{{ route('mentores.create') }}">
-                                            <i class="mdi mdi-account-plus mdi-24px align-middle"></i> Crear Mentor
+                                            <i class="mdi mdi-account-plus mdi-24px align-middle"></i> Crear Mentor Industriales
                                         </a>
                                     </div>
                                 </div>

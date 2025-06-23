@@ -54,7 +54,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Nombre</th>
+                                            <th>Identificación Profesional</th>
                                             <th>Correo Electronico</th>
                                             <th>Direccion de Carrera</th>
                                             <th>Acciones</th>
@@ -65,14 +65,14 @@
                                             <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
                                                 id='aiuda'>
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
+                                                <td>{{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
                                                 </td>
                                                 <td>{{ $mentor->email }}</td>
                                                 <td>{{ $mentor->direccion->name }}</td>
                                                 <td>
                                                     <a href="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
                                                         class="btn btn-facebook">
-                                                       <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                                        <i class="mdi mdi-eye btn-icon-prepend"></i>
                                                     </a>
                                                     {{-- <a href="{{ route('academicos.showE', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
                                                    class="btn btn-facebook">
@@ -147,8 +147,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Titulo</th>
-                                            <th>Nombre</th>
+                                            <th>Identificación Profesional</th>
                                             <th>Correo Electronico</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -158,8 +157,8 @@
                                             <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
                                                 id='aiuda'>
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $mentorDeletd->titulo }}</td>
-                                                <td>{{ $mentorDeletd->name }}</td>
+                                                <td>{{ $mentorDeletd->titulo . ' ' . $mentorDeletd->name . ' ' . $mentorDeletd->apellidoP . ' ' . $mentorDeletd->apellidoM }}
+                                                </td>
                                                 <td>{{ $mentorDeletd->email }}</td>
                                                 <td>
                                                     <button
@@ -255,8 +254,11 @@
             </div>
         </div>
     </div>
+
     <script type="application/javascript">
-        // hace una peticion ajax para obtener la informacion de la moto
+
+        // Hace una petición AJAX para obtener la información del mentor 
+        // y mostrarla en el banner de confirmación
         function deleteMentor(id) {
             let form = document.getElementById('deleteForm')
             form.action = '/academicos/' + id + '/delete'
@@ -264,7 +266,12 @@
                 url: '/academicos/' + id + '/json',
                 type: 'GET',
                 success: function (response) {
-                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.titulo + ', ' + response.name);
+                    $('#banner').html('¿Estas seguro de eliminar este registro: ' + 
+                    response.titulo + ' ' +
+                    response.name + ' ' +
+                    response.apellidoP + ' ' +
+                    response.apellidoM + '?'
+                    );
                 }
             })
         }
@@ -278,7 +285,13 @@
                 type: 'GET',
                 success: function (response) {
                     //console.log(response.name)
-                    $('#bannerRestore').html('¿Estas seguro de restaurar este registro? ' + response.titulo + ' ' + response.name);
+                    $('#bannerRestore').html
+                    ('¿Estás seguro de restaurar este registro: ' +
+                     response.titulo + ' ' +
+                     response.name + ' ' +
+                     response.apellidoP + ' ' +
+                     response.apellidoM + '?'
+            );
                 }
             })
         }
@@ -291,10 +304,17 @@
                 type: 'GET',
                 success: function (response) {
                     //console.log(response.name)
-                    $('#bannerDelete').html('¿Estas seguro de restaurar este registro? ' + response.titulo + ' ' + response.name);
-                }
+            $('#bannerDelete').html(
+             '¿Estás seguro de eliminar permanentemente este registro: ' +
+             response.titulo + ' ' +
+             response.name + ' ' +
+             response.apellidoP + ' ' +
+             response.apellidoM + '?'
+                );
+    }
             })
         }
+
         // Filtrar mentores
         document.getElementById('search').addEventListener('keyup', function() {
             let value = this.value.toLowerCase();
@@ -309,5 +329,7 @@
                 }
             });
         });
+
     </script>
+
 @endsection

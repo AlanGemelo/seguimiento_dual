@@ -28,31 +28,31 @@ class MentorAcademicoController extends Controller
         return redirect()->route('estudiantes.index')->with('message', 'Correo enviado correctamente');
     }
 
-   public function index()
-{
-    $user = Auth::user();
+    public function index()
+    {
+        $user = Auth::user();
 
-    // Si es administrador
-    if ($user->rol_id === 1) {
-        $mentores = User::where('rol_id', 2)->with('direccion')->get();
-        $mentoresDeleted = User::onlyTrashed()->where('rol_id', 2)->get();
-    } else {
-        // Si no es administrador, filtra por su dirección
-        $direccionId = session('direccion')->id ?? null;
+        // Si es administrador
+        if ($user->rol_id === 1) {
+            $mentores = User::where('rol_id', 2)->with('direccion')->get();
+            $mentoresDeleted = User::onlyTrashed()->where('rol_id', 2)->get();
+        } else {
+            // Si no es administrador, filtra por su dirección
+            $direccionId = session('direccion')->id ?? null;
 
-        $mentores = User::where('rol_id', 2)
-            ->with('direccion')
-            ->where('direccion_id', $direccionId)
-            ->get();
+            $mentores = User::where('rol_id', 2)
+                ->with('direccion')
+                ->where('direccion_id', $direccionId)
+                ->get();
 
-        $mentoresDeleted = User::onlyTrashed()
-            ->where('rol_id', 2)
-            ->where('direccion_id', $direccionId)
-            ->get();
+            $mentoresDeleted = User::onlyTrashed()
+                ->where('rol_id', 2)
+                ->where('direccion_id', $direccionId)
+                ->get();
+        }
+
+        return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
     }
-
-    return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
-}
 
     public function create(): View
     {
@@ -97,10 +97,12 @@ class MentorAcademicoController extends Controller
     {
         $id = Hashids::decode($id);
         $mentor = User::with(['direccion', 'estudiantes'])->find($id);
+        $direcciones = DireccionCarrera::all()->find($id);
         $mentor = $mentor[0];
 
         return view('mentoresacademicos.show', compact('mentor'));
     }
+
     public function showE($id): View
     {
         $id = Hashids::decode($id);

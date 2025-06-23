@@ -16,6 +16,7 @@ class Director extends Model
         'telefono',
         'direccion_id',
     ];
+
     public function carrera()
     {
         return $this->belongsTo(Carrera::class, 'carrera_id', 'id');
@@ -24,4 +25,6 @@ class Director extends Model
     {
         return $this->belongsTo(DireccionCarrera::class, 'direccion_id', 'id');
     }
+
+    
 }

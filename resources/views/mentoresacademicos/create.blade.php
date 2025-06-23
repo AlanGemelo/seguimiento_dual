@@ -14,7 +14,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="titulo">Grado académico <span class="text-danger">*</span></label>
-                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg uppercase"
                                         id="titulo" placeholder="Ej. Licenciado, Ingeniero, Doctor" name="titulo"
                                         value="{{ old('titulo') }}">
                                     @error('titulo')
@@ -73,7 +73,7 @@
                                         <option selected>Seleccione una opcion</option>
                                         @foreach ($direcciones as $carrera)
                                             <option value="{{ $carrera->id }}"
-                                                 data-direccion="{{  $carrera->direccion_id }}">
+                                                data-direccion="{{ $carrera->direccion_id }}">
                                                 {{ $carrera->name }}</option>
                                         @endforeach
                                     </select>
@@ -84,8 +84,8 @@
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar</button>
-                                       <x-cancel-button url="{{ route('academicos.index') }}" />
-                                            
+                                    <x-cancel-button url="{{ route('academicos.index') }}" />
+
                                 </div>
                             </form>
                         </div>

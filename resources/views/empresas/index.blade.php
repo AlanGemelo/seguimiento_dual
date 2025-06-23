@@ -38,7 +38,7 @@
                                     <td>{{ $empresa->nombre }}</td>
                                     <td>{{ $empresa->email }}</td>
                                     <td>{{ $empresa->telefono }}</td>
-                                    <td>{{ $empresa->fecha_registro }}</td>
+                                   <td>{{ $empresa->created_at->format('d \d\e F \d\e Y') }}</td>
                                     <td>{{ $empresa->inicio_conv }} - {{ $empresa->fin_conv }}</td>
                                     <td>
                                         <a href="{{ route('empresas.edit', $empresa->id) }}"

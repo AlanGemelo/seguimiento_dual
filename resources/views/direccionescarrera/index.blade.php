@@ -68,7 +68,7 @@
                                                 <td>
                                                     <a href="{{ route('direcciones.show', $carrera->id) }}"
                                                         class="btn btn-facebook">
-                                                        <i class="mdi mdi-account-details btn-icon-prepend"></i>
+                                                        <i class="mdi mdi-eye btn-icon-prepend"></i>
                                                     </a>
                                                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                         <button class="btn btn-danger" data-bs-toggle="modal"

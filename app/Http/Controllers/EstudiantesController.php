@@ -52,8 +52,8 @@ class EstudiantesController extends Controller
     public function index(Request $request)
     {
 
-        
-        
+
+
         $hoy = Carbon::now();
         // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
         $registros = Estudiantes::with('academico', 'asesorin')->whereDate('fin_dual', '<=', $hoy->addDays(15))->where('activo', true)->get();
@@ -84,7 +84,7 @@ class EstudiantesController extends Controller
             ->where('direccion_id', $direccionId)
             ->orderBy('name', 'asc')
             ->paginate(10);
-Log::info('El ID de dirección es: ' . $direccionId);
+        Log::info('El ID de dirección es: ' . $direccionId);
         $candidatos = Estudiantes::where('activo', false)
             ->where('name', 'LIKE', '%' . $searchCandidatos . '%')
             ->where('direccion_id', $direccionId)

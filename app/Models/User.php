@@ -61,9 +61,13 @@ class User extends Authenticatable
     /**
      * Relación con el modelo DireccionCarrera.
      */
-    public function direccion()
+    /*  public function direccion()
     {
         return $this->hasOne(DireccionCarrera::class, 'id', 'direccion_id');
+    } */
+    public function direccion()
+    {
+        return $this->belongsTo(DireccionCarrera::class, 'direccion_id');
     }
 
     /**

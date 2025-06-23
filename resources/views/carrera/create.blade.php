@@ -24,36 +24,60 @@
                             <form class="pt-3" action="{{ route('carreras.store') }}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="nombre">Nombre del Programa Educativo<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="nombre" name="nombre"
-                                        value="{{ old('nombre') }}">
+                                    <label for="grado_academico">Nivel Académico<span class="text-danger">*</span></label>
+                                    <select class="form-control form-control-lg" id="grado_academico" name="grado_academico"
+                                        required>
+
+                                        <option value="" disabled selected>Seleccione el nivel educativo</option>
+                                       </option>
+                                        <option value="Técnico Superior Universitario"
+                                            {{ old('grado_academico') == 'TSU' ? 'selected' : '' }}>
+                                            Técnico Superior Universitario (TSU)</option>
+                                        <option value="Licenciatura"
+                                            {{ old('grado_academico') == 'Licenciatura' ? 'selected' : '' }}>Licenciatura
+                                        </option>
+                                        <option value="Ingeniería"
+                                            {{ old('grado_academico') == 'Ingeniería' ? 'selected' : '' }}>Ingeniería
+                                        
+                                    </select>
+                                    @error('grado_academico')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="nombre">Nombre del Programa Educativo<span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
+                                        id="nombre" name="nombre" value="{{ old('nombre') }}">
                                     @error('nombre')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                   {{-- Seleccionar Docencia del estudiante--}}
-                                   <div class="form-group">
+                                {{-- Seleccionar Docencia del estudiante --}}
+                                <div class="form-group">
                                     <label for="direccion_id" class="form-label">Direccion de Carrera <span
                                             class="text-danger">*</span></label>
-                                    <select class="form-select" aria-label="Seleccionar Empresa"
-                                            name="direccion_id">
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id">
                                         <option selected>Seleccione una opcion</option>
                                         @foreach ($direcciones as $carrera)
-                                        <option value="{{ $carrera->id }}"
-                                            {{ $carrera->id == session('direccion')->id ? "selected" : "" }}>
-                                            {{ $carrera->name }}
-                                        </option>  
+                                            <option value="{{ $carrera->id }}"
+                                                {{ $carrera->id == session('direccion')->id ? 'selected' : '' }}>
+                                                {{ $carrera->name }}
+                                            </option>
                                             {{-- <option value="{{ $carrera->id }}">{{ $carrera->name }}</option> --}}
                                         @endforeach
                                     </select>
                                     @error('direccion_id')
-                                    <div class="text-danger">{{ $message }}</div>
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar
                                     </button>
+                                    <a href="{{ route('carreras.index') }}"
+                                        class="btn btn-block btn-danger btn-lg font-weight-medium">Cancelar
+                                    </a>
                                 </div>
                             </form>
                         </div>

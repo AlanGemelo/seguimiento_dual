@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'local'),
+    'env' => env('APP_ENV', 'production'),
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'en_MX',
 
     /*
     |--------------------------------------------------------------------------
@@ -181,8 +181,10 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        //  RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        ArielMejiaDev\LarapexCharts\LarapexChartsServiceProvider::class,
 
 
 
@@ -214,8 +216,9 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
-
+        //'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),

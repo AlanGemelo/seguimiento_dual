@@ -15,35 +15,66 @@
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">
-                                    <label for="name">Nombre <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg" id="name"
-                                           placeholder="" name="nombre" value="{{ $carrera->nombre, old('nombre') }}">
-                                           @error('nombre')
-                                           <div class="text-danger">{{ $message }}</div>
-                                           @enderror
-                                </div>
-                                   {{-- Seleccionar Docencia del estudiante--}}
-                                   <div class="form-group">
-                                    <label for="direccion_id" class="form-label">Direccion de Carrera <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-select" aria-label="Seleccionar Empresa"
-                                            name="direccion_id">
-                                        <option selected>Seleccione una opcion</option>
-                                        @foreach ($direcciones as $direccion)
-                                        <option value="{{ $direccion->id }}"
-                                            {{ $carrera->direccion_id == $direccion->id ? "selected" : "" }}>
-                                            {{ $direccion->name }}
-                                        </option>                                        @endforeach
+                                    <label for="name">Grado Académico <span class="text-danger">*</span></label>
+                                    <select class="form-control form-control-lg" id="grado_academico" name="grado_academico"
+                                        required>
+                                        <option value="" disabled
+                                            {{ old('grado_academico', $carrera->grado_academico ?? '') == '' ? 'selected' : '' }}>
+                                            Seleccione el nivel educativo
+                                        </option>
+                                         <option value="Técnico Superior Universitario"
+                                            {{ old('grado_academico', $carrera->grado_academico ?? '') == 'Técnico Superior Universitario' ? 'selected' : '' }}>
+                                            Técnico Superior Universitario (TSU)
+                                        </option>
+                                        <option value="Licenciatura"
+                                            {{ old('grado_academico', $carrera->grado_academico ?? '') == 'Licenciatura' ? 'selected' : '' }}>
+                                            Licenciatura
+                                        </option>
+                                        <option value="Ingeniería"
+                                            {{ old('grado_academico', $carrera->grado_academico ?? '') == 'Ingeniería' ? 'selected' : '' }}>
+                                            Ingeniería
+                                        </option>
+                                       
                                     </select>
-                                    @error('direccion_id')
-                                    <div class="text-danger">{{ $message }}</div>
+
+                                    @error('grado_academico')
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                       
+
+                                <div class="form-group">
+                                    <label for="name">Nombre del Programa Educativo <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
+                                        id="name" placeholder="" name="nombre"
+                                        value="{{ $carrera->nombre, old('nombre') }}">
+                                    @error('nombre')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="direccion_id" class="form-label">Direccion de Carrera <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id">
+                                        <option selected>Seleccione una opcion</option>
+                                        @foreach ($direcciones as $direccion)
+                                            <option value="{{ $direccion->id }}"
+                                                {{ $carrera->direccion_id == $direccion->id ? 'selected' : '' }}>
+                                                {{ $direccion->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('direccion_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                            type="submit">Editar
+                                        type="submit">Actualizar
                                     </button>
+                                    <x-back-button url="{{ route('carreras.index') }}" />
                                 </div>
                             </form>
                         </div>

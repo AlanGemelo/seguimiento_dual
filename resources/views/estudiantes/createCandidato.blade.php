@@ -30,27 +30,53 @@
                                         {{-- matricula --}}
                                         <div class="form-group">
                                             <label for="matricula">Matricula <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control form-control-lg" id="matricula"
-                                                name="matricula" value="{{ old('matricula') }}">
+                                            <input type="text" data-tipo="numbers" class="form-control form-control-lg"
+                                                id="matricula" name="matricula" value="{{ old('matricula') }}">
                                             @error('matricula')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         {{-- Nombre del estudiante --}}
                                         <div class="form-group">
-                                            <label for="name">Nombre <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="name"
-                                                placeholder="Juan Perez Hermenegildo" name="name"
+                                            <label for="name">Nombre(s) <span class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="name"
+                                                placeholder="Ingrese su(s) nombre(s)" name="name"
                                                 value="{{ old('name') }}">
                                             @error('name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="apellidoP">Apellido Paterno <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="apellidoP"
+                                                placeholder="Ingrese su apellido paterno" name="apellidoP"
+                                                value="{{ old('apellidoP') }}">
+                                            @error('apellidoP')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="apellidoM">Apellido Materno <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" data-tipo="text"
+                                                class="form-control form-control-lg uppercase" id="apellidoM"
+                                                placeholder="Ingrese su apellido materno" name="apellidoM"
+                                                value="{{ old('apellidoM') }}">
+                                            @error('apellidoM')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         {{-- CURP --}}
                                         <div class="form-group">
                                             <label for="curp">CURP<span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="curp"
-                                                name="curp" value="{{ old('curp') }}">
+                                            <input type="text" data-tipo="curp"
+                                                class="form-control form-control-lg uppercase" id="curp" name="curp"
+                                                value="{{ old('curp') }}">
                                             @error('curp')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -77,6 +103,8 @@
                                                 <option value="6">6</option>
                                                 <option value="7">7</option>
                                                 <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
                                             </select>
                                             @error('cuatrimestre')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -85,8 +113,8 @@
                                         <div class="form-group">
                                             <label for="direccion_id" class="form-label">Direccion de Carrera <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id"
-                                                id="direccion_id">
+                                            <select class="form-select" aria-label="Seleccionar Empresa"
+                                                name="direccion_id" id="direccion_id">
                                                 <option selected>Seleccione una opcion</option>
                                                 @foreach ($direcciones as $direccion)
                                                     <option value="{{ $direccion->id }}">{{ $direccion->name }}</option>
@@ -100,13 +128,13 @@
                                         <div class="form-group" id="carrera_select" style="display: none;">
                                             <label for="carrera_id" class="form-label">Carrera <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa" name="carrera_id"
-                                                id="carrera_id">
+                                            <select class="form-select" aria-label="Seleccionar Empresa"
+                                                name="carrera_id" id="carrera_id">
                                                 <option selected>Seleccione una opcion</option>
                                                 @foreach ($carreras as $carrera)
                                                     <option value="{{ $carrera->id }}"
-                                                        data-direccion="{{ $carrera->direccion_id }}">
-                                                        {{ $carrera->nombre }}
+                                                        data-direccion="{{  $carrera->direccion_id }}">
+                                                        {{ $carrera->grado_academico . ' en ' . $carrera->nombre }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -114,24 +142,31 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-
-
-
-
                                     </div>
                                     <div class="col-md-6">
                                         {{-- Email Estudiante --}}
 
                                         <div class="form-group">
-                                            <label for="email">Correo Electronico <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control form-control-lg" id="email"
-                                                   name="email" autocomplete="email"
-                                                   value="{{ old('email') }}">
+                                            <label for="email">Escribe tu dirección de correo <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"
+                                                        style="color:black; height: 100%;">al</span>
+                                                </div>
+                                                <input type="text" data-tipo="numbers"
+                                                    class="form-control form-control-lg" id="email" name="email"
+                                                    placeholder="No. Matricula" value="{{ old('email') }}" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"
+                                                        style="color:black; height: 100%;">@utvtol.edu.mx</span>
+                                                </div>
+                                            </div>
                                             @error('email')
-                                            <div class="text-danger">{{ $message }}</div>
+                                                <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
+
 
                                         {{-- Fecha de Ingreso --}}
                                         <div class="form-group">
@@ -181,12 +216,10 @@
                                             @enderror
                                         </div>
 
-
-
                                         {{-- Cargar documento de Historial Academico --}}
+                                       <p  class="h6 bg-green-700">(Opccional)</p>
                                         <div class="form-group">
-                                            <label for="historial_academico">Historial Academico<span
-                                                    class="text-danger">*</span></label>
+                                            <label for="historial_academico">Historial Academico</label>
                                             <input type="file" class="form-control form-control-lg"
                                                 id="historial_academico" placeholder="historial_academico"
                                                 name="historial_academico" value="{{ old('historial_academico') }}">
@@ -194,12 +227,6 @@
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-
-                                      
-
-
-
                                     </div>
 
 
@@ -210,6 +237,8 @@
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar
                                     </button>
+
+                                    <x-back-button url="{{ route('estudiantes.index') }}"/>   
                                 </div>
                         </div>
                         </form>
@@ -259,7 +288,7 @@
                             selectAsesorin.empty();
                             selectAsesorin.append(
                                 '<option value="" selected disabled>No hay asesores industriales disponibles</option>'
-                                );
+                            );
                         }
                     },
                     error: function(xhr, status, error) {

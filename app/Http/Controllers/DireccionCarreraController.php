@@ -9,6 +9,7 @@ use App\Models\Carrera;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DireccionCarreraController extends Controller
 {
@@ -21,16 +22,18 @@ class DireccionCarreraController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function select(DireccionCarrera $direccion){
+    public function select(DireccionCarrera $direccion)
+    {
         session(['direccion' => $direccion]);
-        $carreras = Carrera::with('direccion')->where('direccion_id',session('direccion')->id)->get();
+        $carreras = Carrera::with('direccion')->where('direccion_id', session('direccion')->id)->get();
 
-        return view('carrera.index',compact('carreras'));
+        return view('carrera.index', compact('carreras'));
     }
+
     public function index()
     {
         $direcciones = DireccionCarrera::all();
-        return view('direccionescarrera.index',compact('direcciones'));
+        return view('direccionescarrera.index', compact('direcciones'));
     }
 
     /**
@@ -38,7 +41,7 @@ class DireccionCarreraController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(): View
+    public function create()
     {
         return view('direccionescarrera.create');
     }
@@ -49,10 +52,16 @@ class DireccionCarreraController extends Controller
      * @param  \App\Http\Requests\StoreDireccionCarreraRequest  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
+        $username = str_replace(['@utvtol.edu.mx', ' '], '', $request->email);
+        $emailCompleto = $username . '@utvtol.edu.mx';
+        $request->merge([
+            'email' => $emailCompleto
+        ]);
         $direccion = DireccionCarrera::create($request->all());
-        return redirect()->route('direcciones.index',compact('direccion'));
+        return redirect()->route('direcciones.index', compact('direccion'));
     }
 
     /**
@@ -63,8 +72,7 @@ class DireccionCarreraController extends Controller
      */
     public function show(DireccionCarrera $direccion)
     {
-
-        $direccion->load('programas','director');
+        $direccion->load('programas', 'director');
         return view('direccionescarrera.show', compact('direccion'));
     }
 
@@ -76,7 +84,6 @@ class DireccionCarreraController extends Controller
      */
     public function edit(DireccionCarrera $direccion)
     {
-
         return view('direccionescarrera.edit', compact('direccion'));
     }
 
@@ -101,13 +108,10 @@ class DireccionCarreraController extends Controller
      */
     public function destroy(DireccionCarrera $direccion)
     {
-
-        
         try {
             $direccion->delete();
 
             return redirect()->route('direcciones.index')->with('messageDelete', 'Direccion Academico Eliminado Correctamente');
-
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
 

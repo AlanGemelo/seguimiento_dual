@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +13,7 @@
             margin: 0;
             padding: 0;
         }
+
         .email-container {
             background-color: #ffffff;
             max-width: 600px;
@@ -20,6 +22,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             background-color: #0073e6;
             color: #ffffff;
@@ -28,12 +31,14 @@
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
         }
+
         .content {
             margin-top: 20px;
             font-size: 16px;
             color: #333333;
             line-height: 1.5;
         }
+
         .button {
             display: inline-block;
             margin-top: 20px;
@@ -43,6 +48,7 @@
             text-decoration: none;
             border-radius: 5px;
         }
+
         .footer {
             margin-top: 30px;
             font-size: 12px;
@@ -51,6 +57,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="email-container">
         <div class="header">
@@ -58,8 +65,10 @@
         </div>
         <div class="content">
             <p>Estimado(a) {{ $nombreAlumno }},</p>
-            <p>Queremos informarle que los documentos de su alumno están próximos a vencer. La fecha de vencimiento es: <strong>{{ $fechaVencimiento }}</strong>.</p>
-            <p>Por favor, asegúrese de actualizar los documentos antes de la fecha indicada para evitar cualquier inconveniente.</p>
+            <p>Queremos informarle que los documentos de su alumno están próximos a vencer. La fecha de vencimiento es:
+                <strong>{{ $fechaVencimiento }}</strong>.</p>
+            <p>Por favor, asegúrese de actualizar los documentos antes de la fecha indicada para evitar cualquier
+                inconveniente.</p>
             <p>Puede acceder a su cuenta y actualizar los documentos haciendo clic en el siguiente enlace:</p>
             <a href="{{ $enlaceSistema }}" class="button">Acceder al Sistema</a>
         </div>
@@ -68,4 +77,5 @@
         </div>
     </div>
 </body>
+
 </html>

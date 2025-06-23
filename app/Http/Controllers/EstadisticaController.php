@@ -3,170 +3,340 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carrera;
-use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 use App\Models\Estudiantes;
+use App\Models\User;
+use App\Models\Empresa;
+use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EstadisticasExport;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class EstadisticaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
+        $user = Auth::user();
 
-        // Consultas para la grafica de becas
-        $estudiantesS = Estudiantes::where('beca', 1)->get()->count();
-        $estudiantesC = Estudiantes::where('beca', 0)->get()->count();
-        // Consultas Grafica de Estudiantes
+        if ($user->rol_id === 1) {
+            // Gráfica de Estudiantes por Empresa
+            $empresas = Empresa::withCount('estudiantes')->get();
+            $chartEmpresa = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Empresa')
+                ->setLabels($empresas->pluck('nombre')->toArray())
+                ->setDataset($empresas->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
-$activos = Estudiantes::where('activo',1)->get()->count();
-$inactivos = Estudiantes::where('activo',0)->get()->count();
-$egresados = Estudiantes::withTrashed()->where('status',3)->get()->count();
-$baja = Estudiantes::onlyTrashed()->where('status', '!=', 3)->count();
+            // Gráfica de Estudiantes por Carrera
+            $carreras = Carrera::withCount('estudiantes')->get();
+            $chartCarrera = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Carrera')
+                ->setLabels($carreras->pluck('nombre')->toArray())
+                ->setDataset($carreras->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
-// Consulta para la grafica de carreras
-        $labelsCarrera = Carrera::where('direccion_id', session('direccion')->id)->get('nombre')->pluck('nombre');
-        $carreras = Carrera::where('direccion_id', session('direccion')->id)
-            ->withCount('estudiantes')
-            ->pluck('estudiantes_count');
+            // Gráfica de Estudiantes por Mentor Académico
+            $mentores = User::mentoresAcademicos()->withCount('estudiantes')->get();
+            $chartMentor = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Mentor Académico')
+                ->setLabels($mentores->pluck('name')->toArray())
+                ->setDataset($mentores->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
-        $labelsTutor = Carrera::where('direccion_id', session('direccion')->id)->get('nombre')->pluck('nombre');
+            // Gráfica de Estudiantes Becados
+            $becas = Estudiantes::select('beca', \DB::raw('count(*) as count'))
+                ->groupBy('beca')
+                ->get();
+            $chartBeca = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes Becados')
+                ->setLabels($becas->pluck('beca')->map(fn($beca) => $beca ? 'Becados' : 'Sin Beca')->toArray())
+                ->setDataset($becas->pluck('count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB']);
+        } else {
+            $direccionId = session('direccion')->id;
 
-      
-                $fecha = Carbon::now()->startOfDay();
-        $fechaUnMesAntes = $fecha->copy()->subMonth(1)->startOfDay(); // Obtener la fecha actual más un mes
-        $estudiantes = Estudiantes::whereBetween('fin_dual', [$fechaUnMesAntes,$fecha])->get();
-// return response()->json([$fecha,$fechaUnMesAntes,$estudiantes ]);
+            // Gráfica de Estudiantes por Empresa
+            $empresas = Empresa::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
+            $chartEmpresa = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Empresa')
+                ->setLabels($empresas->pluck('nombre')->toArray())
+                ->setDataset($empresas->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
-        $chart = new Chart();
-        $chart->labels(['Iniciando', 'En proceso', 'Finalizado', 'Desertado', 'Cancelado'])
-              ->dataset('Sample', 'bar', [65, 59, 80, 81, 56, 55, 40]);
-        
+            // Gráfica de Estudiantes por Carrera
+            $carreras = Carrera::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
+            $chartCarrera = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Carrera')
+                ->setLabels($carreras->pluck('nombre')->toArray())
+                ->setDataset($carreras->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+
+            // Gráfica de Estudiantes por Mentor Académico
+            $mentores = User::mentoresAcademicos()->where('direccion_id', $direccionId)->withCount('estudiantes')->get();
+            $chartMentor = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes por Mentor Académico')
+                ->setLabels($mentores->pluck('name')->toArray())
+                ->setDataset($mentores->pluck('estudiantes_count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+
+            // Gráfica de Estudiantes Becados
+            $becas = Estudiantes::where('direccion_id', $direccionId)
+                ->select('beca', \DB::raw('count(*) as count'))
+                ->groupBy('beca')
+                ->get();
+            $chartBeca = (new LarapexChart)->pieChart()
+                ->setTitle('Estudiantes Becados')
+                ->setLabels($becas->pluck('beca')->map(fn($beca) => $beca ? 'Becados' : 'Sin Beca')->toArray())
+                ->setDataset($becas->pluck('count')->toArray())
+                ->setColors(['#FF6384', '#36A2EB']);
+        }
+
+        return view('Estadistica.index', compact('chartEmpresa', 'chartCarrera', 'chartMentor', 'chartBeca', 'mentores', 'empresas', 'carreras'));
+    }
+
+    public function getEstudiantesPorStatus($status)
+    {
+        $user = Auth::user();
+
+        if ($user->rol_id === 1) {
+            $estudiantes = Estudiantes::where('status', $status)->get();
+        } else {
+            $direccionId = session('direccion')->id;
+            $estudiantes = Estudiantes::where('status', $status)
+                ->where('direccion_id', $direccionId)
+                ->get();
+        }
 
 
-// CReacion de la grafica
-$chart1 = new Chart();
-$carreraGraphic = new Chart();
-$tutorGraphic = new Chart();
-$becaGraphic = new Chart();
+        return response()->json($estudiantes);
+    }
 
-// Labels Graficas
-$chart1->labels(['activos','Candidatos','Egresados','Bajas'])
-->dataset('Estudiantes', 'pie', [$activos,$inactivos,$egresados,$baja])
-->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#FF3357'])
-->color('#000'); // Establece el color del texto en blanco
+    public function getEstudiantesPorBeca($beca)
+    {
+        $direccionId = session('direccion')->id;
+        $becaValue = $beca === 'becados' ? 1 : 0;
+        $estudiantes = Estudiantes::where('beca', $becaValue)
+            ->where('direccion_id', $direccionId)
+            ->get();
+        return response()->json($estudiantes);
+    }
 
-$becaGraphic->labels(['Becados','Sin beca'])
-->dataset('Estudiantes', 'pie', [$estudiantesC,$estudiantesS])
-->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
-->color('#000'); // Establece el color del texto en blanco
-$carreraGraphic->labels($labelsCarrera)->dataset('Estudiantes por Carrera', 'pie', $carreras)
-->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
-->color('#000'); // Establece el color del texto en blanco
-$tutorGraphic->labels($labelsCarrera)->dataset('Estudiantes por Carrera', 'pie', $carreras)
-->backgroundColor(['#FF5733', '#33FF57', '#3357FF', '#57FF33', '#FF3357', '#5733FF', '#33FFC9'])
-->color('#000'); // Establece el color del texto en blanco
+    public function getEstudiantesPorMentor($mentorId)
+    {
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('academico_id', $mentorId)
+            ->where('direccion_id', $direccionId)
+            ->get();
+        return response()->json($estudiantes);
+    }
 
+    public function getEstudiantesPorEmpresa($empresaId)
+    {
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('empresa_id', $empresaId)
+            ->where('direccion_id', $direccionId)
+            ->get();
+        return response()->json($estudiantes);
+    }
 
-// Options el gráfico
+    public function getEstudiantesPorCarrera($carreraId)
+    {
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('carrera_id', $carreraId)
+            ->where('direccion_id', $direccionId)
+            ->get();
+        return response()->json($estudiantes);
+    }
 
+    public function exportEstudiantesPorStatusExcel($status)
+    {
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('status', $status)
+            ->where('direccion_id', $direccionId)
+            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
+            ->get();
+        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_status.xlsx');
+    }
 
-$chart1->options([
-    'scales' => [
-        'yAxes' => [
-            [
-                'ticks' => [
-                    'beginAtZero' => true,
+    public function exportEstudiantesPorBecaExcel($beca)
+    {
+        $direccionId = session('direccion')->id;
+        $becaValue = $beca === 'becados' ? 1 : 0;
+        $estudiantes = Estudiantes::where('beca', $becaValue)
+            ->where('direccion_id', $direccionId)
+            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
+            ->get();
+        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_beca.xlsx');
+    }
+
+    public function exportEstudiantesPorEmpresaExcel($empresaId)
+    {
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('empresa_id', $empresaId)
+            ->where('direccion_id', $direccionId)
+            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
+            ->get();
+        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_empresa.xlsx');
+    }
+
+    public function exportEstudiantesPorMentorExcel($mentorId)
+    {
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('academico_id', $mentorId)
+            ->where('direccion_id', $direccionId)
+            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
+            ->get();
+        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_mentor.xlsx');
+    }
+
+    public function exportEstudiantesPorCarreraExcel($carreraId)
+    {
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('carrera_id', $carreraId)
+            ->where('direccion_id', $direccionId)
+            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
+            ->get();
+        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_carrera.xlsx');
+    }
+
+    public function exportExcel()
+    {
+        $direccionId = session('direccion')->id;
+        $estudiantes = Estudiantes::where('direccion_id', $direccionId)->get();
+        return Excel::download(new EstadisticasExport($estudiantes), 'estadisticas.xlsx');
+    }
+
+    public function exportEstudiantesPorEmpresaPdf($empresaId)
+    {
+        $direccionId = session('direccion')->id;
+        $empresa = Empresa::where('id', $empresaId)
+            ->where('direccion_id', $direccionId)
+            ->firstOrFail();
+        $estudiantes = Estudiantes::where('empresa_id', $empresaId)
+            ->where('direccion_id', $direccionId)
+            ->get();
+
+        $pdf = Pdf::loadView('estadistica.estudiantes_empresa_pdf', compact('empresa', 'estudiantes'));
+        return $pdf->download('estudiantes_empresa.pdf');
+    }
+
+    public function exportEstudiantesPorMentorPdf($mentorId)
+    {
+        $direccionId = session('direccion')->id;
+        $mentor = User::where('id', $mentorId)
+            ->where('direccion_id', $direccionId)
+            ->firstOrFail();
+        $estudiantes = Estudiantes::where('academico_id', $mentorId)
+            ->where('direccion_id', $direccionId)
+            ->get();
+
+        $pdf = Pdf::loadView('estadistica.estudiantes_mentor_pdf', compact('mentor', 'estudiantes'));
+        return $pdf->download('estudiantes_mentor.pdf');
+    }
+
+    public function exportEstudiantesPorCarreraPdf($carreraId)
+    {
+        $direccionId = session('direccion')->id;
+        $carrera = Carrera::where('id', $carreraId)
+            ->where('direccion_id', $direccionId)
+            ->firstOrFail();
+        $estudiantes = Estudiantes::where('carrera_id', $carreraId)
+            ->where('direccion_id', $direccionId)
+            ->get();
+
+        $pdf = Pdf::loadView('estadistica.estudiantes_carrera_pdf', compact('carrera', 'estudiantes'));
+        return $pdf->download('estudiantes_carrera.pdf');
+    }
+
+    public function filtroEstudiantes(Request $request)
+    {
+        $direccionId = session('direccion')->id;
+        $query = Estudiantes::query()
+            ->where('direccion_id', $direccionId)
+            ->with(['empresa', 'academico', 'asesorin', 'carrera']);
+
+        if ($request->filled('empresa_id')) {
+            $query->where('empresa_id', $request->empresa_id);
+        }
+
+        if ($request->filled('academico_id')) {
+            $query->where('academico_id', $request->academico_id);
+        }
+
+        if ($request->filled('carrera_id')) {
+            $query->where('carrera_id', $request->carrera_id);
+        }
+
+        if ($request->filled('tipoBeca')) {
+            $query->where('beca', $request->tipoBeca);
+        }
+
+        if ($request->filled('estatus')) {
+            if ($request->estatus === 'activo') {
+                $query->where('activo', 1);
+            } else {
+                $query->onlyTrashed()->where('status', $request->estatus);
+            }
+        }
+
+        if ($request->filled('fechaFiltro')) {
+            if ($request->fechaFiltro === 'inicio' && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
+                $query->whereBetween('inicio', [$request->fechaInicio, $request->fechaFin]);
+            } elseif ($request->fechaFiltro === 'fin' && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
+                $query->whereBetween('fin', [$request->fechaInicio, $request->fechaFin]);
+            } elseif ($request->fechaFiltro === 'inicio_dual' && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
+                $query->whereBetween('inicio_dual', [$request->fechaInicio, $request->fechaFin]);
+            } elseif ($request->fechaFiltro === 'fin_dual' && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
+                $query->whereBetween('fin_dual', [$request->fechaInicio, $request->fechaFin]);
+            }
+        }
+
+        $estudiantes = $query->get();
+
+        if ($request->wantsJson()) {
+            return response()->json($estudiantes);
+        }
+
+        return Excel::download(new EstadisticasExport($estudiantes), 'filtro_estudiantes.xlsx');
+    }
+
+    public function getGraficasData()
+    {
+        try {
+            $empresas = Empresa::withCount('estudiantes')->get();
+            $carreras = Carrera::withCount('estudiantes')->get();
+            $mentores = User::mentoresAcademicos()->withCount('estudiantes')->get();
+            $becas = Estudiantes::select('beca', \DB::raw('count(*) as count'))
+                ->groupBy('beca')
+                ->get();
+
+            $data = [
+                'empresas' => [
+                    'labels' => $empresas->pluck('nombre')->toArray(),
+                    'counts' => $empresas->pluck('estudiantes_count')->toArray()
                 ],
-            ],
-        ],
-    ],
-]);
-
-
-// Renderizar el gráfico
-$becaGraphic->options([
-    'scales' => [
-        'yAxes' => [
-            [
-                'ticks' => [
-                    'beginAtZero' => true,
+                'carreras' => [
+                    'labels' => $carreras->pluck('nombre')->toArray(),
+                    'counts' => $carreras->pluck('estudiantes_count')->toArray()
                 ],
-            ],
-        ],
-    ],
-]);
+                'mentores' => [
+                    'labels' => $mentores->pluck('name')->toArray(),
+                    'counts' => $mentores->pluck('estudiantes_count')->toArray()
+                ],
+                'becas' => [
+                    'labels' => $becas->pluck('beca')->map(function ($beca) {
+                        return $beca ? 'Becados' : 'Sin Beca';
+                    })->toArray(),
+                    'counts' => $becas->pluck('count')->toArray()
+                ]
+            ];
 
-        return view('Estadistica.index', compact(['chart','chart1','becaGraphic','carreraGraphic']));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

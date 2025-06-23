@@ -17,6 +17,9 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('titulo');
             $table->string('name');
+            $table->string('apellidoP');
+            $table->string('apellidoM');
+            $table->string('puesto'); // Nuevo campo
             $table->foreignId('empresa_id')->constrained('empresas');
             $table->timestamps();
         });

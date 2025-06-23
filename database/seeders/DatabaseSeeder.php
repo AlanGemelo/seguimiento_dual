@@ -19,47 +19,51 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        DireccionCarrera::create([
-            'name' => 'Ingeniería en Sistemas Computacionales',
-            'email' => 'tics@utvtol.edu.mx',
-        ]);
-        Roles::create([
-                'name' => 'Administrador'
-        ]);
+        DireccionCarrera::insert([
+            //  ['name' => 'Ingeniería en Sistemas Computacionales', 'email' => 'tics@utvtol.edu.mx'],
+            ['name' => 'Dirección de Carrera de Mecatrónica y Sistemas Productivos', 'email' => 'mecatronica@utvtol.edu.mx'],
+            ['name' => 'Dirección de Carrera de Mantenimiento Industrial', 'email' => 'mantenimiento.industrial@utvtol.edu.mx'],
+            ['name' => 'Dirección de Carrera de Tecnologías de la Información y Comunicación', 'email' => 'informatica@utvtol.edu.mx'],
+            ['name' => 'Dirección de Carrera de Tecnología Ambiental', 'email' => 'tecnologia.ambiental@utvtol.edu.mx'],
+            ['name' => 'Dirección de Carrera de Negocios y Gestión Empresarial', 'email' => 'negocios@utvtol.edu.mx'],
+            ['name' => 'Dirección de Carrera de Paramédico y Protección Civil', 'email' => 'paramedico@utvtol.edu.mx'],
+            ['name' => 'Dirección de Carrera de Salud Pública y Enfermería', 'email' => 'salud.publica@utvtol.edu.mx'],
+            ['name' => 'Dirección de Procesos Alimentarios y Química Área Biotecnología', 'email' => 'procesos.alimentarios@utvtol.edu.mx'],
 
-        Roles::create([
-            'name' => 'Mentor'
-        ]);
-        Roles::create([
-            'name' => 'Estudiante'
-        ]);
-        Roles::create([
-            'name' => 'Director'
         ]);
 
-        Carrera::create([
-            'nombre' => 'IDGS Desarrollo de Software',
+        Roles::insert([
+            ['name' => 'Administrador'],
+            ['name' => 'Mentor'],
+            ['name' => 'Estudiante'],
+            ['name' => 'Director'],
+        ]);
+
+
+        /*   Carrera::create([
+            'grado_academico' => 'Técnico Superior Universitario',
+            'nombre' => 'Desarrollo de Software Multiplataforma',
             'direccion_id' => 1,
-        ]);
+        ]); */
 
         User::create([
             'titulo' => 'Admin',
-            'name'=> 'Super Admin',
+            'name' => 'Super Admin',
+            'apellidoP' => '',
+            'apellidoM' => '',
             'email' => 'admin@seguimiento.utvt.com',
             'password' => Hash::make('12345678'),
             'rol_id' => 1,
-            'carrera_id' => 1,
-            'direccion_id' => 1,
+            'carrera_id' => null,
+            'direccion_id' => null,
         ]);
-        User::create([
+
+        /*    User::create([
             'titulo' => 'Ingeniero',
-            'name'=> 'Roberto Vinicio',
+            'name' => 'Roberto',
+            'apellidoP' => 'Vinicio',
+            'apellidoM' => 'Camacho',
             'email' => 'asesor@gmail.com',
             'password' => Hash::make('12345678'),
             'rol_id' => 2,
@@ -68,13 +72,14 @@ class DatabaseSeeder extends Seeder
         ]);
         User::create([
             'titulo' => 'Ingeniero Director',
-            'name'=> 'CArlos Milan',
-            'email' => 'charly@gmail.com',
+            'name' => 'Carlos',
+            'apellidoP' => 'Millan',
+            'ApellidoM' => 'Hinojosa',
+            'email' => 'carlos.millan@utvtol.edu.mx',
             'password' => Hash::make('12345678'),
             'rol_id' => 4,
             'carrera_id' => 1,
             'direccion_id' => 1,
-        ]);
-     
+        ]); */
     }
 }

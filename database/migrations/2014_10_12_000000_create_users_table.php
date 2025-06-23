@@ -17,12 +17,14 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('titulo')->nullable();
             $table->string('name');
+            $table->String('apellidoP');
+            $table->String('apellidoM');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignId('rol_id')->constrained('roles');
-            $table->foreignId('carrera_id')->constrained('carreras');
-            $table->foreignId('direccion_id')->constrained('direccion_carreras');
+            $table->foreignId('carrera_id')->nullable()->constrained('carreras');
+            $table->foreignId('direccion_id')->nullable()->constrained('direccion_carreras');
 
             $table->rememberToken();
             $table->softDeletes();

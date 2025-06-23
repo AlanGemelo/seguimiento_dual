@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Director extends Model
 {
     use HasFactory;
-  protected  $fillable = [
+    protected  $fillable = [
         'nombre',
+        'apellidoP',
+        'apellidoM',
         'email',
         'telefono',
         'direccion_id',
@@ -23,4 +25,3 @@ class Director extends Model
         return $this->belongsTo(DireccionCarrera::class, 'direccion_id', 'id');
     }
 }
-

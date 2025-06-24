@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 //use RealRashid\SweetAlert\Facades\Alert;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\Auth;
 
 class MentorIndustrialController extends Controller
 {
@@ -20,16 +21,28 @@ class MentorIndustrialController extends Controller
 
     public function index()
     {
+        $user = Auth::user();
 
-        $mentores = MentorIndustrial::with(['empresa', 'estudiantes'])->whereHas('empresa', function ($query) {
-            $query->where('direccion_id', session('direccion')->id);
-        })->get();
+        if ($user->rol_id === 1) {
+            $mentores = MentorIndustrial::with(['empresa.direccionesCarrera'])->get();
+        } elseif (session()->has('direccion')) {
+
+            $direccionId = session('direccion')->id;
+            // dd($direccionId);
+            $mentores = MentorIndustrial::with(['empresa.direccionesCarrera'])
+                ->whereHas('empresa.direccionesCarrera', function ($q) use ($direccionId) {
+                    $q->where('direccion_id', $direccionId);
+                })->get();
+        } else {
+            $mentores = collect();
+            dd($mentores);
+        }
 
         return view('mentoresIndustriales.index', compact('mentores'));
     }
 
-
     public function create()
+
     {
         $empresas = Empresa::all();
 
@@ -132,8 +145,12 @@ class MentorIndustrialController extends Controller
 
     public function showForEmpresa($id): JsonResponse
     {
-        $mentores = MentorIndustrial::where('empresa_id', $id)->get();
+        $usuario = Auth::user();
 
+        if (!in_array($usuario->rol_id, [1, 2, 4])) {
+            return response()->json(['error' => 'No autorizado.'], 403);
+        }
+        $mentores = MentorIndustrial::where('empresa_id', $id)->get();
         return response()->json($mentores);
     }
 }

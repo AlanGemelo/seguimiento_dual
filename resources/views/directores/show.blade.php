@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <!-- Información General -->
                         <div class="mb-4">
-                            <h5 class="section-title">Identificación del Mentor Académico</h5>
+                            <h5 class="section-title">Identificación del Director</h5>
                             <div class="dropdown-divider mb-4"></div>
                             <div class="row">
 

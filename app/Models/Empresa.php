@@ -42,7 +42,7 @@ class Empresa extends Model
 
     public function direcciones()
     {
-    return $this->belongsToMany(DireccionCarrera::class, 'empresa_direccion', 'empresa_id', 'direccion_id');
+        return $this->belongsToMany(DireccionCarrera::class, 'empresa_direccion', 'empresa_id', 'direccion_id');
     }
 
     /**
@@ -53,13 +53,10 @@ class Empresa extends Model
         return $this->hasMany(Estudiantes::class, 'empresa_id');
     }
 
-    public function up()
-{
-    $empresas = Empresa::whereNotNull('direccion_id')->get();
-    
-    foreach ($empresas as $empresa) {
-        $empresa->direcciones()->attach($empresa->direccion_id);
-    }
-}
 
+    public function direccionesCarrera()
+    {
+        return $this->belongsToMany(DireccionCarrera::class, 'empresa_direccion', 'empresa_id', 'direccion_id')
+            ->withTimestamps();
+    }
 }

@@ -174,7 +174,7 @@
                                             <select class="form-select" aria-label="Seleccionar Empresa"
                                                 name="academico_id" id="academico_id">
                                                 <option selected>Seleccione una opcion</option>
-                                                @foreach ($academico as $mentor)
+                                                @foreach ($academicos as $mentor)
                                                     <option value="{{ $mentor->id }}"
                                                         data-direccion="{{ $mentor->direccion_id }}">
                                                         {{ $mentor->titulo }} {{ $mentor->name }}
@@ -392,11 +392,7 @@
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar
                                     </button>
-                                    <a href="{{ route('estudiantes.index') }}"
-                                        class="btn btn-block btn-danger btn-lg font-weight-medium auth-form-btn"
-                                        style="margin-left: 10%">
-                                        Cancelar y volver
-                                    </a>
+                                    <x-cancel-button url="{{ route('estudiantes.index') }}" />
                                 </div>
                         </div>
                         </form>
@@ -419,6 +415,8 @@
                 becitaInput.style.display = 'none';
             }
         }
+
+
         $(document).ready(function() {
             // Manejar el cambio en el campo academico_id
             $('#empresa_id').change(function() {
@@ -430,14 +428,15 @@
                     type: 'GET',
                     url: '/mentores/' + mentorId + '/empresa',
                     success: function(data) {
-                        // Limpiar y actualizar el select de empresas
+                        console.log('Datos recibidos del servidor:',
+                        data); // <- Aquí ves la respuesta completa
+
                         var selectAsesorin = $('select[name="asesorin_id"]');
                         if (data.length > 0) {
                             selectAsesorin.empty();
                             selectAsesorin.append(
                                 '<option value="" selected>Seleccione algo</option>');
 
-                            // Agregar las opciones recibidas en la respuesta AJAX al select
                             $.each(data, function(index, asesorin) {
                                 selectAsesorin.append(
                                     '<option value="' + asesorin.id + '">' +
@@ -446,8 +445,6 @@
                                     '</option>'
                                 );
                             });
-
-
                         } else {
                             selectAsesorin.empty();
                             selectAsesorin.append(
@@ -461,6 +458,7 @@
                 });
             });
         });
+
         $(document).ready(function() {
             $('#direccion_id').change(function() {
                 var direccionId = $(this).val();

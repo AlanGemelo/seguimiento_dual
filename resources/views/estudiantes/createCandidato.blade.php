@@ -238,7 +238,7 @@
                                         type="submit">Guardar
                                     </button>
 
-                                    <x-back-button url="{{ route('estudiantes.index') }}"/>   
+                                    <x-cancel-button url="{{ route('estudiantes.index') }}"/>   
                                 </div>
                         </div>
                         </form>

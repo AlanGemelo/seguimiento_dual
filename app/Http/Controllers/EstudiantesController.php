@@ -38,7 +38,7 @@ class EstudiantesController extends Controller
         $this->middleware('admin')->only('delete');
         // Permitir create y store para admin y mentor académico
         $this->middleware(function ($request, $next) {
-            if (auth()->user()->rol_id === 1 || auth()->user()->rol_id === 2) {
+            if (auth()->user()->rol_id === 1 || auth()->user()->rol_id === 2 || auth()->user()->rol_id === 4) {
                 return $next($request);
             }
             abort(403, 'No tienes permiso para acceder a esta página');
@@ -51,8 +51,6 @@ class EstudiantesController extends Controller
 
     public function index(Request $request)
     {
-
-
 
         $hoy = Carbon::now();
         // Buscar registros en las tablas que coincidan con la fecha de 15 días antes
@@ -116,49 +114,61 @@ class EstudiantesController extends Controller
     public function create()
     {
         $user = Auth::user();
+        $direccionId = session('direccion')->id ?? null;
 
+        // Datos comunes para todos los roles
+        $situation = [
+            ['id' => 0, 'name' => 'Primera vez'],
+            ['id' => 1, 'name' => 'Renovacion Dual']
+        ];
+
+        $tipoBeca = [
+            ['id' => 0, 'name' => 'Apoyo por Empresa'],
+            ['id' => 1, 'name' => 'Beca Dual Comecyt']
+        ];
+
+        $becas = [
+            ['id' => 0, 'name' => 'Si'],
+            ['id' => 1, 'name' => 'No']
+        ];
+
+        // Para administradores (rol_id = 1)
         if ($user->rol_id === 1) {
-            $direcciones = DireccionCarrera::get();
-            $empresas = Empresa::get();
-            $academico = User::get();
-            $carreras =  Carrera::get();
-            // $asesores = MentorIndustrial::where('direccion_id', session('direccion')->id)->get();
+            $direcciones = DireccionCarrera::all();
+            $empresas = Empresa::with('direccionesCarrera')->get();
+            $academicos = User::where('rol_id', 2)->get();
+            $carreras = Carrera::all();
+            $asesores = MentorIndustrial::with('empresa')->get();
+        }
+        // Para otros roles con dirección asignada
+        else {
+            $direcciones = DireccionCarrera::where('id', $direccionId)->get();
 
-            $situation = [
-                ['id' => 0, 'name' => 'Primera vez'],
-                ['id' => 1, 'name' => 'Renovacion Dual']
-            ];
-            $tipoBeca = [
-                ['id' => 0, 'name' => 'Apoyo por Empresa'],
-                ['id' => 1, 'name' => 'Beca Dual Comecyt']
-            ];
-            $becas = [
-                ['id' => 0, 'name' => 'Si'],
-                ['id' => 1, 'name' => 'No']
-            ];
-        } else {
+            $empresas = Empresa::whereHas('direccionesCarrera', function ($q) use ($direccionId) {
+                $q->where('direccion_id', $direccionId);
+            })->get();
 
-            $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get();
-            $empresas = Empresa::where('direccion_id', session('direccion')->id)->get();
-            $academico = User::where('rol_id', 2)->where('direccion_id', session('direccion')->id)->get();
-            $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
-            // $asesores = MentorIndustrial::where('direccion_id', session('direccion')->id)->get();
+            $academicos = User::where('rol_id', 2)
+                ->where('direccion_id', $direccionId)
+                ->get();
 
-            $situation = [
-                ['id' => 0, 'name' => 'Primera vez'],
-                ['id' => 1, 'name' => 'Renovacion Dual']
-            ];
-            $tipoBeca = [
-                ['id' => 0, 'name' => 'Apoyo por Empresa'],
-                ['id' => 1, 'name' => 'Beca Dual Comecyt']
-            ];
-            $becas = [
-                ['id' => 0, 'name' => 'Si'],
-                ['id' => 1, 'name' => 'No']
-            ];
+            $carreras = Carrera::where('direccion_id', $direccionId)->get();
+            $mentores = MentorIndustrial::with('empresa')->get();
+            $asesores = MentorIndustrial::whereHas('empresa.direccionesCarrera', function ($q) use ($direccionId) {
+                $q->where('direccion_id', $direccionId);
+            })->get();
         }
 
-        return view('estudiantes.create', compact('empresas', 'academico', 'carreras', 'situation', 'tipoBeca', 'becas', 'direcciones'));
+        return view('estudiantes.create', compact(
+            'empresas',
+            'academicos',
+            'carreras',
+            'situation',
+            'tipoBeca',
+            'becas',
+            'direcciones',
+            'asesores',
+        ));
     }
 
     /**
@@ -167,6 +177,7 @@ class EstudiantesController extends Controller
     public function crearC(): View
     {
         $user = Auth::user();
+        $direccionId = session('direccion')->id ?? null;
 
         if ($user->rol_id === 1) {
             $direcciones = DireccionCarrera::get();
@@ -187,7 +198,7 @@ class EstudiantesController extends Controller
             ];
         } else {
             $direcciones = DireccionCarrera::where("id", session('direccion')->id)->get();
-            $academico = User::where('direccion_id', session('direccion')->id)->where('rol_id', 2)->get();
+            $academico = User::where('direccion_id', session('direccion')->id)->where('rol_id', [1, 2, 4])->get();
             $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
 
             $situation = [

@@ -23,11 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [AuthController::class, 'login']);
+
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user']);
     Route::get('direcciones/select/{direccion}', [DireccionCarreraController::class, 'select']);
     Route::apiResource('direcciones', DireccionCarreraController::class);
 });
-
 

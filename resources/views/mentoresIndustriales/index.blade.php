@@ -54,35 +54,42 @@
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($mentores as $mentor)
+                                    <tbody id="tableBody">
+                                        @if ($mentores->isEmpty())
                                             <tr>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $mentor->titulo }} .
-                                                    {{ $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
-                                                </td>
-                                                <td>{{ $mentor->puesto }}</td>
-                                                <td>{{ $mentor->empresa->nombre }}</td>
-                                                <td>
-                                                    <a href="{{ route('mentores.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                        class="btn btn-facebook">
-                                                        <i class="mdi mdi-eye btn-icon-prepend"></i>
-                                                    </a>
-                                                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                        <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                            class="btn btn-twitter">
-                                                            <i class="mdi mdi-account-edit btn-icon-prepend"></i>
-                                                        </a>
-                                                        <button class="btn btn-danger" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal1"
-                                                            onclick="deleteEstudiante({{ $mentor->id }})">
-                                                            <i class="mdi mdi-delete btn-icon-prepend"></i>
-                                                        </button>
-                                                    @endif
-                                                </td>
+                                                <td colspan="5" class="text-center">Aún no hay registros</td>
                                             </tr>
-                                        @endforeach
+                                        @else
+                                            @foreach ($mentores as $mentor)
+                                                <tr>
+                                                    <td>{{ $loop->index + 1 }}</td>
+                                                    <td>{{ $mentor->titulo }} .
+                                                        {{ $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
+                                                    </td>
+                                                    <td>{{ $mentor->puesto }}</td>
+                                                    <td>{{ $mentor->empresa->nombre }}</td>
+                                                    <td>
+                                                        <a href="{{ route('mentores.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                            class="btn btn-facebook">
+                                                            <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                                        </a>
+                                                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                                            <a href="{{ route('mentores.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                                class="btn btn-twitter">
+                                                                <i class="mdi mdi-account-edit btn-icon-prepend"></i>
+                                                            </a>
+                                                            <button class="btn btn-danger" data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModal1"
+                                                                onclick="deleteEstudiante({{ $mentor->id }})">
+                                                                <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                            </button>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>

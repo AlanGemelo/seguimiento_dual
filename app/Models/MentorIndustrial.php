@@ -23,6 +23,7 @@ class MentorIndustrial extends Model
     {
         return $this->belongsTo(Empresa::class);
     }
+    
     public function estudiantes()
     {
         return $this->hasMany(Estudiantes::class, 'asesorin_id', 'id');

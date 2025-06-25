@@ -6,7 +6,7 @@
             <div class="col-lg-12">
                 <div class="card shadow">
                     <!-- Encabezado -->
-                    <x-section-header title="Registro de Mentor Académico "
+                    <x-section-header title="Registro del Mentor Académico "
                         description="Formulario para registrar docentes responsables del acompañamiento a estudiantes en el Modelo de Formación Dual." />
 
 
@@ -34,8 +34,8 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="name" class="form-label">Nombre(s)</label>
-                                            <input type="text" data-tipo="text" class="form-control uppercase" id="name"
-                                                placeholder="Ingrese su(s) nombre(s)" name="name"
+                                            <input type="text" data-tipo="text" class="form-control uppercase"
+                                                id="name" placeholder="Ingrese su(s) nombre(s)" name="name"
                                                 value="{{ old('name') }}">
                                             @error('titulo')
                                                 <div class="text-danger">{{ $message }}</div>

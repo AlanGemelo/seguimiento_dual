@@ -3,81 +3,198 @@
 @section('title', 'Mostrar Estudiante')
 
 @section('content')
-    <div class="row">
-        <div class="col-12 grid-margin">
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Estudiante Dual</h4>
-                            <div class="dropdown-divider"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card shadow">
+                    <!-- Encabezado -->
+                    <x-section-header title="Registro de Estudiante Dual"
+                        description="Formulario para registrar a estudiantes que participan en el Modelo de Formación Dual, incluyendo datos personales, académicos, vinculación con la empresa y documentación requerida." />
+
+                    <div class="card-body">
+                        <!-- Información General -->
+
+                        <div class="mb-4">
+                            <h5 class="section-title fw-bold ">Identificación del Estudiante</h5>
+                            <div class="dropdown-divider mb-4"></div>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="matricula">Matricula</label>
-                                        <input type="number" class="form-control form-control-lg" id="matricula"
-                                            name="matricula" value="{{ $estudiante->matricula }}" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Nombre(s)</label>
+                                <div class="col-md-4 mb-3">
+                                    <label for="matricula" class="form-label">Matrícula </label>
+                                    <input type="number" class="form-control form-control-lg" id="matricula"
+                                        name="matricula" value="{{ $estudiante->matricula }}" disabled>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="email" class="form-label">Correo electrónico institucional </label>
+                                    <input type="email" class="form-control form-control-lg"
+                                        value="{{ $estudiante->user->email ?? 'al' . $estudiante->matricula . '@utvtol.edu.mx' }}"
+                                        disabled>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="name" class="form-label">Nombre(s) <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-lg" id="name"
                                             placeholder="Nombre(s)" name="name" value="{{ $estudiante->name }}" disabled>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="apellidoP">Apellido Paterno</label>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="apellidoP" class="form-label">Apellido Paterno <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-lg" id="apellidoP"
                                             placeholder="Apellido Paterno" name="apellidoP"
                                             value="{{ $estudiante->apellidoP }}" disabled>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="apellidoM">Apellido Materno</label>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="apellidoM" class="form-label">Apellido Materno <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-lg" id="apellidoM"
                                             placeholder="Apellido Materno" name="apellidoM"
                                             value="{{ $estudiante->apellidoM }}" disabled>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="curp">CURP</label>
-                                        <input type="text" class="form-control form-control-lg" id="curp"
-                                            name="curp" value="{{ $estudiante->curp }}" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="fecha_na">Fecha de Nacimiento</label>
-                                        <input type="date" class="form-control form-control-lg" name="fecha_na"
-                                            id="fecha_na" value="{{ $estudiante->fecha_na }}" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="cuatrimestre">Cuatrimestre</label>
-                                        <input type="text" class="form-control form-control-lg" id="cuatrimestre"
-                                            name="cuatrimestre" value="{{ $estudiante->cuatrimestre }}" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="empresa_id">Empresa</label>
-                                        <input type="text" class="form-control form-control-lg" id="empresa_id"
-                                            name="empresa_id" value="{{ $estudiante->empresa->nombre }}" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="empresa_id">Nombre del Proyecto</label>
-                                        <input type="text" class="form-control form-control-lg" id="empresa_id"
-                                            name="empresa_id" value="{{ $estudiante->nombre_proyecto }}" disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="asesorin">Asesor Industrial</label>
-                                        <input type="text" class="form-control form-control-lg" id="asesorin"
-                                            name="asesorin"
-                                            value="{{ $estudiante->asesorin->titulo }} {{ $estudiante->asesorin->name }}"
-                                            disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="asesorin">Direccion de Carrera</label>
-                                        <input type="text" class="form-control form-control-lg" id="asesorin"
-                                            name="asesorin" value="{{ $estudiante->direccion->name }} " disabled>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="asesorin">Programa Educativo</label>
-                                        <input type="text" class="form-control form-control-lg" id="asesorin"
-                                            name="asesorin" value="{{ $estudiante->carrera->nombre }} " disabled>
-                                    </div>
                                 </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="curp" class="form-label">CURP <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="curp" name="curp"
+                                        value="{{ $estudiante->curp }}" disabled>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="fecha_na" class="form-label">Fecha de Nacimiento </label>
+                                    <input type="date" class="form-control form-control-lg" name="fecha_na"
+                                        id="fecha_na" value="{{ $estudiante->fecha_na }}" disabled>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <h5 class="section-title fw-bold ">Información Académica </h5>
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="direccion_id" class="form-label">Dirección de carrera </label>
+                                    <input type="text" class="form-control form-control-lg" id="direccion_id"
+                                        name="direccion_id" value="{{ $estudiante->direccion->name }} " disabled>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="carrera_id" class="form-label">Programa Educativo </label>
+                                    <input type="text" class="form-control form-control-lg" id="carrera_id"
+                                        name="carrera_id" value="{{ $estudiante->carrera->nombre }} " disabled>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="inicio" class="form-label">Fecha de Ingreso </label>
+                                    <input type="text" class="form-control form-control-lg" id="inicio" name="inicio"
+                                        value="{{ $estudiante->inicio }} " disabled>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="fin" class="form-label">Fecha de Egreso </label>
+                                    <input type="text" class="form-control form-control-lg" id="fin"
+                                        name="fin" value="{{ $estudiante->fin }} " disabled>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="cuatrimestre" class="form-label">Cuatrimestre </label>
+                                    <input type="text" class="form-control form-control-lg" id="cuatrimestre"
+                                        name="cuatrimestre" value="{{ $estudiante->cuatrimestre }}" disabled>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="status" class="form-label">Situación Dual </label>
+                                    @php
+                                        $situaciones = [
+                                            0 => 'Primera vez',
+                                            1 => 'Renovación Dual',
+                                        ];
+                                    @endphp
+                                    <input type="text" class="form-control form-control-lg" id="status"
+                                        name="status" value="{{ $situaciones[$estudiante->status ?? 0] }}" disabled>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre_proyecto" class="form-label">Nombre del Proyecto </label>
+                                    <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
+                                        name="nombre_proyecto" value="{{ $estudiante->nombre_proyecto }}" disabled>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="academico_id" class="form-label">Mentor Academico </label>
+                                    <input type="text" class="form-control form-control-lg" id="academico_id"
+                                        name="academico_id"
+                                        value="{{ $estudiante->academico->name . ' ' . $estudiante->academico->apellidoP . ' ' . $estudiante->academico->apellidoM }}"
+                                        disabled>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <h5 class="section-title fw-bold  mt-4">Datos de la unidad económica </h5>
+                                <div class="dropdown-divider mb-4"></div>
+
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="empresa_id" class="form-label">Empresa aplicable a Dual </label>
+                                    <input type="text" class="form-control form-control-lg" id="empresa_id"
+                                        name="empresa_id" value="{{ $estudiante->empresa->nombre }}" disabled>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="asesorin_id" class="form-label">Asesor Industrial </label>
+                                    <input type="text" class="form-control form-control-lg" id="asesorin"
+                                        name="asesorin"
+                                        value="{{ $estudiante->asesorin->titulo }} {{ $estudiante->asesorin->name . ' ' . $estudiante->asesorin->apellidoP . ' ' . $estudiante->asesorin->apellidoM }}"
+                                        disabled>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inicio_dual" class="form-label">Inicio Dual </label>
+                                    <input type="date" class="form-control form-control-lg" name="inicio_dual"
+                                        id="inicio_dual" value="{{ $estudiante->inicio_dual }}" disabled>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="fin_dual" class="form-label">Fin Dual <span
+                                            class="text-danger">*</span></label>
+                                    <input type="date" class="form-control form-control-lg" name="fin_dual"
+                                        id="fin_dual" value="{{ $estudiante->fin_dual }}" disabled>
+                                </div>
+                            </div>
+
+                            @php
+                                $tipoBecaArray = [
+                                    0 => 'Apoyo por Empresa',
+                                    1 => 'Beca Dual Comecyt',
+                                ];
+
+                                // Determina el mensaje final basado en si tiene beca o no
+                                $tipoBecaTexto =
+                                    $estudiante->beca == 0
+                                        ? $tipoBecaArray[$estudiante->tipoBeca ?? 0] ?? 'Tipo de beca no especificado'
+                                        : 'El estudiante no cuenta con ningún tipo de beca asignada.';
+                            @endphp
+
+                            <div class="row">
+                                <h5 class="section-title fw-bold mt-4">Beneficios</h5>
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="beca" class="form-label">Beca Dual</label>
+                                    <input type="text" class="form-control form-control-lg" id="beca"
+                                        name="beca" value="{{ $estudiante->beca == 0 ? 'Sí' : 'No' }}" disabled>
+                                </div>
+
+                                <div class="col-md-6 mb-3" id="tipoBeca">
+                                    <label for="tipoBeca" class="form-label">Apoyo Económico</label>
+                                    <input type="text" class="form-control form-control-lg" id="tipoBeca"
+                                        name="tipoBeca" value="{{ $tipoBecaTexto }}" disabled>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <h5 class="section-title fw-bold  mt-4">Documentación </h5>
+                                <div class="dropdown-divider mb-4"></div>
+
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-hover">
@@ -251,8 +368,20 @@
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
+
+
+                        <!-- Botón de regreso -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <x-back-button url="{{ route('estudiantes.index') }}" />
+                        </div>
+
+
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>

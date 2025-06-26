@@ -24,10 +24,13 @@ class EmpresaController extends Controller
 
     public function index()
     {
-        $empresas = Empresa::where('status', 1)->get();
-        $empresasInteresadas = Empresa::where('status', 0)->get();
-        return view('empresas.index', compact('empresas', 'empresasInteresadas'));
+        $empresas = Empresa::where('status', 1)->get();              // Empresas activas
+        $empresasInteresadas = Empresa::where('status', 0)->get();  // Empresas interesadas
+        $empresasSuspendidas = Empresa::where('status', 2)->get();  // Empresas con baja temporal (suspendidas)
+
+        return view('empresas.index', compact('empresas', 'empresasInteresadas', 'empresasSuspendidas'));
     }
+
 
     public function interesadas()
     {
@@ -37,7 +40,7 @@ class EmpresaController extends Controller
 
     public function create(Request $request)
     {
-        $direcciones = DireccionCarrera::get(); 
+        $direcciones = DireccionCarrera::get();
         //dd($direcciones);// Asegúrate de obtener las direcciones
         //$direcciones = DireccionCarrera::where('id',session('direccion')->id)->get();
         $anexo2_1 = Anexo2_1::find($request->anexo2_1_id);
@@ -63,7 +66,7 @@ class EmpresaController extends Controller
 
         $empresa->update($request->except('direcciones_ids'));
         if (isset($data['direcciones_ids']) && !empty($data['direcciones_ids'])) {
-        $empresa->direcciones()->sync($data['direcciones_ids']);
+            $empresa->direcciones()->sync($data['direcciones_ids']);
         }
         $empresa->status = 1; // Cambiar el estado a registrada
         $empresa->save();
@@ -97,7 +100,7 @@ class EmpresaController extends Controller
 
         $empresa = Empresa::create($request->except('direcciones_ids'));
         if (isset($data['direcciones_ids']) && !empty($data['direcciones_ids'])) {
-        $empresa->direcciones()->sync($data['direcciones_ids']);
+            $empresa->direcciones()->sync($data['direcciones_ids']);
         }
         $empresa->status = 1; // Cambiar el estado a registrada
         return redirect()->route('empresas.index')->with('success', 'Empresa interesada creada exitosamente.');
@@ -221,4 +224,54 @@ class EmpresaController extends Controller
         $pdf = Pdf::loadView('empresas.uei_pdf', $data);
         return $pdf->download('uei_interesadas.pdf');
     }
+
+    public function suspendForm($id)
+    {
+        $suspensionReasons = [
+            'Cierre definitivo o quiebra',
+            'Término del contrato de colaboración',
+            'Cambio de razón social o fusión empresarial',
+            'Reestructuración interna de la empresa',
+            'Incumplimiento de requisitos legales o administrativos',
+            'Falta de estudiantes o participantes asignados',
+            'Problemas de calidad o desempeño en la formación',
+            'Motivos voluntarios de la empresa',
+            'Cambio de domicilio fuera del área de cobertura',
+            'Cambio de giro o actividad económica de la empresa'
+        ];
+
+        $id = Hashids::decode($id);
+        if (empty($id)) {
+            return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
+        }
+        $empresa = Empresa::find($id[0]);
+        if (!$empresa) {
+            return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
+        }
+
+        return view('empresas.suspend-form', compact('empresa', 'suspensionReasons'));
+    }
+    public function suspend(Request $request, $id)
+    {
+
+
+        $validated = $request->validate([
+            'motivo_baja' => 'required',
+            'fecha_baja' => 'required|date',
+        ]);
+        $empresa = Empresa::findOrFail($id);
+        //dd($request->all());
+        $empresa->update([
+            'STATUS' => 2,
+            'motivo_baja' => $request->motivo_baja,
+            'fecha_baja' => $request->fecha_baja,
+            'comentarios' => $request->comentarios
+        ]);
+
+
+        return redirect()->route('empresas.index')->with('success', 'La empresa ha sido suspendida temporalmente.');
+    }
+
+
+    public function reactivate($id) {}
 }

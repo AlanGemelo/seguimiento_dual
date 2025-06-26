@@ -827,6 +827,7 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
     }
 
+    
     /**
      * Muestra los datos de un estudiante en formato JSON.
      */

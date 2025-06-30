@@ -185,7 +185,7 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="quien_elaboro_id" class="form-label">Quién Elaboró</label>
-                            <input type="text" class="form-control" value="{{ $responsableIE->name }}" disabled>
+                            <input type="text" class="form-control" value="{{ $responsableIE->name . ' '. $responsableIE->apellidoM .' '. $responsableIE->apellidoM}}" disabled>
                             <input type="hidden" name="quien_elaboro_id" value="{{ $responsableIE->id }}">
                         </div>
                     </div>
@@ -198,7 +198,7 @@
 
     <!-- Botón de Ayuda -->
     <button type="button" class="btn btn-help" onclick="openHelpModal()"
-        style="position: fixed; bottom: 20px; right: 20px;">
+        style=" bottom: 20px; right: 20px;">
         ¿Necesitas ayuda? 🔍
     </button>
 

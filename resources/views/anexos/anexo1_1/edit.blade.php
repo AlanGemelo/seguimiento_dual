@@ -93,7 +93,7 @@
 
     <!-- Botón de Ayuda -->
     <button type="button" class="btn btn-help" onclick="openHelpModal()"
-        style="position: fixed; bottom: 20px; right: 20px;">
+        style="bottom: 20px; right: 20px;margin-bottom:1rem;">
         ¿Necesitas ayuda? 🔍
     </button>
 

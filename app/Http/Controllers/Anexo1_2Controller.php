@@ -58,10 +58,13 @@ class Anexo1_2Controller extends Controller
 
     public function edit(Anexo1_2 $anexo1_2)
     {
-        $directores = Director::all(); // Cargar todos los directores
-        $responsableIE = User::find(1); // Usuario con ID 1
-        return view('anexos.anexo1_2.edit', compact('anexo1_2', 'directores', 'responsableIE'));
+        $directores = Director::all();
+        $responsableIE = User::find(1);
+        $responsableAcademico = User::find(1); // Responsable académico es el usuario con ID 2
+
+        return view('anexos.anexo1_2.edit', compact('anexo1_2', 'directores', 'responsableIE', 'responsableAcademico'));
     }
+
 
     public function update(Request $request, Anexo1_2 $anexo1_2)
     {
@@ -77,6 +80,7 @@ class Anexo1_2Controller extends Controller
         Log::info('Validaciones pasadas en update:', $validatedData);
 
         try {
+            $validatedData['actividades'] = json_encode($validatedData['actividades']); // Convertir competencias a JSON
             $anexo1_2->update($validatedData);
             return redirect()->route('anexo1_2.index')->with('success', 'Registro actualizado exitosamente.');
         } catch (\Exception $e) {

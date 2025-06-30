@@ -254,50 +254,77 @@ class Anexo2_1Controller extends Controller
         return $pdf->stream('anexo2_1.pdf');
     }
 
-    public function generateWord(Anexo2_1 $anexo2_1)
-    {
-        $phpWord = new PhpWord();
+  public function generateWord(Anexo2_1 $anexo2_1)
+{
+    $phpWord = new PhpWord();
 
-        // Agregar sección
-        $section = $phpWord->addSection();
+    // Agregar sección
+    $section = $phpWord->addSection();
 
-        // Título
-        $section->addText("Evaluación para Seleccionar a la Unidad Económica", ['bold' => true, 'size' => 16]);
-        $section->addText("Anexo 2.1", ['bold' => true, 'size' => 14]);
+    // Título
+    $section->addText("Evaluación para Seleccionar a la Unidad Económica", ['bold' => true, 'size' => 16]);
+    $section->addText("Anexo 2.1", ['bold' => true, 'size' => 14]);
 
-        // Información General
-        $section->addText("Información General", ['bold' => true, 'size' => 12]);
-        $section->addText("Unidad Económica: " . $anexo2_1->unidad_economica);
-        $section->addText("Periodo: " . $anexo2_1->periodo);
-        $section->addText("Fecha: " . $anexo2_1->fecha);
+    // Información General en tabla
+    $section->addTextBreak(1);
+    $section->addText("Información General", ['bold' => true, 'size' => 12]);
+    
+    $table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000', 'width' => 100 * 50]);
+    $table->addRow();
+    $table->addCell(5000)->addText("Unidad Económica", ['bold' => true]);
+    $table->addCell(5000)->addText($anexo2_1->unidad_economica);
+    
+    $table->addRow();
+    $table->addCell(5000)->addText("Periodo", ['bold' => true]);
+    $table->addCell(5000)->addText($anexo2_1->periodo);
+    
+    $table->addRow();
+    $table->addCell(5000)->addText("Fecha", ['bold' => true]);
+    $table->addCell(5000)->addText($anexo2_1->fecha);
 
-        // Sección 1
-        $section->addText("Sección 1 - Situación Legal", ['bold' => true, 'size' => 12]);
-        foreach ($anexo2_1->seccion_1 as $key => $value) {
-            $section->addText("$key: $value");
-        }
-
-        // Sección 2
-        $section->addText("Sección 2 - Situación Educativa/Formativa", ['bold' => true, 'size' => 12]);
-        foreach ($anexo2_1->seccion_2 as $key => $value) {
-            $section->addText("$key: $value");
-        }
-
-        // Sección 3
-        $section->addText("Sección 3 - Factores Socioeconómicos", ['bold' => true, 'size' => 12]);
-        foreach ($anexo2_1->seccion_3 as $key => $value) {
-            $section->addText("$key: $value");
-        }
-
-        // Firma
-        $section->addText("Firma del Responsable:", ['bold' => true, 'size' => 12]);
-        $section->addText("___________________________");
-        $section->addText("Nombre: " . $anexo2_1->autorizoUser->name);
-
-        // Guardar el archivo Word
-        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save(storage_path('anexo_2_1.docx'));
-
-        return response()->download(storage_path('anexo_2_1.docx'));
+    // Sección 1 en tabla
+    $section->addTextBreak(1);
+    $section->addText("Sección 1 - Situación Legal", ['bold' => true, 'size' => 12]);
+    
+    $table1 = $section->addTable(['borderSize' => 6, 'borderColor' => '000000', 'width' => 100 * 50]);
+    foreach ($anexo2_1->seccion_1 as $key => $value) {
+        $table1->addRow();
+        $table1->addCell(5000)->addText($key, ['bold' => true]);
+        $table1->addCell(5000)->addText($value);
     }
+
+    // Sección 2 en tabla
+    $section->addTextBreak(1);
+    $section->addText("Sección 2 - Situación Educativa/Formativa", ['bold' => true, 'size' => 12]);
+    
+    $table2 = $section->addTable(['borderSize' => 6, 'borderColor' => '000000', 'width' => 100 * 50]);
+    foreach ($anexo2_1->seccion_2 as $key => $value) {
+        $table2->addRow();
+        $table2->addCell(5000)->addText($key, ['bold' => true]);
+        $table2->addCell(5000)->addText($value);
+    }
+
+    // Sección 3 en tabla
+    $section->addTextBreak(1);
+    $section->addText("Sección 3 - Factores Socioeconómicos", ['bold' => true, 'size' => 12]);
+    
+    $table3 = $section->addTable(['borderSize' => 6, 'borderColor' => '000000', 'width' => 100 * 50]);
+    foreach ($anexo2_1->seccion_3 as $key => $value) {
+        $table3->addRow();
+        $table3->addCell(5000)->addText($key, ['bold' => true]);
+        $table3->addCell(5000)->addText($value);
+    }
+
+    // Firma
+    $section->addTextBreak(1);
+    $section->addText("Firma del Responsable:", ['bold' => true, 'size' => 12]);
+    $section->addText("___________________________");
+    $section->addText("Nombre: " . $anexo2_1->autorizoUser->name);
+
+    // Guardar el archivo Word
+    $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+    $objWriter->save(storage_path('anexo_2_1.docx'));
+
+    return response()->download(storage_path('anexo_2_1.docx'));
+}
 }

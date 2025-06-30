@@ -15,7 +15,10 @@ class Anexo1_2 extends Model
         'quien_elaboro_id',
         'nombre_firma_ie',
         'actividades',
+        'responsable_programa_id',
+        'responsable_academico_id',
     ];
+
     protected $casts = [
         'actividades' => 'array'
     ];
@@ -38,5 +41,15 @@ class Anexo1_2 extends Model
     public function getNombreQuienElaboro()
     {
         return $this->quienElaboro->name;
+    }
+
+    // En el modelo Anexo1_2.php
+    public function getActividadesAttribute($value)
+    {
+        return json_decode($value, true) ?: [];
+    }
+    public function getActividadesArrayAttribute()
+    {
+        return is_array($this->actividades) ? $this->actividades : json_decode($this->actividades, true);
     }
 }

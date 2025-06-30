@@ -58,7 +58,7 @@
                                 @foreach ($directores as $director)
                                     <option value="{{ $director->id }}"
                                         {{ $anexo1_2->quien_elaboro_id == $director->id ? 'selected' : '' }}>
-                                        {{ $director->nombre }}</option>
+                                        {{  $director->nombre . ' ' . $director->apellidoP . ' ' . $director->apellidoM }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -70,7 +70,7 @@
                                 @foreach ($directores as $director)
                                     <option value="{{ $director->id }}"
                                         {{ $anexo1_2->responsable_programa_id == $director->id ? 'selected' : '' }}>
-                                        {{ $director->nombre }}</option>
+                                        {{ $director->nombre . ' ' . $director->apellidoP . ' ' . $director->apellidoM }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -81,8 +81,8 @@
                         </div>
                         <div class="col-md-6">
                             <label for="responsable_academico_id" class="form-label">Responsable Académico de la IE</label>
-                            <input type="text" class="form-control" value="{{ $responsableAcademico->name }}" disabled>
-                            <input type="hidden" name="responsable_academico_id" value="{{ $responsableAcademico->id }}">
+                           <input type="text" class="form-control" value="{{ $responsableAcademico->name }}" disabled>
+                           <input type="hidden" name="responsable_academico_id" value="{{ $responsableAcademico->id }}">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -107,7 +107,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($anexo1_2->actividades as $index => $actividad)
+                              @foreach (json_decode($anexo1_2->actividades, true) as $index => $actividad)
+
                                     <tr>
                                         <td><input type="text" data-tipo="text" class="form-control"
                                                 name="actividades[{{ $index }}][actividad]"
@@ -182,7 +183,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            let rowIdx = {{ count($anexo1_2->actividades) }};
+         let rowIdx = <?php
+    try {
+        $activities = $anexo1_2->actividades ?? [];
+        $activitiesArray = is_array($activities) ? $activities : json_decode($activities, true);
+        echo e(count($activitiesArray ?? []));
+    } catch (Exception $e) {
+        echo e(0);
+    }
+?>;
 
             document.getElementById('add_row').addEventListener('click', function() {
                 let table = document.getElementById('actividades_table').getElementsByTagName('tbody')[0];

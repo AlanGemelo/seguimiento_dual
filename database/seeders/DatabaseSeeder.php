@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
             'direccion_id' => null,
         ]);
 
-        /*    User::create([
+          User::create([
             'titulo' => 'Ingeniero',
             'name' => 'Roberto',
             'apellidoP' => 'Vinicio',
@@ -70,6 +70,7 @@ class DatabaseSeeder extends Seeder
             'carrera_id' => 1,
             'direccion_id' => 1,
         ]);
+         /* 
         User::create([
             'titulo' => 'Ingeniero Director',
             'name' => 'Carlos',

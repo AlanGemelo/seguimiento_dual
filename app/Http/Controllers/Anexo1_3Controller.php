@@ -71,7 +71,8 @@ class Anexo1_3Controller extends Controller
 
     public function edit(Anexo1_3 $anexo1_3)
     {
-        $responsableIE = User::find(1); // Cargar el usuario con ID 1
+        //$responsableIE = User::find(1); // Cargar el usuario con ID 1
+        $responsableIE = auth()->user();
         return view('anexos.anexo1_3.edit', compact('anexo1_3', 'responsableIE'));
     }
 
@@ -228,7 +229,7 @@ class Anexo1_3Controller extends Controller
         $section->addTextBreak();
         $section->addTextBreak();
         $section->addText('___________________________', $sectionStyle, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
-        $section->addText($responsableIE->name, $sectionStyle, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
+        $section->addText($responsableIE->name .' '.$responsableIE->apellidoP .' '. $responsableIE->apellidoM, $sectionStyle, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
         $section->addText('Elaboró', $sectionStyle, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
 
         $fileName = 'anexo1_3.docx';

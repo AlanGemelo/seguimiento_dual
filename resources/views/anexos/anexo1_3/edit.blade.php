@@ -144,7 +144,9 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="quien_elaboro_id" class="form-label">Quién Elaboró</label>
-                            <input type="text" class="form-control" value="{{ $responsableIE->name }}" disabled>
+                            <input type="text" class="form-control"
+                                value="{{ $responsableIE->name . '' . $responsableIE->apellidoP . ' ' . $responsableIE->apellidoM }}"
+                                disabled>
                             <input type="hidden" name="quien_elaboro_id" value="{{ $responsableIE->id }}">
                         </div>
                     </div>

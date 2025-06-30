@@ -26,7 +26,7 @@
                                 @foreach ($carreras as $carrera)
                                     <option value="{{ $carrera->id }}"
                                         {{ old('programa_educativo_id') == $carrera->id ? 'selected' : '' }}>
-                                        {{ $carrera->nombre }}</option>
+                                        {{ $carrera->grado_academico .' en '.$carrera->nombre }}</option>
                                 @endforeach
                             </select>
                             @error('programa_educativo_id')
@@ -50,7 +50,9 @@
                             <select class="form-control" id="responsable_programa_id" name="responsable_programa_id"
                                 required>
                                 @foreach ($directores as $director)
-                                    <option value="{{ $director->id }}">{{ $director->nombre }}</option>
+                                    <option value="{{ $director->id }}">
+                                        {{ $director->nombre .' '.$director->apellidoP .' '.$director->apellidoM }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -104,7 +106,7 @@
 
     <!-- Botón de Ayuda -->
     <button type="button" class="btn btn-help" onclick="openHelpModal()"
-        style="position: fixed; bottom: 20px; right: 20px;">
+        style=" bottom: 20px; right: 20px; margin-bottom:1rem;">
         ¿Necesitas ayuda? 🔍
     </button>
 

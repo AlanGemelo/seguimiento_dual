@@ -50,7 +50,8 @@
                                 name="autorizo" required>
                                 @foreach ($directores as $director)
                                     <option value="{{ $director->id }}"
-                                        {{ old('autorizo') == $director->id ? 'selected' : '' }}>{{ $director->name }}
+                                        {{ old('autorizo') == $director->id ? 'selected' : '' }}>
+                                        {{ $director->name .' '. $director->apellidoP .' '. $director->apellidoM }}
                                     </option>
                                 @endforeach
                             </select>
@@ -290,7 +291,7 @@
             const puntosSeccion2 = Array.from(seccion2).reduce((acc, input) => acc + parseInt(input.value), 0);
             const puntosSeccion3 = Array.from(seccion3).reduce((acc, input) => acc + parseInt(input.value), 0);
 
-          //const maxSeccion1 = 8;
+            //const maxSeccion1 = 8;
             const maxSeccion1 = 4;
             const maxSeccion2 = 18;
             const maxSeccion3 = 9;

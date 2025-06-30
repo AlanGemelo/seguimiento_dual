@@ -55,7 +55,8 @@
                             <label for="quien_elaboro_id" class="form-label">Quién Elaboró</label>
                             <select class="form-control" id="quien_elaboro_id" name="quien_elaboro_id" required>
                                 @foreach ($directores as $director)
-                                    <option value="{{ $director->id }}">{{ $director->nombre }}</option>
+                                    <option value="{{ $director->id }}">
+                                        {{ $director->nombre . ' ' . $director->apellidoP . ' ' . $director->apellidoM }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -103,13 +104,14 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" data-tipo="text" class="form-control" name="actividades[0][actividad]"
-                                            required></td>
-                                    <td><input type="text" data-tipo="text" class="form-control" name="actividades[0][responsable]"
-                                            required></td>
-                                    <td><input type="text" data-tipo="text" class="form-control" name="actividades[0][unidad_medida]"
-                                            required></td>
-                                    <td><input type="text" data-tipo="text" class="form-control" name="actividades[0][meta]" required>
+                                    <td><input type="text" data-tipo="text" class="form-control"
+                                            name="actividades[0][actividad]" required></td>
+                                    <td><input type="text" data-tipo="text" class="form-control"
+                                            name="actividades[0][responsable]" required></td>
+                                    <td><input type="text" data-tipo="text" class="form-control"
+                                            name="actividades[0][unidad_medida]" required></td>
+                                    <td><input type="text" data-tipo="text" class="form-control"
+                                            name="actividades[0][meta]" required>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"

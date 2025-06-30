@@ -290,6 +290,7 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="row">
                                         <h5 class="section-title fw-bold  mt-4">Beneficios </h5>
@@ -301,16 +302,16 @@
                                             <select class="form-select" aria-label="Seleccionar Carrera" id="beca"
                                                 onchange="mostrarInput()" name="beca">
                                                 <option value="nada"
-                                                    {{ old('beca', $registro->beca ?? '') == 'nada' ? 'selected' : '' }}>
-                                                    Seleccione una opcion</option>
+                                                    {{ old('beca', $estudiante->beca ?? '') == 'nada' ? 'selected' : '' }}>
+                                                    Seleccione una opción</option>
+                                             
                                                 @foreach ($becas as $carrera)
                                                     <option value="{{ $carrera['id'] }}"
-                                                        {{ old('beca', $registro->beca ?? '') == $carrera['id'] ? 'selected' : '' }}>
+                                                        {{ old('beca', $estudiante->beca ?? '') == $carrera['id'] ? 'selected' : '' }}>
                                                         {{ $carrera['name'] }}
                                                     </option>
                                                 @endforeach
                                             </select>
-
                                             @error('beca')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -318,21 +319,26 @@
                                         <div class="col-md-6 mb-3" id="tipoBeca" style="display: none">
                                             <label for="tipoBeca" class="form-label">Apoyo Economico <span
                                                     class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Carrera" name="tipoBeca"
-                                                id="selectTipoBeca">
-                                                <option value="" selected disabled>Seleccione una opción</option>
+                                            <select class="form-select" aria-label="Seleccionar el tipo de beca"
+                                                name="tipoBeca" id="selectTipoBeca">
+                                                <option value="" disabled
+                                                    {{ old('tipoBeca', $estudiante->tipoBeca ?? '') == '' ? 'selected' : '' }}>
+                                                    Seleccione una opción
+                                                </option>
                                                 @foreach ($tipoBeca as $carrera)
-                                                    <option value="{{ $carrera['id'] }}">{{ $carrera['name'] }}</option>
+                                                    <option value="{{ $carrera['id'] }}"
+                                                        {{ old('tipoBeca', $estudiante->tipoBeca ?? '') == $carrera['id'] ? 'selected' : '' }}>
+                                                        {{ $carrera['name'] }}
+                                                    </option>
                                                 @endforeach
                                             </select>
-
                                             @error('tipoBeca')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
-
                                 </div>
+
                                 <div class="row">
                                     <h5 class="section-title fw-bold  mt-4">Documentación </h5>
                                     <div class="dropdown-divider mb-4"></div>
@@ -637,7 +643,8 @@
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                             <input hidden type="file" accept="application/pdf"
                                                 class="form-control form-control-lg" id="plan_form"
-                                                placeholder="plan_form" name="plan_form" value="{{ old('plan_form') }}">
+                                                placeholder="plan_form" name="plan_form"
+                                                value="{{ old('plan_form') }}">
                                             @error('plan_form')
                                                 <div class="text-danger">{{ $message }}</div>
                                             @enderror
@@ -700,6 +707,10 @@
 @endsection
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        mostrarInput();
+    });
+
     document.getElementById('direccion_id').addEventListener('change', function() {
         let direccionId = this.value;
         if (direccionId) {
@@ -755,13 +766,24 @@
         var tipoBecaDiv = document.getElementById('tipoBeca');
         var tipoBecaSelect = document.getElementById('selectTipoBeca');
 
-        if (becaValue == 0) {
+        // Mostrar solo si es una beca válida (no vacío, no 'nada', no '1')
+        if (becaValue && becaValue !== 'nada' && becaValue !== '1') {
             tipoBecaDiv.style.display = 'block';
+            tipoBecaSelect.disabled = false;
+            tipoBecaSelect.required = true;
         } else {
             tipoBecaDiv.style.display = 'none';
-            tipoBecaSelect.value = ''; // Limpia el valor si se oculta
+            tipoBecaSelect.value = '';
+            tipoBecaSelect.disabled = true;
+            tipoBecaSelect.required = false;
         }
     }
+
+    // Ejecutar al cargar la página para establecer estado inicial
+    document.addEventListener('DOMContentLoaded', function() {
+        mostrarInput();
+    });
+
 
 
     $(document).ready(function() {

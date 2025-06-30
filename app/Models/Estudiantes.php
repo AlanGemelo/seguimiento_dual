@@ -39,6 +39,7 @@ class Estudiantes extends Model
         'inicio_dual',
         'fin_dual',
         'beca',
+        'tipoBeca',
         'ine',
         'evaluacion_form',
         'minutas',

@@ -478,6 +478,8 @@ class EstudiantesController extends Controller
 
     public function edit($id)
     {
+
+
         $user = Auth::user();
         $direccionId = session('direccion')->id;
         $id = Hashids::decode($id);
@@ -504,6 +506,9 @@ class EstudiantesController extends Controller
         ];
 
         $cuatrimestres = [4, 5, 6, 7, 8, 9, 10];
+
+
+
 
         // Lógica condicional para diferentes roles (como en create())
         if ($user->rol_id === 1) {
@@ -547,6 +552,7 @@ class EstudiantesController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $request->validate([
             'matricula' => ['integer', 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],
@@ -554,7 +560,8 @@ class EstudiantesController extends Controller
             'apellidoM' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
-            // 'beca' => ['integer'],
+            'beca' => ['required', 'integer'],
+            'tipoBeca' => ['nullable', 'integer'],
             'cuatrimestre' => ['integer'],
             'nombre_proyecto' => ['string', 'min:3'],
             'inicio_dual' => ['date'],
@@ -574,6 +581,12 @@ class EstudiantesController extends Controller
             'carrera_id' => ['integer', 'exists:' . Carrera::class . ',id'],
             'direccion_id' => ['integer', 'exists:' . DireccionCarrera::class . ',id'],
         ]);
+
+        /*    dd([
+            'beca' => $request->beca,
+            'tipoBeca' => $request->tipoBeca
+        ]); */
+
         $inicioDual = Carbon::parse($request->inicio_dual);
         $finDual = Carbon::parse($request->fin_dual);
         // if ($inicioDual->diffInYears($finDual) !== 1) {
@@ -583,6 +596,8 @@ class EstudiantesController extends Controller
         $id = Hashids::decode($id);
         $estudiantes = Estudiantes::find($id);
         $estudiantes = $estudiantes[0];
+        $estudiantes->beca = $request->beca;
+        $estudiantes->tipoBeca = $request->tipoBeca;
 
         if ($request->file('ine')) {
             $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
@@ -641,6 +656,7 @@ class EstudiantesController extends Controller
             $formato55 = 'formato55/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato55')->getClientOriginalName();
             $formato55 = $request->file('formato55')->storeAs('public', $formato55);
         }
+
 
         $estudiantes->fill([
 
@@ -827,7 +843,7 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
     }
 
-    
+
     /**
      * Muestra los datos de un estudiante en formato JSON.
      */

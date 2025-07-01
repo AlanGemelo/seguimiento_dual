@@ -10,8 +10,8 @@
             <div class="col-lg-12">
                 <div class="card shadow">
                     <!-- Encabezado -->
-                    <x-section-header title="Registro de Estudiante Dual"
-                        description="Formulario para registrar a estudiantes que participan en el Modelo de Formación Dual, incluyendo datos personales, académicos, vinculación con la empresa y documentación requerida." />
+                    <x-section-header title="Datos del Estudiante Dual"
+                        description="Visualización de la información personal del estudiante dual." />
 
                     <div class="card-body">
                         <!-- Información General -->

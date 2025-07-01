@@ -3,7 +3,6 @@
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-
     <body class="body">
         <div class="container-fluid">
             <div class="row">
@@ -16,6 +15,7 @@
                             <form enctype="multipart/form-data" action="{{ route('empresas.store') }}" method="post"
                                 class="needs-validation" novalidate>
                                 @csrf
+
                                 <!-- Información Básica -->
                                 <div class="mb-4">
                                     <h5 class="section-title">Información Básica</h5>
@@ -208,9 +208,6 @@
                 </div>
             </div>
         </div>
-
-
-
         <script>
             function calcularFechaFinal() {
                 const fechaInicio = document.getElementById('inicio_conv').value;
@@ -253,8 +250,6 @@
                 }
             });
         </script>
-
-
         <script src="{{ asset('js/multipleSelector.js') }}"></script>
     </body>
 @endsection

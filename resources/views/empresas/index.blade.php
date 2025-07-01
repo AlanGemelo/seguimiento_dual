@@ -54,7 +54,10 @@
                                             onclick="return confirm('¿Está seguro de iniciar el proceso de baja temporal de esta empresa?')">
                                             Baja
                                         </a>
-
+                                        <a href="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
+                                            class="btn btn-facebook">
+                                            <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

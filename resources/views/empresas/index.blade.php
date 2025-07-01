@@ -96,13 +96,17 @@
                         <tbody id="empresaInteresadasTable">
                             @foreach ($empresasInteresadas as $empresa)
                                 <tr>
-                                    <td>{{ $empresa->unidad_economica }}</td>
+                                    <td>{{ $empresa->nombre }}</td>
                                     <td>{{ $empresa->email }}</td>
                                     <td>{{ $empresa->telefono }}</td>
-                                    <td>{{ $empresa->fecha_registro }}</td>
+                                    <td>{{ $empresa->created_at->translatedFormat('d \d\e F \d\e Y') }}</td>
                                     <td>
                                         <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success">Dar
                                             de Alta</a>
+                                        <a href="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
+                                            class="btn btn-facebook">
+                                            <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

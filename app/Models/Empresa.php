@@ -32,7 +32,10 @@ class Empresa extends Model
         'actividad_economica',
         'tamano_ue',
         'folio',
-        'status',
+        'STATUS',
+        'motivo_baja',
+        'fecha_baja',
+        'comentarios_baja',
     ];
 
     public function asesorin(): BelongsTo

@@ -83,6 +83,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/empresas/{id}/editar', [EmpresaController::class, 'edit'])->name('empresas.edit');
     Route::patch('/empresas/{id}', [EmpresaController::class, 'update'])->name('empresas.update');
     Route::delete('/empresas/{id}/delete', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
+    //Rutas para el proceso de baja temporal de las empresas
+    Route::get('/empresas/{id}/suspend', [EmpresaController::class, 'suspendForm'])->name('empresas.suspendForm');
+    Route::put('/empresas/{id}/suspend', [EmpresaController::class, 'suspend'])->name('empresas.suspend');
+    Route::put('/empresas/{id}/reactivate', [EmpresaController::class, 'reactivate'])->name('empresas.reactivate');
 
     Route::get('/mentores', [MentorIndustrialController::class, 'index'])->name('mentores.index');
     Route::get('/mentores/crear', [MentorIndustrialController::class, 'create'])->name('mentores.create');

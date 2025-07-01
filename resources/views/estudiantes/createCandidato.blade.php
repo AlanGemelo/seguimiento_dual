@@ -6,249 +6,232 @@
     <body class="body">
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <div class="row">
-        <div class="col-12 grid-margin">
-            @if (session('status'))
-                <div class="alert alert-danger alert-dismissible text-dark" role="alert">
-                    <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
-                        {{ session('status') }}.</span>
-                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Crear Candidato Dual</h4>
-                            <span class="text-danger">* Son campos requeridos</span>
-                            <div class="dropdown-divider"></div>
-                            <form class="pt-3" action="{{ route('estudiantes.candidatos') }}" method="post"
-                                enctype="multipart/form-data">
-                                @csrf
+        <div class="col-lg-12">
+            <div class="card shadow">
+                <!-- Encabezado -->
+                <x-section-header title="Registro de Estudiante Dual"
+                    description="Formulario para registrar a estudiantes que participan en el Modelo de Formación Dual, incluyendo datos personales, académicos, vinculación con la empresa y documentación requerida." />
+
+
+                <div class="card-body">
+                    <!-- Información General -->
+                    <form class="pt-3" action="{{ route('estudiantes.candidatos') }}" method="post"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-4">
+                            <h5 class="section-title fw-bold ">Identificación del Estudiante</h5>
+                            <div class="dropdown-divider mb-4"></div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="matricula" class="form-label">Matrícula <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="matricula" name="matricula"
+                                        value="{{ old('matricula') }}">
+                                    @error('matricula')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="email" class="form-label blo">Correo electrónico institucional <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" style="color:black; height: 100%;">al</span>
+                                        </div>
+                                        <input type="text" data-tipo="numbers" class="form-control form-control-lg"
+                                            id="email" name="email" placeholder="No. Matricula"
+                                            value="{{ old('email') }}" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"
+                                                style="color:black; height: 100%;">@utvtol.edu.mx</span>
+                                        </div>
+                                    </div>
+                                    @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        {{-- matricula --}}
-                                        <div class="form-group">
-                                            <label for="matricula">Matricula <span class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="numbers" class="form-control form-control-lg"
-                                                id="matricula" name="matricula" value="{{ old('matricula') }}">
-                                            @error('matricula')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Nombre del estudiante --}}
-                                        <div class="form-group">
-                                            <label for="name">Nombre(s) <span class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="text"
-                                                class="form-control form-control-lg uppercase" id="name"
-                                                placeholder="Ingrese su(s) nombre(s)" name="name"
-                                                value="{{ old('name') }}">
-                                            @error('name')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="apellidoP">Apellido Paterno <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="text"
-                                                class="form-control form-control-lg uppercase" id="apellidoP"
-                                                placeholder="Ingrese su apellido paterno" name="apellidoP"
-                                                value="{{ old('apellidoP') }}">
-                                            @error('apellidoP')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="apellidoM">Apellido Materno <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="text"
-                                                class="form-control form-control-lg uppercase" id="apellidoM"
-                                                placeholder="Ingrese su apellido materno" name="apellidoM"
-                                                value="{{ old('apellidoM') }}">
-                                            @error('apellidoM')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- CURP --}}
-                                        <div class="form-group">
-                                            <label for="curp">CURP<span class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="curp"
-                                                class="form-control form-control-lg uppercase" id="curp" name="curp"
-                                                value="{{ old('curp') }}">
-                                            @error('curp')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Fecha de nacimiento --}}
-                                        <div class="form-group">
-                                            <label for="fecha_na">Fecha de Nacimiento <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="date" class="form-control form-control-lg" name="fecha_na"
-                                                id="fecha_na" value="{{ old('fecha_na') }}">
-                                            @error('fecha_na')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Cuatrimestre aplicable a Dual --}}
-                                        <div class="form-group">
-                                            <label for="cuatrimestre">Cuatrimestre <span
-                                                    class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Cuatrimestre"
-                                                name="cuatrimestre">
-                                                <option selected>Seleccione una opcion</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
-                                                <option value="7">7</option>
-                                                <option value="8">8</option>
-                                                <option value="9">9</option>
-                                                <option value="10">10</option>
-                                            </select>
-                                            @error('cuatrimestre')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="direccion_id" class="form-label">Direccion de Carrera <span
-                                                    class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa"
-                                                name="direccion_id" id="direccion_id">
-                                                <option selected>Seleccione una opcion</option>
-                                                @foreach ($direcciones as $direccion)
-                                                    <option value="{{ $direccion->id }}">{{ $direccion->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('direccion_id')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Seleccionar Carrera del estudiante --}}
-                                        <div class="form-group" id="carrera_select" style="display: none;">
-                                            <label for="carrera_id" class="form-label">Carrera <span
-                                                    class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa"
-                                                name="carrera_id" id="carrera_id">
-                                                <option selected>Seleccione una opcion</option>
-                                                @foreach ($carreras as $carrera)
-                                                    <option value="{{ $carrera->id }}"
-                                                        data-direccion="{{  $carrera->direccion_id }}">
-                                                        {{ $carrera->grado_academico . ' en ' . $carrera->nombre }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('carrera_id')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="name" class="form-label">Nombre(s) <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control uppercase" id="name"
+                                            placeholder="Ingrese su(s) nombre(s)" name="name"
+                                            value="{{ old('name') }}">
                                     </div>
-                                    <div class="col-md-6">
-                                        {{-- Email Estudiante --}}
-
-                                        <div class="form-group">
-                                            <label for="email">Escribe tu dirección de correo <span
-                                                    class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"
-                                                        style="color:black; height: 100%;">al</span>
-                                                </div>
-                                                <input type="text" data-tipo="numbers"
-                                                    class="form-control form-control-lg" id="email" name="email"
-                                                    placeholder="No. Matricula" value="{{ old('email') }}" required>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"
-                                                        style="color:black; height: 100%;">@utvtol.edu.mx</span>
-                                                </div>
-                                            </div>
-                                            @error('email')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-
-                                        {{-- Fecha de Ingreso --}}
-                                        <div class="form-group">
-                                            <label for="inicio">Fecha de Ingreso <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="date" class="form-control form-control-lg" name="inicio"
-                                                id="inicio" value="{{ old('inicio') }}">
-                                            @error('inicio')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        {{-- Fecha de egreso --}}
-                                        <div class="form-group">
-                                            <label for="fin">Fecha de Egreso <span
-                                                    class="text-danger">*</span></label>
-                                            <input type=date class="form-control form-control-lg" name="fin"
-                                                id="fin" value="{{ old('fin') }}">
-                                            @error('fin')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        {{-- Estatus --}}
-                                        <div class="form-group">
-                                            <label for="status" class="form-label">Situacion Dual <span
-                                                    class="text-danger">*</span></label>
-                                            <select class="form-select" aria-label="Seleccionar Empresa" name="status">
-                                                <option selected>Seleccione una opcion</option>
-                                                @foreach ($situation as $carrera)
-                                                    <option value="{{ $carrera['id'] }}">
-                                                        {{ $carrera['name'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('status')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        {{-- Cargar documento INE --}}
-                                        <div class="form-group">
-                                            <label for="ine">INE <span class="text-danger">*</span></label>
-                                            <input type="file" class="form-control form-control-lg" id="ine"
-                                                placeholder="INE" name="ine" value="{{ old('ine') }}">
-                                            @error('ine')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        {{-- Cargar documento de Historial Academico --}}
-                                       <p  class="h6 bg-green-700">(Opccional)</p>
-                                        <div class="form-group">
-                                            <label for="historial_academico">Historial Academico</label>
-                                            <input type="file" class="form-control form-control-lg"
-                                                id="historial_academico" placeholder="historial_academico"
-                                                name="historial_academico" value="{{ old('historial_academico') }}">
-                                            @error('historial_academico')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="apellidoP" class="form-label">Apellido Paterno <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control uppercase" id="apellidoP"
+                                            placeholder="Ingrese su apellido paterno" name="apellidoP"
+                                            value="{{ old('apellidoP') }}">
                                     </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="apellidoM" class="form-label">Apellido Materno <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control uppercase" id="apellidoM"
+                                            placeholder="Ingrese su apellido materno" name="apellidoM"
+                                            value="{{ old('apellidoM') }}">
+                                    </div>
+                                </div>
 
+                                <div class="col-md-4 mb-3">
+                                    <label for="curp" class="form-label">CURP <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control uppercase" id="curp" name="curp"
+                                        value="{{ old('curp') }}">
+                                    @error('curp')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
+                                <div class="col-md-4 mb-3">
+                                    <label for="fecha_na" class="form-label">Fecha de Nacimiento <span
+                                            class="text-danger">*</span></label>
+                                    <input type="date" class="form-control form-control-lg" name="fecha_na"
+                                        id="fecha_na" value="{{ old('fecha_na') }}">
+                                    @error('fecha_na')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h5 class="section-title fw-bold ">Información Académica </h5>
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="direccion_id" class="form-label">Dirección de carrera <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Dirección de carrera"
+                                        name="direccion_id">
+                                        <option selected>Seleccione una opcion</option>
+                                        @foreach ($direcciones as $direccion)
+                                            <option value="{{ $direccion->id }}" data-direccion="{{ $direccion->id }}">
+                                                {{ $direccion->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('direccion_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="carrera_id" class="form-label">Carrera <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="carrera_id"
+                                        id="carrera_id">
+                                        <option selected>Seleccione una opcion</option>
+                                        @foreach ($carreras as $carrera)
+                                            <option value="{{ $carrera->id }}"
+                                                data-direccion="{{ $carrera->direccion_id }}">
+                                                {{ $carrera->grado_academico . ' En ' . $carrera->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('carrera_id')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
 
                                 </div>
-                                {{-- Boton par enviar el formulario --}}
-                                <div class="mt-3">
-                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        type="submit">Guardar
-                                    </button>
 
-                                    <x-cancel-button url="{{ route('estudiantes.index') }}"/>   
+                                <div class="col-md-6 mb-3">
+                                    <label for="inicio" class="form-label">Fecha de Ingreso <span
+                                            class="text-danger">*</span></label>
+                                    <input type="date" class="form-control form-control-lg" name="inicio"
+                                        id="inicio" value="{{ old('inicio') }}">
+                                    @error('inicio')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                        </div>
-                        </form>
-                    </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="fin" class="form-label">Fecha de Egreso <span
+                                            class="text-danger">*</span></label>
+                                    <input type="date" class="form-control form-control-lg" name="fin"
+                                        id="fin" value="{{ old('fin') }}">
+                                    @error('fin')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="cuatrimestre" class="form-label">Cuatrimestre aplicable a Dual <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Cuatrimestre"
+                                        name="cuatrimestre">
+                                        <option selected>Seleccione una opcion</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                    </select>
+                                    @error('cuatrimestre')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="status" class="form-label">Situación Dual <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" aria-label="Seleccionar Empresa" name="status">
+                                        <option selected>Seleccione una opcion</option>
+                                        @foreach ($situation as $carrera)
+                                            <option value="{{ $carrera['id'] }}">
+                                                {{ $carrera['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('status')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+
+
+                            </div>
+                            <div class="row">
+
+                                <div class="row">
+                                    <h5 class="section-title fw-bold  mt-4">Documentación </h5>
+                                    <div class="dropdown-divider mb-4"></div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="ine">INE <span class="text-danger">*</span></label>
+                                        <input type="file" accept="application/pdf"
+                                            class="form-control form-control-lg mt-1" id="ine" placeholder="INE"
+                                            name="ine" value="{{ old('ine') }}">
+                                        @error('ine')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="historial_academico">Historial Academico <span
+                                                class="text-danger">(Opccional)</span></label>
+                                        <input type="file" accept="application/pdf"
+                                            class="form-control form-control-lg mt-1" id="historial_academico"
+                                            placeholder="historial_academico" name="historial_academico"
+                                            value="{{ old('historial_academico') }}">
+                                        @error('historial_academico')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                    type="submit">Guardar</button>
+
+                                <x-cancel-button url="{{ route('estudiantes.index') }}" />
+
+                            </div>
+                    </form>
                 </div>
+
             </div>
         </div>
-    </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -331,6 +314,15 @@
                     $('#academico_select').hide();
                     $('#carrera_select').hide();
                 }
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const matriculaInput = document.getElementById("matricula");
+            const emailInput = document.getElementById("email");
+
+            matriculaInput.addEventListener("input", function() {
+                emailInput.value = matriculaInput.value;
             });
         });
     </script>

@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
         maxFecha.setFullYear(maxFecha.getFullYear() - 15);
 
         const minFecha = new Date(hoy);
-        minFecha.setFullYear(minFecha.getFullYear() - 50);
+        minFecha.setFullYear(minFecha.getFullYear() - 80);
 
         const formatoFecha = (fecha) => {
             const yyyy = fecha.getFullYear();
@@ -214,17 +214,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Validation For Dual Dates
+   
     const fechaInicioInput = document.getElementById("inicio_dual");
     const fechaFinInput = document.getElementById("fin_dual");
 
-    function validarFechas() {
-        const fechaInicio = new Date(fechaInicioInput.value);
-        const fechaFin = new Date(fechaFinInput.value);
+    // Crear un div para mostrar errores si no existe
+    let errorDiv = document.getElementById("fecha_error");
+    if (!errorDiv) {
+        errorDiv = document.createElement("div");
+        errorDiv.id = "fecha_error";
+        errorDiv.classList.add("text-danger", "mt-1");
+        fechaFinInput.parentElement.appendChild(errorDiv);
+    }
 
-        if (!fechaInicioInput.value || !fechaFinInput.value) return;
+    function validarFechas() {
+        const fechaInicioValue = fechaInicioInput.value;
+        const fechaFinValue = fechaFinInput.value;
+
+        if (!fechaInicioValue || !fechaFinValue) {
+            errorDiv.textContent = "";
+            return;
+        }
+
+        const fechaInicio = new Date(fechaInicioValue);
+        const fechaMinimaFin = new Date(fechaInicio);
+        fechaMinimaFin.setFullYear(fechaMinimaFin.getFullYear() + 1);
+
+        const fechaFin = new Date(fechaFinValue);
+
+        if (fechaFin < fechaMinimaFin) {
+            errorDiv.textContent = "La fecha de fin debe ser al menos 1 año después de la fecha de inicio.";
+            fechaFinInput.setCustomValidity("Fecha no válida");
+        } else {
+            errorDiv.textContent = "";
+            fechaFinInput.setCustomValidity(""); // Borra el mensaje si es válida
+        }
     }
 
     fechaFinInput.addEventListener("blur", validarFechas);
+
     fechaInicioInput.addEventListener("change", function () {
         if (fechaInicioInput.value) {
             const fechaInicio = new Date(fechaInicioInput.value);
@@ -234,8 +262,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const dd = String(fechaInicio.getDate()).padStart(2, "0");
 
             fechaFinInput.min = `${yyyy}-${mm}-${dd}`;
+            validarFechas(); // Revalida por si ya había fecha de fin escrita
         }
     });
+
+
 
     //Validation for date of entry
     const fechaIngresoInput = document.getElementById("inicio");

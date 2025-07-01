@@ -225,7 +225,6 @@ class EstudiantesController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
-
         $request->validate([
             'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:9'],
             'name' => ['string', 'min:3', 'max:255'],
@@ -338,6 +337,7 @@ class EstudiantesController extends Controller
             'inicio' => Carbon::parse($request->fin_dual)->format("Y-m-d") ?? NULL,
             'fin' => Carbon::parse($request->fin_dual)->format("Y-m-d") ?? NULL,
             'beca' => true,
+
             'status' => $request->status,
             'ine' => $ine ?? NULL,
             'evaluacion_form' => $evaluacion_form ?? NULL,
@@ -475,47 +475,71 @@ class EstudiantesController extends Controller
     /**
      * Muestra el formulario para editar un estudiante.
      */
+
     public function edit($id)
     {
+        $user = Auth::user();
+        $direccionId = session('direccion')->id;
+        $id = Hashids::decode($id);
+
+        // Obtener el estudiante
+        $estudiante = Estudiantes::with('empresa')
+            ->where('matricula', $id)
+            ->firstOrFail();
+
+        // Datos comunes
         $situation = [
             ['id' => 0, 'name' => 'Primera vez'],
             ['id' => 1, 'name' => 'Renovacion Dual']
         ];
-        $direcciones = DireccionCarrera::where('id', session('direccion')->id)->get();
-        $id = Hashids::decode($id);
-        $estudiante = Estudiantes::with('empresa')->where('direccion_id', session('direccion')->id)->where('matricula', $id)->get();
-        $estudiante = $estudiante[0];
-        $empresas = Empresa::where('direccion_id', session('direccion')->id)->get();
-        $academicos = User::where('direccion_id', session('direccion')->id)->where('rol_id', 2)->get();
-        $carreras =  Carrera::where('direccion_id', session('direccion')->id)->get();
-        $cuatrimestres =  [
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
+
+        $tipoBeca = [
+            ['id' => 0, 'name' => 'Apoyo por Empresa'],
+            ['id' => 1, 'name' => 'Beca Dual Comecyt']
         ];
 
         $becas = [
             ['id' => 0, 'name' => 'Si'],
             ['id' => 1, 'name' => 'No']
         ];
-        $tipoBeca = [
-            ['id' => 0, 'name' => 'Apoyo por Empresa'],
-            ['id' => 1, 'name' => 'Beca Dual Comecyt']
-        ];
 
+        $cuatrimestres = [4, 5, 6, 7, 8, 9, 10];
 
+        // Lógica condicional para diferentes roles (como en create())
+        if ($user->rol_id === 1) {
+            $direcciones = DireccionCarrera::all();
+            $empresas = Empresa::with('direccionesCarrera')->get();
+            $academicos = User::where('rol_id', 2)->get();
+            $carreras = Carrera::all();
+            $industrials = MentorIndustrial::with('empresa')->get();
+        } else {
+            $direcciones = DireccionCarrera::where('id', $direccionId)->get();
+            $empresas = Empresa::whereHas('direccionesCarrera', function ($q) use ($direccionId) {
+                $q->where('direccion_id', $direccionId);
+            })->get();
+            $academicos = User::where('rol_id', 2)
+                ->where('direccion_id', $direccionId)
+                ->get();
+            $carreras = Carrera::where('direccion_id', $direccionId)->get();
+            $industrials = MentorIndustrial::whereHas('empresa.direccionesCarrera', function ($q) use ($direccionId) {
+                $q->where('direccion_id', $direccionId);
+            })->get();
+        }
 
+        $vista = $user->rol_id == 1 || $user->rol_id == 4 ? 'editAdmin' : 'edit';
 
-        $industrials = MentorIndustrial::with(['empresa' => function ($query) {
-            $query->where('direccion_id', session('direccion')->id);
-        }])->get();
-        $vista = Auth::user()->rol_id == 1 || Auth::user()->rol_id == 4  ? 'editAdmin' : 'edit';
-
-        return view('estudiantes.' . $vista, compact('estudiante', 'situation', 'empresas', 'academicos', 'industrials', 'carreras', 'cuatrimestres', 'becas', 'tipoBeca', 'direcciones'));
+        return view('estudiantes.' . $vista, compact(
+            'estudiante',
+            'situation',
+            'empresas',
+            'academicos',
+            'industrials',
+            'carreras',
+            'cuatrimestres',
+            'becas',
+            'tipoBeca',
+            'direcciones'
+        ));
     }
 
     /**
@@ -530,18 +554,18 @@ class EstudiantesController extends Controller
             'apellidoM' => ['string', 'min:3', 'max:255'],
             'curp' => ['string', 'min:17'],
             'fecha_na' => ['date'],
-            'beca' => ['integer'],
+            // 'beca' => ['integer'],
             'cuatrimestre' => ['integer'],
             'nombre_proyecto' => ['string', 'min:3'],
             'inicio_dual' => ['date'],
-            'fin_dual' => ['date'],
+            //  'fin_dual' => ['date'],
             'fin' => ['date'],
             'inicio' => ['date'],
             'ine' => ['file', 'mimes:pdf'],
-            'evaluacion_form' => ['file', 'mimes:pdf'],
-            'minutas' => ['file', 'mimes:pdf'],
-            'carta_acp' => ['file', 'mimes:pdf'],
-            'plan_form' => ['file', 'mimes:pdf'],
+            //'evaluacion_form' => ['file', 'mimes:pdf'],
+            // 'minutas' => ['file', 'mimes:pdf'],
+            //'carta_acp' => ['file', 'mimes:pdf'],
+            //'plan_form' => ['file', 'mimes:pdf'],
             'historial_academico' => ['file', 'mimes:pdf'],
             'perfil_ingles' => ['file', 'mimes:pdf'],
             'empresa_id' => ['integer', 'exists:' . Empresa::class . ',id'],
@@ -552,10 +576,10 @@ class EstudiantesController extends Controller
         ]);
         $inicioDual = Carbon::parse($request->inicio_dual);
         $finDual = Carbon::parse($request->fin_dual);
-        if ($inicioDual->diffInYears($finDual) !== 1) {
-            // Si la diferencia no es de un año, retornar un error
-            return redirect()->back()->withErrors(['fin_dual' => 'La diferencia entre inicio dual y fin dual debe ser de un año.']);
-        }
+        // if ($inicioDual->diffInYears($finDual) !== 1) {
+        //     // Si la diferencia no es de un año, retornar un error
+        //     return redirect()->back()->withErrors(['fin_dual' => 'La diferencia entre inicio dual y fin dual debe ser de un año.']);
+        // }
         $id = Hashids::decode($id);
         $estudiantes = Estudiantes::find($id);
         $estudiantes = $estudiantes[0];
@@ -803,6 +827,7 @@ class EstudiantesController extends Controller
         return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
     }
 
+    
     /**
      * Muestra los datos de un estudiante en formato JSON.
      */

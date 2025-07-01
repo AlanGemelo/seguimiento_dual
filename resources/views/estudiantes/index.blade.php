@@ -356,6 +356,7 @@
                                         value="{{ $search_eliminados ?? '' }}" placeholder="Buscar candidatos..."
                                         onkeydown="if(event.key === 'Enter') this.form.submit()">
                                 </form>
+                        
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -375,8 +376,7 @@
                                                 <td>{{ ($estudiantesDeleted->currentPage() - 1) * $estudiantesDeleted->perPage() + $loop->iteration }}
                                                 </td>
                                                 <td>{{ $estudianteDeleted->matricula }}</td>
-                                                <td>{{ $estudianteDeleted->name . ' ' . $estudiante->apellidoP . ' ' . $estudiante->apellidoM }}
-                                                </td>
+                                               <td>{{ $estudianteDeleted->name . ' ' . $estudianteDeleted->apellidoP . ' ' . $estudianteDeleted->apellidoM }}</td>
                                                 <td>{{ $estudianteDeleted->curp }}</td>
                                                 <td>{{ $estudianteDeleted->fecha_na }}</td>
                                                 <td>{{ $estudianteDeleted->cuatrimestre }}</td>
@@ -404,6 +404,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+
                                 <div class="d-flex justify-content-center mt-4">
                                     {{ $estudiantesDeleted->links() }}
                                 </div>

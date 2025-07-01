@@ -259,7 +259,7 @@
                                             @foreach ($industrials as $asesor)
                                                 <option value="{{ $asesor->id }}"
                                                     {{ old('asesorin_id', $estudiante->asesorin_id ?? '') == $asesor->id ? 'selected' : '' }}>
-                                                    {{ $asesor->name }}
+                                                    {{ $asesor->titulo . ' ' . $asesor->name . ' ' . $asesor->apellidoP . ' ' . $asesor->apellidoM }}
                                                 </option>
                                             @endforeach
                                         </select>

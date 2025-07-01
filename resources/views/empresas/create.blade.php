@@ -147,9 +147,9 @@
                             <h5 class="section-title">Vigencia del Convenio</h5>
 
                             <div class="dropdown-divider mb-4"></div>
-
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <!-- Fecha de Inicio -->
+                                <div class="col-md-4 mb-3">
                                     <label for="inicio_conv" class="form-label">Fecha de Inicio <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
@@ -162,19 +162,31 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3 ">
+                                    <label for="anos_conv" class="form-label">Años de convenio <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="number" data-tipo="numbers" name="anos_conv" id="anos_conv"
+                                            class="form-control"> <button type="button"
+                                            class="btn btn-primary w-10 form-control">Calcular</button>
+                                    </div>
+                                </div>
+
+                                <!-- Fecha de Finalización -->
+                                <div class="col-md-4 mb-3">
                                     <label for="fin_conv" class="form-label">Fecha de Finalización <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                                        <input type="date" class="form-control" name="fin_conv" id="fin_conv"
-                                            value="{{ old('fin_conv') }}" required>
+                                        <input disabled type="date" class="form-control" name="fin_conv"
+                                            id="fin_conv" value="{{ old('fin_conv') }}" required>
                                     </div>
                                     @error('fin_conv')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+
                         </div>
 
                         <!-- Botones de Acción -->
@@ -191,6 +203,51 @@
             </div>
         </div>
     </div>
-@endsection
 
-<script src="{{ asset('js/multipleSelector.js') }}"></script>
+    <script>
+        function calcularFechaFinal() {
+            const fechaInicio = document.getElementById('inicio_conv').value;
+            const aniosASumar = parseInt(document.getElementById('anos_conv').value);
+
+            if (!fechaInicio) {
+                alert('Por favor, seleccione una fecha de inicio.');
+                return;
+            }
+
+            if (isNaN(aniosASumar) || aniosASumar < 1) {
+                alert('Por favor, ingrese un número válido de años.');
+                return;
+            }
+
+            const [anio, mes, dia] = fechaInicio.split('-').map(Number);
+            const nuevoAnio = anio + aniosASumar;
+
+            // Verificar si la fecha original es 29 de febrero
+            if (mes === 2 && dia === 29) {
+                // Verificar si el nuevo año es bisiesto
+                const esBisiesto = (nuevoAnio % 4 === 0 && (nuevoAnio % 100 !== 0 || nuevoAnio % 400 === 0));
+                const nuevaFecha = esBisiesto ? new Date(nuevoAnio, 1, 29) : new Date(nuevoAnio, 1, 28);
+                const fechaFinal = nuevaFecha.toISOString().split('T')[0];
+                document.getElementById('fin_conv').value = fechaFinal;
+            } else {
+                const fecha = new Date(fechaInicio);
+                fecha.setFullYear(nuevoAnio);
+                const fechaFinal = fecha.toISOString().split('T')[0];
+                document.getElementById('fin_conv').value = fechaFinal;
+            }
+        }
+
+
+        // Asociar evento al botón después de que el DOM esté cargado
+        window.addEventListener('DOMContentLoaded', function() {
+            const boton = document.querySelector('#anos_conv + .btn'); // o dale un id al botón y usa getElementById
+            if (boton) {
+                boton.addEventListener('click', calcularFechaFinal);
+            }
+        });
+    </script>
+
+
+    <script src="{{ asset('js/multipleSelector.js') }}"></script>
+
+@endsection

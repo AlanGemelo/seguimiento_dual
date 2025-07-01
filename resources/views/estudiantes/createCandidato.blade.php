@@ -2,6 +2,8 @@
 @section('title', 'Crear Candidato')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+    <body class="body">
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <div class="row">
         <div class="col-12 grid-margin">
@@ -333,3 +335,4 @@
         });
     </script>
 @endsection
+    </body>

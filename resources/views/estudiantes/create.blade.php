@@ -2,6 +2,8 @@
 @section('title', 'Crear Estudiante')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+    <body class="body">
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 
     <div class="row">
@@ -495,3 +497,4 @@
         });
     </script>
 @endsection
+    </body>

@@ -114,14 +114,14 @@
         }
 
         .btn-primary {
-            background-color: #006837;
-            border: none;
-            color: white;
+            background-color: #006837 !important;
+            border: none !important;
+            color: white !important;
         }
 
-        .btn-primary:hover {
-            background-color: #66BB6A;
-            color: white;
+        .btn-primary:hover, .auth-form-light .btn-primary:hover {
+            background-color: #004d40 !important;
+            color: white !important;
         }
 
         .auth-link {

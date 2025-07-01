@@ -2,6 +2,8 @@
 @section('title', 'Mentores')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+    <body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -28,20 +30,20 @@
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores Academicos</h6>
+                        
+                            <div class="card-header-adjusted">
+                                <h6 class="card-title">Lista De Mentores Academicos</h6>
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     <div class="float-end">
                                         {{-- Button del modal --}}
-                                        <a href="{{ route('academicos.create') }}" class="btn btn-primary"
+                                        <a href="{{ route('academicos.create') }}" class="btn btn-add"
                                             title="Agregar una nuevo Mentor Academico">
                                             <i class="mdi mdi-plus-circle-outline"></i>
                                         </a>
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -333,3 +335,4 @@
     </script>
 
 @endsection
+    </body>

@@ -2,6 +2,8 @@
 @section('title', 'Editar Estudiante')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+    <body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="row">
@@ -658,3 +660,4 @@
         }
     }
 </script>
+</body>

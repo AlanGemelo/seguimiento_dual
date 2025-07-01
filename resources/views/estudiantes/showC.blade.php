@@ -4,6 +4,8 @@
 @section('title', 'Mostrar Estudiante')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+    <body class="body">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -155,3 +157,4 @@
     </div>
 
 @endsection
+</body>

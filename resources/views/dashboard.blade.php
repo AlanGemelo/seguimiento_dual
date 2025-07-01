@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Dashboard')
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/dashboardrector.css') }}">
+<body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -114,4 +116,4 @@
     </div>
     </div>
 @endsection
-
+</body>

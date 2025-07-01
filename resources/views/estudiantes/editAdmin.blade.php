@@ -232,9 +232,12 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="empresa_id" class="form-label">Empresa aplicable a Dual <span
                                                 class="text-danger">*</span></label>
-                                        <select disabled class="form-select" aria-label="Seleccionar Empresa"
-                                            name="empresa_id">
 
+                                        <select class="form-select" aria-label="Seleccionar Empresa" name="empresa_id"
+                                            id="empresa_id">
+                                            <option value="" disabled
+                                                {{ old('empresa_id', $estudiante->empresa_id ?? '') ? '' : 'selected' }}>
+                                                Seleccione una opción</option>
                                             @foreach ($empresas as $empresa)
                                                 <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
                                             @endforeach
@@ -245,27 +248,25 @@
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label for="asesorin_id" class="form-label">Acesor Indutrial <span
+                                        <label for="asesorin_id" class="form-label">Asesor Industrial <span
                                                 class="text-danger">*</span></label>
-                                        <select disabled class="form-select" aria-label="Seleccionar Asesor Industrial"
-                                            name="asesorin_id">
-
-                                            @foreach ($industrials as $industrial)
-                                                @if ($estudiante->asesorin_id == $industrial->id)
-                                                    <option value="{{ $industrial->id }}" selected>
-                                                        {{ $industrial->name }}
-                                                    </option>
-                                                @else
-                                                    <option value="{{ $industrial->id }}">{{ $industrial->name }}
-                                                    </option>
-                                                @endif
+                                        <select class="form-select" aria-label="Seleccionar Empresa" name="asesorin_id"
+                                            id="asesorin_id">
+                                            <option value="" disabled
+                                                {{ old('asesorin_id', $estudiante->asesorin_id ?? '') == '' ? 'selected' : '' }}>
+                                                Seleccione una opción
+                                            </option>
+                                            @foreach ($industrials as $asesor)
+                                                <option value="{{ $asesor->id }}"
+                                                    {{ old('asesorin_id', $estudiante->asesorin_id ?? '') == $asesor->id ? 'selected' : '' }}>
+                                                    {{ $asesor->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('asesorin_id')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-
 
 
                                     <div class="col-md-6 mb-3">
@@ -302,7 +303,7 @@
                                                 <option value="nada"
                                                     {{ old('beca', $estudiante->beca ?? '') == 'nada' ? 'selected' : '' }}>
                                                     Seleccione una opción</option>
-                                             
+
                                                 @foreach ($becas as $carrera)
                                                     <option value="{{ $carrera['id'] }}"
                                                         {{ old('beca', $estudiante->beca ?? '') == $carrera['id'] ? 'selected' : '' }}>
@@ -701,163 +702,167 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-@endsection
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mostrarInput();
+        });
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        mostrarInput();
-    });
+        $(document).ready(function() {
+            $('#direccion_id').on('change', function() {
+                let direccionId = $(this).val();
 
-    document.getElementById('direccion_id').addEventListener('change', function() {
-        let direccionId = this.value;
-        if (direccionId) {
-            fetch(`/get-carreras-academicos/${direccionId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Limpiar selects
-                    let carreraSelect = document.getElementById('carrera_id');
-                    let academicoSelect = document.getElementById('academico_id');
-                    carreraSelect.innerHTML = '<option selected>Seleccione una opción</option>';
-                    academicoSelect.innerHTML = '<option selected>Seleccione una opción</option>';
+                if (direccionId) {
+                    fetch(`/get-carreras-academicos/${direccionId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            let carreraSelect = $('#carrera_id');
+                            let academicoSelect = $('#academico_id');
 
-                    // Actualizar carreras
-                    data.carreras.forEach(carrera => {
-                        carreraSelect.innerHTML +=
-                            `<option value="${carrera.id}">${carrera.nombre}</option>`;
-                    });
+                            carreraSelect.html('<option selected>Seleccione una opción</option>');
+                            academicoSelect.html('<option selected>Seleccione una opción</option>');
 
-                    // Actualizar académicos
-                    data.academicos.forEach(academico => {
-                        academicoSelect.innerHTML +=
-                            `<option value="${academico.id}">${academico.titulo} ${academico.name}</option>`;
-                    });
-                })
-                .catch(error => console.error('Error fetching data:', error));
-        }
-    });
+                            data.carreras.forEach(carrera => {
+                                carreraSelect.append(
+                                    `<option value="${carrera.id}">${carrera.nombre}</option>`
+                                );
+                            });
 
-    function ocultar(id, id2, text) {
-        const elemento = document.getElementById(`${id}`);
-        elemento.hidden = !elemento.hidden;
-        document.getElementById(`${text}`).textContent = elemento.hidden ? 'Ver Documento' :
-            'Cambiar Documento'; // Habilita el botón para cambiar el archivo
-        if (!elemento.hidden) {
-            document.getElementById(id2).value = '';
-
-
-        }
-        const elemento1 = document.getElementById(`${id2}`);
-        elemento1.hidden = !elemento1.hidden; // Habilita el botón para cambiar el archivo
-    }
-
-    // Función para cambiar el archivo
-    function changeFile() {
-        // Restablece el campo de entrada de archivos seleccionado
-        document.getElementById('carta_acp').value = '';
-    }
-
-
-
-    function mostrarInput() {
-        var becaValue = document.getElementById('beca').value;
-        var tipoBecaDiv = document.getElementById('tipoBeca');
-        var tipoBecaSelect = document.getElementById('selectTipoBeca');
-
-        // Mostrar solo si es una beca válida (no vacío, no 'nada', no '1')
-        if (becaValue && becaValue !== 'nada' && becaValue !== '1') {
-            tipoBecaDiv.style.display = 'block';
-            tipoBecaSelect.disabled = false;
-            tipoBecaSelect.required = true;
-        } else {
-            tipoBecaDiv.style.display = 'none';
-            tipoBecaSelect.value = '';
-            tipoBecaSelect.disabled = true;
-            tipoBecaSelect.required = false;
-        }
-    }
-
-    // Ejecutar al cargar la página para establecer estado inicial
-    document.addEventListener('DOMContentLoaded', function() {
-        mostrarInput();
-    });
-
-
-
-    $(document).ready(function() {
-        // Manejar el cambio en el campo academico_id
-        $('#empresa_id').change(function() {
-            var mentorId = $(this).val();
-
-
-            // Realizar la petición AJAX
-            $.ajax({
-                type: 'GET',
-                url: '/mentores/' + mentorId + '/empresa',
-                success: function(data) {
-                    console.log('Datos recibidos del servidor:',
-                        data); // <- Aquí ves la respuesta completa
-
-                    var selectAsesorin = $('select[name="asesorin_id"]');
-                    if (data.length > 0) {
-                        selectAsesorin.empty();
-                        selectAsesorin.append(
-                            '<option value="" selected>Seleccione algo</option>');
-
-                        $.each(data, function(index, asesorin) {
-                            selectAsesorin.append(
-                                '<option value="' + asesorin.id + '">' +
-                                asesorin.name + ' ' + asesorin.apellidoP + ' ' +
-                                asesorin.apellidoM +
-                                '</option>'
-                            );
-                        });
-                    } else {
-                        selectAsesorin.empty();
-                        selectAsesorin.append(
-                            '<option value="" selected disabled>No hay asesores industriales disponibles</option>'
-                        );
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
+                            data.academicos.forEach(academico => {
+                                academicoSelect.append(
+                                    `<option value="${academico.id}">${academico.titulo} ${academico.name}</option>`
+                                );
+                            });
+                        })
+                        .catch(error => console.error('Error fetching data:', error));
                 }
             });
         });
-    });
 
-    $(document).ready(function() {
-        $('#direccion_id').change(function() {
-            var direccionId = $(this).val();
 
-            if (direccionId) {
-                // Mostrar los selects ocultos
-                $('#academico_select').show();
-                $('#carrera_select').show();
+        function ocultar(id, id2, text) {
+            const elemento = document.getElementById(`${id}`);
+            elemento.hidden = !elemento.hidden;
+            document.getElementById(`${text}`).textContent = elemento.hidden ? 'Ver Documento' :
+                'Cambiar Documento'; // Habilita el botón para cambiar el archivo
+            if (!elemento.hidden) {
+                document.getElementById(id2).value = '';
 
-                // Filtrar opciones de carreras
-                $('#carrera_id option').each(function() {
-                    if ($(this).data('direccion') == direccionId || $(this).val() == "") {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
 
-                // Filtrar opciones de académicos
-                $('#academico_id option').each(function() {
-                    if ($(this).data('direccion') == direccionId || $(this).val() == "") {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-
-            } else {
-                // Ocultar selects si no hay dirección seleccionada
-                $('#academico_select').hide();
-                $('#carrera_select').hide();
             }
+            const elemento1 = document.getElementById(`${id2}`);
+            elemento1.hidden = !elemento1.hidden; // Habilita el botón para cambiar el archivo
+        }
+
+        // Función para cambiar el archivo
+        function changeFile() {
+            // Restablece el campo de entrada de archivos seleccionado
+            document.getElementById('carta_acp').value = '';
+        }
+
+
+
+        function mostrarInput() {
+            var becaValue = document.getElementById('beca').value;
+            var tipoBecaDiv = document.getElementById('tipoBeca');
+            var tipoBecaSelect = document.getElementById('selectTipoBeca');
+
+            // Mostrar solo si es una beca válida (no vacío, no 'nada', no '1')
+            if (becaValue && becaValue !== 'nada' && becaValue !== '1') {
+                tipoBecaDiv.style.display = 'block';
+                tipoBecaSelect.disabled = false;
+                tipoBecaSelect.required = true;
+            } else {
+                tipoBecaDiv.style.display = 'none';
+                tipoBecaSelect.value = '';
+                tipoBecaSelect.disabled = true;
+                tipoBecaSelect.required = false;
+            }
+        }
+
+        // Ejecutar al cargar la página para establecer estado inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            mostrarInput();
         });
-    });
-</script>
+
+
+        $(document).ready(function() {
+            // Manejar el cambio en el campo academico_id
+            $('#empresa_id').change(function() {
+                var mentorId = $(this).val();
+
+                // Realizar la petición AJAX
+                $.ajax({
+                    type: 'GET',
+                    url: '/mentores/' + mentorId + '/empresa',
+                    success: function(data) {
+                        console.log('Datos recibidos del servidor:',
+                            data); // <- Aquí ves la respuesta completa
+
+                        var selectAsesorin = $('select[name="asesorin_id"]');
+                        if (data.length > 0) {
+                            selectAsesorin.empty();
+                            selectAsesorin.append(
+                                '<option value="" selected>Seleccione algo</option>');
+
+                            $.each(data, function(index, asesorin) {
+                                selectAsesorin.append(
+                                    '<option value="' + asesorin.id + '">' +
+                                    asesorin.name + ' ' + asesorin.apellidoP + ' ' +
+                                    asesorin.apellidoM +
+                                    '</option>'
+                                );
+                            });
+                        } else {
+                            selectAsesorin.empty();
+                            selectAsesorin.append(
+                                '<option value="" selected disabled>No hay asesores industriales disponibles</option>'
+                            );
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+
+        $(document).ready(function() {
+            $('#direccion_id').change(function() {
+                var direccionId = $(this).val();
+
+                if (direccionId) {
+                    // Mostrar los selects ocultos
+                    $('#academico_select').show();
+                    $('#carrera_select').show();
+
+                    // Filtrar opciones de carreras
+                    $('#carrera_id option').each(function() {
+                        if ($(this).data('direccion') == direccionId || $(this).val() == "") {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    // Filtrar opciones de académicos
+                    $('#academico_id option').each(function() {
+                        if ($(this).data('direccion') == direccionId || $(this).val() == "") {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                } else {
+                    // Ocultar selects si no hay dirección seleccionada
+                    $('#academico_select').hide();
+                    $('#carrera_select').hide();
+                }
+            });
+        });
+    </script>
+
+@endsection

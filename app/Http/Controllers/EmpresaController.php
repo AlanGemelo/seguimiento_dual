@@ -49,63 +49,108 @@ class EmpresaController extends Controller
 
     public function registrar(Request $request, Empresa $empresa)
     {
+
         $data = $request->validate([
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:empresas,email,' . $empresa->id,
-            'direccion' => 'required|string',
+            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
             'telefono' => 'required|string|size:10',
             'inicio_conv' => 'required|date',
             'fin_conv' => 'required|date',
-            //'ine' => 'nullable|file|mimes:pdf,jpg',
-            'direcciones_ids' => 'required|array',
-            'direcciones_ids.*' => 'exists:direccion_carreras,id',
+            'unidad_economica' => 'required|string|max:255',
+            'fecha_registro' => 'required|date',
+            'razon_social' => 'required|string|max:255',
+            'nombre_representante' => 'required|string|max:255',
+            'cargo_representante' => 'required|string|max:255',
+            'actividad_economica' => 'required|string|max:255',
+            'tamano_ue' => 'required|integer',
+            'folio' => 'nullable|string|max:255',
+            'ine' => 'nullable|file|mimes:pdf,jpg',
             'convenioA' => 'nullable|file|mimes:pdf,jpg',
             'convenioMA' => 'nullable|file|mimes:pdf,jpg',
-            // 'folio' => 'nullable|string|max:255',
+            'direcciones_ids' => 'required|array',
+            'direcciones_ids.*' => 'exists:direccion_carreras,id',
+
         ]);
 
+        if ($request->file('ine')) {
+            $ine = 'ine/' . $request->nombre . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
+            $ine = $request->file('ine')->storeAs('public', $ine);
+        }
+
+        if ($request->hasFile('convenioA')) {
+            $convenioA = 'convenioA/' . $request->nombre . '_' . date('Y-m-d') . '_' . $request->file('convenioA')->getClientOriginalName();
+            $convenioA = $request->file('convenioA')->storeAs('public', $convenioA);
+        }
+        if ($request->hasFile('convenioMA')) {
+            $convenioMA = 'convenioMA/' . $request->nombre . '_' . date('Y-m-d') . '_' . $request->file('convenioMA')->getClientOriginalName();
+            $convenioMA = $request->file('convenioMA')->storeAs('public', $convenioMA);
+        }
+
+        if (!empty($data['direcciones_ids'])) {
+
+            $empresa->direcciones()->sync($data['direcciones_ids']);
+        }
+
         $empresa->update($request->except('direcciones_ids'));
+
         if (isset($data['direcciones_ids']) && !empty($data['direcciones_ids'])) {
             $empresa->direcciones()->sync($data['direcciones_ids']);
         }
+
         $empresa->status = 1; // Cambiar el estado a registrada
         $empresa->save();
 
         return redirect()->route('empresas.index')->with('success', 'Empresa registrada exitosamente.');
     }
 
-    public function store(Request $request, Empresa $empresa)
+    public function store(Request $request)
     {
         $data = $request->validate([
             'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
+            'email' => 'required|email|unique:empresas,email',
             'direccion' => 'required|string',
             'telefono' => 'required|string|size:10',
             'inicio_conv' => 'required|date',
             'fin_conv' => 'required|date',
-            //'ine' => 'nullable|file|mimes:pdf,jpg',
             'direcciones_ids' => 'required|array',
             'direcciones_ids.*' => 'exists:direccion_carreras,id',
-            'convenioA' => 'nullable|file|mimes:pdf,jpg',
-            'convenioMA' => 'nullable|file|mimes:pdf,jpg',
-            // 'unidad_economica' => 'required|string|max:255',
-            // 'fecha_registro' => 'required|date',
-            //'razon_social' => 'required|string|max:255',
-            //'nombre_representante' => 'required|string|max:255',
-            //'cargo_representante' => 'required|string|max:255',
-            //'actividad_economica' => 'required|string|max:255',
-            //'tamano_ue' => 'required|integer',
-            //'folio' => 'required|string|max:255',
+            'convenioA' => 'required|file|mimes:pdf,jpeg,png|max:5120',
+            'convenioMA' => 'required|file|mimes:pdf,jpeg,png|max:5120',
         ]);
 
-        $empresa = Empresa::create($request->except('direcciones_ids'));
+        // Almacenar documentos
+        $convenioAPath = null;
+        $convenioMAPath = null;
+
+        if ($request->hasFile('convenioA')) {
+            $convenioAPath = $request->file('convenioA')->store('empresas/documentos', 'public');
+        }
+
+        if ($request->hasFile('convenioMA')) {
+            $convenioMAPath = $request->file('convenioMA')->store('empresas/documentos', 'public');
+        }
+
+        // Crear la empresa con los datos del formulario
+        $empresa = Empresa::create([
+            'nombre' => $data['nombre'],
+            'email' => $data['email'],
+            'direccion' => $data['direccion'],
+            'telefono' => $data['telefono'],
+            'inicio_conv' => $data['inicio_conv'],
+            'fin_conv' => $data['fin_conv'],
+            'convenioA' => $convenioAPath,
+            'convenioMA' => $convenioMAPath,
+            'status' => 1, // Empresa registrada
+        ]);
+
+        // Asociar direcciones de carrera
         if (isset($data['direcciones_ids']) && !empty($data['direcciones_ids'])) {
             $empresa->direcciones()->sync($data['direcciones_ids']);
         }
-        $empresa->status = 1; // Cambiar el estado a registrada
-        return redirect()->route('empresas.index')->with('success', 'Empresa interesada creada exitosamente.');
-    }
 
+        return redirect()->route('empresas.index')->with('success', 'Empresa creada exitosamente.');
+    }
     /* public function store(Request $request)
     {
         $request->validate([
@@ -131,7 +176,9 @@ class EmpresaController extends Controller
         if (empty($id)) {
             return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
         }
-        $empresa = Empresa::find($id[0]);
+
+        $empresa = Empresa::with('direcciones')->find($id[0]);
+
         if (!$empresa) {
             return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
         }

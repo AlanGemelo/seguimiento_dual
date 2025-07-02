@@ -84,266 +84,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-<<<<<<< HEAD
                                         <h5 class="section-title fw-bold ">Información Académica </h5>
-=======
-                                        <div class="col-md-4 mb-3">
-                                            <label for="name" class="form-label">Nombre(s) <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="text" class="form-control uppercase"
-                                                id="name" placeholder="Ingrese su(s) nombre(s)" name="name"
-                                                value="{{ $estudiante->name, old('name') }}">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label for="apellidoP" class="form-label">Apellido Paterno <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="text" class="form-control uppercase"
-                                                id="apellidoP" placeholder="Ingrese su apellido paterno" name="apellidoP"
-                                                value="{{ $estudiante->apellidoP, old('apellidoP') }}">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label for="apellidoM" class="form-label">Apellido Materno <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" data-tipo="text" class="form-control uppercase"
-                                                id="apellidoM" placeholder="Ingrese su apellido materno" name="apellidoM"
-                                                value="{{ $estudiante->apellidoM, old('apellidoM') }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        <label for="curp" class="form-label">CURP <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" data-tipo="curp" class="form-control uppercase" id="curp"
-                                            name="curp" value="{{ $estudiante->curp, old('curp') }}">
-                                        @error('curp')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        <label for="fecha_na" class="form-label">Fecha de Nacimiento <span
-                                                class="text-danger">*</span></label>
-                                        <input type="date" class="form-control form-control-lg" name="fecha_na"
-                                            id="fecha_na" value="{{ $estudiante->fecha_na, old('fecha_na') }}">
-                                        @error('fecha_na')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <h5 class="section-title fw-bold ">Información Académica </h5>
-                                    <div class="dropdown-divider mb-4"></div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="direccion_id" class="form-label">Dirección de carrera <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" aria-label="Seleccionar Dirección de carrera"
-                                            name="direccion_id">
-                                            <option value="" disabled
-                                                {{ old('direccion_id', $estudiante->direccion_id) ? '' : 'selected' }}>
-                                                Seleccione una opción</option>
-                                            @foreach ($direcciones as $direccion)
-                                                <option value="{{ $direccion->id }}"
-                                                    {{ old('direccion_id', $estudiante->direccion_id) == $direccion->id ? 'selected' : '' }}>
-                                                    {{ $direccion->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('direccion_id')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="carrera_id" class="form-label">Programa Educativo <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" aria-label="Seleccionar Programa Educativo"
-                                            name="carrera_id" id="carrera_id">
-                                            <option value="" disabled
-                                                {{ old('carrera_id', $estudiante->carrera_id ?? '') ? '' : 'selected' }}>
-                                                Seleccione una opción</option>
-                                            @foreach ($carreras as $carrera)
-                                                <option value="{{ $carrera->id }}"
-                                                    data-direccion="{{ $carrera->direccion_id }}"
-                                                    {{ old('carrera_id', $estudiante->carrera_id ?? '') == $carrera->id ? 'selected' : '' }}>
-                                                    {{ $carrera->grado_academico . ' En ' . $carrera->nombre }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('carrera_id')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="inicio" class="form-label">Fecha de Ingreso <span
-                                                class="text-danger">*</span></label>
-                                        <input type="date" class="form-control form-control-lg" name="inicio"
-                                            id="inicio" value="{{ $estudiante->inicio, old('inicio') }}">
-                                        @error('inicio')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="fin" class="form-label">Fecha de Egreso <span
-                                                class="text-danger">*</span></label>
-                                        <input type="date" class="form-control form-control-lg" name="fin"
-                                            id="fin" value="{{ $estudiante->fin, old('fin') }}">
-                                        @error('fin')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        <label for="cuatrimestre" class="form-label">Cuatrimestre aplicable a Dual <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" aria-label="Seleccionar Cuatrimestre"
-                                            name="cuatrimestre">
-                                            <option value="" disabled
-                                                {{ old('cuatrimestre', $estudiante->cuatrimestre ?? '') ? '' : 'selected' }}>
-                                                Seleccione una opción</option>
-                                            @foreach (['4', '5', '6', '7', '8'] as $num)
-                                                <option value="{{ $num }}"
-                                                    {{ old('cuatrimestre', $estudiante->cuatrimestre ?? '') == $num ? 'selected' : '' }}>
-                                                    {{ $num }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('cuatrimestre')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        <label for="status" class="form-label">Situación Dual <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" aria-label="Seleccionar Situación Dual"
-                                            name="status">
-                                            <option value="" disabled
-                                                {{ old('status', $estudiante->status ?? '') ? '' : 'selected' }}>Seleccione
-                                                una opción</option>
-                                            @foreach ($situation as $item)
-                                                <option value="{{ $item['id'] }}"
-                                                    {{ old('status', $estudiante->status ?? '') == $item['id'] ? 'selected' : '' }}>
-                                                    {{ $item['name'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('status')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="nombre_proyecto" class="form-label">Nombre del Proyecto <span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
-                                            placeholder="Integrador" name="nombre_proyecto"
-                                            value="{{ $estudiante->nombre_proyecto, old('nombre_proyecto') }}">
-                                        @error('nombre_proyecto')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="academico_id" class="form-label">Mentor Academico <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" aria-label="Seleccionar Mentor Académico"
-                                            name="academico_id" id="academico_id">
-                                            <option value="" disabled
-                                                {{ old('academico_id', $estudiante->academico_id ?? '') ? '' : 'selected' }}>
-                                                Seleccione una opción</option>
-                                            @foreach ($academicos as $mentor)
-                                                <option value="{{ $mentor->id }}"
-                                                    data-direccion="{{ $mentor->direccion_id }}"
-                                                    {{ old('academico_id', $estudiante->academico_id ?? '') == $mentor->id ? 'selected' : '' }}>
-                                                    {{ $mentor->titulo }}
-                                                    {{ $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('cid')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-                                    <h5 class="section-title fw-bold  mt-4">Datos de la unidad económica </h5>
-                                    <div class="droCdown-divider mb-4"></div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="empresa_id" class="form-label">Empresa aplicable a Dual <span
-                                                class="text-danger">*</span></label>
-
-                                        <select class="form-select" aria-label="Seleccionar Empresa" name="empresa_id"
-                                            id="empresa_id">
-                                            <option value="" disabled
-                                                {{ old('empresa_id', $estudiante->empresa_id ?? '') ? '' : 'selected' }}>
-                                                Seleccione una opción</option>
-                                            @foreach ($empresas as $empresa)
-                                                <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('empresa_id')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="asesorin_id" class="form-label">Asesor Industrial <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" aria-label="Seleccionar Empresa" name="asesorin_id"
-                                            id="asesorin_id">
-                                            <option value="" disabled
-                                                {{ old('asesorin_id', $estudiante->asesorin_id ?? '') == '' ? 'selected' : '' }}>
-                                                Seleccione una opción
-                                            </option>
-                                            @foreach ($industrials as $asesor)
-                                                <option value="{{ $asesor->id }}"
-                                                    {{ old('asesorin_id', $estudiante->asesorin_id ?? '') == $asesor->id ? 'selected' : '' }}>
-                                                    {{ $asesor->titulo . ' ' . $asesor->name . ' ' . $asesor->apellidoP . ' ' . $asesor->apellidoM }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('asesorin_id')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="inicio_dual" class="form-label">Inicio Dual <span
-                                                class="text-danger">*</span></label>
-                                        <input type="date" class="form-control form-control-lg" name="inicio_dual"
-                                            id="inicio_dual" value="{{ $estudiante->inicio_dual, old('inicio_dual') }}">
-                                        @error('inicio_dual')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6 mb-3">
-                                        <label for="fin_dual" class="form-label">Fin Dual <span
-                                                class="text-danger">*</span></label>
-                                        <input type=date class="form-control form-control-lg" name="fin"
-                                            id="fin_dual" value="{{ $estudiante->fin_dual, old('fin_dual') }}">
-                                        @error('fin_dual')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="row">
-                                        <h5 class="section-title fw-bold  mt-4">Beneficios </h5>
->>>>>>> 8750711 (feat: agregar botón para calcular fecha final)
                                         <div class="dropdown-divider mb-4"></div>
 
                                         <div class="col-md-6 mb-3">
@@ -522,7 +263,7 @@
                                                 @foreach ($industrials as $asesor)
                                                     <option value="{{ $asesor->id }}"
                                                         {{ old('asesorin_id', $estudiante->asesorin_id ?? '') == $asesor->id ? 'selected' : '' }}>
-                                                        {{ $asesor->name }}
+                                                        {{ $asesor->titulo . ' ' . $asesor->name . ' ' . $asesor->apellidoP . ' ' . $asesor->apellidoM }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -1053,6 +794,7 @@
                 mostrarInput();
             });
 
+
             $(document).ready(function() {
                 // Manejar el cambio en el campo academico_id
                 $('#empresa_id').change(function() {
@@ -1131,4 +873,6 @@
             });
         </script>
 
-    @endsection
+    </body>
+
+@endsection

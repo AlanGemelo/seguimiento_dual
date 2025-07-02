@@ -1,19 +1,20 @@
 @php use Illuminate\Support\Facades\Storage; @endphp
 
 @extends('layouts.app')
-@section('title', 'Mostrar Empresa')
+@section('title', 'Mostrar UEI')
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+
     <body class="body">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card shadow">
-                        <x-section-header title="Datos de la Unidad Económica"
-                            description="Visualización de la información de la Unidades Económicas." />
-                        <div class="card-body">
+                        <x-section-header title="Datos de la Unidad Económica Interesada (UEI)"
+                            description="Visualización de la información de la Unidad Económica Interesada (UEI)." />
 
+                        <div class="card-body">
                             <!-- Información Básica -->
                             <div class="mb-4">
                                 <h5 class="section-title">Información Básica</h5>
@@ -70,10 +71,8 @@
                                             @endforeach
                                         </ul>
                                     @else
-                                        <div class="alert alert-warning">No se han seleccionado direcciones de carrera
-                                        </div>
+                                        <div class="alert alert-warning">No se han seleccionado direcciones de carrera</div>
                                     @endif
-
                                 </div>
                             </div>
                             <!-- Vigencia del Convenio -->

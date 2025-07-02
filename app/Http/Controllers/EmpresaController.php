@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Vinkla\Hashids\Facades\Hashids;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class EmpresaController extends Controller
 {
@@ -49,11 +51,9 @@ class EmpresaController extends Controller
 
     public function registrar(Request $request, Empresa $empresa)
     {
-
         $data = $request->validate([
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:empresas,email,' . $empresa->id,
-            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
             'telefono' => 'required|string|size:10',
             'inicio_conv' => 'required|date',
             'fin_conv' => 'required|date',
@@ -65,28 +65,38 @@ class EmpresaController extends Controller
             'actividad_economica' => 'required|string|max:255',
             'tamano_ue' => 'required|integer',
             'folio' => 'nullable|string|max:255',
-            'ine' => 'nullable|file|mimes:pdf,jpg',
+            'direccion' => 'required|string|max:255',
+            'ine' => 'required|file|mimes:pdf,jpg',
             'convenioA' => 'nullable|file|mimes:pdf,jpg',
             'convenioMA' => 'nullable|file|mimes:pdf,jpg',
             'direcciones_ids' => 'required|array',
             'direcciones_ids.*' => 'exists:direccion_carreras,id',
-
         ]);
 
-        if ($request->file('ine')) {
-            $ine = 'ine/' . $request->nombre . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
-            $ine = $request->file('ine')->storeAs('public', $ine);
+        $empresaNombre = Str::slug($request->input('nombre'));
+        $fecha = now()->format('d-m-Y');
+
+        $inePath = null;
+        $convenioAPath = null;
+        $convenioMAPath = null;
+
+        if ($request->hasFile('ine')) {
+            $file = $request->file('ine');
+            $filename = $fecha . '_' . $empresaNombre . '_ine.' . $file->getClientOriginalExtension();
+            $inePath = $file->storeAs('empresas/documentos', $filename, 'public');
         }
 
         if ($request->hasFile('convenioA')) {
-            $convenioA = 'convenioA/' . $request->nombre . '_' . date('Y-m-d') . '_' . $request->file('convenioA')->getClientOriginalName();
-            $convenioA = $request->file('convenioA')->storeAs('public', $convenioA);
-        }
-        if ($request->hasFile('convenioMA')) {
-            $convenioMA = 'convenioMA/' . $request->nombre . '_' . date('Y-m-d') . '_' . $request->file('convenioMA')->getClientOriginalName();
-            $convenioMA = $request->file('convenioMA')->storeAs('public', $convenioMA);
+            $file = $request->file('convenioA');
+            $filename = $fecha . '_' . $empresaNombre . '_convenioA.' . $file->getClientOriginalExtension();
+            $convenioAPath = $file->storeAs('empresas/documentos', $filename, 'public');
         }
 
+        if ($request->hasFile('convenioMA')) {
+            $file = $request->file('convenioMA');
+            $filename = $fecha . '_' . $empresaNombre . '_convenioMA.' . $file->getClientOriginalExtension();
+            $convenioMAPath = $file->storeAs('empresas/documentos', $filename, 'public');
+        }
         if (!empty($data['direcciones_ids'])) {
 
             $empresa->direcciones()->sync($data['direcciones_ids']);
@@ -119,16 +129,23 @@ class EmpresaController extends Controller
             'convenioMA' => 'required|file|mimes:pdf,jpeg,png|max:5120',
         ]);
 
-        // Almacenar documentos
+        //Procesamiento de documentos pdf jpg
+        $empresaNombre = Str::slug($request->input('nombre'));
+        $fecha = now()->format('d-m-Y');
+
         $convenioAPath = null;
         $convenioMAPath = null;
 
         if ($request->hasFile('convenioA')) {
-            $convenioAPath = $request->file('convenioA')->store('empresas/documentos', 'public');
+            $file = $request->file('convenioA');
+            $filename = $fecha . '_' . $empresaNombre . '_convenioA.' . $file->getClientOriginalExtension();
+            $convenioAPath = $file->storeAs('empresas/documentos', $filename, 'public');
         }
 
         if ($request->hasFile('convenioMA')) {
-            $convenioMAPath = $request->file('convenioMA')->store('empresas/documentos', 'public');
+            $file = $request->file('convenioMA');
+            $filename = $fecha . '_' . $empresaNombre . '_convenioMA.' . $file->getClientOriginalExtension();
+            $convenioMAPath = $file->storeAs('empresas/documentos', $filename, 'public');
         }
 
         // Crear la empresa con los datos del formulario
@@ -186,6 +203,23 @@ class EmpresaController extends Controller
         return view('empresas.show', compact('empresa'));
     }
 
+    public function show_establecidas($id)
+    {
+        $id = Hashids::decode($id);
+
+        if (empty($id)) {
+            return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
+        }
+
+        $empresa = Empresa::with('direcciones')->find($id[0]);
+
+        if (!$empresa) {
+            return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
+        }
+
+        return view('empresas.show_establecidas', compact('empresa'));
+    }
+
     public function edit(Empresa $empresa)
     {
         $direcciones = DireccionCarrera::all(); // Asegúrate de obtener las direcciones
@@ -194,32 +228,81 @@ class EmpresaController extends Controller
 
     public function update(Request $request, Empresa $empresa)
     {
+      //  dd($empresa->id); // Verifica que no sea null o incorrecto
+
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
-            'direccion' => 'required|string',
-            'telefono' => 'required|string|size:10',
-            'inicio_conv' => 'required|date',
-            'fin_conv' => 'required|date',
-            'ine' => 'nullable|file|mimes:pdf,jpg',
-            'direccion_id' => 'required|integer|exists:direccion_carreras,id',
-            'convenioA' => 'nullable|file|mimes:pdf,jpg',
-            'convenioMA' => 'nullable|file|mimes:pdf,jpg',
-            // Nuevos campos
-            'unidad_economica' => 'nullable|string|max:255',
-            'fecha_registro' => 'nullable|date',
             'razon_social' => 'nullable|string|max:255',
-            'nombre_representante' => 'nullable|string|max:255',
-            'cargo_representante' => 'nullable|string|max:255',
             'actividad_economica' => 'nullable|string|max:255',
-            'tamano_ue' => 'nullable|integer',
+            'unidad_economica' => 'nullable|string|max:255',
+            'tamano_ue' => 'nullable|string|max:255',
             'folio' => 'nullable|string|max:255',
+            'direccion' => 'nullable|string|max:255',
+            'fecha_registro' => 'nullable|date',
+            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
+            'telefono' => 'required|string|size:10',
+            'nombre_representante' => 'required|string|max:255',
+            'cargo_representante' => 'required|string|max:255',
+            'direcciones_ids' => 'required|array',
+            'direcciones_ids.*' => 'exists:direccion_carreras,id',
+            'inicio_conv' => 'required|date',
+            'anos_conv' => 'nullable|integer|min:0',
+            'fin_conv' => 'required|date|after_or_equal:inicio_conv',
+            'ine' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'convenioA' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'convenioMA' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
-        $empresa->update($request->all());
+        $empresaNombre = Str::slug($request->input('nombre'));
+        $fecha = now()->format('d-m-Y');
+
+        $inePath = $empresa->ine;
+        $convenioAPath = $empresa->convenioA;
+        $convenioMAPath = $empresa->convenioMA;
+
+        if ($request->hasFile('ine')) {
+            $file = $request->file('ine');
+            $filename = $fecha . '_' . $empresaNombre . '_ine.' . $file->getClientOriginalExtension();
+            $inePath = $file->storeAs('empresas/documentos', $filename, 'public');
+        }
+
+        if ($request->hasFile('convenioA')) {
+            $file = $request->file('convenioA');
+            $filename = $fecha . '_' . $empresaNombre . '_convenioA.' . $file->getClientOriginalExtension();
+            $convenioAPath = $file->storeAs('empresas/documentos', $filename, 'public');
+        }
+
+        if ($request->hasFile('convenioMA')) {
+            $file = $request->file('convenioMA');
+            $filename = $fecha . '_' . $empresaNombre . '_convenioMA.' . $file->getClientOriginalExtension();
+            $convenioMAPath = $file->storeAs('empresas/documentos', $filename, 'public');
+        }
+
+        $empresa->update([
+            'nombre' => $request->nombre,
+            'razon_social' => $request->razon_social,
+            'actividad_economica' => $request->actividad_economica,
+            'unidad_economica' => $request->unidad_economica,
+            'tamano_ue' => $request->tamano_ue,
+            'folio' => $request->folio,
+            'direccion' => $request->direccion,
+            'fecha_registro' => $request->fecha_registro,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+            'nombre_representante' => $request->nombre_representante,
+            'cargo_representante' => $request->cargo_representante,
+            'inicio_conv' => $request->inicio_conv,
+            'fin_conv' => $request->fin_conv,
+            'ine' => $inePath,
+            'convenioA' => $convenioAPath,
+            'convenioMA' => $convenioMAPath,
+        ]);
+
+        $empresa->direcciones()->sync($request->direcciones_ids);
 
         return redirect()->route('empresas.index')->with('success', 'Empresa actualizada exitosamente.');
     }
+
 
     public function destroy(Empresa $empresa)
     {

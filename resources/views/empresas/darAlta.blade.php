@@ -1,165 +1,317 @@
 @extends('layouts.app')
-@section('title', 'Dar de Alta Empresa')
+@section('title', 'Dar de Alta UE')
 
 @section('content')
-<div class="row">
-    <div class="col-12 grid-margin">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-                <div class="card">
+            <div class="col-lg-12">
+                <div class="card shadow">
+                    <x-section-header title="Registro de Alta de la Unidad Económica"
+                        description="Alta de la nueva Unidad Económica interesada en colaborar con la Universidad mediante el Modelo de Formación Dual, indicando las carreras con las que desean establecer vínculo académico." />
+
                     <div class="card-body">
-                        <h4 class="card-title">Dar de Alta Empresa</h4>
-                        <span class="text-danger">* Son campos requeridos</span>
-                        <div class="dropdown-divider"></div>
-                        <form class="pt-3" action="{{ route('empresas.registrar', $empresa->id) }}" method="post" enctype="multipart/form-data">
+                        <form class="pt-3" action="{{ route('empresas.registrar', $empresa->id) }}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
-                            <div class="form-group">
-                                <label for="nombre">Nombre <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="nombre" name="nombre" value="{{ old('nombre', $empresa->nombre) }}" required>
-                                @error('nombre')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                            <!-- Información Básica -->
+                            <div class="mb-4">
+                                <h5 class="section-title fw-bold">Información Básica</h5>
+                                <small class="text-muted text-stone-950">(Datos principales)</small>
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombre" class="form-label">Nombre de la empresa <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="nombre"
+                                            placeholder="Razón social o nombre legal de la empresa" name="nombre"
+                                            value="{{ old('nombre', $empresa->nombre) }}" required>
+                                        @error('nombre')
+                                            <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="razon_social" class="form-label">Razón Social <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control  " name="razon_social" id="razon_social"
+                                            value="{{ old('razon_social', $empresa->razon_social) }}">
+                                        @error('razon_social')
+                                            <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="actividad_economica">Unidad Económica</label>
+                                        <input type="text" class="form-control  " name="actividad_economica"
+                                            id="actividad_economica"
+                                            value="{{ old('actividad_Economica', $empresa->actividad_economica) }}">
+                                        @error('actividad_economica')
+                                            <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="" class="form-label">Actividad Económica</label>
+                                        <input type="text" class="form-control  " name="unidad_economica"
+                                            id="unidad_economica"
+                                            value="{{ old('unidad_economica', $empresa->unidad_economica) }}">
+                                        @error('unidad_economica')
+                                            <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tamano_ue" class="form-label">Tamaño de la UE</label>
+                                        <input type="text" name="tamano_ue" id="tamano_ue" class="form-control  "
+                                            value="{{ old('tamano_ue', $empresa->tamano_ue) }}">
+                                        @error('tamano_ue')
+                                            <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="folio" class="form-label">Folio</label>
+                                        <input type="text" name="folio" id="folio" class="form-control  "
+                                            value="{{ old('folio', $empresa->folio) }}">
+                                        @error('folio')
+                                            <div class="text-danger invalid-feedback d-block">{{ $message }}}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="direccion" class="form-label">Dirección de la sede principal </label>
+                                        <input type="text" class="form-control  " id="direccion" name="direccion"
+                                            value="{{ old('direccion', $empresa->direccion) }}">
+                                        @error('direccion')
+                                            <div class="text-danger invalid-feedback d-block">{{ $messege }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fecha_registro" class="form-label">Fecha de registro </label>
+                                        <input type="date" class="form-control  " id="fecha_registro"
+                                            name="fecha_registro"
+                                            value="{{ old('fecha_registro', $empresa->fecha_registro) }}">
+                                        @error('fecha_registro')
+                                            <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Correo Electrónico <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{ old('email', $empresa->email) }}" required>
-                                @error('email')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+
+                            {{-- Datos de Contacto --}}
+                            <div class="row mb-4">
+                                <h5 class="section-title fw-bold">Datos de Contacto </h5>
+                                <small class="text-muted text-stone-950">(Comunicación directa)</small>
+                                <div class="dropdown-divider mb-4"></div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Correo Electrónico <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" class="form-control  " id="email" name="email"
+                                        value="{{ old('email', $empresa->email) }}" required>
+                                    @error('email')
+                                        <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefono" class="form-label">Teléfono de contacto <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control  " id="telefono" name="telefono"
+                                        value="{{ old('telefono', $empresa->telefono) }}" required maxlength="10">
+                                    @error('telefono')
+                                        <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="direcciones_ids" class="form-label">Direcciones de Carrera <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="direcciones_ids" name="direcciones_ids[]" multiple aria-label="Seleccionar Direcciones de Carrera" size="5">
-                                        @foreach ($direcciones as $direccion)
-                                            <option value="{{ $direccion->id }}"
-                                                @if((is_array(old('direcciones_ids')) && in_array($direccion->id, old('direcciones_ids'))) || 
-                                                    (!old() && session('direccion')->id == $direccion->id))
-                                                    selected
-                                                @endif>
-                                            {{ $direccion->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                <small class="form-text text-muted">
-                                    Mantén presionada la tecla Ctrl (Windows) o Command (Mac) para seleccionar múltiples opciones
+ 
+                            <!-- Representante Legal  -->
+                            <div class="row mb-4">
+                                <h5 class="section-title fw-bold">Representante Legal <span class="text-danger">*</span>
+                                </h5>
+                                <small class="text-muted text-stone-950">
+                                    (Responsable del convenio)
                                 </small>
-                                @error('direcciones_ids')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombre_representante" class="form-label">Nombre del Representante <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="nombre_representante" id="nombre_representante"
+                                        class="form-control"
+                                        value="{{ old('nombre_representante', $empresa->nombre_representante) }}">
+                                    @error('nombre_representante')
+                                        <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="cargo_representante" class="form-label">Cargo del Representante <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="cargo_representante" id="cargo_representante"
+                                        class="form-control  "
+                                        value="{{ old('cargo_representante', $empresa->cargo_representante) }}">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="telefono">Teléfono <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg" id="telefono" name="telefono" value="{{ old('telefono', $empresa->telefono) }}" required maxlength="10">
-                                @error('telefono')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+
+                            {{--  Vinculación Académica --}}
+                            <div class="row">
+                                <h5 class="section-title fw-bold">Vinculación Académica <span class="text-danger">*</span>
+                                </h5>
+                                <small class="text-muted text-stone-950">
+                                    (Relación con la universidad)
+                                </small>
+                                <div class="dropdown-divider mb-1"></div>
+                                <div class=" p-3">
+                                    <div class="form-group">
+                                        <label for="direcciones_ids" class="form-label">Direcciones de Carrera <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-select" size="8" id="direcciones_ids"
+                                            name="direcciones_ids[]" multiple
+                                            aria-label="Seleccionar Direcciones de Carrera" size="5">
+                                            @foreach ($direcciones as $direccion)
+                                                <option value="{{ $direccion->id }}"
+                                                    @if (
+                                                        (is_array(old('direcciones_ids')) && in_array($direccion->id, old('direcciones_ids'))) ||
+                                                            (!old() && session('direccion')->id == $direccion->id)) selected @endif>
+                                                    {{ $direccion->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <small class="form-text text-muted">
+                                            Mantén presionada la tecla Ctrl (Windows) o Command (Mac) para seleccionar
+                                            múltiples
+                                            opciones
+                                        </small>
+                                        @error('direcciones_ids')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="inicio_conv">Fecha de Inicio de Convenio <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control form-control-lg" id="inicio_conv" name="inicio_conv" value="{{ old('inicio_conv', $empresa->inicio_conv) }}" required>
-                                @error('inicio_conv')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+
+                            <!-- Vigencia del Convenio -->
+                            <div class="mb-4 p-3">
+                                <h5 class="section-title fw-bold">Vigencia del Convenio</h5>
+
+                                <div class="dropdown-divider mb-4"></div>
+                                <div class="row">
+                                    <!-- Fecha de Inicio -->
+                                    <div class="col-md-4 mb-3">
+                                        <label for="inicio_conv" class="form-label">Fecha de Inicio <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                            <input type="date" class="form-control" name="inicio_conv"
+                                                id="inicio_conv" value="{{ old('inicio_conv', $empresa->inicio_conv) }}"
+                                                required>
+                                        </div>
+                                        @error('inicio_conv')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-4 mb-3 ">
+                                        <label for="anos_conv" class="form-label">Años de convenio <span
+                                                class="text-danger ">*</span></label>
+                                        <div class="input-group">
+                                            <input type="number" data-tipo="numbers" name="anos_conv" id="anos_conv"
+                                                class=" form-control" readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fecha de Finalización -->
+                                    <div class="col-md-4 mb-3">
+                                        <label for="fin_conv" class="form-label">Fecha de Finalización <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                            <input type="date" class="form-control" name="fin_conv" id="fin_conv"
+                                                value="{{ old('fin_conv', $empresa->fin_conv) }}">
+                                        </div>
+                                        @error('fin_conv')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="fin_conv">Fecha de Fin de Convenio <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control form-control-lg" id="fin_conv" name="fin_conv" value="{{ old('fin_conv', $empresa->fin_conv) }}" required>
-                                @error('fin_conv')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+
+                            <!-- Documentos del Convenio -->
+                            <div class="mb-4 p-3">
+                                <h5 class="section-title fw-bold">Documentos del Convenio</h5>
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="convenioA">Convenio A</label>
+                                        <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
+                                            {{-- Input oculto inicialmente --}}
+                                            <input type="file" accept="application/pdf" class="form-control d-none"
+                                                id="inputConvenioA" name="convenioA">
+                                            @if ($empresa->convenioA)
+                                                <a href="{{ url(Storage::url($empresa->convenioA)) }}"
+                                                    class="btn btn-primary flex-grow-1" target="_blank">
+                                                    Ver Convenio A <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            @else
+                                                <span class="text-muted">No hay documento cargado</span>
+                                            @endif
+                                            <button type="button" class="btn btn-secondary"
+                                                onclick="mostrarInput('inputConvenioA', this)">
+                                                Cambiar Documento
+                                            </button>
+                                        </div>
+                                        @error('convenioA')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="convenioMA">Convenio MA</label>
+                                        <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
+                                            <input type="file" accept="application/pdf" class="form-control d-none"
+                                                id="inputConvenioMA" name="convenioMA">
+
+                                            @if ($empresa->convenioMA)
+                                                <a href="{{ url(Storage::url($empresa->convenioMA)) }}"
+                                                    class="btn btn-primary flex-grow-1" target="_blank">
+                                                    Ver Convenio MA <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            @else
+                                                <span class="text-muted">No hay documento cargado</span>
+                                            @endif
+
+                                            <button type="button" class="btn btn-secondary"
+                                                onclick="mostrarInput('inputConvenioMA', this)">
+                                                Cambiar Documento
+                                            </button>
+                                        </div>
+                                        @error('convenioMA')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <h6 class="section-title fst-normal">Documentación Adicional </h5>
+                                    <div class="dropdown-divider mb-4"></div>
+                                    <div class="col-md-6 mb-1">
+                                        <label for="ine" class="form-label">INE <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group mb-3">
+                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                                class="form-control" id="ine" name="ine" required>
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                data-bs-toggle="tooltip" title="Formato PDF, máximo 5MB">
+                                                <i class="fas fa-info-circle"></i>
+                                            </button>
+                                        </div>
+                                        @error('ine')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                             </div>
-                            <div class="form-group">
-                                <label for="ine">INE (opcional)</label>
-                                <input type="file" class="form-control form-control-lg" id="ine" name="ine">
-                                @error('ine')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="direccion_id">Dirección de Carrera <span class="text-danger">*</span></label>
-                                <select class="form-control form-control-lg" id="direccion_id" name="direccion_id" required>
-                                    @foreach($direcciones as $direccion)
-                                        <option value="{{ $direccion->id }}" {{ old('direccion_id', $empresa->direccion_id) == $direccion->id ? 'selected' : '' }}>{{ $direccion->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('direccion_id')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="convenioA">Convenio A (opcional)</label>
-                                <input type="file" class="form-control form-control-lg" id="convenioA" name="convenioA">
-                                @error('convenioA')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="convenioMA">Convenio MA (opcional)</label>
-                                <input type="file" class="form-control form-control-lg" id="convenioMA" name="convenioMA">
-                                @error('convenioMA')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <!-- Nuevos campos -->
-                            <div class="form-group">
-                                <label for="unidad_economica">Unidad Económica</label>
-                                <input type="text" class="form-control form-control-lg" id="unidad_economica" name="unidad_economica" value="{{ old('unidad_economica', $empresa->unidad_economica) }}">
-                                @error('unidad_economica')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="fecha_registro">Fecha de Registro</label>
-                                <input type="date" class="form-control form-control-lg" id="fecha_registro" name="fecha_registro" value="{{ old('fecha_registro', $empresa->fecha_registro) }}">
-                                @error('fecha_registro')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="razon_social">Razón Social</label>
-                                <input type="text" class="form-control form-control-lg" id="razon_social" name="razon_social" value="{{ old('razon_social', $empresa->razon_social) }}">
-                                @error('razon_social')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="nombre_representante">Nombre del Representante</label>
-                                <input type="text" class="form-control form-control-lg" id="nombre_representante" name="nombre_representante" value="{{ old('nombre_representante', $empresa->nombre_representante) }}">
-                                @error('nombre_representante')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="cargo_representante">Cargo del Representante</label>
-                                <input type="text" class="form-control form-control-lg" id="cargo_representante" name="cargo_representante" value="{{ old('cargo_representante', $empresa->cargo_representante) }}">
-                                @error('cargo_representante')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="actividad_economica">Actividad Económica</label>
-                                <input type="text" class="form-control form-control-lg" id="actividad_economica" name="actividad_economica" value="{{ old('actividad_economica', $empresa->actividad_economica) }}">
-                                @error('actividad_economica')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="tamano_ue">Tamaño de la UE</label>
-                                <input type="number" class="form-control form-control-lg" id="tamano_ue" name="tamano_ue" value="{{ old('tamano_ue', $empresa->tamano_ue) }}">
-                                @error('tamano_ue')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="folio">Folio</label>
-                                <input type="text" class="form-control form-control-lg" id="folio" name="folio" value="{{ old('folio', $empresa->folio) }}">
-                                @error('folio')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mt-3">
-                                <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">Guardar</button>
+                            <!-- Botones de Acción -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <x-cancel-button url="{{ route('empresas.index') }}" />
+                                <button type="submit" class="btn" style="background-color: #006837; color: white;">
+                                    <i class="fas fa-save me-1"></i> Alta de Empresa
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -167,5 +319,57 @@
             </div>
         </div>
     </div>
-</div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const inicioInput = document.getElementById('inicio_conv');
+            const finInput = document.getElementById('fin_conv');
+            const anosInput = document.getElementById('anos_conv');
+
+            function calcularAnios() {
+                const inicio = new Date(inicioInput.value);
+                const fin = new Date(finInput.value);
+
+                if (!isNaN(inicio.getTime()) && !isNaN(fin.getTime())) {
+                    let anos = fin.getFullYear() - inicio.getFullYear();
+
+                    // Verifica si el mes/día del fin es anterior al de inicio
+                    if (
+                        fin.getMonth() < inicio.getMonth() ||
+                        (fin.getMonth() === inicio.getMonth() && fin.getDate() < inicio.getDate())
+                    ) {
+                        anos--;
+                    }
+
+                    anosInput.value = anos >= 0 ? anos : 0;
+                } else {
+                    anosInput.value = '';
+                }
+            }
+
+            // Ejecutar cálculo cuando cambien las fechas
+            inicioInput.addEventListener('change', calcularAnios);
+            finInput.addEventListener('change', calcularAnios);
+
+            // Si ya hay valores precargados (edición), calcular al cargar
+            if (inicioInput.value && finInput.value) {
+                calcularAnios();
+            }
+        });
+
+
+        function ocultar(id, id2, text) {
+            const elemento = document.getElementById(`${id}`);
+            elemento.hidden = !elemento.hidden;
+            document.getElementById(`${text}`).textContent = elemento.hidden ? 'Ver Documento' :
+                'Cambiar Documento'; // Habilita el botón para cambiar el archivo
+            if (!elemento.hidden) {
+                document.getElementById(id2).value = '';
+
+
+            }
+            const elemento1 = document.getElementById(`${id2}`);
+            elemento1.hidden = !elemento1.hidden; // Habilita el botón para cambiar el archivo
+        }
+    </script>
+
 @endsection

@@ -1,0 +1,253 @@
+/* Navbar principal */
+.navbar-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.navbar {
+        backdrop-filter: blur(10px);
+        height: 100px;/* Ajusta la altura del navbar */
+    }
+
+    .navbar-brand img {
+        height: 100px; /* Ajusta la altura del logo */
+        width: 150px;
+    }
+
+/*Contenedor principal del navbar */    
+.navbar-collapse {
+  justify-content: center;
+}
+
+/* Estilo para el ítem de navegación */
+.nav-item-custom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 10px 5px;
+  margin: 0 5px;
+  height: auto;
+}
+
+.nav-item-custom.dropdown {
+  position: relative;
+}
+
+/* Contenedor del ítem de navegación */
+.nav-item.dropdown {
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+/* Estilo para el enlace */
+.nav-link-custom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none; 
+    color: #333; 
+    transition: all 0.3s ease;
+}
+
+/* Estilo para el icono */
+.nav-link-custom .mdi {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: #006837 !important; 
+    display: block;
+}
+
+/* Estilo para el texto */
+.nav-link-custom span {
+  font-weight: 600;
+    font-size: 0.85rem;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+/* Efecto hover para el texto */
+.nav-link-custom:hover span {
+  color: #006837 !important; /* Verde al pasar el mouse */
+  font-weight: 600;
+}
+
+/* Estado activo */
+.nav-link-custom.active .mdi,
+.nav-link-custom.active span {
+    color: #006837 !important; 
+}
+
+/* Imagen pequeña en el navbar (ícono de perfil) */
+.nav-link.dropdown-toggle img.rounded-circle {
+  height: 90px;
+  width: 90px;
+  object-fit: cover;
+  border: 3px solid #006837; /* Borde verde */
+  transition: all 0.3s ease;
+}
+
+/* Imagen grande en el dropdown */
+.dropdown-header img.rounded-circle {
+  height: 120px; /* Un poco más grande en el menú desplegable */
+  width: 120px;
+  object-fit: cover;
+  border: 3px solid #006837;
+  margin-top: 10px;
+}
+
+/* Menús desplegables */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  min-width: 200px;
+  padding: 0.5rem 0;
+  margin-top: 10px !important;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 10px !important;
+  box-shadow: 0 0.5rem 1 rem rgba(0, 0, 0, 0.175);
+  overflow: hidden;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+/* Submenús anidados */
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -0.5rem;
+  margin-left: 0.1rem;
+}
+
+/* Flecha indicadora */
+.dropdown-toggle::after {
+  display: inline-block;
+  margin-left: 0.255em;
+  content: "";
+  border-top: 0.3em solid transparent;
+  border-right: 0;
+  border-bottom: 0.3em solid transparent;
+  border-left: 0.3em solid;
+  vertical-align: middle;
+}
+
+/* Estilos para items */
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #006837;
+}
+
+.dropdown-item.active {
+  color: #fff;
+  background-color: #006837;
+}
+
+/* Efecto hover */
+.nav-link-custom:hover {
+  background-color: rgba(0, 104, 55, 0.05);
+  border-radius: 5px;
+}
+
+/* Efecto hover para la imagen */
+.nav-link.dropdown-toggle:hover img.rounded-circle {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 104, 55, 0.3);
+}
+
+/* Versión responsive para móviles */
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    width: 100%;
+  }
+
+  .nav-item-custom {
+    padding: 10px 0;
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .nav-item.dropdown {
+    height: auto;
+  }
+
+   .nav-link-custom {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .nav-link-custom .mdi {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    margin-bottom: 0;
+  }
+  
+  .nav-link-custom span {
+    text-align: left;
+    font-size: 1rem;
+  }
+
+  .nav-link-custom:hover span {
+    color: #006837;
+  }
+
+  .nav-link.dropdown-toggle img.rounded-circle {
+    height: 60px;
+    width: 60px;
+  }
+
+  .dropdown-header img.rounded-circle {
+    height: 80px;
+    width: 80px;
+  }
+
+  .dropdown-menu {
+    position: static;
+    float: none;
+    width: 100%;
+    margin-top: 0;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .dropdown-submenu > .dropdown-menu {
+    left: 15px;
+    margin-left: 0;
+  }
+}

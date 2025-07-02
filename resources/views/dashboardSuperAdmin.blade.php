@@ -1,11 +1,12 @@
 @extends('layouts.app')
 @section('title', 'Dashboard')
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
-                <div class="alert alert-success alert-dismissible text-dark" role="alert">
-                    <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
+                <div class="alert alert-notification alert-notification--success" role="alert">
+                    <span class="text-sm"> <a href="javascript:" class="alert-notification__link">Excelente</a>.
                         {{ session('status') }}.</span>
 
                 </div>
@@ -20,32 +21,29 @@
             <div class="container my-5">
                 <div class="row">
                     @foreach ($direcciones as $direccion)
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <a href="{{ route('direcciones.select', $direccion->id) }}" class="card-link"
-                                style="text-decoration: none">
-
-                                <div class="card shadow card-hover animate__animated animate__flipInY"
-                                    style="animation-delay: {{ $loop->index * 0.5 }}s; height: 100%;">
-                                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="col-12 mb-4">
+                            <a href="{{ route('direcciones.select', $direccion->id) }}" class="link-unstyled">
+                                <div class="card shadow card-horizontal animate__animated animate__fadeIn">
                                         <!-- Ícono -->
-                                        <div class="d-flex justify-content-center mb-3">
-                                            <i class="mdi mdi-school btn-icon-prepend" style="font-size: 2rem;"></i>
+                                        <div class="card-icon-container-horizontal">
+                                            <i class="mdi mdi-school card-icon" style="color: #006837; font-size: 2.5rem;"></i>
                                         </div>
                                         <!-- Nombre de la dirección -->
-                                        <h5 class="card-title text-center">{{ $direccion->name }}</h5>
+                                        <div class="card-content-horizontal">
+                                            <div class="card-text-container">
+                                        <h3 class="card-title horizontal">{{ $direccion->name }}</h3>
                                         <!-- Programas educativos -->
-                                        <p class="card-text text-muted text-center">
+                                        <p class="card-text horizontal">
                                             Programas educativos disponibles: {{ $direccion->programas->count() }}
                                             <!-- Ejemplo -->
                                         </p>
+                                            </div>
                                         <!-- Botón interactivo -->
-                                        <div class="d-flex justify-content-center mt-auto">
                                             <a href="{{ route('direcciones.select', $direccion->id) }}"
-                                                class="btn btn-primary btn-gradient">
-                                                Ver Programas
+                                                class="btn btn-primary btn-horizontal">
+                                                Ver Programas Educativos <i class="mdi mdi-arrow-right"></i>
                                             </a>
-                                        </div>
-                                    </div>
+                                        </diV>
                                 </div>
                             </a>
                         </div>

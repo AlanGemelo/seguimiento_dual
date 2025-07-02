@@ -2,6 +2,8 @@
 @section('title', 'Crear Programa Educativo')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+    <body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -18,7 +20,7 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Crear Programa Educativo</h4>
+                            <h6 class="card-title">Crear Programa Educativo</h6>
                             <span class="text-danger">* Son campos requeridos</span>
                             <div class="dropdown-divider"></div>
                             <form class="pt-3" action="{{ route('carreras.store') }}" method="post">
@@ -87,3 +89,4 @@
         </div>
     </div>
 @endsection
+</body>

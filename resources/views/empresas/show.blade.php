@@ -56,10 +56,6 @@
                         </div>
 
                         <!-- Direcciones de Carrera -->
-                        <!-- Direcciones de Carrera -->
-                        <!-- Direcciones de Carrera -->
-                        <!-- Direcciones de Carrera -->
-                        <!-- Direcciones de Carrera -->
                         <div class="mb-4 p-3">
                             <h5 class="section-title">Direcciones de Carrera <span class="text-danger">*</span></h5>
                             <div class="dropdown-divider mb-4"></div>
@@ -155,5 +151,5 @@
                 </div>
             </div>
         </div>
-
-    @endsection
+    </div>
+@endsection

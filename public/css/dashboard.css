@@ -1,0 +1,149 @@
+/* Archivo CSS dashboard */
+.row{
+    background-color: #c7dfcc;
+}
+/* Tarjetas */
+.card-horizontal {
+  display: flex;
+  flex-direction: row;
+  min-height: 200px; 
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px;
+}
+
+.card-horizontal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Contenedor del ícono (ahora a la izquierda) */
+.card-icon-container-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-width: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Contenido principal */
+.card-content-horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  flex-grow: 1;
+  position: relative;
+}
+
+/* Texto */
+.card-text-container {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+/* Botón */
+.btn-horizontal {
+    white-space: nowrap;
+    padding: 0.75rem 1.5rem;
+    margin-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  .card-content-horizontal {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .btn-horizontal{
+    margin-left: 0;
+    margin-top: 1.5rem;
+    width: 100%;
+  }
+
+  .card-text-container{
+    padding-right: 0;
+  }
+}
+
+.card-horizontal {
+  border-left: 5px solid #006837;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-icon-container-horizontal::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #006837, transparent);
+}
+
+/* Botones */
+
+.btn-gradient-primary {
+  background: #006837;
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient-primary:hover {
+  background: #004d40;
+  transform: translateY(-2px);
+  color: white;
+}
+
+/* Utilidades de texto */
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Utilidades de layout */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.link-unstyled {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-unstyled:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Alertas */
+.alert-notification {
+  border-left: 4px solid;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.25rem;
+}
+
+.alert-notification--success {
+  border-color: #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
+}
+
+.alert-notification--error {
+  border-color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+.alert-notification__link {
+  font-weight: 600;
+  color: inherit;
+  text-decoration: underline;
+}
+

@@ -130,8 +130,9 @@
                                                 class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input type="number" data-tipo="numbers" name="anos_conv" id="anos_conv"
-                                                class="form-control"> <button type="button"
-                                                class="btn btn-primary w-10 form-control">Calcular</button>
+                                                class="form-control">
+                                            <button type="button" class="btn text-dark w-auto px-4 h-1"
+                                                style="background-color: #f4b400;">Calcular</button>
                                         </div>
                                     </div>
 

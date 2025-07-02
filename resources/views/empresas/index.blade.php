@@ -42,6 +42,10 @@
                                     <td>{{ $empresa->created_at->format('d \d\e F \d\e Y') }}</td>
                                     <td>{{ $empresa->inicio_conv }} - {{ $empresa->fin_conv }}</td>
                                     <td>
+                                        <a href="{{ route('empresas.show_establecidas', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
+                                            class="btn btn-facebook">
+                                            <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                        </a>
                                         <a href="{{ route('empresas.edit', $empresa->id) }}"
                                             class="btn btn-warning">Editar</a>
 
@@ -52,10 +56,7 @@
                                             onclick="return confirm('¿Está seguro de iniciar el proceso de baja temporal de esta empresa?')">
                                             Baja
                                         </a>
-                                        <a href="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
-                                            class="btn btn-facebook">
-                                            <i class="mdi mdi-eye btn-icon-prepend"></i>
-                                        </a>
+
                                     </td>
                                 </tr>
                             @endforeach

@@ -79,9 +79,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/empresas', [EmpresaController::class, 'store'])->name('empresas.store');
     //Route::post('/empresas/store', [EmpresaController::class, 'store'])->name('empresas.store');
     Route::get('/empresas/{id}/show', [EmpresaController::class, 'show'])->name('empresas.show');
+    Route::get('/empresas/{id}/show_establecidas', [EmpresaController::class, 'show_establecidas'])->name('empresas.show_establecidas');
     Route::get('/empresas/{id}/json', [EmpresaController::class, 'showJson'])->name('empresas.showJson');
-    Route::get('/empresas/{id}/editar', [EmpresaController::class, 'edit'])->name('empresas.edit');
-    Route::patch('/empresas/{id}', [EmpresaController::class, 'update'])->name('empresas.update');
+    Route::get('/empresas/{empresa}/editar', [EmpresaController::class, 'edit'])->name('empresas.edit');
+    Route::patch('/empresas/{empresa}', [EmpresaController::class, 'update'])->name('empresas.update');
     Route::delete('/empresas/{id}/delete', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
     //Rutas para el proceso de baja temporal de las empresas
     Route::get('/empresas/{id}/suspend', [EmpresaController::class, 'suspendForm'])->name('empresas.suspendForm');

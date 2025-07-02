@@ -426,8 +426,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <label for="formato51" class="mb-1">Formato 5.1 <span
                                                         class="text-danger">*</span></label>
-                                                <div
-                                                    style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
+                                                <div style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file" accept="application/pdf"
                                                         class="form-control form-control-lg" id="formato51"
                                                         placeholder="formato51" name="formato51"

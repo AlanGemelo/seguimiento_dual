@@ -1,15 +1,15 @@
 @php use Illuminate\Support\Facades\Storage; @endphp
 
 @extends('layouts.app')
-@section('title', 'Mostrar Empresa')
+@section('title', 'Mostrar UEI')
 
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card shadow">
-                    <x-section-header title="Datos de la Unidad Económica"
-                        description="Visualización de la información de la Unidades Económicas." />
+                    <x-section-header title="Datos de la Unidad Económica Interesada (UEI)"
+                        description="Visualización de la información de la Unidad Económica Interesada (UEI)." />
 
                     <div class="card-body">
                         <!-- Información Básica -->
@@ -74,7 +74,6 @@
                                 @else
                                     <div class="alert alert-warning">No se han seleccionado direcciones de carrera</div>
                                 @endif
-             
                             </div>
                         </div>
                         <!-- Vigencia del Convenio -->

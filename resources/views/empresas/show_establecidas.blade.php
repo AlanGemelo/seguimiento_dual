@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card shadow">
-                    <x-section-header title="Datos de la Unidad Económica"
+                   <x-forms.section-header title="Datos de la Unidad Económica"
                         description="Visualización de la información de la Unidad Económica (UE)." />
 
                     <div class="card-body">
@@ -87,6 +87,48 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- Motivo de baja (si aplica) --}}
+                        @if ($empresa->STATUS === 2)
+                            <div class="mb-5 p-4 rounded shadow-lg"
+                                style="  border: 2px solid #004D40; background-color: #F5F5F5; box-shadow: 0 4px 8px rgba(0, 77, 64, 0.15); ">
+                                <h3 class="section-title fw-bold text-center mb-4"
+                                    style="color: #006837;font-size: 1.75rem;text-transform: uppercase;letter-spacing: 1.5px;">
+                                    ¡Proceso de Baja!
+                                </h3>
+
+                                <hr style="border-color: #2E2E2E; border-width: 2px; margin-bottom: 2rem;">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="fecha_baja" class="form-label fw-semibold"
+                                                style="color: #2E2E2E;">Fecha
+                                                de Baja</label>
+                                            <input type="text" name="fecha_baja" id="fecha_baja" class="form-control"
+                                                value="{{ old('fecha_baja', $empresa->fecha_baja) }}" disabled>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="comentarios_baja" class="form-label fw-semibold"
+                                                style="color: #2E2E2E;">Comentarios</label>
+                                            <textarea name="comentarios_baja" id="comentarios_baja" class="form-control lh-sm  " rows="6" disabled
+                                                style="min-height: 10rem;">{{ old('comentarios_baja', $empresa->comentarios_baja) }}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="motivo_baja" class="form-label fw-semibold"
+                                                style="color: #2E2E2E;">Motivo de Baja</label>
+                                            <input type="text" name="motivo_baja" id="motivo_baja"
+                                                class="form-control"
+                                                value="{{ old('motivo_baja', $empresa->motivo_baja) }}" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
 
                         {{-- Datos de Contacto --}}
                         <div class="row mb-4">
@@ -215,68 +257,71 @@
                             <div class="dropdown-divider mb-4"></div>
 
                             <div class="row justify-content-start">
-    <!-- Convenio Académico -->
-    <div class="col-sm-6 col-md-5 col-lg-4 mb-3">
-        <label for="convenioA" class="form-label">Convenio Académico <span class="text-danger">*</span></label>
-        <div class="input-group">
-            @if ($empresa->convenioA)
-                <a href="{{ url(Storage::url($empresa->convenioA)) }}"
-                   class="btn btn-primary flex-grow-1" target="_blank">
-                    Ver Convenio Académico <span class="mdi mdi-file-pdf-box"></span>
-                </a>
-            @else
-                <span class="text-muted">No hay documento cargado</span>
-            @endif
-        </div>
-        @error('convenioA')
-            <div class="invalid-feedback d-block">{{ $message }}</div>
-        @enderror
-    </div>
+                                <!-- Convenio Académico -->
+                                <div class="col-sm-6 col-md-5 col-lg-4 mb-3">
+                                    <label for="convenioA" class="form-label">Convenio Académico <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        @if ($empresa->convenioA)
+                                            <a href="{{ url(Storage::url($empresa->convenioA)) }}"
+                                                class="btn btn-primary flex-grow-1" target="_blank">
+                                                Ver Convenio Académico <span class="mdi mdi-file-pdf-box"></span>
+                                            </a>
+                                        @else
+                                            <span class="text-muted">No hay documento cargado</span>
+                                        @endif
+                                    </div>
+                                    @error('convenioA')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-    <!-- Convenio Marco -->
-    <div class="col-sm-6 col-md-5 col-lg-4 mb-3">
-        <label for="convenioMA" class="form-label">Convenio Marco-Empresa <span class="text-danger">*</span></label>
-        <div class="input-group">
-            <a href="{{ url(Storage::url($empresa->convenioMA)) }}"
-               class="btn btn-primary flex-grow-1" target="_blank">
-                Ver Convenio Marco-Empresa <span class="mdi mdi-file-pdf-box"></span>
-            </a>
-        </div>
-        @error('convenioMA')
-            <div class="invalid-feedback d-block">{{ $message }}</div>
-        @enderror
-    </div>
-</div>
+                                <!-- Convenio Marco -->
+                                <div class="col-sm-6 col-md-5 col-lg-4 mb-3">
+                                    <label for="convenioMA" class="form-label">Convenio Marco-Empresa <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <a href="{{ url(Storage::url($empresa->convenioMA)) }}"
+                                            class="btn btn-primary flex-grow-1" target="_blank">
+                                            Ver Convenio Marco-Empresa <span class="mdi mdi-file-pdf-box"></span>
+                                        </a>
+                                    </div>
+                                    @error('convenioMA')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-<!-- DOCUMENTOS ADICIONALES AL FINAL -->
-<div class="row mt-4">
-    <div class="col-sm-12 col-md-6 col-lg-5">
-        <h6 class="section-title fst-normal">Documentación Adicional</h6>
-        <div class="dropdown-divider mb-3"></div>
+                            <!-- DOCUMENTOS ADICIONALES AL FINAL -->
+                            <div class="row mt-4">
+                                <div class="col-sm-12 col-md-6 col-lg-5">
+                                    <h6 class="section-title fst-normal">Documentación Adicional</h6>
+                                    <div class="dropdown-divider mb-3"></div>
 
-        <!-- INE -->
-        <div class="mb-2">
-            <label for="ine" class="form-label">INE</label>
-            <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
-                <input type="file" accept="application/pdf" class="form-control d-none" id="ine" name="ine">
-                @if ($empresa->ine)
-                    <a href="{{ url(Storage::url($empresa->ine)) }}"
-                       class="btn btn-primary flex-grow-1" target="_blank">
-                        Ver INE <span class="mdi mdi-file-pdf-box"></span>
-                    </a>
-                @else
-                    <span class="text-muted">No hay documento cargado</span>
-                @endif
-            </div>
-        </div>
-    </div>
-</div>
+                                    <!-- INE -->
+                                    <div class="mb-2">
+                                        <label for="ine" class="form-label">INE</label>
+                                        <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
+                                            <input type="file" accept="application/pdf" class="form-control d-none"
+                                                id="ine" name="ine">
+                                            @if ($empresa->ine)
+                                                <a href="{{ url(Storage::url($empresa->ine)) }}"
+                                                    class="btn btn-primary flex-grow-1" target="_blank">
+                                                    Ver INE <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            @else
+                                                <span class="text-muted">No hay documento cargado</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
                         <!-- Botones de Acción -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <x-back-button url="{{ route('empresas.index') }}" />
+                            <x-buttons.back-button url="{{ route('empresas.index') }}" />
                         </div>
                     </div>
                 </div>

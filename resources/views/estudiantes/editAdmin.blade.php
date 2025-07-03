@@ -10,7 +10,7 @@
                 <div class="col-lg-12">
                     <div class="card shadow">
                         <!-- Encabezado -->
-                        <x-section-header title="Actualización de Estudiante Dual"
+                       <x-forms.section-header title="Actualización de Estudiante Dual"
                             description="Formulario para modificar los datos de estudiantes participantes en el Modelo de Formación Dual, incluyendo información personal, académica, vinculación con empresa y documentación asociada." />
 
                         <div class="card-body">
@@ -700,7 +700,7 @@
                                         type="submit">Actualizar
                                     </button>
 
-                                    <x-cancel-button url="{{ route('estudiantes.index') }}" />
+                                   <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
 
                                 </div>
                             </form>

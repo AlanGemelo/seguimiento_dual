@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Buttons;
 
 use Illuminate\View\Component;
 
-class CancelButton extends Component
+class ShowButton extends Component
 {
     /**
      * Create a new component instance.
@@ -15,7 +15,7 @@ class CancelButton extends Component
     public $url;
     public $text;
 
-    public function __construct($url = null, $text = "Cacelar")
+    public function __construct($url = null, $text = null)
     {
         $this->url = $url;
         $this->text = $text;
@@ -28,6 +28,6 @@ class CancelButton extends Component
      */
     public function render()
     {
-        return view('components.cancel-button');
+        return view('components.buttons.show-button');
     }
 }

@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card shadow">
-                    <x-section-header title="Actualización de la Unidad Económica"
+                   <x-forms.section-header title="Actualización de la Unidad Económica"
                         description="Formulario para modificar la Unidad Económica que colabora con la Universidad mediante el Modelo de Formación Dual, indicando las carreras con las que desean establecer vínculo académico." />
 
                     <div class="card-body">
@@ -336,7 +336,7 @@
                             </div>
                             <!-- Botones de Acción -->
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                                <x-cancel-button url="{{ route('empresas.index') }}" />
+                               <x-buttons.cancel-button url="{{ route('empresas.index') }}" />
                                 <button type="submit" class="btn" style="background-color: #006837; color: white;">
                                     <i class="fas fa-save me-1"></i> Alta de Empresa
                                 </button>

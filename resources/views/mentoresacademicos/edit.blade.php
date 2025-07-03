@@ -8,7 +8,7 @@
             <div class="col-lg-12">
                 <div class="card shadow">
                     <!-- Encabezado -->
-                    <x-section-header title="Editar Mentor Académico"
+                   <x-forms.section-header title="Editar Mentor Académico"
                         description="Formulario para actualizar datos de docentes responsables del acompañamiento a estudiantes en el Modelo de Formación Dual." />
 
                     <div class="card-body">
@@ -97,7 +97,7 @@
                                 <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                     type="submit">Actualizar</button>
 
-                                <x-cancel-button url="{{ route('academicos.index') }}" />
+                               <x-buttons.cancel-button url="{{ route('academicos.index') }}" />
                             </div>
                         </form>
                     </div>

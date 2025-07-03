@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card shadow">
-                    <x-section-header title="Registro de Alta de la Unidad Económica"
+                   <x-forms.section-header title="Registro de Alta de la Unidad Económica"
                         description="Alta de la nueva Unidad Económica interesada en colaborar con la Universidad mediante el Modelo de Formación Dual, indicando las carreras con las que desean establecer vínculo académico." />
 
                     <div class="card-body">
@@ -62,8 +62,8 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="tamano_ue" class="form-label">Tamaño de la UE</label>
-                                        <input type="text" name="tamano_ue" id="tamano_ue" class="form-control  "
-                                            value="{{ old('tamano_ue', $empresa->tamano_ue) }}">
+                                        <input type="text" data-tipo="numbers" name="tamano_ue" id="tamano_ue"
+                                            class="form-control  " value="{{ old('tamano_ue', $empresa->tamano_ue) }}">
                                         @error('tamano_ue')
                                             <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
@@ -121,7 +121,7 @@
                                     @enderror
                                 </div>
                             </div>
- 
+
                             <!-- Representante Legal  -->
                             <div class="row mb-4">
                                 <h5 class="section-title fw-bold">Representante Legal <span class="text-danger">*</span>
@@ -242,20 +242,26 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="convenioA">Convenio A</label>
                                         <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
-                                            {{-- Input oculto inicialmente --}}
                                             <input type="file" accept="application/pdf" class="form-control d-none"
                                                 id="inputConvenioA" name="convenioA">
                                             @if ($empresa->convenioA)
                                                 <a href="{{ url(Storage::url($empresa->convenioA)) }}"
-                                                    class="btn btn-primary flex-grow-1" target="_blank">
+                                                    class="btn btn-primary flex-grow-1" target="_blank"
+                                                    id="linkConvenioA">
                                                     Ver Convenio A <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                             @else
-                                                <span class="text-muted">No hay documento cargado</span>
+                                                <span class="text-muted" id="textNoConvenioA">No hay documento
+                                                    cargado</span>
                                             @endif
-                                            <button type="button" class="btn btn-secondary"
-                                                onclick="mostrarInput('inputConvenioA', this)">
+                                            <button type="button" class="btn btn-secondary" id="btnCambiarConvenioA"
+                                                onclick="mostrarInput('inputConvenioA', 'btnCambiarConvenioA', 'linkConvenioA', 'textNoConvenioA')">
                                                 Cambiar Documento
+                                            </button>
+                                            <button type="button" class="btn btn-danger d-none"
+                                                id="btnCancelarConvenioA"
+                                                onclick="cancelarCambio('inputConvenioA', 'btnCambiarConvenioA', 'linkConvenioA', 'btnCancelarConvenioA', 'textNoConvenioA')">
+                                                Cancelar
                                             </button>
                                         </div>
                                         @error('convenioA')
@@ -268,47 +274,66 @@
                                         <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
                                             <input type="file" accept="application/pdf" class="form-control d-none"
                                                 id="inputConvenioMA" name="convenioMA">
-
                                             @if ($empresa->convenioMA)
                                                 <a href="{{ url(Storage::url($empresa->convenioMA)) }}"
-                                                    class="btn btn-primary flex-grow-1" target="_blank">
+                                                    class="btn btn-primary flex-grow-1" target="_blank"
+                                                    id="linkConvenioMA">
                                                     Ver Convenio MA <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                             @else
-                                                <span class="text-muted">No hay documento cargado</span>
+                                                <span class="text-muted" id="textNoConvenioMA">No hay documento
+                                                    cargado</span>
                                             @endif
-
-                                            <button type="button" class="btn btn-secondary"
-                                                onclick="mostrarInput('inputConvenioMA', this)">
+                                            <button type="button" class="btn btn-secondary" id="btnCambiarConvenioMA"
+                                                onclick="mostrarInput('inputConvenioMA', 'btnCambiarConvenioMA', 'linkConvenioMA', 'textNoConvenioMA')">
                                                 Cambiar Documento
+                                            </button>
+                                            <button type="button" class="btn btn-danger d-none"
+                                                id="btnCancelarConvenioMA"
+                                                onclick="cancelarCambio('inputConvenioMA', 'btnCambiarConvenioMA', 'linkConvenioMA', 'btnCancelarConvenioMA', 'textNoConvenioMA')">
+                                                Cancelar
                                             </button>
                                         </div>
                                         @error('convenioMA')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
-                                <h6 class="section-title fst-normal">Documentación Adicional </h5>
+                                    <h6 class="section-title fst-normal">Documentación Adicional</h6>
                                     <div class="dropdown-divider mb-4"></div>
                                     <div class="col-md-6 mb-1">
                                         <label for="ine" class="form-label">INE <span
                                                 class="text-danger">*</span></label>
-                                        <div class="input-group mb-3">
+                                        <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
                                             <input type="file" accept="application/pdf, image/jpeg, image/png"
-                                                class="form-control" id="ine" name="ine" required>
-                                            <button class="btn btn-outline-secondary" type="button"
-                                                data-bs-toggle="tooltip" title="Formato PDF, máximo 5MB">
-                                                <i class="fas fa-info-circle"></i>
+                                                class="form-control d-none" id="inputIne" name="ine">
+
+                                            @if ($empresa->ine)
+                                                <a href="{{ url(Storage::url($empresa->ine)) }}"
+                                                    class="btn btn-primary flex-grow-1" target="_blank" id="linkIne">
+                                                    Ver INE <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            @else
+                                                <span class="text-muted" id="textNoIne">No hay documento cargado</span>
+                                            @endif
+
+                                            <button type="button" class="btn btn-secondary" id="btnCambiarIne"
+                                                onclick="mostrarInput('inputIne', 'btnCambiarIne', 'linkIne', 'textNoIne')">
+                                                Cambiar Documento
+                                            </button>
+                                            <button type="button" class="btn btn-danger d-none" id="btnCancelarIne"
+                                                onclick="cancelarCambio('inputIne', 'btnCambiarIne', 'linkIne', 'btnCancelarIne', 'textNoIne')">
+                                                Cancelar
                                             </button>
                                         </div>
                                         @error('ine')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
                             </div>
                             <!-- Botones de Acción -->
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                                <x-cancel-button url="{{ route('empresas.index') }}" />
+                               <x-buttons.cancel-button url="{{ route('empresas.index') }}" />
                                 <button type="submit" class="btn" style="background-color: #006837; color: white;">
                                     <i class="fas fa-save me-1"></i> Alta de Empresa
                                 </button>
@@ -369,6 +394,43 @@
             }
             const elemento1 = document.getElementById(`${id2}`);
             elemento1.hidden = !elemento1.hidden; // Habilita el botón para cambiar el archivo
+        }
+
+        function mostrarInput(inputId, btnId, linkId, textId) {
+            const fileInput = document.getElementById(inputId);
+            const cambiarBtn = document.getElementById(btnId);
+            const verLink = linkId ? document.getElementById(linkId) : null;
+            const textNoDoc = textId ? document.getElementById(textId) : null;
+            const cancelarBtn = document.getElementById('btnCancelar' + inputId.replace('input', ''));
+
+            // Mostrar input de archivo y botón de cancelar
+            fileInput.classList.remove('d-none');
+            cancelarBtn.classList.remove('d-none');
+
+            // Ocultar botón de cambiar y elementos de visualización
+            cambiarBtn.classList.add('d-none');
+            if (verLink) verLink.classList.add('d-none');
+            if (textNoDoc) textNoDoc.classList.add('d-none');
+        }
+
+        function cancelarCambio(inputId, btnId, linkId, cancelBtnId, textId) {
+            const fileInput = document.getElementById(inputId);
+            const cambiarBtn = document.getElementById(btnId);
+            const verLink = linkId ? document.getElementById(linkId) : null;
+            const cancelarBtn = document.getElementById(cancelBtnId);
+            const textNoDoc = textId ? document.getElementById(textId) : null;
+
+            // Ocultar input de archivo y botón de cancelar
+            fileInput.classList.add('d-none');
+            cancelarBtn.classList.add('d-none');
+
+            // Mostrar botón de cambiar y elementos de visualización según corresponda
+            cambiarBtn.classList.remove('d-none');
+            if (verLink) verLink.classList.remove('d-none');
+            if (textNoDoc && !verLink) textNoDoc.classList.remove('d-none');
+
+            // Limpiar el valor del input de archivo
+            fileInput.value = '';
         }
     </script>
 

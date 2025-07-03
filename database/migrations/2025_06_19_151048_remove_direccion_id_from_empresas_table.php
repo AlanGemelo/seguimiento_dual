@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('empresas', function (Blueprint $table) {
             $table->dropForeign(['direccion_id']);
             $table->dropColumn('direccion_id');
+            $table->timestamps();
         });
     }
 
@@ -27,7 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('empresas', function (Blueprint $table) {
-        $table->foreignId('direccion_id')->nullable()->constrained('direccion_carreras');
+            $table->foreignId('direccion_id')->nullable()->constrained('direccion_carreras');
         });
     }
 };

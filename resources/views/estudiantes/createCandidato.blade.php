@@ -9,7 +9,7 @@
         <div class="col-lg-12">
             <div class="card shadow">
                 <!-- Encabezado -->
-                <x-section-header title="Registro de Estudiante Dual"
+               <x-forms.section-header title="Registro de Estudiante Dual"
                     description="Formulario para registrar a estudiantes que participan en el Modelo de Formación Dual, incluyendo datos personales, académicos, vinculación con la empresa y documentación requerida." />
 
 
@@ -224,7 +224,7 @@
                                 <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                     type="submit">Guardar</button>
 
-                                <x-cancel-button url="{{ route('estudiantes.index') }}" />
+                               <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
 
                             </div>
                     </form>

@@ -1,7 +1,7 @@
 console.log("✅ form-validations.js cargado");
 
 document.addEventListener("DOMContentLoaded", function () {
-    
+
     //Text UpperCase
     document.querySelectorAll(".uppercase").forEach(function (input) {
         input.addEventListener("input", function () {
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const pastedData = (
                 e.clipboardData || window.clipboardData
             ).getData("text");
-            if (/[\d]/.test(pastedData)) {
+            if (!/^[0-9\s]+$/.test(pastedData)) {
                 e.preventDefault();
             }
         });
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     //Validation For Dual Dates
-   
+
     const fechaInicioInput = document.getElementById("inicio_dual");
     const fechaFinInput = document.getElementById("fin_dual");
 

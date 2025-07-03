@@ -8,10 +8,9 @@
             <div class="col-lg-12">
                 <div class="card shadow">
                     <!-- Encabezado -->
-                    <x-section-header title="Baja de Unidad Económica"
-                        description="Proceso formal para dar de baja a unidades económicas participantes en el 
-                        Modelo de Formación Dual,registrando información de contacto, detalles del 
-                        convenio y motivos de la baja." />
+                   <x-forms.section-header title="Datos de la Unidad Económica dada de baja"
+                  description="Visualización de la información de la Unidad Económica dada de baja." />
+
                     <div class="card-body">
                         <!-- Información General -->
                         <form class="pt-3" action="{{ route('empresas.suspend', $empresa->id) }}" method="post">
@@ -116,7 +115,6 @@
                                                 <div class="text-danger small">{{ $message }}</div>
                                             @enderror
 
-
                                         </div>
 
                                         <div class="col-md-6 mb-3">
@@ -150,7 +148,7 @@
                                             style="background-color: #006837; color: white;">
                                             <i class="fas fa-save me-1"></i> Iniciar Baja
                                         </button>
-                                        <x-cancel-button url="{{ route('empresas.index') }}" />
+                                       <x-buttons.cancel-button url="{{ route('empresas.index') }}" />
                                     </div>
                                 </div>
                         </form>

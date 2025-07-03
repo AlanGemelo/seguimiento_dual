@@ -16,6 +16,7 @@ use Vinkla\Hashids\Facades\Hashids;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
 
 class EmpresaController extends Controller
 {
@@ -73,42 +74,35 @@ class EmpresaController extends Controller
             'direcciones_ids.*' => 'exists:direccion_carreras,id',
         ]);
 
-        $empresaNombre = Str::slug($request->input('nombre'));
+        $empresaNombre = Str::slug($data['nombre']);
         $fecha = now()->format('d-m-Y');
-
-        $inePath = null;
-        $convenioAPath = null;
-        $convenioMAPath = null;
 
         if ($request->hasFile('ine')) {
             $file = $request->file('ine');
-            $filename = $fecha . '_' . $empresaNombre . '_ine.' . $file->getClientOriginalExtension();
-            $inePath = $file->storeAs('empresas/documentos', $filename, 'public');
+            $filename = "{$fecha}_{$empresaNombre}_ine." . $file->getClientOriginalExtension();
+            $data['ine'] = $file->storeAs('empresas/documentos/ine', $filename, 'public');
         }
 
         if ($request->hasFile('convenioA')) {
             $file = $request->file('convenioA');
-            $filename = $fecha . '_' . $empresaNombre . '_convenioA.' . $file->getClientOriginalExtension();
-            $convenioAPath = $file->storeAs('empresas/documentos', $filename, 'public');
+            $filename = "{$fecha}_{$empresaNombre}_convenioA." . $file->getClientOriginalExtension();
+            $data['convenioA'] = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
         }
 
         if ($request->hasFile('convenioMA')) {
             $file = $request->file('convenioMA');
-            $filename = $fecha . '_' . $empresaNombre . '_convenioMA.' . $file->getClientOriginalExtension();
-            $convenioMAPath = $file->storeAs('empresas/documentos', $filename, 'public');
-        }
-        if (!empty($data['direcciones_ids'])) {
-
-            $empresa->direcciones()->sync($data['direcciones_ids']);
+            $filename = "{$fecha}_{$empresaNombre}_convenioMA." . $file->getClientOriginalExtension();
+            $data['convenioMA'] = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
         }
 
-        $empresa->update($request->except('direcciones_ids'));
 
-        if (isset($data['direcciones_ids']) && !empty($data['direcciones_ids'])) {
-            $empresa->direcciones()->sync($data['direcciones_ids']);
-        }
+        $empresa->update(Arr::except($data, ['direcciones_ids']));
 
-        $empresa->status = 1; // Cambiar el estado a registrada
+        // Sincronizar relaciones
+        $empresa->direcciones()->sync($data['direcciones_ids'] ?? []);
+
+        // Cambiar estado
+        $empresa->status = 1;
         $empresa->save();
 
         return redirect()->route('empresas.index')->with('success', 'Empresa registrada exitosamente.');
@@ -139,13 +133,13 @@ class EmpresaController extends Controller
         if ($request->hasFile('convenioA')) {
             $file = $request->file('convenioA');
             $filename = $fecha . '_' . $empresaNombre . '_convenioA.' . $file->getClientOriginalExtension();
-            $convenioAPath = $file->storeAs('empresas/documentos', $filename, 'public');
+            $convenioAPath = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
         }
 
         if ($request->hasFile('convenioMA')) {
             $file = $request->file('convenioMA');
             $filename = $fecha . '_' . $empresaNombre . '_convenioMA.' . $file->getClientOriginalExtension();
-            $convenioMAPath = $file->storeAs('empresas/documentos', $filename, 'public');
+            $convenioMAPath = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
         }
 
         // Crear la empresa con los datos del formulario
@@ -228,7 +222,7 @@ class EmpresaController extends Controller
 
     public function update(Request $request, Empresa $empresa)
     {
-      //  dd($empresa->id); // Verifica que no sea null o incorrecto
+        //  dd($empresa->id); // Verifica que no sea null o incorrecto
 
         $request->validate([
             'nombre' => 'required|string|max:255',
@@ -263,19 +257,19 @@ class EmpresaController extends Controller
         if ($request->hasFile('ine')) {
             $file = $request->file('ine');
             $filename = $fecha . '_' . $empresaNombre . '_ine.' . $file->getClientOriginalExtension();
-            $inePath = $file->storeAs('empresas/documentos', $filename, 'public');
+            $inePath = $file->storeAs('empresas/documentos/ine', $filename, 'public');
         }
 
         if ($request->hasFile('convenioA')) {
             $file = $request->file('convenioA');
             $filename = $fecha . '_' . $empresaNombre . '_convenioA.' . $file->getClientOriginalExtension();
-            $convenioAPath = $file->storeAs('empresas/documentos', $filename, 'public');
+            $convenioAPath = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
         }
 
         if ($request->hasFile('convenioMA')) {
             $file = $request->file('convenioMA');
             $filename = $fecha . '_' . $empresaNombre . '_convenioMA.' . $file->getClientOriginalExtension();
-            $convenioMAPath = $file->storeAs('empresas/documentos', $filename, 'public');
+            $convenioMAPath = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
         }
 
         $empresa->update([
@@ -304,9 +298,11 @@ class EmpresaController extends Controller
     }
 
 
-    public function destroy(Empresa $empresa)
+    public function destroy(Empresa $id)
     {
-        $empresa->delete();
+        // dd($id);
+        MentorIndustrial::where('empresa_id', $id->id)->delete();
+        $id->delete();
         return redirect()->route('empresas.index')->with('success', 'Empresa eliminada exitosamente.');
     }
 
@@ -381,10 +377,9 @@ class EmpresaController extends Controller
 
         return view('empresas.suspend-form', compact('empresa', 'suspensionReasons'));
     }
+    
     public function suspend(Request $request, $id)
     {
-
-
         $validated = $request->validate([
             'motivo_baja' => 'required',
             'fecha_baja' => 'required|date',
@@ -402,6 +397,35 @@ class EmpresaController extends Controller
         return redirect()->route('empresas.index')->with('success', 'La empresa ha sido suspendida temporalmente.');
     }
 
+    public function reactivate($id)
+    {
+        $decodedId = Hashids::decode($id);
 
-    public function reactivate($id) {}
+        if (empty($decodedId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Empresa no encontrada'
+            ], 404);
+        }
+
+        $empresa = Empresa::findOrFail($decodedId[0]);
+
+        // Verificar que esté suspendida
+        if ($empresa->STATUS != 2) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Solo se pueden reactivar empresas suspendidas'
+            ], 400);
+        }
+
+        // Reactivar la empresa
+        $empresa->update([
+            'STATUS' => 1, // 1 = Activa
+            'motivo_baja' => null,
+            'comentarios_baja' => null,
+            'fecha_baja' => null
+        ]);
+
+        return redirect()->route('empresas.index')->with('success', 'La empresa ha sido reactivada temporalmente.');
+    }
 }

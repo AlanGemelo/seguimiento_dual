@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card shadow">
-                    <x-section-header title="Datos de la Unidad Económica Interesada (UEI)"
+                   <x-forms.section-header title="Datos de la Unidad Económica Interesada (UEI)"
                         description="Visualización de la información de la Unidad Económica Interesada (UEI)." />
 
                     <div class="card-body">
@@ -141,11 +141,7 @@
                         </div>
                         <!-- Botones de Acción -->
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <x-cancel-button url="{{ route('empresas.index') }}" />
-                            <button type="submit" class="btn" style="background-color: #006837; color: white;">
-                                <i class="fas fa-save me-1"></i> Guardar Empresa
-                            </button>
-
+                            <x-buttons.back-button url="{{ route('empresas.index') }}" />
                         </div>
                     </div>
                 </div>

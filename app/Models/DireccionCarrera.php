@@ -15,6 +15,7 @@ class DireccionCarrera extends Model
         'name',
         'email',
         'telefono',
+        
     ];
 
     public function programas()

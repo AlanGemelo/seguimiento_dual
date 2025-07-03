@@ -8,7 +8,7 @@
             <div class="col-lg-12">
                 <div class="card shadow">
                     <!-- Encabezado -->
-                    <x-section-header title="Registro del Mentor Académico "
+                   <x-forms.section-header title="Registro del Mentor Académico "
                         description="Formulario para registrar docentes responsables del acompañamiento a estudiantes en el Modelo de Formación Dual." />
 
 
@@ -95,7 +95,7 @@
                                 <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                     type="submit">Guardar</button>
 
-                                <x-cancel-button url="{{ route('academicos.index') }}" />
+                               <x-buttons.cancel-button url="{{ route('academicos.index') }}" />
 
                             </div>
                         </form>

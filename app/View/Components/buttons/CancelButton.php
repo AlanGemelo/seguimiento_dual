@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Buttons;
 
 use Illuminate\View\Component;
 
-class SectionHeader extends Component
+class CancelButton extends Component
 {
     /**
      * Create a new component instance.
@@ -12,13 +12,13 @@ class SectionHeader extends Component
      * @return void
      */
 
-    public $title;
-    public $description;
+    public $url;
+    public $text;
 
-    public function __construct($title, $description)
+    public function __construct($url = null, $text = "Cacelar")
     {
-        $this->title = $title;
-        $this->description = $description;
+        $this->url = $url;
+        $this->text = $text;
     }
 
     /**
@@ -28,6 +28,6 @@ class SectionHeader extends Component
      */
     public function render()
     {
-        return view('components.section-header');
+        return view('components.buttons.cancel-button');
     }
 }

@@ -136,8 +136,9 @@
 .dropdown-submenu > .dropdown-menu {
   top: 0;
   left: 100%;
-  margin-top: -0.5rem;
-  margin-left: 0.1rem;
+  margin-top: -0.5rem 0;
+  margin-left: 0.1rem 0;
+  min-width: 200px;
 }
 
 /* Flecha indicadora */

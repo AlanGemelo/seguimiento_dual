@@ -342,13 +342,13 @@
         {{-- Eliminados Lista --}}
         @if ($estudiantesDeleted->count() !== 0)
             @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Estudiantes Eliminados</h6>
+                
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-header-adjusted">
+                                <h6 class="card-title">Lista De Estudiantes Eliminados</h6>
                             </div>
-                        </div>
+                        
                         <div class="card-body">
                             <div class="table-responsive">
                                 <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
@@ -412,7 +412,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                
             @endif
         @endif
     </div>

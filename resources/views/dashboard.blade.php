@@ -15,9 +15,8 @@
                     </button>
                 </div>
             @endif
-
+        <div class="row flex-grow justify-content-center">  
             @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                <div class="row">
                     <div class="col-lg-4 d-flex flex-column">
                         <div class="row flex-grow">
                             <div class="col-12 grid-margin stretch-card">
@@ -38,7 +37,7 @@
             @endif
 
             <div class="col-lg-4 d-flex flex-column">
-                <div class="row flex-grow">
+                <div class="row flex-grow justify-content-center">
                     <div class="col-12 grid-margin stretch-card">
                         <div class="card card-rounded shadow-lg border-0">
                             <div class="card-body text-center">
@@ -56,7 +55,7 @@
             </div>
 
             <div class="col-lg-4 d-flex flex-column">
-                <div class="row flex-grow">
+                <div class="row flex-grow justify-content-center">
                     <div class="col-12 grid-margin stretch-card">
                         <div class="card card-rounded shadow-lg border-0">
                             <div class="card-body text-center">

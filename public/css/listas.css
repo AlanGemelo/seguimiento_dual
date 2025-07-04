@@ -84,6 +84,18 @@
   display: inline-block;
 }
 
+.dropdown-divider {
+  height: 0;
+  margin: 1rem 0;
+  overflow: hidden;
+  border-top: 3px solid #006837 !important;
+}
+
+h4{
+  color: #006837 !important;
+  font-weight: 600;
+}
+
 /* Personalización adicional del buscador */
 #search {
   border: 1px solid #ced4da; /* Verde */
@@ -141,6 +153,11 @@
   align-items: center;
   justify-content: center;
   float: right;
+}
+
+.btn-primary {
+  background-color: #006837 !important;
+  color: white;
 }
 
 .btn-facebook {

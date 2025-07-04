@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+
+    <body class="body">
     <div class="container">
         <div class="card">
-            <div class="card-header">
-                <h3>Editar Anexo 1.1 - Competencias del Programa Educativo</h3>
+            <div class="card-header-adjusted">
+                <h3 class="card-title">Editar Anexo 1.1 - Competencias del Programa Educativo</h3>
             </div>
             <div class="card-body">
                 <form action="{{ route('anexo1_1.update', $anexo1_1->id) }}" method="POST" id="anexo1_1_form">
@@ -82,10 +85,10 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-primary" id="add_row">Agregar Competencia</button>
+                        <button type="button" class="btn btn-success" id="add_row">Agregar Competencia</button>
                     </div>
-                    <button type="submit" class="btn btn-success">Guardar</button>
-                    <a href="{{ route('anexo1_1.index') }}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('anexo1_1.index') }}" class="btn btn-danger">Cancelar</a>
                 </form>
             </div>
         </div>
@@ -218,3 +221,4 @@
         }
     </style>
 @endsection
+    </body>

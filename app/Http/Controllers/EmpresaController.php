@@ -377,7 +377,7 @@ class EmpresaController extends Controller
 
         return view('empresas.suspend-form', compact('empresa', 'suspensionReasons'));
     }
-    
+
     public function suspend(Request $request, $id)
     {
         $validated = $request->validate([
@@ -390,7 +390,7 @@ class EmpresaController extends Controller
             'STATUS' => 2,
             'motivo_baja' => $request->motivo_baja,
             'fecha_baja' => $request->fecha_baja,
-            'comentarios' => $request->comentarios
+            'comentarios_baja' => $request->comentarios,
         ]);
 
 

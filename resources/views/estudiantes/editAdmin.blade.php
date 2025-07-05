@@ -10,7 +10,7 @@
                 <div class="col-lg-12">
                     <div class="card shadow">
                         <!-- Encabezado -->
-                       <x-forms.section-header title="Actualización de Estudiante Dual"
+                        <x-forms.section-header title="Actualización de Estudiante Dual"
                             description="Formulario para modificar los datos de estudiantes participantes en el Modelo de Formación Dual, incluyendo información personal, académica, vinculación con empresa y documentación asociada." />
 
                         <div class="card-body">
@@ -700,7 +700,7 @@
                                         type="submit">Actualizar
                                     </button>
 
-                                   <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
+                                    <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
 
                                 </div>
                             </form>
@@ -713,6 +713,8 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <script>
+            const BASE_ULR = "";
+
             document.addEventListener('DOMContentLoaded', function() {
                 mostrarInput();
             });
@@ -722,7 +724,7 @@
                     let direccionId = $(this).val();
 
                     if (direccionId) {
-                        fetch(`/get-carreras-academicos/${direccionId}`)
+                        fetch(`${BASE_URL}/get-carreras-academicos/${direccionId}`)
                             .then(response => response.json())
                             .then(data => {
                                 let carreraSelect = $('#carrera_id');

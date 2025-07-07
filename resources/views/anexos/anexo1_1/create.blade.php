@@ -1,105 +1,151 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h3>Anexo 1.1 - Planeación y Difusión de la ED</h3>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('anexo1_1.store') }}" method="POST" id="anexo1_1_form">
-                    @csrf
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="institucion_educativa" class="form-label">Institución Educativa</label>
-                            <input type="text" class="form-control @error('institucion_educativa') is-invalid @enderror"
-                                id="institucion_educativa" name="institucion_educativa" required
-                                value="{{ old('institucion_educativa', 'Universidad Tecnológica del Valle de Toluca') }}">
-                            @error('institucion_educativa')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="programa_educativo_id" class="form-label">Programa Educativo</label>
-                            <select class="form-control @error('programa_educativo_id') is-invalid @enderror"
-                                id="programa_educativo_id" name="programa_educativo_id" required>
-                                @foreach ($carreras as $carrera)
-                                    <option value="{{ $carrera->id }}"
-                                        {{ old('programa_educativo_id') == $carrera->id ? 'selected' : '' }}>
-                                        {{ $carrera->grado_academico .' en '.$carrera->nombre }}</option>
-                                @endforeach
-                            </select>
-                            @error('programa_educativo_id')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card shadow">
+                    <x-forms.section-header title="Anexo 1.1 - Planeación y Difusión de la ED" description="" />
+
+                    <div class="card-body">
+                        <form action="{{ route('anexo1_1.store') }}" method="POST" id="anexo1_1_form">
+                            @csrf
+
+                            <!-- Información Institucional -->
+                            <div class="mb-4">
+                                <h5 class="section-title fw-bold">Información Institucional</h5>
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="grado_academico">Institución Educativa <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text"
+                                            class="form-control @error('institucion_educativa') is-invalid @enderror"
+                                            id="institucion_educativa" name="institucion_educativa" required
+                                            value="{{ old('institucion_educativa', 'Universidad Tecnológica del Valle de Toluca') }}">
+                                        @error('institucion_educativa')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombre">Programa Educativo <span class="text-danger">*</span></label>
+                                        <select class="form-control @error('programa_educativo_id') is-invalid @enderror"
+                                            id="programa_educativo_id" name="programa_educativo_id" required>
+                                            @foreach ($carreras as $carrera)
+                                                <option value="{{ $carrera->id }}"
+                                                    {{ old('programa_educativo_id') == $carrera->id ? 'selected' : '' }}>
+                                                    {{ $carrera->grado_academico . ' en ' . $carrera->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('programa_educativo_id')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8 mb-3">
+                                        <label for="direccion_id" class="form-label">Fecha de Elaboración <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date"
+                                            class="form-control @error('fecha_elaboracion') is-invalid @enderror"
+                                            id="fecha_elaboracion" name="fecha_elaboracion" required
+                                            value="{{ old('fecha_elaboracion') }}">
+                                        @error('fecha_elaboracion')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Responsables -->
+                            <div class="mb-4">
+                                <h5 class="section-title fw-bold">Responsables</h5>
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="grado_academico">Responsable del Programa Educativo <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-control" id="responsable_programa_id"
+                                            name="responsable_programa_id" required>
+                                            @foreach ($directores as $director)
+                                                <option value="{{ $director->id }}">
+                                                    {{ $director->nombre . ' ' . $director->apellidoP . ' ' . $director->apellidoM }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombre">Responsable Académico de la IE <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control"
+                                            value="{{ $responsableAcademico->name }}" disabled>
+                                        <input type="hidden" name="responsable_academico_id"
+                                            value="{{ $responsableAcademico->id }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Planeación Académica  -->
+                            <div class="mb-4">
+                                <h5 class="section-title fw-bold">Planeación Académica </h5>
+                                <small class="text-muted text-stone-950">Tabla dinámica o sección repetible</small>
+                                <div class="dropdown-divider mb-4"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="competencias" class="form-label">Competencias</label>
+                                        <table class="table table-bordered" id="competencias_table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Competencias a Desarrollar</th>
+                                                    <th>Actividades de Aprendizaje</th>
+                                                    <th>Asignaturas</th>
+                                                    <th>Cuatrimestre/Semestre</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><input type="text" data-tipo="text"
+                                                            class="form-control @error('competencias.0.competencia') is-invalid @enderror"
+                                                            name="competencias[0][competencia]" required></td>
+                                                    <td><input type="text" data-tipo="text"
+                                                            class="form-control @error('competencias.0.actividad') is-invalid @enderror"
+                                                            name="competencias[0][actividad]" required></td>
+                                                    <td><input type="text" data-tipo="text"
+                                                            class="form-control @error('competencias.0.asignatura') is-invalid @enderror"
+                                                            name="competencias[0][asignatura]" required></td>
+                                                    <td><input type="number"
+                                                            class="form-control @error('competencias.0.cuatrimestre') is-invalid @enderror"
+                                                            name="competencias[0][cuatrimestre]" min="1"
+                                                            max="11" required>
+                                                    </td>
+                                                    <td><button type="button"
+                                                            class="btn btn-danger remove-row">Eliminar</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <button type="button" class="btn btn-primary" id="add_row">Agregar Fila</button>
+                                </div>
+                            </div>
+                            <!-- Botones de Acción -->
+                            <div class="d-grid gap-2 d-md-flex  mt-4">
+                                <x-buttons.success-button text="Guardar" />
+                                <x-buttons.cancel-button url="{{ route('anexo1_1.index') }}" />
+                            </div>
+                        </form>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="fecha_elaboracion" class="form-label">Fecha de Elaboración</label>
-                            <input type="date" class="form-control @error('fecha_elaboracion') is-invalid @enderror"
-                                id="fecha_elaboracion" name="fecha_elaboracion" required
-                                value="{{ old('fecha_elaboracion') }}">
-                            @error('fecha_elaboracion')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="responsable_programa_id" class="form-label">Responsable del Programa
-                                Educativo</label>
-                            <select class="form-control" id="responsable_programa_id" name="responsable_programa_id"
-                                required>
-                                @foreach ($directores as $director)
-                                    <option value="{{ $director->id }}">
-                                        {{ $director->nombre .' '.$director->apellidoP .' '.$director->apellidoM }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="responsable_academico_id" class="form-label">Responsable Académico de la IE</label>
-                            <input type="text" class="form-control" value="{{ $responsableAcademico->name }}" disabled>
-                            <input type="hidden" name="responsable_academico_id" value="{{ $responsableAcademico->id }}">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="competencias" class="form-label">Competencias</label>
-                        <table class="table table-bordered" id="competencias_table">
-                            <thead>
-                                <tr>
-                                    <th>Competencias a Desarrollar</th>
-                                    <th>Actividades de Aprendizaje</th>
-                                    <th>Asignaturas</th>
-                                    <th>Cuatrimestre/Semestre</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" data-tipo="text"
-                                            class="form-control @error('competencias.0.competencia') is-invalid @enderror"
-                                            name="competencias[0][competencia]" required></td>
-                                    <td><input type="text" data-tipo="text"
-                                            class="form-control @error('competencias.0.actividad') is-invalid @enderror"
-                                            name="competencias[0][actividad]" required></td>
-                                    <td><input type="text" data-tipo="text"
-                                            class="form-control @error('competencias.0.asignatura') is-invalid @enderror"
-                                            name="competencias[0][asignatura]" required></td>
-                                    <td><input type="number"
-                                            class="form-control @error('competencias.0.cuatrimestre') is-invalid @enderror"
-                                            name="competencias[0][cuatrimestre]" min="1" max="11" required>
-                                    </td>
-                                    <td><button type="button" class="btn btn-danger remove-row">Eliminar</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <button type="button" class="btn btn-primary" id="add_row">Agregar Fila</button>
-                    </div>
-                    <button type="submit" class="btn btn-success">Guardar</button>
-                    <a href="{{ route('anexo1_1.index') }}" class="btn btn-secondary">Cancelar</a>
-                </form>
+                </div>
             </div>
         </div>
     </div>

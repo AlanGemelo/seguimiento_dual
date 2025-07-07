@@ -368,6 +368,8 @@ class EstudiantesController extends Controller
      */
     public function candidato(Request $request)
     {
+        // dd($request->all());
+
         $request->validate([
             'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],
@@ -421,8 +423,8 @@ class EstudiantesController extends Controller
             'fecha_na' => Carbon::parse($request->fecha_na)->format("Y-m-d"),
             'activo' => false,
             'cuatrimestre' => $request->cuatrimestre,
-            'inicio' => Carbon::parse($request->fin_dual)->format("Y-m-d") ?? NULL,
-            'fin' => Carbon::parse($request->fin_dual)->format("Y-m-d") ?? NULL,
+            'inicio' => $request->filled('inicio') ? Carbon::parse($request->inicio)->format('Y-m-d') : null,
+            'fin' => $request->filled('fin') ? Carbon::parse($request->fin)->format('Y-m-d') : null,
             'ine' => $ine ?? NULL,
             'historial_academico' => $historial_academico ?? NULL,
             'perfil_ingles' => $perfil_ingles ?? NULL,

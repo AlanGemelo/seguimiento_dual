@@ -9,8 +9,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card shadow">
-                        <x-forms.section-header title="Modificación del Programa Educativo"
-                            description="Registro de nuevas programas educativos." />
+                        <x-forms.section-header title="Editar Programa Educativo"
+                            description="Formulario para actualizar datos del programa educativo." />
 
                         <div class="card-body">
                             <form class="pt-3" action="{{ route('carreras.update', $carrera->id) }}" method="post">
@@ -78,10 +78,7 @@
 
                                 <!-- Botones de Acción -->
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                                    <button type="submit" class="btn" style="background-color: #006837; color: white;">
-                                        <i class="fas fa-save me-1"></i> Guardar Empresa
-                                    </button>
-                                    <x. />
+                                    <x-buttons.success-button text="Actualizar" />
                                     <x-buttons.cancel-button url="{{ route('carreras.index') }}" />
                                 </div>
                             </form>

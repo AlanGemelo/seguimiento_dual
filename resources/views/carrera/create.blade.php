@@ -10,7 +10,7 @@
                 <div class="col-lg-12">
                     <div class="card shadow">
                         <x-forms.section-header title="Registro de Programas Educativos"
-                            description="Registro de nuevas programas educativos." />
+                            description="Formulario para registrar nuevos programas educativos." />
 
                         <div class="card-body">
                             <form action="{{ route('carreras.store') }}" method="post" class="needs-validation" novalidate>
@@ -75,11 +75,8 @@
 
                                 <!-- Botones de Acción -->
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                                    <x-buttons.cancel-button url="{{ route('empresas.index') }}" />
-                                    <button type="submit" class="btn" style="background-color: #006837; color: white;">
-                                        <i class="fas fa-save me-1"></i> Guardar Empresa
-                                    </button>
-
+                                    <x-buttons.success-button text="Registrar " />
+                                    <x-buttons.cancel-button url="{{ route('carreras.index') }}" />
                                 </div>
                             </form>
                         </div>

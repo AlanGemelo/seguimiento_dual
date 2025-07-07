@@ -67,7 +67,7 @@
                                     <h5 class="section-title mt-4">Información Académica</h5>
                                     <div class="dropdown-divider mb-4"></div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="cuatrimestre" class="form-label">Dirección de carrera</label>
+                                        <label for="direccion" class="form-label">Dirección de carrera</label>
                                         <input type="text" class="form-control"
                                             value="{{ $estudiante->direccion->name ?? 'N/A' }}" disabled>
                                     </div>
@@ -77,21 +77,21 @@
                                             disabled>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label for="cuatrimestre" class="form-label">Fecha de ingreso</label>
+                                        <label for="inicio" class="form-label">Fecha de ingreso</label>
                                         <input type="text" class="form-control"
                                             value="{{ \Carbon\Carbon::parse($estudiante->inicio)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}"
                                             disabled>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label for="cuatrimestre" class="form-label">Fecha de egreso</label>
+                                        <label for="fin" class="form-label">Fecha de egreso</label>
                                         <input type="text" class="form-control"
                                             value="{{ \Carbon\Carbon::parse($estudiante->fin)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}"
                                             disabled>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label for="cuatrimestre" class="form-label">Situación en modalidad dual</label>
+                                        <label for="status" class="form-label">Situación en modalidad dual</label>
                                         <input type="text" class="form-control"
                                             value="{{ $estudiante->status == 1 ? 'Renovación' : 'Primera vez' }}" disabled>
                                     </div>

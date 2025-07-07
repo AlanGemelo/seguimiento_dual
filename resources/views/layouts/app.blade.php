@@ -26,7 +26,7 @@
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    
 </head>
 
 <div class="container-fluid">

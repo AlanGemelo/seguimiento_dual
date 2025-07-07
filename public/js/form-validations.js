@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    //Validation for Address
+    //get born date
 
-    const addressInput = document.getElementById("direccion");
+    
 });

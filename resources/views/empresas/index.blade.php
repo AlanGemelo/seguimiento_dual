@@ -126,10 +126,10 @@
             {{-- Seccion de Bajas Temporales --}}
 
             <div class="card mt-4">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                    <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                        <h6 class="text-white text-capitalize ps-3">Historial de UEI - Bajas Temporales</h6>
-                    </div>
+                <div class="card-header-adjusted">
+                    
+                        <h6 class="card-title">Historial de UEI - Bajas Temporales</h6>
+                    
                 </div>
                 <div class="card-body">
                     <div class="row mb-4">

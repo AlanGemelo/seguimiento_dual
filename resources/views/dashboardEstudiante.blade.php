@@ -1,6 +1,9 @@
 @extends("layouts.app")
 @section("title", "Dashboard")
 @section("content")
+<link rel="stylesheet" href="{{ asset('css/dashboardestudiante.css') }}">
+<body class="body">
+    <div class="card">
     <div class="row">
        
         <div class="col-12 grid-margin">
@@ -16,7 +19,7 @@
             @endif
 
             <div class="card-body">
-                <h4 class="card-title">Estudiante Dual</h4>
+                <h6 class="card-title">Estudiante Dual</h6>
                 <div class="dropdown-divider"></div>
                 <div class="row">
                     <div class="col-md-12">
@@ -83,6 +86,7 @@
         </div>
     </div>
     </div>
+</div>
 @endsection
 <script>
     function ocultar(id, id2, text) {
@@ -100,3 +104,4 @@
         elemento1.hidden = !elemento1.hidden; // Habilita el botón para cambiar el archivo
     }
 </script>
+</body>

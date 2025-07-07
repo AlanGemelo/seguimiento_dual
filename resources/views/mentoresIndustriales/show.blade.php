@@ -49,8 +49,8 @@
                             </div>
                             {{-- Estudiantes asignados --}}
                             <div class="dropdown-divider my-4"></div>
-                            <h5 class="card-title" style="color:#46c35f; font-weight:700;">
-                                <i class="mdi mdi-account-multiple-outline" style="color:#58d8a3"></i>
+                            <h5 class="card-title" style="color:#006837; font-weight:700;">
+                                <i class="mdi mdi-account-multiple-outline" style="color:#006837"></i>
                                 Estudiantes asignados
                             </h5>
                             <div class="row">

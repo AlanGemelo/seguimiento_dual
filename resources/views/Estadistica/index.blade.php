@@ -1,24 +1,25 @@
 @extends('layouts.app')
 @section('title', 'Estadísticas')
 @section('content')
-
+<link rel="stylesheet" href="{{ asset('css/estadisticas.css') }}">
+<body class="body">
     <div class="container mt-5">
         <!-- Encabezado principal -->
         <div class="row">
-            <div class="col-12">
-                <div class="card shadow-lg">
-                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                        <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                            <h4 class="text-white text-capitalize ps-3">Estadísticas Generales de la Direccion:
-                                {{ session('direccion')->name }}</h4>
-                        </div>
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-header-adjusted">
+                        
+                            <h6 class="card-title">Estadísticas Generales de la Direccion:
+                                {{ session('direccion')->name }}</h6>
+                        
                     </div>
                     <div class="card-body">
                         <!-- Selectores de Estadísticas -->
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-primary text-white rounded">
+                                    <div class="card-header bg-primary text-dark rounded">
                                         <h5 class="text-center">Estudiantes por Status</h5>
                                     </div>
                                     <div class="card-body">
@@ -30,7 +31,7 @@
                                             <option value="3">Bajas</option>
                                         </select>
 
-                                        <div id="estudiantesStatus" class="mt-3"></div>
+                                        <div id="Status" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportStatusExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -40,7 +41,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-danger text-white rounded">
+                                    <div class="card-header bg-danger text-dark rounded">
                                         <h5 class="text-center">Estudiantes Becados</h5>
                                     </div>
                                     <div class="card-body">
@@ -49,7 +50,7 @@
                                             <option value="becados">Becados</option>
                                             <option value="sin_beca">Sin Beca</option>
                                         </select>
-                                        <div id="estudiantesBeca" class="mt-3"></div>
+                                        <div id="Status" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportBecaExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -59,7 +60,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-info text-white rounded">
+                                    <div class="card-header bg-info text-dark rounded">
                                         <h5 class="text-center">Estudiantes por Mentor Académico</h5>
                                     </div>
                                     <div class="card-body">
@@ -69,7 +70,7 @@
                                                 <option value="{{ $mentor->id }}">{{ $mentor->name }}</option>
                                             @endforeach
                                         </select>
-                                        <div id="estudiantesMentor" class="mt-3"></div>
+                                        <div id="Status" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportMentorExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -81,7 +82,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-warning text-white rounded">
+                                    <div class="card-header bg-warning text-white rounded">
                                         <h5 class="text-center">Estudiantes por Empresa</h5>
                                     </div>
                                     <div class="card-body">
@@ -91,7 +92,7 @@
                                                 <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
                                             @endforeach
                                         </select>
-                                        <div id="estudiantesEmpresa" class="mt-3"></div>
+                                        <div id="Status" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportEmpresaExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -101,7 +102,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-secondary text-dark rounded">
+                                    <div class="card-header bg-secondary text-dark rounded">
                                         <h5 class="text-center">Estudiantes por Carrera</h5>
                                     </div>
                                     <div class="card-body">
@@ -111,7 +112,7 @@
                                                 <option value="{{ $carrera->id }}">{{ $carrera->nombre }}</option>
                                             @endforeach
                                         </select>
-                                        <div id="estudiantesCarrera" class="mt-3"></div>
+                                        <div id="Status" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportCarreraExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -130,12 +131,12 @@
     <div class="container mt-5">
         <!-- Filtro de Estudiantes -->
         <div class="row">
-            <div class="col-12">
-                <div class="card shadow-lg">
-                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                        <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Filtro de Estudiantes</h6>
-                        </div>
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-header-adjusted">
+                        
+                            <h6 class="card-title">Filtro de Estudiantes</h6>
+                        
                     </div>
                     <div class="card-body">
                         <form id="filtroEstudiantesForm">
@@ -266,31 +267,31 @@
     <div class="container mt-5">
         <!-- Gráficas -->
         <div class="row">
-            <div class="col-12">
-                <div class="card shadow-lg">
-                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                        <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Gráficas de Estadísticas</h6>
-                        </div>
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-header-adjusted">
+                        
+                            <h6 class="card-title">Gráficas de Estadísticas</h6>
+                        
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-4">
-                                <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-primary text-white rounded">
-                                        <h5 class="text-center">Estudiantes por Empresa</h5>
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-primary text-dark rounded">
+                                        <h5 class="text-center m-0">Estudiantes por Empresa</h5>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body d-flex flex-column">
                                         {!! $chartEmpresa->container() !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-secondary text-dark rounded">
-                                        <h5 class="text-center">Estudiantes por Carrera</h5>
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-secondary text-dark rounded">
+                                        <h5 class="text-center m-0">Estudiantes por Carrera</h5>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body d-flex flex-column">
                                         {!! $chartCarrera->container() !!}
                                     </div>
                                 </div>
@@ -298,21 +299,21 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-4">
-                                <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-info text-white rounded">
-                                        <h5 class="text-center">Estudiantes por Mentor Académico</h5>
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-info text-dark rounded">
+                                        <h5 class="text-center m-0">Estudiantes por Mentor Académico</h5>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body d-flex flex-column">
                                         {!! $chartMentor->container() !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-gradient-warning text-white rounded">
-                                        <h5 class="text-center">Estudiantes Becados</h5>
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-warning text-white rounded">
+                                        <h5 class="text-center m-0">Estudiantes Becados</h5>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body d-flex flex-column">
                                         {!! $chartBeca->container() !!}
                                     </div>
                                 </div>
@@ -449,3 +450,4 @@
         document.getElementById('fechaFin').addEventListener('change', actualizarEstudiantesFiltro);
     </script>
 @endsection
+</body>

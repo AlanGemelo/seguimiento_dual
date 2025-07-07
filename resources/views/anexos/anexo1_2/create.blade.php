@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+
+    <body class="body">
     <div class="container">
         <div class="card">
-            <div class="card-header">
-                <h3>Anexo 1.2 - Programa de Difusión de la ED</h3>
+            <div class="card-header-adjusted">
+                <h3 class="card-title">Anexo 1.2 - Programa de Difusión de la ED</h3>
             </div>
             <div class="card-body">
                 @if ($errors->any())
@@ -132,10 +135,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-primary" id="add_row">Agregar Fila</button>
+                        <button type="button" class="btn btn-success" id="add_row">Agregar Fila</button>
                     </div>
-                    <button type="submit" class="btn btn-success">Guardar</button>
-                    <a href="{{ route('anexo1_2.index') }}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('anexo1_2.index') }}" class="btn btn-danger">Cancelar</a>
                 </form>
             </div>
         </div>
@@ -307,3 +310,4 @@
         }
     </style>
 @endsection
+    </body>

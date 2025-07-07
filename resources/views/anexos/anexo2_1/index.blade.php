@@ -1,17 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+
+    <body class="body">
 <div class="container">
     <div class="card">
-        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                <h6 class="text-white text-capitalize ps-3">Anexo 2.1 - Evaluación de la UE</h6>
+        <div class="card-header-adjusted">
+            
+                <h6 class="card-title">Anexo 2.1 - Evaluación de la UE</h6>
                 <div class="float-end">
-                    <a href="{{ route('anexo2_1.create') }}" class="btn btn-primary" title="Crear Nuevo">
+                    <a href="{{ route('anexo2_1.create') }}" class="btn btn-add" title="Crear Nuevo">
                         <i class="mdi mdi-plus-circle-outline"></i>
                     </a>
                 </div>
-            </div>
+            
         </div>
         <div class="card-body">
             <div class="row mb-4">
@@ -73,3 +76,4 @@ document.getElementById('search').addEventListener('keyup', function() {
 });
 </script>
 @endsection
+</body>

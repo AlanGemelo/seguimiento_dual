@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+
+    <body class="body">
     <div class="container">
         <div class="card">
-            <div class="card-header">
-                <h3>Anexo 1.3 - Formato de Registro de Interesados de UE y Estudiantes ED</h3>
+            <div class="card-header-adjusted">
+                <h3 class="card-title">Anexo 1.3 - Formato de Registro de Interesados de UE y Estudiantes ED</h3>
             </div>
             <div class="card-body">
                 <form action="{{ route('anexo1_3.store') }}" method="POST" id="anexo1_3_form">
@@ -189,8 +192,8 @@
                             <input type="hidden" name="quien_elaboro_id" value="{{ $responsableIE->id }}">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success">Guardar</button>
-                    <a href="{{ route('anexo1_3.index') }}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('anexo1_3.index') }}" class="btn btn-danger">Cancelar</a>
                 </form>
             </div>
         </div>
@@ -324,3 +327,4 @@
         }
     </style>
 @endsection
+    </body>

@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
+
+    <body class="body">
     <div class="container">
         <div class="card">
-            <div class="card-header">
-                <h3>Crear Anexo 2.1 - Evaluación de la UE</h3>
+            <div class="card-header-adjusted">
+                <h3 class="card-title">Crear Anexo 2.1 - Evaluación de la UE</h3>
             </div>
             <div class="card-body">
                 @if ($errors->any())
@@ -59,9 +62,10 @@
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
-
+                        <br>
                         <!-- Sección 1 - Situación Legal -->
                         <h4>Sección 1 - Situación Legal</h4>
+                        <div class="dropdown-divider"></div>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -107,9 +111,10 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                        <br>
                         <!-- Sección 2 - Situación Educativa/Formativa -->
                         <h4>Sección 2 - Situación Educativa/Formativa</h4>
+                        <div class="dropdown-divider"></div>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -188,9 +193,10 @@
                                 </tr>
                             </tbody>
                         </table>
-
+                        <br>
                         <!-- Sección 3 - Factores Socioeconómicos -->
                         <h4>Sección 3 - Factores Socioeconómicos</h4>
+                        <div class="dropdown-divider"></div>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -304,3 +310,4 @@
         }
     </script>
 @endsection
+    </body>

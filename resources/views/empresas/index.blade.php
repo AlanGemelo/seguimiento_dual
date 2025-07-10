@@ -11,11 +11,6 @@
 
                 <div class="card-header-adjusted">
                     <h6 class="card-title">Empresas Registradas</h6>
-                    <div class="float-end">
-                        <a href="{{ route('empresas.create') }}" class="btn btn-add" title="Crear Nueva Empresa">
-                            <i class="mdi mdi-plus-circle-outline"></i>
-                        </a>
-                    </div>
                 </div>
 
                 <div class="card-body">
@@ -79,6 +74,11 @@
                         <a href="{{ route('empresas.exportUeiPdf') }}" class="btn btn-danger" title="Descargar PDF">
                             <i class="mdi mdi-file-pdf"></i>
                         </a>
+                        <div class="float-end ms-2">
+                            <a href="{{ route('empresas.create') }}" class="btn btn-add" title="Crear Nueva Empresa">
+                                <i class="mdi mdi-plus-circle-outline"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -127,9 +127,9 @@
 
             <div class="card mt-4">
                 <div class="card-header-adjusted">
-                    
-                        <h6 class="card-title">Historial de UEI - Bajas Temporales</h6>
-                    
+
+                    <h6 class="card-title">Historial de UEI - Bajas Temporales</h6>
+
                 </div>
                 <div class="card-body">
                     <div class="row mb-4">

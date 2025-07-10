@@ -225,6 +225,8 @@ class EstudiantesController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
+        //dd($request->all());
+
         $request->validate([
             'matricula' => ['integer', 'unique:' . Estudiantes::class, 'min:9'],
             'name' => ['string', 'min:3', 'max:255'],
@@ -245,9 +247,12 @@ class EstudiantesController extends Controller
             // 'perfil_ingles' => ['file', 'mimes:pdf'],
             'inicio' => ['date'],
             'fin' => ['date'],
+            'beca' => ['required', 'integer', 'in:0,1'],
+            'tipoBeca' => ['nullable', 'integer', 'in:0,1'],
             'direccion_id' => ['required', 'integer', 'exists:' . DireccionCarrera::class . ',id'],
             'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
+
 
 
         if ($request->file('ine')) {
@@ -336,8 +341,8 @@ class EstudiantesController extends Controller
             'fin_dual' => Carbon::parse($request->fin_dual)->format("Y-m-d") ?? NULL,
             'inicio' => Carbon::parse($request->fin_dual)->format("Y-m-d") ?? NULL,
             'fin' => Carbon::parse($request->fin_dual)->format("Y-m-d") ?? NULL,
-            'beca' => true,
-
+            'beca' => $request->beca,
+            'tipoBeca' => $request->tipoBeca,
             'status' => $request->status,
             'ine' => $ine ?? NULL,
             'evaluacion_form' => $evaluacion_form ?? NULL,
@@ -591,10 +596,11 @@ class EstudiantesController extends Controller
 
         $inicioDual = Carbon::parse($request->inicio_dual);
         $finDual = Carbon::parse($request->fin_dual);
-        // if ($inicioDual->diffInYears($finDual) !== 1) {
-        //     // Si la diferencia no es de un año, retornar un error
-        //     return redirect()->back()->withErrors(['fin_dual' => 'La diferencia entre inicio dual y fin dual debe ser de un año.']);
-        // }
+
+        /*   if ($inicioDual->diffInYears($finDual) !== 1) {
+            return redirect()->back()->withErrors(['fin_dual' => 'La diferencia entre inicio dual y fin dual debe ser de un año.']);
+        } */
+
         $id = Hashids::decode($id);
         $estudiantes = Estudiantes::find($id);
         $estudiantes = $estudiantes[0];

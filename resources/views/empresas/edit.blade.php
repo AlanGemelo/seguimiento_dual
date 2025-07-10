@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card shadow">
-                   <x-forms.section-header title="Actualización de la Unidad Económica"
+                    <x-forms.section-header title="Actualización de la Unidad Económica"
                         description="Formulario para modificar la Unidad Económica que colabora con la Universidad mediante el Modelo de Formación Dual, indicando las carreras con las que desean establecer vínculo académico." />
 
                     <div class="card-body">
@@ -63,8 +63,17 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="tamano_ue" class="form-label">Tamaño de la UE</label>
-                                        <input type="text" name="tamano_ue" id="tamano_ue" class="form-control  "
-                                            value="{{ old('tamano_ue', $empresa->tamano_ue) }}">
+                                        <select name="tamano_ue" id="tamano_ue" class="form-control" required>
+                                            <option value="" disabled>
+                                                Seleccione el tamaño de la unidad económica
+                                            </option>
+                                            @foreach ($tamano_eu['tamanos'] as $tamano)
+                                                <option value="{{ $tamano['tamano_eu'] }}"
+                                                    {{ old('tamano_ue', $empresa->tamano_ue ?? '') == $tamano['tamano_eu'] ? 'selected' : '' }}>
+                                                    {{ $tamano['tamano_eu'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                         @error('tamano_ue')
                                             <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
@@ -336,7 +345,7 @@
                             </div>
                             <!-- Botones de Acción -->
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                               <x-buttons.cancel-button url="{{ route('empresas.index') }}" />
+                                <x-buttons.cancel-button url="{{ route('empresas.index') }}" />
                                 <button type="submit" class="btn" style="background-color: #006837; color: white;">
                                     <i class="fas fa-save me-1"></i> Alta de Empresa
                                 </button>

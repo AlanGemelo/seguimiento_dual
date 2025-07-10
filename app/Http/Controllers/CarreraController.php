@@ -56,7 +56,7 @@ class CarreraController extends Controller
         return view('carrera.index', compact('carreras'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // Obtener los valores válidos de grado académico desde config
         $valores_grado = array_column(config('niveles_academicos'), 'grado_academico');
@@ -124,7 +124,7 @@ class CarreraController extends Controller
         return view('carrera.show', compact('carrera', 'direcciones'));
     }
 
-    public function create()
+    public function create():View
     {
         // Usuario autenticado desde la propiedad protegida
         $user = $this->user;

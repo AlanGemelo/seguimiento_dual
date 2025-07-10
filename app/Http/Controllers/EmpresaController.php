@@ -17,6 +17,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\Rule;
 
 class EmpresaController extends Controller
 {
@@ -50,8 +53,11 @@ class EmpresaController extends Controller
         return view('empresas.create', compact('direcciones'));
     }
 
-    public function registrar(Request $request, Empresa $empresa)
+    public function registrar(Request $request, Empresa $empresa): RedirectResponse
     {
+
+        $ue_size = array_column(config('ue_size.tamanos'), 'tamano_eu');
+        //dd($ue_size);
         $data = $request->validate([
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:empresas,email,' . $empresa->id,
@@ -64,7 +70,7 @@ class EmpresaController extends Controller
             'nombre_representante' => 'required|string|max:255',
             'cargo_representante' => 'required|string|max:255',
             'actividad_economica' => 'required|string|max:255',
-            'tamano_ue' => 'required|integer',
+            'tamano_ue' => ['required', Rule::in($ue_size)],
             'folio' => 'nullable|string|max:255',
             'direccion' => 'required|string|max:255',
             'ine' => 'required|file|mimes:pdf,jpg',
@@ -162,24 +168,6 @@ class EmpresaController extends Controller
 
         return redirect()->route('empresas.index')->with('success', 'Empresa creada exitosamente.');
     }
-    /* public function store(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'unidad_economica' => 'required|string|max:255',
-            'fecha_registro' => 'required|date',
-            'razon_social' => 'required|string|max:255',
-            'nombre_representante' => 'required|string|max:255',
-            'cargo_representante' => 'required|string|max:255',
-            'actividad_economica' => 'required|string|max:255',
-            'tamano_ue' => 'required|integer',
-            'folio' => 'required|string|max:255',
-        ]);
-
-        $empresa = Empresa::create($request->all());
-
-        return redirect()->route('empresas.index')->with('success', 'Empresa interesada creada exitosamente.');
-    } */
 
     public function show($id)
     {
@@ -214,22 +202,22 @@ class EmpresaController extends Controller
         return view('empresas.show_establecidas', compact('empresa'));
     }
 
-    public function edit(Empresa $empresa)
+    public function edit(Empresa $empresa): View
     {
+        $tamano_eu = config('ue_size');
         $direcciones = DireccionCarrera::all(); // Asegúrate de obtener las direcciones
-        return view('empresas.edit', compact('empresa', 'direcciones'));
+        return view('empresas.edit', compact('empresa', 'direcciones', 'tamano_eu'));
     }
 
     public function update(Request $request, Empresa $empresa)
     {
-        //  dd($empresa->id); // Verifica que no sea null o incorrecto
-
+        $ue_size = array_column(config('ue_size.tamanos'), 'tamano_eu');
         $request->validate([
             'nombre' => 'required|string|max:255',
             'razon_social' => 'nullable|string|max:255',
             'actividad_economica' => 'nullable|string|max:255',
             'unidad_economica' => 'nullable|string|max:255',
-            'tamano_ue' => 'nullable|string|max:255',
+            'tamano_ue' => ['required', Rule::in($ue_size)],
             'folio' => 'nullable|string|max:255',
             'direccion' => 'nullable|string|max:255',
             'fecha_registro' => 'nullable|date',
@@ -333,10 +321,12 @@ class EmpresaController extends Controller
         return $pdf->download('empresa_' . $empresa->id . '.pdf');
     }
 
-    public function darAlta(Empresa $empresa)
+    public function darAlta(Empresa $empresa): View
     {
-        $direcciones = DireccionCarrera::all(); // Asegúrate de obtener las direcciones
-        return view('empresas.darAlta', compact('empresa', 'direcciones'));
+        $tamano_eu = config('ue_size');
+        //dd($tamano_eu);
+        $direcciones = DireccionCarrera::all();
+        return view('empresas.darAlta', compact('empresa', 'direcciones', 'tamano_eu'));
     }
 
 

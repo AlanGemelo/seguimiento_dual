@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->string('nombre_representante')->nullable();
             $table->string('cargo_representante')->nullable();
             $table->string('actividad_economica')->nullable();
-            $table->integer('tamano_ue')->nullable();
+            $table->string('tamano_ue')->nullable();
             $table->string('folio')->nullable();
             $table->tinyInteger('status')->default(0)->comment('0: candidata, 1: activa, 2: baja temporal, 3: eliminada'); // 0 = no aceptada, 1 = aceptada
             $table->string('motivo_baja')->nullable(); // Motivo de la baja (ej: "Cierre definitivo")

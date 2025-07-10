@@ -234,9 +234,7 @@
                                             <select class="form-select" aria-label="Seleccionar Empresa"
                                                 name="asesorin_id" id="asesorin_id">
                                                 <option selected>Seleccione una opcion</option>
-                                                {{-- @foreach ($asesores as $asesor)
-                                                <option value="{{ $asesor->id }}">{{ $asesor->name }}</option>
-                                            @endforeach --}}
+
                                             </select>
                                             @error('asesorin_id')
                                                 <div class="text-danger">{{ $message }}</div>
@@ -301,52 +299,56 @@
                                                 @enderror
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="row">
                                         <h5 class="section-title fw-bold  mt-4">Documentación </h5>
                                         <div class="dropdown-divider mb-4"></div>
 
                                         <div class="col-12">
-                                            <h6 class="section-subtitle fw-bold">Documentos Personales</h6>
+                                            <h6 class="section-subtitle">Documentos Personales</h6>
                                             <div class="dropdown-divider mb-3"></div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="ine">INE <span class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf"
-                                                    class="form-control form-control-lg mt-1" id="ine"
-                                                    placeholder="INE" name="ine" value="{{ old('ine') }}">
-                                                @error('ine')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="ine">INE <span class="text-danger">*</span></label>
+                                            <input type="file" accept="application/pdf"
+                                                class="form-control form-control-lg mt-1" id="ine"
+                                                placeholder="INE" name="ine" value="{{ old('ine') }}">
+                                            @error('ine')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
-                                            <div class="col-md-4 mb-3">
-                                                <label for="historial_academico">Historial Academico <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf"
-                                                    class="form-control form-control-lg mt-1" id="historial_academico"
-                                                    placeholder="historial_academico" name="historial_academico"
-                                                    value="{{ old('historial_academico') }}">
-                                                @error('historial_academico')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="perfil_ingles">Perfil de Inglés <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf"
-                                                    class="form-control form-control-lg mt-1" id="perfil_ingles"
-                                                    placeholder="perfil_ingles" name="perfil_ingles"
-                                                    value="{{ old('perfil_ingles') }}">
-                                                @error('perfil_ingles')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="historial_academico">
+                                                Historial Académico
+                                                <small class="text-muted text-danger"
+                                                    style="color: #dc3545 !important; ">(Opcional)</small>
+                                            </label>
+                                            <input type="file" accept="application/pdf"
+                                                class="form-control form-control-lg mt-1" id="historial_academico"
+                                                placeholder="historial_academico" name="historial_academico"
+                                                value="{{ old('historial_academico') }}">
+                                            @error('historial_academico')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="perfil_ingles">Perfil de Inglés
+                                                <small class="text-muted text-danger"
+                                                    style="color: #dc3545 !important; ">(Opcional)</small>
+                                            </label>
+                                            <input type="file" accept="application/pdf"
+                                                class="form-control form-control-lg mt-1" id="perfil_ingles"
+                                                placeholder="perfil_ingles" name="perfil_ingles"
+                                                value="{{ old('perfil_ingles') }}">
+                                            @error('perfil_ingles')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
 
 
                                         <div class="col-12">
-                                            <h6 class="section-subtitle fw-bold">Formatos Institucionales</h6>
+                                            <h6 class="section-subtitle mt-1">Formatos Institucionales</h6>
                                             <div class="dropdown-divider mb-3"></div>
 
                                             <div class="row">
@@ -382,7 +384,19 @@
                                                         <div class="text-danger">{{ $message }}</div>
                                                     @enderror
                                                 </div>
+                                            </div>
+                                        </div>
 
+                                        <div class="col-12" id="formatosBeca" style="display: none">
+                                            <h6 class="section-subtitle mt-1">
+                                                Formatos de Beca
+                                                <small class="text-muted text-danger" style="color: #dc3545 !important;">
+                                                    (Solo en caso de aplicar a una beca)
+                                                </small>
+                                            </h6>
+                                            <div class="dropdown-divider mb-3"></div>
+
+                                            <div class="row">
                                                 <div class="col-md-6 mb-3">
                                                     <label for="formatoA">Formato A <span
                                                             class="text-danger">*</span></label>
@@ -443,12 +457,16 @@
                 var becaValue = document.getElementById('beca').value;
                 var tipoBecaDiv = document.getElementById('tipoBeca');
                 var tipoBecaSelect = document.getElementById('selectTipoBeca');
+                var formatosDiv = document.getElementById('formatosBeca');
 
+                // Mostrar tipo de beca solo si se selecciona "Si" (valor 0)
                 if (becaValue == 0) {
                     tipoBecaDiv.style.display = 'block';
+                    formatosDiv.style.display = 'block';
                 } else {
                     tipoBecaDiv.style.display = 'none';
                     tipoBecaSelect.value = ''; // Limpia el valor si se oculta
+                    formatosDiv.style.display = 'none';
                 }
             }
 

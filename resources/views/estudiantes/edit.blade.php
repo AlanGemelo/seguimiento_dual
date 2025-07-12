@@ -2,8 +2,7 @@
 @section('title', 'Editar Estudiante')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-    <body class="body">
+
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="row">
@@ -590,54 +589,54 @@
         </div>
     </div>
 @endsection
+@section('scripts')
+    <script>
+        document.getElementById('direccion_id').addEventListener('change', function() {
+            let direccionId = this.value;
+            if (direccionId) {
+                fetch(`${window.BASE_URL}/get-carreras-academicos/${direccionId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Limpiar selects
+                        let carreraSelect = document.getElementById('carrera_id');
+                        let academicoSelect = document.getElementById('academico_id');
+                        carreraSelect.innerHTML = '<option selected>Seleccione una opción</option>';
+                        academicoSelect.innerHTML = '<option selected>Seleccione una opción</option>';
 
-<script>
-    document.getElementById('direccion_id').addEventListener('change', function() {
-        let direccionId = this.value;
-        if (direccionId) {
-            fetch(`/get-carreras-academicos/${direccionId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Limpiar selects
-                    let carreraSelect = document.getElementById('carrera_id');
-                    let academicoSelect = document.getElementById('academico_id');
-                    carreraSelect.innerHTML = '<option selected>Seleccione una opción</option>';
-                    academicoSelect.innerHTML = '<option selected>Seleccione una opción</option>';
+                        // Actualizar carreras
+                        data.carreras.forEach(carrera => {
+                            carreraSelect.innerHTML +=
+                                `<option value="${carrera.id}">${carrera.nombre}</option>`;
+                        });
 
-                    // Actualizar carreras
-                    data.carreras.forEach(carrera => {
-                        carreraSelect.innerHTML +=
-                            `<option value="${carrera.id}">${carrera.nombre}</option>`;
-                    });
+                        // Actualizar académicos
+                        data.academicos.forEach(academico => {
+                            academicoSelect.innerHTML +=
+                                `<option value="${academico.id}">${academico.titulo} ${academico.name}</option>`;
+                        });
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+        });
 
-                    // Actualizar académicos
-                    data.academicos.forEach(academico => {
-                        academicoSelect.innerHTML +=
-                            `<option value="${academico.id}">${academico.titulo} ${academico.name}</option>`;
-                    });
-                })
-                .catch(error => console.error('Error fetching data:', error));
+        function ocultar(id, id2, text) {
+            const elemento = document.getElementById(`${id}`);
+            elemento.hidden = !elemento.hidden;
+            document.getElementById(`${text}`).textContent = elemento.hidden ? 'Ver Documento' :
+                'Cambiar Documento'; // Habilita el botón para cambiar el archivo
+            if (!elemento.hidden) {
+                document.getElementById(id2).value = '';
+
+
+            }
+            const elemento1 = document.getElementById(`${id2}`);
+            elemento1.hidden = !elemento1.hidden; // Habilita el botón para cambiar el archivo
         }
-    });
 
-    function ocultar(id, id2, text) {
-        const elemento = document.getElementById(`${id}`);
-        elemento.hidden = !elemento.hidden;
-        document.getElementById(`${text}`).textContent = elemento.hidden ? 'Ver Documento' :
-            'Cambiar Documento'; // Habilita el botón para cambiar el archivo
-        if (!elemento.hidden) {
-            document.getElementById(id2).value = '';
-
-
+        // Función para cambiar el archivo
+        function changeFile() {
+            // Restablece el campo de entrada de archivos seleccionado
+            document.getElementById('carta_acp').value = '';
         }
-        const elemento1 = document.getElementById(`${id2}`);
-        elemento1.hidden = !elemento1.hidden; // Habilita el botón para cambiar el archivo
-    }
-
-    // Función para cambiar el archivo
-    function changeFile() {
-        // Restablece el campo de entrada de archivos seleccionado
-        document.getElementById('carta_acp').value = '';
-    }
-</script>
-</body>
+    </script>
+@endsection

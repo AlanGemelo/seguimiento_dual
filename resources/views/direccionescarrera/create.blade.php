@@ -2,8 +2,6 @@
 @section('title', 'Crear Direccion de carrera')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-    <body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -48,13 +46,13 @@
                                     @enderror
                                 </div>
                                 <div class="mt-3">
-                            <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                type="submit">Guardar
-                            </button>
-                            <a href="{{ route('direcciones.index') }}"
-                                class="btn btn-block btn-danger btn-lg font-weight-medium">Cancelar
-                            </a>
-                        </div>
+                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                                        type="submit">Guardar
+                                    </button>
+                                    <a href="{{ route('direcciones.index') }}"
+                                        class="btn btn-block btn-danger btn-lg font-weight-medium">Cancelar
+                                    </a>
+                                </div>
                         </div>
                         </form>
                     </div>
@@ -62,6 +60,4 @@
             </div>
         </div>
     </div>
-    </div>
 @endsection
-</body>

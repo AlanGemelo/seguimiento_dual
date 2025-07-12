@@ -40,12 +40,15 @@ Route::get('/migrate', function () {
 Route::get('/', [HomeController::class, 'welcome']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
+
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    //Rutas para el módulo estudiantes
+    Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
     Route::get('/estudiantes/crear', [EstudiantesController::class, 'create'])->name('estudiantes.create');
     Route::get('/estudiantes/crearC', [EstudiantesController::class, 'crearC'])->name('estudiantes.crearC');
     Route::get('/estudiantes/documentation', [EstudiantesController::class, 'updateForm'])->name('estudiantes.updateForm');
@@ -61,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/estudiantes/{matricula}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
     Route::patch('/estudiantes/{matricula}/dual', [EstudiantesController::class, 'updateDocDual'])->name('estudiantes.updateDocDual');
 
+    //Rutas para el módulo academicos
     Route::get('/academicos', [MentorAcademicoController::class, 'index'])->name('academicos.index');
     Route::get('/academicos/crear', [MentorAcademicoController::class, 'create'])->name('academicos.create');
     Route::post('/academicos', [MentorAcademicoController::class, 'store'])->name('academicos.store');
@@ -73,6 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/academicos/{id}/restaurar', [MentorAcademicoController::class, 'restoreMentor'])->name('academicos.restore');
     Route::delete('/academicos/{id}/force', [MentorAcademicoController::class, 'forceDelete'])->name('academicos.forceDelete');
 
+    //Rutas para el empresas
     Route::get('/empresas', [EmpresaController::class, 'index'])->name('empresas.index');
     Route::get('/empresas/crear', [EmpresaController::class, 'create'])->name('empresas.create');
     // Route::post('/empresas/registrar', [EmpresaController::class, 'registrar'])->name('empresas.registrar');
@@ -84,11 +89,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/empresas/{empresa}/editar', [EmpresaController::class, 'edit'])->name('empresas.edit');
     Route::patch('/empresas/{empresa}', [EmpresaController::class, 'update'])->name('empresas.update');
     Route::delete('/empresas/{id}/delete', [EmpresaController::class, 'destroy'])->name('empresas.destroy');
-    //Rutas para el proceso de baja temporal de las empresas
     Route::get('/empresas/{id}/suspend', [EmpresaController::class, 'suspendForm'])->name('empresas.suspendForm');
     Route::put('/empresas/{id}/suspend', [EmpresaController::class, 'suspend'])->name('empresas.suspend');
     Route::put('/empresas/{id}/reactivate', [EmpresaController::class, 'reactivate'])->name('empresas.reactivate');
+    Route::resource('empresas', EmpresaController::class);
+    Route::get('empresas/interesadas', [EmpresaController::class, 'interesadas'])->name('empresas.interesadas');
+    Route::get('empresas/{empresa}/darAlta', [EmpresaController::class, 'darAlta'])->name('empresas.darAlta');
+    Route::patch('empresas/{empresa}/registrar', [EmpresaController::class, 'registrar'])->name('empresas.registrar');
+    Route::get('empresas/{empresa}/downloadPDF', [EmpresaController::class, 'downloadPDF'])->name('empresas.downloadPDF');
+    Route::get('empresas/exportUeiPdf', [EmpresaController::class, 'exportUeiPdf'])->name('empresas.exportUeiPdf');
 
+    // Rutas para el modulo de mentores academicos
     Route::get('/mentores', [MentorIndustrialController::class, 'index'])->name('mentores.index');
     Route::get('/mentores/crear', [MentorIndustrialController::class, 'create'])->name('mentores.create');
     Route::post('/mentores', [MentorIndustrialController::class, 'store'])->name('mentores.store');
@@ -99,6 +110,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/mentores/{id}', [MentorIndustrialController::class, 'update'])->name('mentores.update');
     Route::delete('/mentores/{id}/delete', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
 
+    // Rutas para el modulo de carreras
     Route::get('/carreras/crear', [CarreraController::class, 'create'])->name('carreras.create');
     Route::get('/carreras', [CarreraController::class, 'index'])->name('carreras.index');
     Route::post('/carreras', [CarreraController::class, 'store'])->name('carreras.store');
@@ -109,6 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/carreras/{id}/editar', [CarreraController::class, 'edit'])->name('carreras.edit');
     Route::resource('estadisticas', EstadisticaController::class)->except(['show']);
 
+    // Rutas para el modulo de mentores estadisticas
     Route::get('estadisticas/exportExcel', [EstadisticaController::class, 'exportExcel'])->name('estadisticas.exportExcel');
     Route::get('estadisticas/mentor/{mentorId}', [EstadisticaController::class, 'getEstudiantesPorMentor']);
     Route::get('estadisticas/empresa/{empresaId}', [EstadisticaController::class, 'getEstudiantesPorEmpresa']);
@@ -187,6 +200,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/anexo2_1/stepper', [Anexo2_1Controller::class, 'showStepper'])->name('anexo2_1.stepper');
     Route::post('/anexo2_1/stepper', [Anexo2_1Controller::class, 'storeStepper'])->name('anexo2_1.storeStepper');
 
+    Route::resource('anexo2_1', Anexo2_1Controller::class);
+    Route::get('anexo2_1/{anexo2_1}/generatePdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
+    Route::get('anexo2_1/{anexo2_1}/generateWord', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
+    
     // Rutas para la Navegación Principal
     // Route::get('/anexos', function () {
     //     return view('anexos.index');
@@ -205,17 +222,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             abort(404); // Si el archivo no existe, mostrar error 404
         }
     });
-
-    Route::resource('empresas', EmpresaController::class);
-    Route::get('empresas/interesadas', [EmpresaController::class, 'interesadas'])->name('empresas.interesadas');
-    Route::get('empresas/{empresa}/darAlta', [EmpresaController::class, 'darAlta'])->name('empresas.darAlta');
-    Route::patch('empresas/{empresa}/registrar', [EmpresaController::class, 'registrar'])->name('empresas.registrar');
-    Route::get('empresas/{empresa}/downloadPDF', [EmpresaController::class, 'downloadPDF'])->name('empresas.downloadPDF');
-    Route::get('empresas/exportUeiPdf', [EmpresaController::class, 'exportUeiPdf'])->name('empresas.exportUeiPdf');
-
-    Route::resource('anexo2_1', Anexo2_1Controller::class);
-    Route::get('anexo2_1/{anexo2_1}/generatePdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
-    Route::get('anexo2_1/{anexo2_1}/generateWord', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
 });
 
 require __DIR__ . '/auth.php';

@@ -2,9 +2,6 @@
 @section('title', 'Crear Candidato')
 
 @section('content')
-    <link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-
-
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">
@@ -235,9 +232,9 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-    <script type="text/javascript">
+@endsection
+@section('scripts')
+    <script>
         function mostrarInput() {
             var becaValue = document.getElementById('beca').value;
             var becitaInput = document.getElementById('tipoBeca');
@@ -257,7 +254,7 @@
                 // Realizar la petición AJAX
                 $.ajax({
                     type: 'GET',
-                    url: '/mentores/' + mentorId + '/empresa',
+                    url: `${window.BASE_URL}/mentores/${mentorId}/empresa`,
                     success: function(data) {
                         // Limpiar y actualizar el select de empresas
                         var selectAsesorin = $('select[name="asesorin_id"]');

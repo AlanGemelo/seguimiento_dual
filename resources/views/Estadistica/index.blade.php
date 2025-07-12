@@ -1,18 +1,17 @@
 @extends('layouts.app')
 @section('title', 'Estadísticas')
+
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/estadisticas.css') }}">
-<body class="body">
     <div class="container mt-5">
         <!-- Encabezado principal -->
         <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-header-adjusted">
-                        
-                            <h6 class="card-title">Estadísticas Generales de la Direccion:
-                                {{ session('direccion')->name }}</h6>
-                        
+
+                        <h6 class="card-title">Estadísticas Generales de la Direccion:
+                            {{ session('direccion')->name }}</h6>
+
                     </div>
                     <div class="card-body">
                         <!-- Selectores de Estadísticas -->
@@ -31,7 +30,7 @@
                                             <option value="3">Bajas</option>
                                         </select>
 
-                                        <div id="Status" class="mt-3"></div>
+                                        <div id="estudiantesStatus" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportStatusExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -50,7 +49,7 @@
                                             <option value="becados">Becados</option>
                                             <option value="sin_beca">Sin Beca</option>
                                         </select>
-                                        <div id="Status" class="mt-3"></div>
+                                        <div id="estudiantesBeca" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportBecaExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -67,10 +66,12 @@
                                         <select id="mentorSelect" class="form-select border border-dark rounded">
                                             <option value="">Seleccione un Mentor Académico</option>
                                             @foreach ($mentores as $mentor)
-                                                <option value="{{ $mentor->id }}">{{ $mentor->name }}</option>
+                                                <option value="{{ $mentor->id }}">
+                                                    {{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
+                                                </option>
                                             @endforeach
                                         </select>
-                                        <div id="Status" class="mt-3"></div>
+                                        <div id="estudiantesMentor" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportMentorExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -89,10 +90,12 @@
                                         <select id="empresaSelect" class="form-select border border-dark rounded">
                                             <option value="">Seleccione una Empresa</option>
                                             @foreach ($empresas as $empresa)
-                                                <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+                                                <option value="{{ $empresa->id }}">
+                                                    {{ $empresa->nombre }}
+                                                </option>
                                             @endforeach
                                         </select>
-                                        <div id="Status" class="mt-3"></div>
+                                        <div id="estudiantesEmpresa" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportEmpresaExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -109,10 +112,11 @@
                                         <select id="carreraSelect" class="form-select border border-dark rounded">
                                             <option value="">Seleccione una Carrera</option>
                                             @foreach ($carreras as $carrera)
-                                                <option value="{{ $carrera->id }}">{{ $carrera->nombre }}</option>
+                                                <option value="{{ $carrera->id }}">
+                                                    {{ $carrera->grado_academico . ' en ' . $carrera->nombre }}</option>
                                             @endforeach
                                         </select>
-                                        <div id="Status" class="mt-3"></div>
+                                        <div id="estudiantesCarrera" class="mt-3"></div>
                                         <div class="text-center mt-3">
                                             <a href="#" id="exportCarreraExcel"
                                                 class="btn btn-success text-white">Exportar a Excel</a>
@@ -134,9 +138,9 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-header-adjusted">
-                        
-                            <h6 class="card-title">Filtro de Estudiantes</h6>
-                        
+
+                        <h6 class="card-title">Filtro de Estudiantes</h6>
+
                     </div>
                     <div class="card-body">
                         <form id="filtroEstudiantesForm">
@@ -178,7 +182,9 @@
                                             class="form-select border border-dark rounded" disabled>
                                             <option value="">Seleccione un Mentor Académico</option>
                                             @foreach ($mentores as $mentor)
-                                                <option value="{{ $mentor->id }}">{{ $mentor->name }}</option>
+                                                <option value="{{ $mentor->id }}">
+                                                    {{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -270,15 +276,15 @@
             <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-header-adjusted">
-                        
-                            <h6 class="card-title">Gráficas de Estadísticas</h6>
-                        
+
+                        <h6 class="card-title">Gráficas de Estadísticas</h6>
+
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <div class="card border-0 shadow-sm h-100">
-                                    <div class="card-header bg-primary text-dark rounded">
+                                    <div class="card-header text-white rounded" style="background-color: #006837;">
                                         <h5 class="text-center m-0">Estudiantes por Empresa</h5>
                                     </div>
                                     <div class="card-body d-flex flex-column">
@@ -288,7 +294,7 @@
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="card border-0 shadow-sm h-100">
-                                    <div class="card-header bg-secondary text-dark rounded">
+                                    <div class="card-header text-dark rounded" style="background-color: #f5f5f5">
                                         <h5 class="text-center m-0">Estudiantes por Carrera</h5>
                                     </div>
                                     <div class="card-body d-flex flex-column">
@@ -300,7 +306,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <div class="card border-0 shadow-sm h-100">
-                                    <div class="card-header bg-info text-dark rounded">
+                                    <div class="card-header text-dark rounded" style="background-color: #66bb6a;">
                                         <h5 class="text-center m-0">Estudiantes por Mentor Académico</h5>
                                     </div>
                                     <div class="card-body d-flex flex-column">
@@ -324,7 +330,8 @@
             </div>
         </div>
     </div>
-
+@endsection
+@section('scripts')
     <script src="{{ LarapexChart::cdn() }}"></script>
     @foreach ([$chartEmpresa, $chartCarrera, $chartMentor, $chartBeca] as $chart)
         {!! $chart->script() !!}
@@ -334,14 +341,15 @@
         document.getElementById('statusSelect').addEventListener('change', function() {
             let status = this.value;
             if (status) {
-                fetch(`/estadisticas/status/${status}`)
+                fetch(`${window.BASE_URL}/estadisticas/status/${status}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesStatus = document.getElementById('estudiantesStatus');
-                        estudiantesStatus.innerHTML = '<ul>' + data.map(est => `<li>${est.name}</li>`).join(
+                        estudiantesStatus.innerHTML = '<ul>' + data.map(est =>
+                            `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join(
                             '') + '</ul>';
                         document.getElementById('exportStatusExcel').href =
-                            `/estadisticas/status/${status}/excel`;
+                            `${window.BASE_URL}/estadisticas/status/${status}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesStatus').innerHTML = '';
@@ -352,13 +360,15 @@
         document.getElementById('becaSelect').addEventListener('change', function() {
             let beca = this.value;
             if (beca) {
-                fetch(`/estadisticas/beca/${beca}`)
+                fetch(`${window.BASE_URL}/estadisticas/beca/${beca}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesBeca = document.getElementById('estudiantesBeca');
-                        estudiantesBeca.innerHTML = '<ul>' + data.map(est => `<li>${est.name}</li>`).join('') +
+                        estudiantesBeca.innerHTML = '<ul>' + data.map(est =>
+                                `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join('') +
                             '</ul>';
-                        document.getElementById('exportBecaExcel').href = `/estadisticas/beca/${beca}/excel`;
+                        document.getElementById('exportBecaExcel').href =
+                            `${window.BASE_URL}/estadisticas/beca/${beca}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesBeca').innerHTML = '';
@@ -369,14 +379,15 @@
         document.getElementById('mentorSelect').addEventListener('change', function() {
             let mentorId = this.value;
             if (mentorId) {
-                fetch(`/estadisticas/mentor/${mentorId}`)
+                fetch(`${window.BASE_URL}/estadisticas/mentor/${mentorId}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesMentor = document.getElementById('estudiantesMentor');
-                        estudiantesMentor.innerHTML = '<ul>' + data.map(est => `<li>${est.name}</li>`).join(
+                        estudiantesMentor.innerHTML = '<ul>' + data.map(est =>
+                            `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join(
                             '') + '</ul>';
                         document.getElementById('exportMentorExcel').href =
-                            `/estadisticas/mentor/${mentorId}/excel`;
+                            `${window.BASE_URL}/estadisticas/mentor/${mentorId}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesMentor').innerHTML = '';
@@ -387,14 +398,15 @@
         document.getElementById('empresaSelect').addEventListener('change', function() {
             let empresaId = this.value;
             if (empresaId) {
-                fetch(`/estadisticas/empresa/${empresaId}`)
+                fetch(`${window.BASE_URL}/estadisticas/empresa/${empresaId}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesEmpresa = document.getElementById('estudiantesEmpresa');
-                        estudiantesEmpresa.innerHTML = '<ul>' + data.map(est => `<li>${est.name}</li>`).join(
+                        estudiantesEmpresa.innerHTML = '<ul>' + data.map(est =>
+                            `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join(
                             '') + '</ul>';
                         document.getElementById('exportEmpresaExcel').href =
-                            `/estadisticas/empresa/${empresaId}/excel`;
+                            `${window.BASE_URL}/estadisticas/empresa/${empresaId}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesEmpresa').innerHTML = '';
@@ -405,14 +417,15 @@
         document.getElementById('carreraSelect').addEventListener('change', function() {
             let carreraId = this.value;
             if (carreraId) {
-                fetch(`/estadisticas/carrera/${carreraId}`)
+                fetch(`${window.BASE_URL}/estadisticas/carrera/${carreraId}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesCarrera = document.getElementById('estudiantesCarrera');
-                        estudiantesCarrera.innerHTML = '<ul>' + data.map(est => `<li>${est.name}</li>`).join(
+                        estudiantesCarrera.innerHTML = '<ul>' + data.map(est =>
+                            `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join(
                             '') + '</ul>';
                         document.getElementById('exportCarreraExcel').href =
-                            `/estadisticas/carrera/${carreraId}/excel`;
+                            `${window.BASE_URL}/estadisticas/carrera/${carreraId}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesCarrera').innerHTML = '';
@@ -424,7 +437,7 @@
             let form = document.getElementById('filtroEstudiantesForm');
             let formData = new FormData(form);
             let queryString = new URLSearchParams(formData).toString();
-            window.location.href = `/estadisticas/filtro/excel?${queryString}`;
+            window.location.href = `${window.BASE_URL}/estadisticas/filtro/excel?${queryString}`;
         });
 
         function actualizarEstudiantesFiltro() {
@@ -432,11 +445,12 @@
             let formData = new FormData(form);
             let queryString = new URLSearchParams(formData).toString();
 
-            fetch(`/estadisticas/filtro?${queryString}`)
+            fetch(`${window.BASE_URL}/estadisticas/filtro?${queryString}`)
                 .then(response => response.json())
                 .then(data => {
                     let estudiantesFiltro = document.getElementById('estudiantesFiltro');
-                    estudiantesFiltro.innerHTML = '<ul>' + data.map(est => `<li>${est.name}</li>`).join('') + '</ul>';
+                    estudiantesFiltro.innerHTML = '<ul>' + data.map(est =>
+                        `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join('') + '</ul>';
                 });
         }
 
@@ -450,4 +464,3 @@
         document.getElementById('fechaFin').addEventListener('change', actualizarEstudiantesFiltro);
     </script>
 @endsection
-</body>

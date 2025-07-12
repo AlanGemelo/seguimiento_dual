@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Mentor Academico')
+
 @section('content')
     <div class="row">
         <div class="col-12 grid-margin">
@@ -16,34 +17,32 @@
                                         <div class="form-group">
                                             <label for="matricula">Matricula</label>
                                             <input type="number" class="form-control form-control-lg" id="matricula"
-                                                   name="matricula" value="{{ $estudiante->matricula }}" disabled>
+                                                name="matricula" value="{{ $estudiante->matricula }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="name">Nombre</label>
                                             <input type="text" class="form-control form-control-lg" id="name"
-                                                   placeholder="Juan Perez Hermenegildo" name="name"
-                                                   value="{{ $estudiante->name }}" disabled>
+                                                placeholder="Juan Perez Hermenegildo" name="name"
+                                                value="{{ $estudiante->name }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="curp">CURP</label>
-                                            <input type="text" class="form-control form-control-lg" id="curp" name="curp"
-                                                   value="{{ $estudiante->curp }}" disabled>
+                                            <input type="text" class="form-control form-control-lg" id="curp"
+                                                name="curp" value="{{ $estudiante->curp }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="fecha_na">Fecha de Nacimiento</label>
                                             <input type="date" class="form-control form-control-lg" name="fecha_na"
-                                                   id="fecha_na"
-                                                   value="{{ $estudiante->fecha_na }}" disabled>
+                                                id="fecha_na" value="{{ $estudiante->fecha_na }}" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="cuatrimestre">Cuatrimestre</label>
                                             <input type="text" class="form-control form-control-lg" id="cuatrimestre"
-                                                   name="cuatrimestre"
-                                                   value="{{ $estudiante->cuatrimestre }}" disabled>
+                                                name="cuatrimestre" value="{{ $estudiante->cuatrimestre }}" disabled>
                                         </div>
-                                       
+
                                     </div>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -53,4 +52,3 @@
         </div>
     </div>
 @endsection
-

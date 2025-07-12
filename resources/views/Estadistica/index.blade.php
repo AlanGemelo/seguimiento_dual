@@ -341,7 +341,7 @@
         document.getElementById('statusSelect').addEventListener('change', function() {
             let status = this.value;
             if (status) {
-                fetch(`${window.BASE_URL}/estadisticas/status/${status}`)
+                fetch(`/${window.BASE_URL}/estadisticas/status/${status}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesStatus = document.getElementById('estudiantesStatus');
@@ -349,7 +349,7 @@
                             `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join(
                             '') + '</ul>';
                         document.getElementById('exportStatusExcel').href =
-                            `${window.BASE_URL}/estadisticas/status/${status}/excel`;
+                            `/${window.BASE_URL}/estadisticas/status/${status}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesStatus').innerHTML = '';
@@ -360,7 +360,7 @@
         document.getElementById('becaSelect').addEventListener('change', function() {
             let beca = this.value;
             if (beca) {
-                fetch(`${window.BASE_URL}/estadisticas/beca/${beca}`)
+                fetch(`/${window.BASE_URL}/estadisticas/beca/${beca}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesBeca = document.getElementById('estudiantesBeca');
@@ -368,7 +368,7 @@
                                 `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join('') +
                             '</ul>';
                         document.getElementById('exportBecaExcel').href =
-                            `${window.BASE_URL}/estadisticas/beca/${beca}/excel`;
+                            `/${window.BASE_URL}/estadisticas/beca/${beca}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesBeca').innerHTML = '';
@@ -379,7 +379,7 @@
         document.getElementById('mentorSelect').addEventListener('change', function() {
             let mentorId = this.value;
             if (mentorId) {
-                fetch(`${window.BASE_URL}/estadisticas/mentor/${mentorId}`)
+                fetch(`/${window.BASE_URL}/estadisticas/mentor/${mentorId}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesMentor = document.getElementById('estudiantesMentor');
@@ -387,7 +387,7 @@
                             `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join(
                             '') + '</ul>';
                         document.getElementById('exportMentorExcel').href =
-                            `${window.BASE_URL}/estadisticas/mentor/${mentorId}/excel`;
+                            `/${window.BASE_URL}/estadisticas/mentor/${mentorId}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesMentor').innerHTML = '';
@@ -398,7 +398,7 @@
         document.getElementById('empresaSelect').addEventListener('change', function() {
             let empresaId = this.value;
             if (empresaId) {
-                fetch(`${window.BASE_URL}/estadisticas/empresa/${empresaId}`)
+                fetch(`/${window.BASE_URL}/estadisticas/empresa/${empresaId}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesEmpresa = document.getElementById('estudiantesEmpresa');
@@ -406,7 +406,7 @@
                             `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join(
                             '') + '</ul>';
                         document.getElementById('exportEmpresaExcel').href =
-                            `${window.BASE_URL}/estadisticas/empresa/${empresaId}/excel`;
+                            `/${window.BASE_URL}/estadisticas/empresa/${empresaId}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesEmpresa').innerHTML = '';
@@ -417,7 +417,7 @@
         document.getElementById('carreraSelect').addEventListener('change', function() {
             let carreraId = this.value;
             if (carreraId) {
-                fetch(`${window.BASE_URL}/estadisticas/carrera/${carreraId}`)
+                fetch(`/${window.BASE_URL}/estadisticas/carrera/${carreraId}`)
                     .then(response => response.json())
                     .then(data => {
                         let estudiantesCarrera = document.getElementById('estudiantesCarrera');
@@ -425,7 +425,7 @@
                             `<li>${est.name} ${est.apellidoP} ${est.apellidoM}</li>`).join(
                             '') + '</ul>';
                         document.getElementById('exportCarreraExcel').href =
-                            `${window.BASE_URL}/estadisticas/carrera/${carreraId}/excel`;
+                            `/${window.BASE_URL}/estadisticas/carrera/${carreraId}/excel`;
                     });
             } else {
                 document.getElementById('estudiantesCarrera').innerHTML = '';
@@ -437,7 +437,7 @@
             let form = document.getElementById('filtroEstudiantesForm');
             let formData = new FormData(form);
             let queryString = new URLSearchParams(formData).toString();
-            window.location.href = `${window.BASE_URL}/estadisticas/filtro/excel?${queryString}`;
+            window.location.href = `/${window.BASE_URL}/estadisticas/filtro/excel?${queryString}`;
         });
 
         function actualizarEstudiantesFiltro() {
@@ -445,7 +445,7 @@
             let formData = new FormData(form);
             let queryString = new URLSearchParams(formData).toString();
 
-            fetch(`${window.BASE_URL}/estadisticas/filtro?${queryString}`)
+            fetch(`/${window.BASE_URL}/estadisticas/filtro?${queryString}`)
                 .then(response => response.json())
                 .then(data => {
                     let estudiantesFiltro = document.getElementById('estudiantesFiltro');

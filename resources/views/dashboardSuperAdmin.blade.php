@@ -26,7 +26,7 @@
                                 <div class="card shadow card-horizontal animate__animated animate__fadeIn">
                                         <!-- Ícono -->
                                         <div class="card-icon-container-horizontal">
-                                            <i class="mdi mdi-school card-icon" style="color: #006837; font-size: 2.5rem;"></i>
+                                             <img src="{{ asset('assets/images/logo-utvt-removebg-preview.png') }}" alt="Cuervo Logo" width="100">
                                         </div>
                                         <!-- Nombre de la dirección -->
                                         <div class="card-content-horizontal">

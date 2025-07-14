@@ -23,13 +23,39 @@
 /* Estilo para el ítem de navegación */
 .nav-item-custom {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  min-width: 90px;
-  padding: 10px 5px;
-  margin: 0 5px;
-  height: auto;
+  padding: 0.5rem 0;
+  align-items: center;
+}
+
+/* Estilo para el enlace */
+.nav-link-custom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    text-decoration: none; 
+    color: #333; 
+    transition: all 0.3s ease;
+}
+
+/* Estilo para el icono */
+.nav-link-custom .mdi {
+    font-size: 2rem !important;
+    color: #006837 !important;
+}
+
+/* Estilo para el texto */
+.nav-link-custom span {
+    font-size: 0.85rem ;
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+/* Efecto hover para el texto */
+.nav-link-custom:hover span {
+  color: #006837 !important; /* Verde al pasar el mouse */
+  font-weight: 600;
 }
 
 .nav-item-custom.dropdown {
@@ -41,48 +67,6 @@
   height: 100px;
   display: flex;
   align-items: center;
-}
-
-/* Estilo para el enlace */
-.nav-link-custom {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-    text-decoration: none; 
-    color: #333; 
-    transition: all 0.3s ease;
-}
-
-/* Estilo para el icono */
-.nav-link-custom .mdi {
-    font-size: 2rem;
-    margin-bottom: 8px;
-    color: #006837 !important; 
-    display: block;
-}
-
-/* Estilo para el texto */
-.nav-link-custom span {
-  font-weight: 600;
-    font-size: 0.85rem;
-    text-align: center;
-    display: block;
-    width: 100%;
-}
-
-/* Efecto hover para el texto */
-.nav-link-custom:hover span {
-  color: #006837 !important; /* Verde al pasar el mouse */
-  font-weight: 600;
-}
-
-/* Estado activo */
-.nav-link-custom.active .mdi,
-.nav-link-custom.active span {
-    color: #006837 !important; 
 }
 
 /* Imagen pequeña en el navbar (ícono de perfil) */
@@ -104,24 +88,34 @@
 }
 
 /* Menús desplegables */
-.dropdown {
-  position: relative;
-}
-
 .dropdown-menu {
-  display: none;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  min-width: 200px;
+  min-width: 250px;
+  max-height: 80vh;
   padding: 0.5rem 0;
-  margin-top: 10px !important;
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 10px !important;
-  box-shadow: 0 0.5rem 1 rem rgba(0, 0, 0, 0.175);
-  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1 rem rgba(0, 0, 0, 0.15);
+  position: absolute;
+  z-index: 1000;
+}
+
+/* Estilos para items */
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  white-space: normal !important;
+  word-wrap: break-word;
+  min-width: 200px;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(0, 104, 55, 0.1);
+  color: #006837;
+}
+
+.dropdown-item.active {
+  color: #fff;
+  background-color: #006837;
 }
 
 .dropdown-menu.show {
@@ -136,9 +130,33 @@
 .dropdown-submenu > .dropdown-menu {
   top: 0;
   left: 100%;
-  margin-top: -0.5rem 0;
-  margin-left: 0.1rem 0;
-  min-width: 200px;
+  margin-top: -0.5rem ;
+  margin-left: 0.1rem ;
+  min-width: 280px;
+  display: none ;
+  opacity: 0 ;
+  transition: opacity 0.3s ease;
+}
+
+/* Mostrar submenús */
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+  opacity: 1;
+}
+
+.dropdown-submenu .dropdown-item {
+  padding: 0.5rem 1.5rem;
+  white-space: normal;
+  min-width: 260px;
+  display: inline-block;
+}
+
+/* Flecha indicadora */
+.dropdown-submenu > a::after {
+  content: "→" !important;
+  margin-left: 0.5rem;
+  font-weight: bold;
+  display: inline-block;
 }
 
 /* Flecha indicadora */
@@ -151,32 +169,6 @@
   border-bottom: 0.3em solid transparent;
   border-left: 0.3em solid;
   vertical-align: middle;
-}
-
-/* Estilos para items */
-.dropdown-item {
-  display: block;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  clear: both;
-  font-weight: 400;
-  color: #212529;
-  text-align: inherit;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
-  transition: background-color 0.2s;
-}
-
-.dropdown-item:hover {
-  background-color: #f8f9fa;
-  color: #006837;
-}
-
-.dropdown-item.active {
-  color: #fff;
-  background-color: #006837;
 }
 
 /* Efecto hover */

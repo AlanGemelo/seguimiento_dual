@@ -39,22 +39,31 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item-custom">
-                    <a class="nav-link-custom {{ request()->routeIs('dashboard') ? 'active' : '' }}" aria-current="page"
-                        href="{{ route('dashboard') }}"><i class="mdi mdi-home"></i><span>Inicio</span></a>
+                    <a class="nav-link-custom {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                        aria-current="page"
+                        href="{{ route('dashboard') }}">
+                        <i class="mdi mdi-home"></i>
+                        <span class="nav-link-text">Inicio</span>
+                    </a>
                 </li>
                 @isset(session()->get('direccion')->id)
                     @if ((Auth::user()->rol_id === 1 && session('direccion')) || Auth::user()->rol_id !== 3)
                         <li class="nav-item-custom">
                             <a class="nav-link-custom {{ request()->routeIs('estudiantes.*') ? 'active' : '' }}"
-                                href="{{ route('estudiantes.index') }}"><i class="mdi mdi-school"></i><span>Estudiantes</span></a>
+                                href="{{ route('estudiantes.index') }}">
+                                <i class="mdi mdi-school"></i>
+                                <span>Estudiantes</span>
+                            </a>
                         </li>
                     @endif
                 @endisset
                 @if ((Auth::user()->rol_id === 1 && session('direccion')) || Auth::user()->rol_id === 4)
                     <li class="nav-item-custom">
                         <a class="nav-link-custom {{ request()->routeIs('academicos.*') ? 'active' : '' }}"
-                            href="{{ route('academicos.index') }}"><i class="mdi mdi-teach"></i><span>Mentores
-                            Académicos</span></a>
+                            href="{{ route('academicos.index') }}">
+                            <i class="mdi mdi-teach"></i>
+                            <span>Mentores Académicos</span>
+                        </a>
                     </li>
                     <li class="nav-item-custom dropdown">
                         <a class="nav-link-custom dropdown-toggle"
@@ -94,8 +103,10 @@
                         </li>
                         <li class="nav-item-custom">
                             <a class="nav-link-custom {{ request()->routeIs('estadisticas.*') ? 'active' : '' }}"
-                                href="{{ route('estadisticas.index') }}"><i class="mdi mdi-chart-bar"></i>
-                                <span>Estadísticas</span></a>
+                                href="{{ route('estadisticas.index') }}">
+                                <i class="mdi mdi-chart-bar"></i>
+                                <span>Estadísticas</span>
+                            </a>
                         </li>
                     @endif
                 @endif
@@ -111,22 +122,18 @@
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item dropdown-toggle" href="#" role="button">Anexo 1</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('anexo1_1.index') }}">Anexo 1.1: Planeación y Difusión de
+                                    <li><a class="dropdown-item" href="{{ route('anexo1_1.index') }}">Anexo 1.1: Planeación y Difusión de
                                             la ED</a></li>
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('anexo1_2.index') }}">Anexo 1.2: Programa de Difusión de la
+                                    <li><a class="dropdown-item" href="{{ route('anexo1_2.index') }}">Anexo 1.2: Programa de Difusión de la
                                             ED</a></li>
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('anexo1_3.index') }}">Anexo 1.3: Formato de Registro de
+                                    <li><a class="dropdown-item" href="{{ route('anexo1_3.index') }}">Anexo 1.3: Formato de Registro de
                                             Interesados</a></li>
                              </ul>
                                 </li>
                                     <li class="dropdown-submenu">
                                         <a class="dropdown-item dropdown-toggle" href="#" role="button">Anexo 2</a>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item"
-                                                    href="{{ route('anexo2_1.index') }}">Anexo 2.1: Evaluación y
+                                            <li><a class="dropdown-item" href="{{ route('anexo2_1.index') }}">Anexo 2.1: Evaluación y
                                                     Selección de la UE</a></li>
                                         </ul>
                                     </li>

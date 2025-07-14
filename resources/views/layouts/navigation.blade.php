@@ -151,16 +151,6 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#" role="button">Anexo 2</a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('anexo2_1.index') }}">Anexo 2.1:
-                                            Evaluación y
-                                            Selección de la UE</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
                 @endif
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-sm-none d-lg-block">

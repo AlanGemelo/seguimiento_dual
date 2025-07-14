@@ -2,51 +2,41 @@
 @section('title', 'Crear Programa Educativo')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-    <body class="body">
     <div class="row">
-        <div class="col-12 grid-margin">
-            @if (session('status'))
-                <div class="alert alert-danger alert-dismissible text-dark" role="alert">
-                    <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
-                        {{ session('status') }}.</span>
-                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">Crear Programa Educativo</h6>
-                            <span class="text-danger">* Son campos requeridos</span>
-                            <div class="dropdown-divider"></div>
-                            <form class="pt-3" action="{{ route('carreras.store') }}" method="post">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="grado_academico">Nivel Académico<span class="text-danger">*</span></label>
+        <div class="col-lg-12">
+            <div class="card shadow">
+                <x-forms.section-header title="Registro de Programas Educativos"
+                    description="Formulario para registrar nuevos programas educativos." />
+
+                <div class="card-body">
+                    <form action="{{ route('carreras.store') }}" method="post" class="needs-validation" novalidate>
+                        @csrf
+
+                        <!-- Información Básica -->
+                        <div class="mb-4">
+                            <h5 class="section-title">Información Básica</h5>
+                            <div class="dropdown-divider mb-4"></div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="grado_academico">Nivel Académico <span class="text-danger">*</span></label>
                                     <select class="form-control form-control-lg" id="grado_academico" name="grado_academico"
                                         required>
-
-                                        <option value="" disabled selected>Seleccione el nivel educativo</option>
-                                       </option>
-                                        <option value="Técnico Superior Universitario"
-                                            {{ old('grado_academico') == 'TSU' ? 'selected' : '' }}>
-                                            Técnico Superior Universitario (TSU)</option>
-                                        <option value="Licenciatura"
-                                            {{ old('grado_academico') == 'Licenciatura' ? 'selected' : '' }}>Licenciatura
+                                        <option value="" disabled selected>Seleccione el nivel educativo
                                         </option>
-                                        <option value="Ingeniería"
-                                            {{ old('grado_academico') == 'Ingeniería' ? 'selected' : '' }}>Ingeniería
-                                        
+                                        @foreach ($grado_academico as $grado)
+                                            <option value="{{ $grado['grado_academico'] }}"
+                                                {{ old('grado_academico', $carrera->grado_academico ?? '') == $grado['grado_academico'] ? 'selected' : '' }}>
+                                                {{ $grado['grado_academico'] }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     @error('grado_academico')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group">
+
+                                <div class="col-md-6 mb-3">
                                     <label for="nombre">Nombre del Programa Educativo<span
                                             class="text-danger">*</span></label>
                                     <input type="text" data-tipo="text" class="form-control form-control-lg"
@@ -55,8 +45,10 @@
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                {{-- Seleccionar Docencia del estudiante --}}
-                                <div class="form-group">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
                                     <label for="direccion_id" class="form-label">Direccion de Carrera <span
                                             class="text-danger">*</span></label>
                                     <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id">
@@ -66,27 +58,24 @@
                                                 {{ $carrera->id == session('direccion')->id ? 'selected' : '' }}>
                                                 {{ $carrera->name }}
                                             </option>
-                                            {{-- <option value="{{ $carrera->id }}">{{ $carrera->name }}</option> --}}
                                         @endforeach
                                     </select>
                                     @error('direccion_id')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="mt-3">
-                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                        type="submit">Guardar
-                                    </button>
-                                    <a href="{{ route('carreras.index') }}"
-                                        class="btn btn-block btn-danger btn-lg font-weight-medium">Cancelar
-                                    </a>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <x-buttons.success-button text="Registrar " />
+                            <x-buttons.cancel-button url="{{ route('carreras.index') }}" />
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
 @endsection
-</body>

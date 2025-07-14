@@ -27,14 +27,15 @@
                             </tr>
                         </thead>
                         <tbody id="empresaTable">
-                            @foreach($empresas as $empresa)
+                            @foreach ($empresas as $empresa)
                                 <tr>
                                     <td>{{ $empresa->unidad_economica }}</td>
                                     <td>{{ $empresa->email }}</td>
                                     <td>{{ $empresa->telefono }}</td>
                                     <td>{{ $empresa->fecha_registro }}</td>
                                     <td>
-                                        <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success">Dar de Alta</a>
+                                        <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success">Dar
+                                            de Alta</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -44,20 +45,21 @@
             </div>
         </div>
     </div>
-
+@endsection
+@section('scripts')
     <script>
-    document.getElementById('search').addEventListener('keyup', function() {
-        let value = this.value.toLowerCase();
-        let rows = document.querySelectorAll('#empresaTable tr');
-        rows.forEach(row => {
-            let showRow = false;
-            row.querySelectorAll('td').forEach(cell => {
-                if (cell.textContent.toLowerCase().includes(value)) {
-                    showRow = true;
-                }
+        document.getElementById('search').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#empresaTable tr');
+            rows.forEach(row => {
+                let showRow = false;
+                row.querySelectorAll('td').forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(value)) {
+                        showRow = true;
+                    }
+                });
+                row.style.display = showRow ? '' : 'none';
             });
-            row.style.display = showRow ? '' : 'none';
         });
-    });
     </script>
 @endsection

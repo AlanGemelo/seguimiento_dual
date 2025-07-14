@@ -2,14 +2,11 @@
 @section('title', 'Crear Candidato')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-    <body class="body">
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">
                 <!-- Encabezado -->
-               <x-forms.section-header title="Registro de Estudiante Dual"
+                <x-forms.section-header title="Registro de Estudiante Dual"
                     description="Formulario para registrar a estudiantes que participan en el Modelo de Formación Dual, incluyendo datos personales, académicos, vinculación con la empresa y documentación requerida." />
 
 
@@ -164,6 +161,8 @@
                                         <option value="6">6</option>
                                         <option value="7">7</option>
                                         <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
                                     </select>
                                     @error('cuatrimestre')
                                         <div class="text-danger">{{ $message }}</div>
@@ -224,7 +223,7 @@
                                 <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                     type="submit">Guardar</button>
 
-                               <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
+                                <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
 
                             </div>
                     </form>
@@ -233,9 +232,9 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script type="text/javascript">
+@endsection
+@section('scripts')
+    <script>
         function mostrarInput() {
             var becaValue = document.getElementById('beca').value;
             var becitaInput = document.getElementById('tipoBeca');
@@ -255,7 +254,7 @@
                 // Realizar la petición AJAX
                 $.ajax({
                     type: 'GET',
-                    url: '/mentores/' + mentorId + '/empresa',
+                    url: `${window.BASE_URL}/mentores/${mentorId}/empresa`,
                     success: function(data) {
                         // Limpiar y actualizar el select de empresas
                         var selectAsesorin = $('select[name="asesorin_id"]');
@@ -282,6 +281,7 @@
                 });
             });
         });
+
         $(document).ready(function() {
             $('#direccion_id').change(function() {
                 var direccionId = $(this).val();
@@ -325,6 +325,32 @@
                 emailInput.value = matriculaInput.value;
             });
         });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const curpInput = document.getElementById("curp");
+            const fechaInput = document.getElementById("fecha_na");
+
+            curpInput.addEventListener("input", function() {
+                const curp = curpInput.value.toUpperCase();
+
+                if (curp.length >= 10) {
+                    const year = curp.substring(4, 6);
+                    const month = curp.substring(6, 8);
+                    const day = curp.substring(8, 10);
+
+                    // Si el año es mayor a la fecha actual, se asume 1900s, si no 2000s
+                    const currentYear = new Date().getFullYear() % 100;
+                    const fullYear = parseInt(year) > currentYear ? `19${year}` : `20${year}`;
+
+                    const fechaNacimiento = `${fullYear}-${month}-${day}`;
+                    // Validamos si es una fecha real
+                    const fechaValida = !isNaN(new Date(fechaNacimiento).getTime());
+
+                    if (fechaValida) {
+                        fechaInput.value = fechaNacimiento;
+                    }
+                }
+            });
+        });
     </script>
 @endsection
-    </body>

@@ -2,8 +2,6 @@
 @section('title', 'Mentores Industriales')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-<body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -29,20 +27,20 @@
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
-                        
-                            <div class="card-header-adjusted">
-                                <h6 class="card-title">Lista De Mentores de Unidad Economica</h6>
-                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <div class="float-end">
-                                        {{-- Button del modal --}}
-                                        <a href="{{ route('mentores.create') }}" class="btn btn-add"
-                                            title="Agregar un nuevo Mentor Industrial">
-                                            <i class="mdi mdi-plus-circle-outline"></i>
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                
+
+                        <div class="card-header-adjusted">
+                            <h6 class="card-title">Lista De Mentores de Unidad Economica</h6>
+                            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                <div class="float-end">
+                                    {{-- Button del modal --}}
+                                    <a href="{{ route('mentores.create') }}" class="btn btn-add"
+                                        title="Agregar un nuevo Mentor Industrial">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <input class="form-control mb-3" id="searchInput" type="text" placeholder="Buscar...">
@@ -82,7 +80,7 @@
                                                             </a>
                                                             <button class="btn btn-danger" data-bs-toggle="modal"
                                                                 data-bs-target="#exampleModal1"
-                                                                onclick="deleteEstudiante({{ $mentor->id }})">
+                                                                onclick="deleteMentorIdustrial({{ $mentor->id }})">
                                                                 <i class="mdi mdi-delete btn-icon-prepend"></i>
                                                             </button>
                                                         @endif
@@ -96,12 +94,14 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Modal Eliminar Mentor Idustrial --}}
                     <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Estudiante
+                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Industrial
                                         Temporalmente</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
@@ -128,33 +128,80 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Modal Restaurar Mentor Idustrial --}}
+                    <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Restaurar Mentor Industrial</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <form action="" id="restaurarForm" method="POST">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <p id="bannerRestore">¿Estas seguro de restaurar este registro?</p>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" type="button"
+                                                            data-bs-dismiss="modal">Cancelar
+                                                        </button>
+                                                        <button class="btn btn-rounded-check" type="submit">Restaurar
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <script type="application/javascript">
-        // hace una peticion ajax para obtener la informacion de la moto
-        function deleteEstudiante(id) {
+@endsection
+
+@section('scripts')
+    <script>
+        // hace una peticion ajax para obtener la informacion de la asesor Industrial
+        function deleteMentorIdustrial(id) {
             let form = document.getElementById('deleteForm')
-            form.action = '/mentores/' + id + '/delete'
+
+            form.action = `${window.BASE_URL}/mentores/${id}/delete`
+
             $.ajax({
-                url: '/mentores/' + id + '/json',
+                url: `${window.BASE_URL}/mentores/${id}/json`,
                 type: 'GET',
-                success: function (response) {
-                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.titulo + ', ' + response.name);
+                success: function(response) {
+                    $('#banner').text('¿Estas seguro de eliminar este registro: ' +
+                        response.titulo + ' ' +
+                        response.name + ' ' +
+                        response.apellidoP + ' ' +
+                        response.apellidoM + '?');
                 }
             })
         }
 
         function restoreRegistro(id) {
             let form = document.getElementById('restaurarForm')
-            form.action = '/motos/' + id + '/restaurar'
+            form.action = `${window.BASE_URL}/mentores/${id}/restaurar`
             $.ajax({
-                url: '/motos/' + id,
+                url: `/mentores/${id}/json`,
                 type: 'GET',
-                success: function (response) {
-                    //console.log(response.name)
-                    $('#bannerRestore').html('¿Estas seguro de restaurar este registro? ' + response.name + ' ' + response.model);
+                success: function(response) {
+                    $('#bannerRestore').text('¿Estas seguro de restaurar este registro? '
+                        response.titulo + ' ' +
+                        response.name + ' ' +
+                        response.apellidoP + ' ' +
+                        response.apellidoM + '?');
                 }
             })
         }
@@ -186,4 +233,3 @@
         });
     </script>
 @endsection
-    </body>

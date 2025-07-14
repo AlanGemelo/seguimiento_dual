@@ -27,8 +27,7 @@ class Anexo1_3Controller extends Controller
 
     public function store(Request $request)
     {
-        Log::info('Datos recibidos en store:', $request->all());
-
+        
         $validatedData = $request->validate([
             'fecha_realizacion' => 'required|date',
             'lugar' => 'required|string',

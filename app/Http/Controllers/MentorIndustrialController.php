@@ -139,7 +139,6 @@ class MentorIndustrialController extends Controller
     public function showJson($id): JsonResponse
     {
         $mentor = MentorIndustrial::find($id);
-
         return response()->json($mentor);
     }
 

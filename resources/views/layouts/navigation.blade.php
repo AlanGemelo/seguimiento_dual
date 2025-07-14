@@ -1,4 +1,19 @@
-<link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+@push('styles')
+    <style>
+        .navbar {
+            backdrop-filter: blur(10px);
+            height: 100px;
+            /* Ajusta la altura del navbar */
+        }
+
+        .navbar-brand img {
+            height: 100px;
+            /* Ajusta la altura del logo */
+            width: 150px;
+        }
+    </style>
+@endpush
+
 <nav class="navbar navbar-expand-lg navbar-light bg-slate-600 fixed-top shadow-black">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('dashboard') }}">
@@ -66,38 +81,36 @@
                         </a>
                     </li>
                     <li class="nav-item-custom dropdown">
-                        <a class="nav-link-custom dropdown-toggle"
-                            href="#" id="empresasDropdown" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="mdi mdi-factory"></i><span>Empresas</span> 
+                        <a class="nav-link-custom dropdown-toggle" href="#" id="empresasDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-factory"></i><span>Empresas</span>
                         </a>
                         <ul class="dropdown-menu text-center" aria-labelledby="empresasDropdown">
-                            <li><a class="dropdown-item"
-                                    href="{{ route('empresas.index') }}"><i class="mdi mdi-domain"></i> Empresas</a>
+                            <li><a class="dropdown-item" href="{{ route('empresas.index') }}"><i
+                                        class="mdi mdi-domain"></i> Empresas</a>
                             </li>
-                            <li><a class="dropdown-item"
-                                    href="{{ route('mentores.index') }}"><i class="mdi mdi-account-tie"></i> Mentores 
+                            <li><a class="dropdown-item" href="{{ route('mentores.index') }}"><i
+                                        class="mdi mdi-account-tie"></i> Mentores
                                     Industriales</a></li>
                         </ul>
                     </li>
                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                         <li class="nav-item-custom dropdown">
-                            <a class="nav-link-custom dropdown-toggle"
-                                href="#" id="direccionDropdown" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="mdi mdi-map-marker"></i><span>Direcciones de Carrera</span> 
+                            <a class="nav-link-custom dropdown-toggle" href="#" id="direccionDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="mdi mdi-map-marker"></i><span>Direcciones de Carrera</span>
                             </a>
                             <ul class="dropdown-menu text-center" aria-labelledby="direccionDropdown">
                                 @if (Auth::user()->rol_id === 1)
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('direcciones.index') }}"><i class="mdi mdi-map"></i>
+                                    <li><a class="dropdown-item" href="{{ route('direcciones.index') }}"><i
+                                                class="mdi mdi-map"></i>
                                             Dirección Carrera</a></li>
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('directores.index') }}"><i class="mdi mdi-account-star"></i>
+                                    <li><a class="dropdown-item" href="{{ route('directores.index') }}"><i
+                                                class="mdi mdi-account-star"></i>
                                             Director de Carrera</a></li>
                                 @endif
-                                <li><a class="dropdown-item"
-                                        href="{{ route('carreras.index') }}"><i class="mdi mdi-book-open"></i> Programas
+                                <li><a class="dropdown-item" href="{{ route('carreras.index') }}"><i
+                                            class="mdi mdi-book-open"></i> Programas
                                         Educativos</a></li>
                             </ul>
                         </li>
@@ -113,10 +126,9 @@
                 <!-- Nuevo apartado de Anexos -->
                 @if ((Auth::user()->rol_id === 1 && session('direccion')) || Auth::user()->rol_id === 4)
                     <li class="nav-item-custom dropdown">
-                        <a class="nav-link-custom dropdown-toggle"
-                            href="#" id="anexosDropdown" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="mdi mdi-file-document"></i><span>Anexos</span> 
+                        <a class="nav-link-custom dropdown-toggle" href="#" id="anexosDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-file-document"></i><span>Anexos</span>
                         </a>
                         <ul class="dropdown-menu text-center" aria-labelledby="anexosDropdown">
                             <li class="dropdown-submenu">
@@ -139,7 +151,16 @@
                                     </li>
                                 </ul>
                             </li>
-                    
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#" role="button">Anexo 2</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ route('anexo2_1.index') }}">Anexo 2.1:
+                                            Evaluación y
+                                            Selección de la UE</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                 @endif
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-sm-none d-lg-block">
@@ -172,17 +193,6 @@
     </div>
 </nav>
 
-<style>
-    .navbar {
-        backdrop-filter: blur(10px);
-        height: 100px;
-        /* Ajusta la altura del navbar */
-    }
-
-    .navbar-brand img {
-        height: 100px; /* Ajusta la altura del logo */
-        width: 150px;
-    }
-</style>
-
-<script src="{{ asset('js/navbar.js') }}"></script>
+@push('scripts')
+    <script src="{{ asset('js/navbar.js') }}"></script>
+@endpush

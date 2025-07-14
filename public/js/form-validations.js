@@ -1,5 +1,3 @@
-console.log("✅ form-validations.js cargado");
-
 document.addEventListener("DOMContentLoaded", function () {
 
     //Text UpperCase
@@ -215,56 +213,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Validation For Dual Dates
 
-    const fechaInicioInput = document.getElementById("inicio_dual");
-    const fechaFinInput = document.getElementById("fin_dual");
 
-    // Crear un div para mostrar errores si no existe
-    let errorDiv = document.getElementById("fecha_error");
-    if (!errorDiv) {
-        errorDiv = document.createElement("div");
-        errorDiv.id = "fecha_error";
-        errorDiv.classList.add("text-danger", "mt-1");
-        fechaFinInput.parentElement.appendChild(errorDiv);
+    const inicioDualInput = document.getElementById("inicio_dual");
+    const finDualInput = document.getElementById("fin_dual");
+
+    function crearFechaSinHora(dateString) {
+        const [year, month, day] = dateString.split("-").map(Number);
+        return new Date(year, month - 1, day); // Mes base 0
     }
 
-    function validarFechas() {
-        const fechaInicioValue = fechaInicioInput.value;
-        const fechaFinValue = fechaFinInput.value;
+    if (inicioDualInput && finDualInput) {
+        inicioDualInput.addEventListener("change", function () {
+            const inicio = crearFechaSinHora(this.value);
+            if (!isNaN(inicio)) {
+                let fin = new Date(inicio);
+                fin.setFullYear(fin.getFullYear() + 1);
 
-        if (!fechaInicioValue || !fechaFinValue) {
-            errorDiv.textContent = "";
-            return;
-        }
+                if (inicio.getDate() === 29 && inicio.getMonth() === 1) {
+                    if (fin.getMonth() !== 1) {
+                        fin.setDate(28);
+                        fin.setMonth(1);
+                    }
+                }
 
-        const fechaInicio = new Date(fechaInicioValue);
-        const fechaMinimaFin = new Date(fechaInicio);
-        fechaMinimaFin.setFullYear(fechaMinimaFin.getFullYear() + 1);
-
-        const fechaFin = new Date(fechaFinValue);
-
-        if (fechaFin < fechaMinimaFin) {
-            errorDiv.textContent = "La fecha de fin debe ser al menos 1 año después de la fecha de inicio.";
-            fechaFinInput.setCustomValidity("Fecha no válida");
-        } else {
-            errorDiv.textContent = "";
-            fechaFinInput.setCustomValidity(""); // Borra el mensaje si es válida
-        }
+                const year = fin.getFullYear();
+                const month = String(fin.getMonth() + 1).padStart(2, "0");
+                const day = String(fin.getDate()).padStart(2, "0");
+                finDualInput.value = `${year}-${month}-${day}`;
+            } else {
+                finDualInput.value = "";
+            }
+        });
     }
-
-    fechaFinInput.addEventListener("blur", validarFechas);
-
-    fechaInicioInput.addEventListener("change", function () {
-        if (fechaInicioInput.value) {
-            const fechaInicio = new Date(fechaInicioInput.value);
-            fechaInicio.setFullYear(fechaInicio.getFullYear() + 1);
-            const yyyy = fechaInicio.getFullYear();
-            const mm = String(fechaInicio.getMonth() + 1).padStart(2, "0");
-            const dd = String(fechaInicio.getDate()).padStart(2, "0");
-
-            fechaFinInput.min = `${yyyy}-${mm}-${dd}`;
-            validarFechas(); // Revalida por si ya había fecha de fin escrita
-        }
-    });
 
 
 
@@ -299,7 +279,30 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    //Validation for Address
+    //get born date
+    const curpInput = document.getElementById("curp");
+    const fechaInput = document.getElementById("fecha_na");
 
-    const addressInput = document.getElementById("direccion");
+    curpInput.addEventListener("input", function () {
+        const curp = curpInput.value.toUpperCase();
+
+        if (curp.length >= 10) {
+            const year = curp.substring(4, 6);
+            const month = curp.substring(6, 8);
+            const day = curp.substring(8, 10);
+
+            // Si el año es mayor a la fecha actual, se asume 1900s, si no 2000s
+            const currentYear = new Date().getFullYear() % 100;
+            const fullYear = parseInt(year) > currentYear ? `19${year}` : `20${year}`;
+
+            const fechaNacimiento = `${fullYear}-${month}-${day}`;
+            // Validamos si es una fecha real
+            const fechaValida = !isNaN(new Date(fechaNacimiento).getTime());
+
+            if (fechaValida) {
+                fechaInput.value = fechaNacimiento;
+            }
+        }
+    });
+
 });

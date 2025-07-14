@@ -2,8 +2,6 @@
 @section('title', 'Mentores')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-    <body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -30,20 +28,20 @@
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
-                        
-                            <div class="card-header-adjusted">
-                                <h6 class="card-title">Lista De Mentores Academicos</h6>
-                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <div class="float-end">
-                                        {{-- Button del modal --}}
-                                        <a href="{{ route('academicos.create') }}" class="btn btn-add"
-                                            title="Agregar una nuevo Mentor Academico">
-                                            <i class="mdi mdi-plus-circle-outline"></i>
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                        
+
+                        <div class="card-header-adjusted">
+                            <h6 class="card-title">Lista De Mentores Academicos</h6>
+                            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                <div class="float-end">
+                                    {{-- Button del modal --}}
+                                    <a href="{{ route('academicos.create') }}" class="btn btn-add"
+                                        title="Agregar una nuevo Mentor Academico">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -256,23 +254,24 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <script type="application/javascript">
-
-        // Hace una petición AJAX para obtener la información del mentor 
-        // y mostrarla en el banner de confirmación
+@section('scripts')
+    <script>
         function deleteMentor(id) {
             let form = document.getElementById('deleteForm')
-            form.action = '/academicos/' + id + '/delete'
+
+            form.action = `${window.BASE_URL}/academicos/${id}/delete`
+            console.log('Form action:', form.action);
             $.ajax({
-                url: '/academicos/' + id + '/json',
+                url: `${BASE_URL}/academicos/${id}/json`,
                 type: 'GET',
-                success: function (response) {
-                    $('#banner').html('¿Estas seguro de eliminar este registro: ' + 
-                    response.titulo + ' ' +
-                    response.name + ' ' +
-                    response.apellidoP + ' ' +
-                    response.apellidoM + '?'
+                success: function(response) {
+                    $('#banner').text('¿Estas seguro de eliminar este registro: ' +
+                        response.titulo + ' ' +
+                        response.name + ' ' +
+                        response.apellidoP + ' ' +
+                        response.apellidoM + '?'
                     );
                 }
             })
@@ -281,43 +280,42 @@
         function restoreRegistro(id) {
             let form = document.getElementById('restaurarForm')
 
-            form.action = '/academicos/' + id + '/restaurar'
+            form.action = `${BASE_URL}/${id}/restaurar`
             $.ajax({
-                url: '/academicos/' + id + '/json',
+                url: `${BASE_URL}/academicos/${id}/json`,
                 type: 'GET',
-                success: function (response) {
-                    //console.log(response.name)
-                    $('#bannerRestore').html
-                    ('¿Estás seguro de restaurar este registro: ' +
-                     response.titulo + ' ' +
-                     response.name + ' ' +
-                     response.apellidoP + ' ' +
-                     response.apellidoM + '?'
-            );
+                success: function(response) {
+                    $('#bannerRestore').text(
+                        '¿Estás seguro de restaurar este registro: ' +
+                        response.titulo + ' ' +
+                        response.name + ' ' +
+                        response.apellidoP + ' ' +
+                        response.apellidoM + '?'
+                    );
                 }
-            })
+            });
         }
+
 
         function destroyMentor(id) {
-            let form = document.getElementById('permanentDelete')
-            form.action = '/academicos/' + id + '/force'
+            let form = document.getElementById('permanentDelete');
+            form.action = `${BASE_URL}/academicos/${id}/force`;
+
             $.ajax({
-                url: '/academicos/' + id + '/json',
+                url: `${BASE_URL}/academicos/${id}/json`,
                 type: 'GET',
-                success: function (response) {
-                    //console.log(response.name)
-            $('#bannerDelete').html(
-             '¿Estás seguro de eliminar permanentemente este registro: ' +
-             response.titulo + ' ' +
-             response.name + ' ' +
-             response.apellidoP + ' ' +
-             response.apellidoM + '?'
-                );
-    }
-            })
+                success: function(response) {
+                    $('#bannerDelete').text(
+                        '¿Estás seguro de eliminar permanentemente este registro: ' +
+                        response.titulo + ' ' +
+                        response.name + ' ' +
+                        response.apellidoP + ' ' +
+                        response.apellidoM + '?'
+                    );
+                }
+            });
         }
 
-        // Filtrar mentores
         document.getElementById('search').addEventListener('keyup', function() {
             let value = this.value.toLowerCase();
             let rows = document.querySelectorAll('#mentorTable tr');
@@ -331,8 +329,6 @@
                 }
             });
         });
-
     </script>
 
 @endsection
-    </body>

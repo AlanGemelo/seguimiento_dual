@@ -2,8 +2,7 @@
 @section('title', 'Direcciones de Carrera')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/listas.css') }}">
-    <body class="body">
+
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -29,20 +28,20 @@
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
-                        
-                            <div class="card-header-adjusted">
-                                <h6 class="card-title">Lista de Direcciones de Carrera</h6>
-                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <div class="float-end">
-                                        {{-- Button del modal --}}
-                                        <a href="{{ route('direcciones.create') }}" class="btn btn-add"
-                                            title="Agregar una nueva Direccion de Carrera">
-                                            <i class="mdi mdi-plus-circle-outline"></i>
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                        
+
+                        <div class="card-header-adjusted">
+                            <h6 class="card-title">Lista de Direcciones de Carrera</h6>
+                            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                <div class="float-end">
+                                    {{-- Button del modal --}}
+                                    <a href="{{ route('direcciones.create') }}" class="btn btn-add"
+                                        title="Agregar una nueva Direccion de Carrera">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -160,17 +159,19 @@
             </div>
         </div>
     </div>
-    <script type="application/javascript">
+@endsection
+@section('scripts')
+    <script>
         // hace una peticion ajax para obtener la informacion de la carrera
         function deleteDireccion(id) {
 
             let form = document.getElementById('deleteForm')
-            form.action = '/direcciones/' + id + '/delete'
+            form.action = `${window.BASE_URL}/direcciones/${id}/delete`
             $.ajax({
-                url: '/direcciones/' + id + '/json',
+                url: `${window.BASE_URL}/direcciones/${id}/json`,
                 type: 'GET',
-                success: function (response) {
-                    $('#banner').html('¿Estas seguro de eliminar este registro? ' + response.nombre);
+                success: function(response) {
+                    $('#banner').text('¿Estas seguro de eliminar este registro? ' + response.nombre);
                 }
             })
         }
@@ -191,4 +192,3 @@
         });
     </script>
 @endsection
-    </body>

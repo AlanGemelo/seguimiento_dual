@@ -59,9 +59,12 @@ class EstadisticaController extends Controller
             $direccionId = session('direccion')->id;
 
             // Gráfica de Estudiantes por Empresa
+            /*  $empresas = Empresa::whereHas('direccionesCarrera', function ($q) use ($direccionId) {
+                $q->where('direccion_id', $direccionId);
+            })->get(); */
             $empresas = Empresa::whereHas('direccionesCarrera', function ($q) use ($direccionId) {
                 $q->where('direccion_id', $direccionId);
-            })->get();
+            })->withCount('estudiantes')->get();
             $chartEmpresa = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Empresa')
                 ->setLabels($empresas->pluck('nombre')->toArray())

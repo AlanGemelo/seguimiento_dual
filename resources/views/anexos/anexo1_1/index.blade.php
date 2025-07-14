@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Anexo 1.1')
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/listas.css') }}">
 

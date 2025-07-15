@@ -201,7 +201,7 @@
 
                             <div class="row">
                                 <h5 class="section-title fw-bold  mt-4">Datos de la unidad económica </h5>
-                                <div class="droCdown-divider mb-4"></div>
+                                <div class="dropdown-divider mb-4"></div>
 
 
                                 <div class="col-md-6 mb-3">
@@ -296,7 +296,7 @@
                                 <div class="dropdown-divider mb-4"></div>
 
                                 <div class="col-12">
-                                    <h6 class="section-subtitle">Documentos Personales</h6>
+                                    <h6 class="section-subtitle fw-bold">Documentos Personales</h6>
                                     <div class="dropdown-divider mb-3"></div>
                                 </div>
                                 <div class="col-md-4 mb-3">
@@ -339,7 +339,7 @@
 
 
                                 <div class="col-12">
-                                    <h6 class="section-subtitle mt-1">Formatos Institucionales</h6>
+                                    <h6 class="section-subtitle mt-1 fw-bold">Formatos Institucionales</h6>
                                     <div class="dropdown-divider mb-3"></div>
 
                                     <div class="row">
@@ -424,7 +424,7 @@
                             <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                 type="submit">Guardar</button>
 
-                            <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
+                            <x-buttons.cancel-button url="{{ route('estudiantes.index') }}"/>
 
                         </div>
                     </form>

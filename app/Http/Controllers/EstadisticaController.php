@@ -36,6 +36,7 @@ class EstadisticaController extends Controller
                 ->setTitle('Estudiantes por Carrera')
                 ->setLabels($carreras->pluck('nombre')->toArray())
                 ->setDataset($carreras->pluck('estudiantes_count')->toArray())
+                ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
             // Gráfica de Estudiantes por Mentor Académico
@@ -44,6 +45,7 @@ class EstadisticaController extends Controller
                 ->setTitle('Estudiantes por Mentor Académico')
                 ->setLabels($mentores->pluck('name')->toArray())
                 ->setDataset($mentores->pluck('estudiantes_count')->toArray())
+                ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
             // Gráfica de Estudiantes Becados
@@ -54,6 +56,7 @@ class EstadisticaController extends Controller
                 ->setTitle('Estudiantes Becados')
                 ->setLabels($becas->pluck('beca')->map(fn($beca) => $beca ? 'Becados' : 'Sin Beca')->toArray())
                 ->setDataset($becas->pluck('count')->toArray())
+                ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB']);
         } else {
             $direccionId = session('direccion')->id;
@@ -69,6 +72,7 @@ class EstadisticaController extends Controller
                 ->setTitle('Estudiantes por Empresa')
                 ->setLabels($empresas->pluck('nombre')->toArray())
                 ->setDataset($empresas->pluck('estudiantes_count')->toArray())
+                ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
             // Gráfica de Estudiantes por Carrera
@@ -77,6 +81,7 @@ class EstadisticaController extends Controller
                 ->setTitle('Estudiantes por Carrera')
                 ->setLabels($carreras->pluck('nombre')->toArray())
                 ->setDataset($carreras->pluck('estudiantes_count')->toArray())
+                ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
             // Gráfica de Estudiantes por Mentor Académico
@@ -85,6 +90,7 @@ class EstadisticaController extends Controller
                 ->setTitle('Estudiantes por Mentor Académico')
                 ->setLabels($mentores->pluck('name')->toArray())
                 ->setDataset($mentores->pluck('estudiantes_count')->toArray())
+                ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
             // Gráfica de Estudiantes Becados
@@ -96,6 +102,7 @@ class EstadisticaController extends Controller
                 ->setTitle('Estudiantes Becados')
                 ->setLabels($becas->pluck('beca')->map(fn($beca) => $beca ? 'Becados' : 'Sin Beca')->toArray())
                 ->setDataset($becas->pluck('count')->toArray())
+                ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB']);
         }
 

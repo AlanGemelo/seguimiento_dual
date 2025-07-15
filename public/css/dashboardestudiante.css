@@ -78,6 +78,26 @@
   text-transform: uppercase !important;
 }
 
+.card-header-adjusted {
+  position: relative;
+  margin: 40px 15px 0; /* Margen superior para separación de la navbar */
+  z-index: 1; /* Valor menor que la navbar */
+  border-radius: 8px 8px 0 0;
+  background-color: #006837; /* Verde sólido */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+/* Título ajustado */
+.card-header-adjusted .card-title {
+  color: #fff; /* Texto negro */
+  font-size: 1.5rem; /* Tamaño aumentado */
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase; /* Opcional: mayúsculas */
+}
+
 .dropdown-divider {
   height: 0;
   margin: 1rem 0;

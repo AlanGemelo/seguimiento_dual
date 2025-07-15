@@ -3,8 +3,8 @@
 @section("content")
 <link rel="stylesheet" href="{{ asset('css/dashboardestudiante.css') }}">
 <body class="body">
-    <div class="card">
-    <div class="row">
+    <div class="container">
+        <div class="card">
        
         <div class="col-12 grid-margin">
             @if (session("status"))
@@ -18,11 +18,11 @@
                 </div>
             @endif
 
-            <div class="card-body">
-                <h6 class="card-title">Estudiante Dual</h6>
+            <div class="card-header-adjusted">
+                <h6 class="card-title">Estudiante Dual</h6></div>
                 <div class="dropdown-divider"></div>
-                <div class="row">
-                    <div class="col-md-12">
+                <div class="container">
+                    
                         <div class="form-group">
                             <label for="matricula">Matricula</label>
                             <input type="number" class="form-control form-control-lg" id="matricula" name="matricula"
@@ -78,7 +78,7 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
+                    
 
                 </div>
             </div>

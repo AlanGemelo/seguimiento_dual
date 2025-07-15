@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Estudiantes')
-
+<body class="body">
 @section('styles')
     <style>
         .xd:hover .btn-text {
@@ -105,7 +105,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
-                                <input type="text" class="form-control" name="search" value="{{ $search }}"
+                                <input type="text" id="search" class="form-control" name="search" value="{{ $search }}"
                                     placeholder="Buscar estudiantes..."
                                     onkeydown="if(event.key === 'Enter') this.form.submit()">
                             </form>
@@ -140,18 +140,18 @@
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
                                                     <a href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                                        class="btn btn-facebook">
-                                                        <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                                        class="btn btn-facebook" style=" background-color: #00798c">
+                                                        <i class="mdi mdi-eye btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                     </a>
                                                     <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                                        class="btn btn-twitter">
-                                                        <i class="mdi mdi-account-edit btn-icon-prepend"></i>
+                                                        class="btn btn-twitter" style=" background-color: #ffa719">
+                                                        <i class="mdi mdi-account-edit btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                     </a>
                                                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                        <button class="btn btn-danger" data-bs-toggle="modal"
+                                                        <button class="btn btn-danger" style=" background-color: #e63946" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
-                                                            <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                            <i class="mdi mdi-delete btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                         </button>
                                                     @endif
                                                 </td>
@@ -232,7 +232,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
-                                <input type="text" class="form-control" name="search_candidatos"
+                                <input type="text"  id="search" class="form-control" name="search_candidatos"
                                     value="{{ $search_candidatos ?? '' }}" placeholder="Buscar candidatos..."
                                     onkeydown="if(event.key === 'Enter') this.form.submit()">
                             </form>
@@ -270,18 +270,18 @@
                                                 <td>{{ $estudiante->cuatrimestre }}</td>
                                                 <td>
                                                     <a href="{{ route('estudiantes.showC', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                                        class="btn btn-facebook">
-                                                        <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                                        class="btn btn-facebook" style=" background-color: #00798c">
+                                                        <i class="mdi mdi-eye btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                     </a>
                                                     <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                                        class="btn btn-twitter">
-                                                        <i class="mdi mdi-arrow-up btn-icon-prepend"></i>
+                                                        class="btn btn-twitter" style=" background-color: #ffa719">
+                                                        <i class="mdi mdi-arrow-up btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                     </a>
                                                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                        <button class="btn btn-danger" data-bs-toggle="modal"
+                                                        <button class="btn btn-danger" style=" background-color: #e63946" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
-                                                            <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                            <i class="mdi mdi-delete btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                         </button>
                                                     @endif
                                                 </td>
@@ -354,7 +354,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
-                                        <input type="text" id="searchInput" class="form-control"
+                                        <input type="text" id="search" class="form-control"
                                             name="search_eliminados" value="{{ $search_eliminados ?? '' }}"
                                             placeholder="Buscar candidatos..."
                                             onkeydown="if(event.key === 'Enter') this.form.submit()">
@@ -612,3 +612,4 @@
         }
     </script>
 @endsection
+</body>

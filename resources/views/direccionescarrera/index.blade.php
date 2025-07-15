@@ -25,6 +25,7 @@
                     </button>
                 </div>
             @endif
+            <body class="body">
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
@@ -68,18 +69,18 @@
                                                 <td>{{ $carrera->email }}</td>
                                                 <td>
                                                     <a href="{{ route('direcciones.show', $carrera->id) }}"
-                                                        class="btn btn-facebook">
-                                                        <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                                        class="btn btn-facebook" style=" background-color: #00798c">
+                                                        <i class="mdi mdi-eye btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                     </a>
                                                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                        <button class="btn btn-danger" data-bs-toggle="modal"
+                                                        <button class="btn btn-danger" style=" background-color: #e63946" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteDireccion({{ $carrera->id }})">
-                                                            <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                            <i class="mdi mdi-delete btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                         </button>
                                                         <a href="{{ route('direcciones.edit', $carrera->id) }}"
-                                                            class="btn btn-twitter">
-                                                            <i class="mdi mdi-account-edit btn-icon-prepend"></i>
+                                                            class="btn btn-twitter" style=" background-color: #ffa719">
+                                                            <i class="mdi mdi-account-edit btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                         </a>
                                                     @endif
                                                 </td>
@@ -192,3 +193,4 @@
         });
     </script>
 @endsection
+</body>

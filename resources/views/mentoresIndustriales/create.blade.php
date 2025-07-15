@@ -16,7 +16,7 @@
 
                         {{-- Identificación del Mentor de la Unidad Economica  --}}
                         <div class="mb-4">
-                            <h5 class="section-title">Identificación del Mentor de la Unidad Economica</h5>
+                            <h5 class="section-title fw-bold">Identificación del Mentor de la Unidad Economica</h5>
                             <div class="dropdown-divider mb-4"></div>
                             <div class="row">
                                 <div class="col-md-4 mb-3">
@@ -63,7 +63,7 @@
 
                         {{-- Vinculación Laboral --}}
                         <div class="mb-4">
-                            <h5 class="section-title mt-4">Vinculación Laboral</h5>
+                            <h5 class="section-title mt-4 fw-bold">Vinculación Laboral</h5>
                             <div class="dropdown-divider mb-4"></div>
 
                             <div class="row">

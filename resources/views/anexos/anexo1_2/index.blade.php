@@ -38,18 +38,18 @@
                                         <td>{{ $anexo->created_at }}</td>
                                         <td>
                                             <a href="{{ route('anexo1_2.edit', $anexo->id) }}"
-                                                class="btn btn-warning">Editar</a>
+                                                class="btn btn-warning" style=" background-color: #ffa719">Editar</a>
                                             <form action="{{ route('anexo1_2.destroy', $anexo->id) }}" method="POST"
                                                 style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"
+                                                <button type="submit" class="btn btn-danger" style=" background-color: #e63946"
                                                     onclick="return confirm('¿Está seguro de eliminar este registro?')">Eliminar</button>
                                             </form>
                                             <a href="{{ route('anexo1_2.generatePdf', $anexo->id) }}"
-                                                class="btn btn-info">PDF</a>
+                                                class="btn btn-info" style=" background-color: #F40F02">PDF</a>
                                             <a href="{{ route('anexo1_2.generateWord', $anexo->id) }}"
-                                                class="btn btn-info">Word</a>
+                                                class="btn btn-info" style=" background-color: #1A5CBD">Word</a>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -2,6 +2,7 @@
 @section('title', 'Estadísticas')
 
 @section('content')
+<body class="body">
     <div class="container mt-5">
         <!-- Encabezado principal -->
         <div class="row">
@@ -18,8 +19,8 @@
                         <div class="row mb-4">
                             <div class="col-md-4">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-primary text-dark rounded">
-                                        <h5 class="text-center">Estudiantes por Status</h5>
+                                    <div class="card-header bg-primary text-white rounded">
+                                        <h5 class="text-center fw-bold ">Estudiantes por Status</h5>
                                     </div>
                                     <div class="card-body">
                                         <select id="statusSelect" class="form-select border border-dark rounded">
@@ -40,8 +41,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-danger text-dark rounded">
-                                        <h5 class="text-center">Estudiantes Becados</h5>
+                                    <div class="card-header bg-danger text-white rounded">
+                                        <h5 class="text-center fw-bold">Estudiantes Becados</h5>
                                     </div>
                                     <div class="card-body">
                                         <select id="becaSelect" class="form-select border border-dark rounded">
@@ -59,8 +60,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-info text-dark rounded">
-                                        <h5 class="text-center">Estudiantes por Mentor Académico</h5>
+                                    <div class="card-header bg-info text-white rounded">
+                                        <h5 class="text-center fw-bold">Estudiantes por Mentor Académico</h5>
                                     </div>
                                     <div class="card-body">
                                         <select id="mentorSelect" class="form-select border border-dark rounded">
@@ -84,7 +85,7 @@
                             <div class="col-md-6">
                                 <div class="card border-0 shadow-sm">
                                     <div class="card-header bg-warning text-white rounded">
-                                        <h5 class="text-center">Estudiantes por Empresa</h5>
+                                        <h5 class="text-center fw-bold">Estudiantes por Empresa</h5>
                                     </div>
                                     <div class="card-body">
                                         <select id="empresaSelect" class="form-select border border-dark rounded">
@@ -105,8 +106,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="card border-0 shadow-sm">
-                                    <div class="card-header bg-secondary text-dark rounded">
-                                        <h5 class="text-center">Estudiantes por Carrera</h5>
+                                    <div class="card-header bg-secondary text-white rounded">
+                                        <h5 class="text-center fw-bold">Estudiantes por Carrera</h5>
                                     </div>
                                     <div class="card-body">
                                         <select id="carreraSelect" class="form-select border border-dark rounded">
@@ -285,20 +286,24 @@
                             <div class="col-md-6 mb-4">
                                 <div class="card border-0 shadow-sm h-100">
                                     <div class="card-header text-white rounded" style="background-color: #006837;">
-                                        <h5 class="text-center m-0">Estudiantes por Empresa</h5>
+                                        <h5 class="text-center m-0 fw-bold">Estudiantes por Empresa</h5>
                                     </div>
                                     <div class="card-body d-flex flex-column">
-                                        {!! $chartEmpresa->container() !!}
+                                        <div style="height: 300px;">
+                                            {!! $chartEmpresa->container() !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="card border-0 shadow-sm h-100">
                                     <div class="card-header text-dark rounded" style="background-color: #f5f5f5">
-                                        <h5 class="text-center m-0">Estudiantes por Carrera</h5>
+                                        <h5 class="text-center m-0 fw-bold">Estudiantes por Carrera</h5>
                                     </div>
                                     <div class="card-body d-flex flex-column">
-                                        {!! $chartCarrera->container() !!}
+                                        <div style="height: 300px;">
+                                            {!! $chartCarrera->container() !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -306,21 +311,25 @@
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <div class="card border-0 shadow-sm h-100">
-                                    <div class="card-header text-dark rounded" style="background-color: #66bb6a;">
-                                        <h5 class="text-center m-0">Estudiantes por Mentor Académico</h5>
+                                    <div class="card-header text-white rounded" style="background-color: #66bb6a;">
+                                        <h5 class="text-center m-0 fw-bold">Estudiantes por Mentor Académico</h5>
                                     </div>
                                     <div class="card-body d-flex flex-column">
-                                        {!! $chartMentor->container() !!}
+                                        <div style="height: 300px;">
+                                            {!! $chartMentor->container() !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="card border-0 shadow-sm h-100">
                                     <div class="card-header bg-warning text-white rounded">
-                                        <h5 class="text-center m-0">Estudiantes Becados</h5>
+                                        <h5 class="text-center m-0 fw-bold">Estudiantes Becados</h5>
                                     </div>
                                     <div class="card-body d-flex flex-column">
-                                        {!! $chartBeca->container() !!}
+                                        <div style="height: 300px;">
+                                            {!! $chartBeca->container() !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -464,3 +473,4 @@
         document.getElementById('fechaFin').addEventListener('change', actualizarEstudiantesFiltro);
     </script>
 @endsection
+</body>

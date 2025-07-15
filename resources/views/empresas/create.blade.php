@@ -15,7 +15,7 @@
 
                         <!-- Información Básica -->
                         <div class="mb-4">
-                            <h5 class="section-title">Información Básica</h5>
+                            <h5 class="section-title fw-bold">Información Básica</h5>
                             <div class="dropdown-divider mb-4"></div>
 
                             <div class="row">
@@ -69,7 +69,7 @@
 
                         <!-- Direcciones de Carrera -->
                         <div class="mb-4 p-3">
-                            <h5 class="section-title">Direcciones de Carrera <span class="text-danger">*</span></h5>
+                            <h5 class="section-title fw-bold">Direcciones de Carrera <span class="text-danger">*</span></h5>
                             <small class="text-muted text-stone-950">
                                 Seleccione las carreras con las que su empresa desea colaborar en el sistema de
                                 formación dual.
@@ -106,7 +106,7 @@
                         </div>
                         <!-- Vigencia del Convenio -->
                         <div class="mb-4 p-3">
-                            <h5 class="section-title">Vigencia del Convenio</h5>
+                            <h5 class="section-title fw-bold">Vigencia del Convenio</h5>
 
                             <div class="dropdown-divider mb-4"></div>
                             <div class="row">
@@ -153,7 +153,7 @@
 
                         <!-- Documentos del Convenio -->
                         <div class="mb-4 p-3">
-                            <h5 class="section-title">Documentos del Convenio</h5>
+                            <h5 class="section-title fw-bold">Documentos del Convenio</h5>
                             <div class="dropdown-divider mb-4"></div>
 
                             <div class="row">

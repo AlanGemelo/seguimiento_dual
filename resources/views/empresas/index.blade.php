@@ -3,6 +3,7 @@
 @section('title', 'Empresas')
 
 @section('content')
+<body class="body">
     <div class="container">
         <div class="card">
 
@@ -39,10 +40,10 @@
                                     <td>
 
                                         <x-buttons.show-button
-                                            url="{{ route('empresas.show_establecidas', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" />
+                                            url="{{ route('empresas.show_establecidas', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" style=" background-color: #00798c font-size: 1.5em;" />
 
                                         <a href="{{ route('empresas.edit', $empresa->id) }}"
-                                            class="btn btn-warning">Editar</a>
+                                            class="btn btn-warning" style=" background-color: #ffa719 font-size: 1.5em;">Editar</a>
                                         <a href="{{ route('empresas.downloadPDF', $empresa->id) }}"
                                             class="btn btn-info">PDF</a>
                                         <a href="{{ route('empresas.suspendForm', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
@@ -82,7 +83,7 @@
             <div class="card-body">
                 <div class="row mb-4">
                     <div class="col-md-6">
-                        <input type="text" id="searchInteresadas" class="form-control" placeholder="Buscar...">
+                        <input type="text" id="search" class="form-control" placeholder="Buscar...">
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -104,11 +105,10 @@
                                     <td>{{ $empresa->telefono }}</td>
                                     <td>{{ $empresa->created_at->translatedFormat('d \d\e F \d\e Y') }}</td>
                                     <td>
-                                        <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success">Dar
-                                            de Alta</a>
+                                        <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success" style=" background-color: #ffa719; font-size: 1.5em;">Alta 🡩</a>
                                         <a href="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
-                                            class="btn btn-facebook">
-                                            <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                            class="btn btn-facebook" style=" background-color: #00798c">
+                                            <i class="mdi mdi-eye btn-icon-prepend" style="font-size: 1.5em;"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -130,7 +130,7 @@
             <div class="card-body">
                 <div class="row mb-4">
                     <div class="col-md-6">
-                        <input type="text" id="searchInteresadas" class="form-control" placeholder="Buscar...">
+                        <input type="text" id="search" class="form-control" placeholder="Buscar...">
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -155,20 +155,20 @@
                                     <td>{{ $empresa->fecha_baja }}</td>
                                     <td>
                                         <div class="d-flex gap-2">
-                                            <button class="btn btn-success btn-sm rounded-pill" title="Restaurar"
+                                            <button class="btn btn-success btn-sm rounded-pill" style=" background-color: #ffa719" title="Restaurar"
                                                 data-bs-toggle="modal" data-bs-target="#exampleModal3"
                                                 onclick="openReactivateModal('{{ Hashids::encode($empresa->id) }}')">
-                                                <i class="mdi mdi-backup-restore me-1"></i> Reactivar
+                                                <i class="mdi mdi-backup-restore me-1" style="font-size: 1.5em;"></i> Reactivar
                                             </button>
 
-                                            <x-buttons.show-button
+                                            <x-buttons.show-button class="ver"
                                                 url="{{ route('empresas.show_establecidas', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" />
 
-                                            <button class="btn btn-danger btn-sm rounded-pill"
+                                            <button class="btn btn-danger btn-sm rounded-pill" style=" background-color: #e63946"
                                                 title="Eliminar Permanentemente" data-bs-toggle="modal"
                                                 data-bs-target="#exampleModal2"
                                                 onclick="openPermanentDeleteModal({{ $empresa->id }})">
-                                                <i class="mdi mdi-delete me-1"></i> Eliminar
+                                                <i class="mdi mdi-delete me-1" style="font-size: 1.5em;"></i> Eliminar
                                             </button>
                                         </div>
 
@@ -391,3 +391,4 @@
         });
     </script>
 @endsection
+</body>

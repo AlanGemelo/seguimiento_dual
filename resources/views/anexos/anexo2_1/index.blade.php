@@ -41,15 +41,15 @@
                                 <td>{{ $anexo->periodo }}</td>
                                 <td>{{ $anexo->fecha }}</td>
                                 <td>
-                                    <a href="{{ route('anexo2_1.edit', $anexo->id) }}" class="btn btn-warning">Editar</a>
+                                    <a href="{{ route('anexo2_1.edit', $anexo->id) }}" class="btn btn-warning" style=" background-color: #ffa719">Editar</a>
                                     <form action="{{ route('anexo2_1.destroy', $anexo->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de eliminar este registro?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger" style=" background-color: #e63946" onclick="return confirm('¿Está seguro de eliminar este registro?')">Eliminar</button>
                                     </form>
-                                    <a href="{{ route('anexo2_1.generatePdf', $anexo->id) }}" class="btn btn-info">PDF</a>
-                                    <a href="{{ route('anexo2_1.generateWord', $anexo->id) }}" class="btn btn-info">Word</a>
-                                    <a href="{{ route('empresas.create', ['anexo2_1_id' => $anexo->id]) }}" class="btn btn-success">Convertir a UE Interesada</a>
+                                    <a href="{{ route('anexo2_1.generatePdf', $anexo->id) }}" class="btn btn-info" style=" background-color: #F40F02">PDF</a>
+                                    <a href="{{ route('anexo2_1.generateWord', $anexo->id) }}" class="btn btn-info" style=" background-color: #1A5CBD">Word</a>
+                                    <a href="{{ route('empresas.create', ['anexo2_1_id' => $anexo->id]) }}" class="btn btn-success" style=" background-color: #00798c">Convertir a UE Interesada</a>
                                 </td>
                             </tr>
                         @endforeach

@@ -24,7 +24,7 @@
                     </button>
                 </div>
             @endif
-
+<body class="body">
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
@@ -71,22 +71,22 @@
                                                 <td>{{ $mentor->direccion->name }}</td>
                                                 <td>
                                                     <a href="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                        class="btn btn-facebook">
-                                                        <i class="mdi mdi-eye btn-icon-prepend"></i>
+                                                        class="btn btn-facebook" style=" background-color: #00798c">
+                                                        <i class="mdi mdi-eye btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                     </a>
                                                     {{-- <a href="{{ route('academicos.showE', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                   class="btn btn-facebook">
-                                                    <i class="mdi mdi-account-details btn-icon-prepend"></i>
+                                                   class="btn btn-facebook" style=" background-color: #00798c">
+                                                    <i class="mdi mdi-account-details btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                 </a> --}}
                                                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                                         <a href="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                            class="btn btn-twitter">
-                                                            <i class="mdi mdi-account-edit btn-icon-prepend"></i>
+                                                            class="btn btn-twitter" style=" background-color: #ffa719">
+                                                            <i class="mdi mdi-account-edit btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                         </a>
-                                                        <button class="btn btn-danger" data-bs-toggle="modal"
+                                                        <button class="btn btn-danger" style=" background-color: #e63946" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal1"
                                                             onclick="deleteMentor({{ $mentor->id }})">
-                                                            <i class="mdi mdi-delete btn-icon-prepend"></i>
+                                                            <i class="mdi mdi-delete btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                         </button>
                                                     @endif
                                                 </td>
@@ -332,3 +332,4 @@
     </script>
 
 @endsection
+</body>

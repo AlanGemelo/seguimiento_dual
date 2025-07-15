@@ -37,14 +37,14 @@
                                 <td>{{ $anexo->id }}</td>
                                 <td>{{ $anexo->created_at }}</td>
                                 <td>
-                                    <a href="{{ route('anexo1_3.edit', $anexo->id) }}" class="btn btn-warning">Editar</a>
+                                    <a href="{{ route('anexo1_3.edit', $anexo->id) }}" class="btn btn-warning" style=" background-color: #ffa719">Editar</a>
                                     <form action="{{ route('anexo1_3.destroy', $anexo->id) }}" method="POST" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de eliminar este registro?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger" style=" background-color: #e63946" onclick="return confirm('¿Está seguro de eliminar este registro?')">Eliminar</button>
                                     </form>
-                                    <a href="{{ route('anexo1_3.generatePdf', $anexo->id) }}" class="btn btn-info">PDF</a>
-                                    <a href="{{ route('anexo1_3.generateWord', $anexo->id) }}" class="btn btn-info">Word</a>
+                                    <a href="{{ route('anexo1_3.generatePdf', $anexo->id) }}" class="btn btn-info" style=" background-color: #F40F02">PDF</a>
+                                    <a href="{{ route('anexo1_3.generateWord', $anexo->id) }}" class="btn btn-info" style=" background-color: #1A5CBD">Word</a>
                                 </td>
                             </tr>
                         @endforeach

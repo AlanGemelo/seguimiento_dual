@@ -15,24 +15,28 @@
                 </div>
             @endif
             <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
+                <div class="col-lg-12">
+                    <div class="card shadow">
+                        <x-forms.section-header title="Registro Direcciones de Carrera "
+                    description="Formulario para registrar la Direccion de Carrera responsables de la gestión y coordinación de una carrera universitaria o programa educativo." />
                         <div class="card-body">
-                            <h4 class="card-title">Crear Direccion</h4>
-                            <span class="text-danger">* Son campos requeridos</span>
-                            <div class="dropdown-divider"></div>
+                            
                             <form class="pt-3" action="{{ route('direcciones.store') }}" method="post">
                                 @csrf
-                                <div class="form-group">
-                                    <label for="name">Nombre de la Direccion<span class="text-danger">*</span></label>
-                                    <input type="text" data-tipo="text" class="form-control form-control-lg"
+                                <div class="mb-4">
+                            <h5 class="section-title fw-bold">Identificación de la Direccion de Carrera</h5>
+                            <div class="dropdown-divider mb-4"></div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="titulo" class="form-label">Nombre de la Direccion<span class="text-danger">*</span></label>
+                                    <input type="text"  id="search" data-tipo="text" class="form-control form-control-lg"
                                         id="name" name="name" value="{{ old('name') }}">
                                     @error('name')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group">
-                                    <label for="email">Correo <span class="text-danger">*</span></label>
+                                <div class="col-md-4 mb-3">
+                                    <label for="email" class="form-label">Correo <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="text" class="form-control form-control-lg" id="email"
                                             name="email" value="{{ old('email') }}">
@@ -49,9 +53,7 @@
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Guardar
                                     </button>
-                                    <a href="{{ route('direcciones.index') }}"
-                                        class="btn btn-block btn-danger btn-lg font-weight-medium">Cancelar
-                                    </a>
+                                    <x-buttons.cancel-button url="{{ route('direcciones.index') }}"/>
                                 </div>
                         </div>
                         </form>

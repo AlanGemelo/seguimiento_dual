@@ -14,7 +14,7 @@
                     <form class="pt-3" action="{{ route('academicos.store') }}" method="post">
                         @csrf
                         <div class="mb-4">
-                            <h5 class="section-title">Identificación del Mentor Académico</h5>
+                            <h5 class="section-title fw-bold">Identificación del Mentor Académico</h5>
                             <div class="dropdown-divider mb-4"></div>
                             <div class="row">
 
@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
 
-                                <h5 class="section-title mt-4">Información Académica</h5>
+                                <h5 class="section-title mt-4 fw-bold">Información Académica</h5>
                                 <div class="dropdown-divider mb-4"></div>
                                 <div class="col-md-6 mb-3">
                                     <label for="cuatrimestre" class="form-label">Grado Académico</label>

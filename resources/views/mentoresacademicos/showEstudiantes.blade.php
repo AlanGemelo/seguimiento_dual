@@ -2,6 +2,7 @@
 @section('title', 'Mentor Academico')
 
 @section('content')
+<body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="row">
@@ -52,3 +53,4 @@
         </div>
     </div>
 @endsection
+</body>

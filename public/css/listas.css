@@ -2,6 +2,10 @@
     background-color: #c7dfcc;
 }
 
+body{
+    background-color: #c7dfcc;
+}
+
 /* Tarjeta blanca interior */
 .card {
   background-color: white;
@@ -114,6 +118,18 @@ h4{
   box-shadow: 0 0 0 0.2rem rgba(0, 104, 55, 0.25); /* Sombra verde */
 }
 
+#email {
+  border: 1px solid #ced4da; /* Verde */
+  padding: 8px 15px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+#email:focus {
+  border-color: #004d27; /* Verde más oscuro al enfocar */
+  box-shadow: 0 0 0 0.2rem rgba(0, 104, 55, 0.25); /* Sombra verde */
+}
+
 /* Estilos para la tabla */
 .table {
   width: 100%;
@@ -160,21 +176,6 @@ h4{
   color: white;
 }
 
-.btn-facebook {
-  background-color: #3b5998;
-  color: white;
-}
-
-.btn-twitter {
-  background-color: #1da1f2;
-  color: white;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-}
-
 /* Modal de confirmación */
 .modal-content {
   border-radius: 8px;
@@ -213,3 +214,7 @@ h4{
   padding: 20px 15px;
 }
 
+.ver{
+  background-color: #00798c !important; 
+  font-size: 1.5em;
+}

@@ -155,7 +155,7 @@
                                     <option value="" disabled
                                         {{ old('cuatrimestre', $estudiante->cuatrimestre ?? '') ? '' : 'selected' }}>
                                         Seleccione una opción</option>
-                                    @foreach (['4', '5', '6', '7', '8'] as $num)
+                                    @foreach (['4', '5', '6', '7', '8', '9', '10', '11'] as $num)
                                         <option value="{{ $num }}"
                                             {{ old('cuatrimestre', $estudiante->cuatrimestre ?? '') == $num ? 'selected' : '' }}>
                                             {{ $num }}

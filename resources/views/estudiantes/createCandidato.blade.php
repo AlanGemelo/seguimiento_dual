@@ -163,6 +163,7 @@
                                         <option value="8">8</option>
                                         <option value="9">9</option>
                                         <option value="10">10</option>
+                                        <option value="11">11</option>
                                     </select>
                                     @error('cuatrimestre')
                                         <div class="text-danger">{{ $message }}</div>

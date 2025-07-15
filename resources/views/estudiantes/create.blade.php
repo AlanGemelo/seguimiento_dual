@@ -146,6 +146,9 @@
                                         <option value="6">6</option>
                                         <option value="7">7</option>
                                         <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
                                     </select>
                                     @error('cuatrimestre')
                                         <div class="text-danger">{{ $message }}</div>
@@ -424,7 +427,7 @@
                             <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                 type="submit">Guardar</button>
 
-                            <x-buttons.cancel-button url="{{ route('estudiantes.index') }}"/>
+                            <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
 
                         </div>
                     </form>

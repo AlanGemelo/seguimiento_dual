@@ -198,7 +198,7 @@
 
                                     <div class="col-md-4 mb-3">
                                         <label for="ine">INE <span class="text-danger">*</span></label>
-                                        <input type="file" accept="application/pdf"
+                                        <input type="file" accept="application/pdf, image/jpeg, image/png"
                                             class="form-control form-control-lg mt-1" id="ine" placeholder="INE"
                                             name="ine" value="{{ old('ine') }}">
                                         @error('ine')
@@ -209,7 +209,7 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="historial_academico">Historial Academico <span
                                                 class="text-danger">(Opccional)</span></label>
-                                        <input type="file" accept="application/pdf"
+                                        <input type="file" accept="application/pdf, image/jpeg, image/png"
                                             class="form-control form-control-lg mt-1" id="historial_academico"
                                             placeholder="historial_academico" name="historial_academico"
                                             value="{{ old('historial_academico') }}">

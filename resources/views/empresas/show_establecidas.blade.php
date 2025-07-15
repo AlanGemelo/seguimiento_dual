@@ -299,7 +299,7 @@
                                 <div class="mb-2">
                                     <label for="ine" class="form-label">INE</label>
                                     <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
-                                        <input type="file" accept="application/pdf" class="form-control d-none"
+                                        <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control d-none"
                                             id="ine" name="ine">
                                         @if ($empresa->ine)
                                             <a href="{{ url(Storage::url($empresa->ine)) }}"

@@ -248,7 +248,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="convenioA">Convenio A</label>
                                     <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
-                                        <input type="file" accept="application/pdf" class="form-control d-none"
+                                        <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control d-none"
                                             id="inputConvenioA" name="convenioA">
                                         @if ($empresa->convenioA)
                                             <a href="{{ url(Storage::url($empresa->convenioA)) }}"
@@ -276,7 +276,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="convenioMA">Convenio MA</label>
                                     <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
-                                        <input type="file" accept="application/pdf" class="form-control d-none"
+                                        <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control d-none"
                                             id="inputConvenioMA" name="convenioMA">
                                         @if ($empresa->convenioMA)
                                             <a href="{{ url(Storage::url($empresa->convenioMA)) }}"

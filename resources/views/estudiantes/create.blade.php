@@ -304,7 +304,7 @@
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="ine">INE <span class="text-danger">*</span></label>
-                                    <input type="file" accept="application/pdf"
+                                    <input type="file" accept="application/pdf, image/jpeg, image/png"
                                         class="form-control form-control-lg mt-1" id="ine" placeholder="INE"
                                         name="ine" value="{{ old('ine') }}">
                                     @error('ine')
@@ -318,7 +318,7 @@
                                         <small class="text-muted text-danger"
                                             style="color: #dc3545 !important; ">(Opcional)</small>
                                     </label>
-                                    <input type="file" accept="application/pdf"
+                                    <input type="file" accept="application/pdf, image/jpeg, image/png"
                                         class="form-control form-control-lg mt-1" id="historial_academico"
                                         placeholder="historial_academico" name="historial_academico"
                                         value="{{ old('historial_academico') }}">
@@ -331,7 +331,7 @@
                                         <small class="text-muted text-danger"
                                             style="color: #dc3545 !important; ">(Opcional)</small>
                                     </label>
-                                    <input type="file" accept="application/pdf"
+                                    <input type="file" accept="application/pdf, image/jpeg, image/png"
                                         class="form-control form-control-lg mt-1" id="perfil_ingles"
                                         placeholder="perfil_ingles" name="perfil_ingles"
                                         value="{{ old('perfil_ingles') }}">
@@ -348,7 +348,7 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="formato51">Formato 5.1 <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf"
+                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg mt-1" id="formato51" name="formato51"
                                                 value="{{ old('formato51') }}">
                                             @error('formato51')
@@ -358,7 +358,7 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="formato54">Formato 5.4 <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf"
+                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg mt-1" id="formato54" name="formato54"
                                                 value="{{ old('formato54') }}">
                                             @error('formato54')
@@ -368,7 +368,7 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="formato55">Formato 5.5 <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf"
+                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg mt-1" id="formato55" name="formato55"
                                                 value="{{ old('formato55') }}">
                                             @error('formato55')
@@ -390,7 +390,7 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="formatoA">Formato A <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf"
+                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg mt-1" id="formatoA" name="formatoA"
                                                 value="{{ old('formatoA') }}">
                                             @error('formatoA')
@@ -400,7 +400,7 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="formatoB">Formato B <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf"
+                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg mt-1" id="formatoB" name="formatoB"
                                                 value="{{ old('formatoB') }}">
                                             @error('formatoB')
@@ -410,7 +410,7 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="formatoC">Formato C <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf"
+                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg mt-1" id="formatoC" name="formatoC"
                                                 value="{{ old('formatoC') }}">
                                             @error('formatoC')

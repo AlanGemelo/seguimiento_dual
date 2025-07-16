@@ -3,6 +3,7 @@
 @section('title', 'Baja UE')
 
 @section('content')
+<body class="body">
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">
@@ -153,3 +154,4 @@
         </div>
     </div>
 @endsection
+</body>

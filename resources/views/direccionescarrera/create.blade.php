@@ -2,6 +2,7 @@
 @section('title', 'Crear Direccion de carrera')
 
 @section('content')
+<body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             @if (session('status'))
@@ -63,3 +64,4 @@
         </div>
     </div>
 @endsection
+</body>

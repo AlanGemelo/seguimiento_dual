@@ -2,6 +2,7 @@
 @section('title', 'Empresas Interesadas')
 
 @section('content')
+<body class="body">
     <div class="container">
         <div class="card">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -63,3 +64,4 @@
         });
     </script>
 @endsection
+</body>

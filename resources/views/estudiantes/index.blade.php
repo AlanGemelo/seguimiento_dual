@@ -161,9 +161,8 @@
                                 </tbody>
                             </table>
                             <div class="d-flex justify-content-center mt-4">
-                                {{ $estudiantes->links() }}
+                                {{ $estudiantes->onEachSide(1)->links('pagination::bootstrap-5') }}
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -261,8 +260,7 @@
                                             <tr class="animate__animated animate__fadeInDown " id='aiuda'>
 
                                                 <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $estudiante->name . ' ' . $estudiante->apellidoP . ' ' . $estudiante->apellidoM }}
-                                                </td>
+                                                <td>{{ $estudiante->name . ' ' . $estudiante->apellidoP . ' ' . $estudiante->apellidoM }}</td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
                                                 <td>{{ $estudiante->usuario?->email ?? 'Sin correo' }}</td>
 

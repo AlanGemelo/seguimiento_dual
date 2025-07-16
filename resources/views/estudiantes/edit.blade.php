@@ -2,7 +2,7 @@
 @section('title', 'Editar Estudiante')
 
 @section('content')
-
+<body class="body">
     <div class="row">
         <div class="col-12 grid-margin">
             <div class="row">
@@ -640,3 +640,4 @@
         }
     </script>
 @endsection
+</body>

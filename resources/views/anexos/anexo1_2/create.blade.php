@@ -62,6 +62,7 @@
 @endsection
 
 @section('content')
+<body class="body">
     <div class="row">
         <div class="col-lg-12">
             @if ($errors->any())
@@ -285,6 +286,7 @@
         </div>
     </div>
 @endsection
+</body>
 @section('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {

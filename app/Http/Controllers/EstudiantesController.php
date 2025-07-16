@@ -86,6 +86,7 @@ class EstudiantesController extends Controller
         $candidatos = Estudiantes::where('activo', false)
             ->where('name', 'LIKE', '%' . $searchCandidatos . '%')
             ->where('direccion_id', $direccionId)
+            ->orderBy('name', 'asc')
             ->simplePaginate(10, ['*'], 'page_candidatos', $pageCandidatos);
 
         $academico = User::where('rol_id', 2)->where('name', 'LIKE', '%' . $searchAcademicos . '%')->where('direccion_id', $direccionId)->simplePaginate(10, ['*'], 'page_academicos', $pageAcademicos);

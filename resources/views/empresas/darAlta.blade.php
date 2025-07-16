@@ -2,6 +2,7 @@
 @section('title', 'Dar de Alta UE')
 
 @section('content')
+<body class="body"></body>
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">

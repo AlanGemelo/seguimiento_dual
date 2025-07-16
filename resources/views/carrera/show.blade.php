@@ -40,7 +40,7 @@
 
                     <!-- Botón de regreso -->
                     <div class="d-flex justify-content-end mt-4">
-                        <x-buttons.back-button url="{{ route('academicos.index') }}" />
+                        <x-buttons.back-button url="{{ route('carreras.index') }}" />
                     </div>
                 </div>
             </div>

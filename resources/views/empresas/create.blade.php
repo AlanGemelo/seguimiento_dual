@@ -2,6 +2,7 @@
 @section('title', 'Crear Empresa')
 
 @section('content')
+<body class="body">
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">
@@ -250,3 +251,4 @@
 
     <script src="{{ asset('js/multipleSelector.js') }}"></script>
 @endsection
+</body>

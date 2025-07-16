@@ -227,8 +227,8 @@
                                             class="text-danger">*</span></label>
                                     <select class="form-select" aria-label="Seleccionar Empresa" name="asesorin_id"
                                         id="asesorin_id">
-                                        <option selected>Seleccione una opcion</option>
-
+                                        <option selected value="{{ old('asesorin_id') }}">Seleccione una opcion
+                                        </option>
                                     </select>
                                     @error('asesorin_id')
                                         <div class="text-danger">{{ $message }}</div>
@@ -338,86 +338,6 @@
                                     @error('perfil_ingles')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
-                                </div>
-
-
-                                <div class="col-12">
-                                    <h6 class="section-subtitle mt-1 fw-bold">Formatos Institucionales</h6>
-                                    <div class="dropdown-divider mb-3"></div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formato51">Formato 5.1 <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
-                                                class="form-control form-control-lg mt-1" id="formato51" name="formato51"
-                                                value="{{ old('formato51') }}">
-                                            @error('formato51')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formato54">Formato 5.4 <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
-                                                class="form-control form-control-lg mt-1" id="formato54" name="formato54"
-                                                value="{{ old('formato54') }}">
-                                            @error('formato54')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formato55">Formato 5.5 <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
-                                                class="form-control form-control-lg mt-1" id="formato55" name="formato55"
-                                                value="{{ old('formato55') }}">
-                                            @error('formato55')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12" id="formatosBeca" style="display: none">
-                                    <h6 class="section-subtitle mt-1">
-                                        Formatos de Beca
-                                        <small class="text-muted text-danger" style="color: #dc3545 !important;">
-                                            (Solo en caso de aplicar a una beca)
-                                        </small>
-                                    </h6>
-                                    <div class="dropdown-divider mb-3"></div>
-
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formatoA">Formato A <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
-                                                class="form-control form-control-lg mt-1" id="formatoA" name="formatoA"
-                                                value="{{ old('formatoA') }}">
-                                            @error('formatoA')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formatoB">Formato B <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
-                                                class="form-control form-control-lg mt-1" id="formatoB" name="formatoB"
-                                                value="{{ old('formatoB') }}">
-                                            @error('formatoB')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formatoC">Formato C <span class="text-danger">*</span></label>
-                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
-                                                class="form-control form-control-lg mt-1" id="formatoC" name="formatoC"
-                                                value="{{ old('formatoC') }}">
-                                            @error('formatoC')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 

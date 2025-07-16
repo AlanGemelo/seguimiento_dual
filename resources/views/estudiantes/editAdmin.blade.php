@@ -347,7 +347,7 @@
                             <div class="col-md-4 mb-3">
                                 <label for="ine" class="mb-1">INE <span class="text-danger">*</span></label>
                                 <div style="display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                    <input hidden type="file" accept="application/pdf"
+                                    <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                         class="form-control form-control-lg" id="ine" placeholder="INE"
                                         name="ine" value="{{ old('ine') }}">
                                     @error('ine')
@@ -368,7 +368,7 @@
                                 <label for="historial_academico" class="mb-1">Historial Academico <span
                                         class="text-danger">*</span></label>
                                 <div style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                    <input hidden type="file" accept="application/pdf"
+                                    <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                         class="form-control form-control-lg" id="historial_academico"
                                         placeholder="historial_academico" name="historial_academico"
                                         value="{{ old('historial_academico') }}">
@@ -393,7 +393,7 @@
                                 <label for="perfil_ingles" class="mb-1">Perfil de Ingles <span
                                         class="text-danger">*</span></label>
                                 <div style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                    <input hidden type="file" accept="application/pdf"
+                                    <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                         class="form-control form-control-lg" id="perfil_ingles"
                                         placeholder="perfil_ingles" name="perfil_ingles"
                                         value="{{ old('perfil_ingles') }}">
@@ -422,7 +422,7 @@
                                                 class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="formato51"
                                                 placeholder="formato51" name="formato51" value="{{ old('formato51') }}">
                                             @error('formato51')
@@ -443,24 +443,35 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="formato54" class="mb-1">Formato 5.4 <span
                                                 class="text-danger">*</span></label>
-                                        <div
-                                            style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
-                                                class="form-control form-control-lg" id="formato54"
-                                                placeholder="formato54" name="formato54" value="{{ old('formato54') }}">
-                                            @error('formato54')
-                                                <div class="text-danger">{{ $message }}</div>
-                                            @enderror
-                                            <a id='formato54_' href="{{ url(Storage::url($estudiante->formato54)) }}"
-                                                class=" form-control form-control-lg btn-primary" target="_blank">Ver
-                                                formato 5.4
-                                                <span class="mdi mdi-file-pdf-box"></span>
-                                            </a>
-                                            <button class="btn btn-secondary w-50  " id='formato54C'
-                                                onclick="ocultar('formato54_','formato54','formato54C')"
-                                                type="button">Cambiar Documento</button>
+                                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                                            <!-- Input para nuevos archivos -->
+                                            <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                                class="form-control form-control-lg" id="formato54" name="formato54[]"
+                                                multiple>
 
+                                            <!-- Lista de archivos existentes -->
+                                            @if (!empty($estudiante->formato54))
+                                                @foreach (json_decode($estudiante->formato54) as $index => $file)
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <a href="{{ Storage::url($file) }}" class="btn btn-primary"
+                                                            target="_blank">
+                                                            Ver archivo {{ $loop->iteration }}
+                                                        </a>
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                            onclick="eliminarArchivo(this, '{{ $index }}')">
+                                                            Eliminar
+                                                        </button>
+                                                    </div>
+                                                @endforeach
+                                            @endif
+
+                                            <!-- Campo oculto para archivos eliminados -->
+                                            <input type="hidden" name="deleted_files" id="deleted_files"
+                                                value="">
                                         </div>
+                                        @error('formato54')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div class="col-md-6 mb-3">
@@ -468,7 +479,7 @@
                                                 class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="formato55"
                                                 placeholder="formato55" name="formato55" value="{{ old('formato55') }}">
                                             @error('formato55')
@@ -503,7 +514,7 @@
                                                 class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="formatoA"
                                                 placeholder="formatoA" name="formatoA" value="{{ old('formatoA') }}">
                                             @error('formatoA')
@@ -526,7 +537,7 @@
                                                 class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="formatoB"
                                                 placeholder="formatoB" name="formatoB" value="{{ old('formatoB') }}">
                                             @error('formatoB')
@@ -551,7 +562,7 @@
                                                 class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="formatoC"
                                                 placeholder="formatoC" name="formatoC" value="{{ old('formatoC') }}">
                                             @error('formatoC')
@@ -582,7 +593,7 @@
                                         <div
                                             style="display: flex; justify-content: space-between; align-items: center; gap: 4px">
                                             <!-- Input oculto para subir nuevo archivo -->
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="input_carta_acp"
                                                 name="carta_acp" value="{{ old('carta_acp') }}">
 
@@ -610,7 +621,7 @@
                                                 class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="minutas" placeholder="minutas"
                                                 name="minutas" value="{{ old('minutas') }}">
                                             @error('minutas')
@@ -633,7 +644,7 @@
                                                 class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="plan_form"
                                                 placeholder="plan_form" name="plan_form"
                                                 value="{{ old('plan_form') }}">
@@ -656,7 +667,7 @@
                                             Formación<span class="text-danger">*</span></label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                            <input hidden type="file" accept="application/pdf"
+                                            <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control form-control-lg" id="evaluacion_form"
                                                 placeholder="evaluacion_form" name="evaluacion_form"
                                                 value="{{ old('evaluacion_form') }}">
@@ -747,6 +758,22 @@
             elemento1.hidden = !elemento1.hidden; // Habilita el botón para cambiar el archivo
         }
 
+        // Función para marcar archivos para eliminación
+        function eliminarArchivo(button, index) {
+            const deletedFilesInput = document.getElementById('deleted_files');
+            const current = deletedFilesInput.value ? deletedFilesInput.value.split(',') : [];
+
+            if (!current.includes(index.toString())) {
+                current.push(index);
+                deletedFilesInput.value = current.join(',');
+            }
+
+            // Elimina el bloque del archivo completamente
+            const archivoDiv = button.closest('.d-flex');
+            if (archivoDiv) {
+                archivoDiv.remove();
+            }
+        }
         // Función para cambiar el archivo
         function changeFile() {
             // Restablece el campo de entrada de archivos seleccionado

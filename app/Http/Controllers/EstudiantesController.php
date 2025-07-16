@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Storage;
 
 class EstudiantesController extends Controller
 {
@@ -245,6 +245,8 @@ class EstudiantesController extends Controller
             'ine' => ['file', 'mimes:pdf', 'required'],
             // 'historial_academico' => ['file', 'mimes:pdf'],
             // 'perfil_ingles' => ['file', 'mimes:pdf'],
+            'formato54' => ['nullable', 'array'],
+            'formato54.*' => ['file', 'mimes:pdf,jpeg,png'],
             'inicio' => ['date'],
             'fin' => ['date'],
             'beca' => ['required', 'integer', 'in:0,1'],
@@ -253,7 +255,7 @@ class EstudiantesController extends Controller
             'carrera_id' => ['required', 'integer', 'exists:' . Carrera::class . ',id'],
         ]);
 
-
+        $formato54Paths = [];
 
         if ($request->file('ine')) {
             $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
@@ -305,14 +307,23 @@ class EstudiantesController extends Controller
             $formato51 = 'formato51/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato51')->getClientOriginalName();
             $formato51 = $request->file('formato51')->storeAs('public', $formato51);
         }
-        if ($request->file('formato51')) {
-            $formato54 = 'formato54/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato54')->getClientOriginalName();
-            $formato54 = $request->file('formato54')->storeAs('public', $formato54);
+
+        if ($request->hasFile('formato54')) {
+            foreach ($request->file('formato54') as $file) {
+                $path = 'formato54/' . $request->matricula . '_' . date('Y-m-d') . '_' . $file->getClientOriginalName();
+                $storedPath = $file->storeAs('public', $path);
+                $formato54Paths[] = $storedPath;
+            }
         }
+
         if ($request->file('formato55')) {
             $formato55 = 'formato55/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato55')->getClientOriginalName();
             $formato55 = $request->file('formato55')->storeAs('public', $formato55);
         }
+
+        // Guardar como JSON en la base de datos
+        $formato54Json = json_encode($formato54Paths);
+
 
         $user = User::create([
             'titulo' => 'Estudiante',
@@ -354,9 +365,9 @@ class EstudiantesController extends Controller
             'formatoA' => $formatoA ?? NULL,
             'formatoB' => $formatoB ?? NULL,
             'formatoC' => $formatoC ?? NULL,
-            'formato51' => $formatoC ?? NULL,
-            'formato54' => $formatoC ?? NULL,
-            'formato55' => $formatoC ?? NULL,
+            'formato51' => $formato51 ?? NULL,
+            'formato54' => $formato54Json ?? NULL,
+            'formato55' => $formato55 ?? NULL,
             'empresa_id' => $request->empresa_id ?? NULL,
             'academico_id' => $request->academico_id ?? NULL,
             'asesorin_id' => $request->asesorin_id ?? NULL,
@@ -559,7 +570,7 @@ class EstudiantesController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //  dd($request->all());
         $request->validate([
             'matricula' => ['integer', 'min:8'],
             'name' => ['string', 'min:3', 'max:255'],
@@ -580,6 +591,9 @@ class EstudiantesController extends Controller
             // 'minutas' => ['file', 'mimes:pdf'],
             //'carta_acp' => ['file', 'mimes:pdf'],
             //'plan_form' => ['file', 'mimes:pdf'],
+            'formato54' => ['nullable', 'array'],
+            'formato54.*' => ['file'],
+            'deleted_files' => ['nullable', 'string'],
             'historial_academico' => ['file', 'mimes:pdf'],
             'perfil_ingles' => ['file', 'mimes:pdf'],
             'empresa_id' => ['integer', 'exists:' . Empresa::class . ',id'],
@@ -597,73 +611,74 @@ class EstudiantesController extends Controller
         $inicioDual = Carbon::parse($request->inicio_dual);
         $finDual = Carbon::parse($request->fin_dual);
 
-        /*   if ($inicioDual->diffInYears($finDual) !== 1) {
-            return redirect()->back()->withErrors(['fin_dual' => 'La diferencia entre inicio dual y fin dual debe ser de un año.']);
-        } */
-
         $id = Hashids::decode($id);
-        $estudiantes = Estudiantes::find($id);
-        $estudiantes = $estudiantes[0];
+        $estudiantes = Estudiantes::find($id[0]);
         $estudiantes->beca = $request->beca;
         $estudiantes->tipoBeca = $request->tipoBeca;
 
+        // Manejo de archivos únicos
         if ($request->file('ine')) {
-            $ine = 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName();
-            $ine = $request->file('ine')->storeAs('public', $ine);
+            $ine = $request->file('ine')->storeAs('public', 'ine/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('ine')->getClientOriginalName());
         }
         if ($request->file('evaluacion_form')) {
-            $evaluacion_form = 'evaluacion_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('evaluacion_form')->getClientOriginalName();
-            $evaluacion_form = $request->file('evaluacion_form')->storeAs('public', $evaluacion_form);
+            $evaluacion_form = $request->file('evaluacion_form')->storeAs('public', 'evaluacion_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('evaluacion_form')->getClientOriginalName());
         }
-
         if ($request->file('minutas')) {
-            $minutas = 'minutas/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('minutas')->getClientOriginalName();
-            $minutas = $request->file('minutas')->storeAs('public', $minutas);
+            $minutas = $request->file('minutas')->storeAs('public', 'minutas/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('minutas')->getClientOriginalName());
         }
-
         if ($request->file('carta_acp')) {
-            $carta_acp = 'carta_acp/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('carta_acp')->getClientOriginalName();
-            $carta_acp = $request->file('carta_acp')->storeAs('public', $carta_acp);
+            $carta_acp = $request->file('carta_acp')->storeAs('public', 'carta_acp/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('carta_acp')->getClientOriginalName());
         }
-
         if ($request->file('plan_form')) {
-            $plan_form = 'plan_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('plan_form')->getClientOriginalName();
-            $plan_form = $request->file('plan_form')->storeAs('public', $plan_form);
+            $plan_form = $request->file('plan_form')->storeAs('public', 'plan_form/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('plan_form')->getClientOriginalName());
         }
-
         if ($request->file('historial_academico')) {
-            $historial_academico = 'historial_academico/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('historial_academico')->getClientOriginalName();
-            $historial_academico = $request->file('historial_academico')->storeAs('public', $historial_academico);
+            $historial_academico = $request->file('historial_academico')->storeAs('public', 'historial_academico/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('historial_academico')->getClientOriginalName());
         }
-
         if ($request->file('perfil_ingles')) {
-            $perfil_ingles = 'perfil_ingles/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('perfil_ingles')->getClientOriginalName();
-            $perfil_ingles = $request->file('perfil_ingles')->storeAs('public', $perfil_ingles);
+            $perfil_ingles = $request->file('perfil_ingles')->storeAs('public', 'perfil_ingles/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('perfil_ingles')->getClientOriginalName());
         }
         if ($request->file('formatoA')) {
-            $formatoA = 'formatoA/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formatoA')->getClientOriginalName();
-            $formatoA = $request->file('formatoA')->storeAs('public', $formatoA);
+            $formatoA = $request->file('formatoA')->storeAs('public', 'formatoA/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formatoA')->getClientOriginalName());
         }
         if ($request->file('formatoB')) {
-            $formatoB = 'formatoB/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formatoB')->getClientOriginalName();
-            $formatoB = $request->file('formatoB')->storeAs('public', $formatoB);
+            $formatoB = $request->file('formatoB')->storeAs('public', 'formatoB/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formatoB')->getClientOriginalName());
         }
         if ($request->file('formatoC')) {
-            $formatoC = 'formatoC/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formatoC')->getClientOriginalName();
-            $formatoC = $request->file('formatoC')->storeAs('public', $formatoC);
+            $formatoC = $request->file('formatoC')->storeAs('public', 'formatoC/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formatoC')->getClientOriginalName());
         }
         if ($request->file('formato51')) {
-            $formato51 = 'formato51/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato51')->getClientOriginalName();
-            $formato51 = $request->file('formato51')->storeAs('public', $formato51);
-        }
-        if ($request->file('formato51')) {
-            $formato54 = 'formato54/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato54')->getClientOriginalName();
-            $formato54 = $request->file('formato54')->storeAs('public', $formato54);
+            $formato51 = $request->file('formato51')->storeAs('public', 'formato51/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato51')->getClientOriginalName());
         }
         if ($request->file('formato55')) {
-            $formato55 = 'formato55/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato55')->getClientOriginalName();
-            $formato55 = $request->file('formato55')->storeAs('public', $formato55);
+            $formato55 = $request->file('formato55')->storeAs('public', 'formato55/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato55')->getClientOriginalName());
         }
+
+        // 🔁 NUEVO BLOQUE: Manejo de múltiples archivos en formato54
+        $currentFiles = !empty($estudiantes->formato54) ? json_decode($estudiantes->formato54, true) : [];
+
+        if ($request->deleted_files) {
+            $deletedIndexes = explode(',', $request->deleted_files);
+            foreach ($deletedIndexes as $index) {
+                if (isset($currentFiles[$index])) {
+                    Storage::delete($currentFiles[$index]);
+                    unset($currentFiles[$index]);
+                }
+            }
+            $currentFiles = array_values($currentFiles); // reindexar
+        }
+
+        $newFiles = [];
+        if ($request->hasFile('formato54')) {
+            foreach ($request->file('formato54') as $file) {
+                $path = 'formato54/' . $request->matricula . '_' . date('Y-m-d') . '_' . $file->getClientOriginalName();
+                $storedPath = $file->storeAs('public', $path);
+                $newFiles[] = $storedPath;
+            }
+        }
+
+        $allFiles = array_merge($currentFiles, $newFiles);
+        $formato54Json = !empty($allFiles) ? json_encode($allFiles) : null;
 
 
         $estudiantes->fill([
@@ -679,7 +694,7 @@ class EstudiantesController extends Controller
             'formatoB' => $formatoB ?? $estudiantes->formatoB,
             'formatoC' => $formatoC ?? $estudiantes->formatoC,
             'formato51' => $formato51 ?? $estudiantes->formato51,
-            'formato54' => $formato54 ?? $estudiantes->formato54,
+            'formato54' => $formato54Json,
             'formato55' => $formato55 ?? $estudiantes->formato55,
             'activo' => true,
             'beca' => $request->beca,

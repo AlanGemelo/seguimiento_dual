@@ -63,6 +63,10 @@ class Estudiantes extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'formato54' => 'array',
+    ];
+
     public function empresa(): HasOne
     {
         return $this->hasOne(Empresa::class, 'id', 'empresa_id');

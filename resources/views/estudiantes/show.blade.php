@@ -5,7 +5,6 @@
 @section('title', 'Mostrar Estudiante')
 
 @section('content')
-<body class="body">
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">
@@ -197,187 +196,179 @@
                             <h5 class="section-title fw-bold  mt-4">Documentación </h5>
                             <div class="dropdown-divider mb-4"></div>
 
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Nombre Documento</th>
-                                                <th>Ver</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>
-                                                    <h5 class="card-title">INE</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->ine)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>
-                                                    <h5 class="card-title">Evaluacion Formacion</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>
-                                                    <h5 class="card-title">Carta Aceptacion</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->carta_ap)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>
-                                                    <h5 class="card-title">Plan Formacion</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->plan_form)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>
-                                                    <h5 class="card-title">Historial Academico</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->historial_academico)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>
-                                                    <h5 class="card-title">Perfil Ingles</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>7</td>
-                                                <td>
-                                                    <h5 class="card-title">Formato A</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->formatoA)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>
-                                                    <h5 class="card-title">Formato B</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->formatoB)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>
-                                                    <h5 class="card-title">Formato C</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->formatoC)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>
-                                                    <h5 class="card-title">Formato 5.1</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->formato51)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>
-                                                    <h5 class="card-title">Formato 5.4</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->formato54)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>
-                                                    <h5 class="card-title">Formato 5.5</h5>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url(Storage::url($estudiante->formato55)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
 
-                                        </tbody>
-                                    </table>
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 class="section-subtitle fw-bold">Documentos Personales</h6>
+                                    <div class="dropdown-divider mb-3"></div>
                                 </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="ine">INE</label>
+                                    <div class="mt-1">
+                                        <a href="{{ url(Storage::url($estudiante->ine)) }}" class="btn btn-primary"
+                                            target="_blank">Ver
+                                            Documento
+                                            <span class="mdi mdi-file-pdf-box"></span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="historial_academico">
+                                        Historial Académico
+                                    </label>
+                                    <div class="bt-1">
+                                        <a href="{{ url(Storage::url($estudiante->historial_academico)) }}"
+                                            class="btn btn-primary" target="_blank">Ver
+                                            Documento
+                                            <span class="mdi mdi-file-pdf-box"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="perfil_ingles">Perfil de Inglés
+                                    </label>
+                                    <div class="mt-1">
+                                        <a href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
+                                            class="btn btn-primary" target="_blank">Ver
+                                            Documento
+                                            <span class="mdi mdi-file-pdf-box"></span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <h6 class="section-subtitle mt-1 fw-bold">Documentos de Formación Dual</h6>
+                                    <div class="dropdown-divider mb-3"></div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formato51">Carta de Aceptación</label>
+                                            <div class="mt-1"><a href="{{ url(Storage::url($estudiante->carta_ap)) }}"
+                                                    class="btn btn-primary" target="_blank">Ver
+                                                    Documento
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a></div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formato54">Plan de Formación</label>
+                                            <div class="mt-1"><a href="{{ url(Storage::url($estudiante->plan_form)) }}"
+                                                    class="btn btn-primary" target="_blank">Ver
+                                                    Documento
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a></div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formato55">Evaluación de Formación</label>
+                                            <div class="mt-1"> <a
+                                                    href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
+                                                    class="btn btn-primary" target="_blank">Ver
+                                                    Documento
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <h6 class="section-subtitle mt-1 fw-bold">Formatos Institucionales</h6>
+                                    <div class="dropdown-divider mb-3"></div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formato51">Formato 5.1</label>
+                                            <div class="mt-1">
+                                                <a href="{{ url(Storage::url($estudiante->formato51)) }}"
+                                                    class="btn btn-primary" target="_blank">Ver
+                                                    Documento
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formato54">Formato 5.4</label>
+                                            <div class="row mt-1">
+                                                @if (!empty($estudiante->formato54))
+                                                    @foreach (json_decode($estudiante->formato54) as $file)
+                                                        <div class="col-md-4 mb-2">
+                                                            <a href="{{ Storage::url($file) }}"
+                                                                class="btn btn-primary w-100" target="_blank">
+                                                                Ver archivo {{ $loop->iteration }}
+                                                            </a>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formato55">Formato 5.5</label>
+                                            <div class="mt-1">
+                                                <a href="{{ url(Storage::url($estudiante->formato55)) }}"
+                                                    class="btn btn-primary" target="_blank">Ver
+                                                    Documento
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" id="formatosBeca" style="display: none">
+                                    <h6 class="section-subtitle mt-1">
+                                        Formatos de Beca
+
+                                    </h6>
+                                    <div class="dropdown-divider mb-3"></div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formatoA">Formato A <span class="text-danger">*</span></label>
+                                            <div class="mt-1">
+                                                <a href="{{ url(Storage::url($estudiante->formatoA)) }}"
+                                                    class="btn btn-primary" target="_blank">Ver
+                                                    Documento
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formatoB">Formato B <span class="text-danger">*</span></label>
+                                            <div class="mt-1"> <a href="{{ url(Storage::url($estudiante->formatoB)) }}"
+                                                    class="btn btn-primary" target="_blank">Ver
+                                                    Documento
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label for="formatoC">Formato C <span class="text-danger">*</span></label>
+                                            <div class="mt-1"><a href="{{ url(Storage::url($estudiante->formatoC)) }}"
+                                                    class="btn btn-primary" target="_blank">Ver
+                                                    Documento
+                                                    <span class="mdi mdi-file-pdf-box"></span>
+                                                </a></div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                    </div>
-                    <!-- Botón de regreso -->
-                    <div class="d-flex justify-content-end mt-4">
-                        <x-buttons.back-button url="{{ route('estudiantes.index') }}" />
+                        <!-- Botón de regreso -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <x-buttons.back-button url="{{ route('estudiantes.index') }}" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-</body>

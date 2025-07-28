@@ -339,6 +339,7 @@
                     </div>
                 </div>
             </div>
+
             {{-- Eliminados Lista --}}
             @if ($estudiantesDeleted->count() !== 0)
                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
@@ -422,7 +423,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Academico Permanentemente</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar estudiante Academico Permanentemente</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -450,7 +451,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Restaurar Mentor Academico</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Restaurar Estudiante</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

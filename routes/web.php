@@ -99,7 +99,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('empresas/{empresa}/downloadPDF', [EmpresaController::class, 'downloadPDF'])->name('empresas.downloadPDF');
     Route::get('empresas/exportUeiPdf', [EmpresaController::class, 'exportUeiPdf'])->name('empresas.exportUeiPdf');
 
-    // Rutas para el modulo de mentores academicos
+    // Rutas para el modulo de mentores Industriales
     Route::get('/mentores', [MentorIndustrialController::class, 'index'])->name('mentores.index');
     Route::get('/mentores/crear', [MentorIndustrialController::class, 'create'])->name('mentores.create');
     Route::post('/mentores', [MentorIndustrialController::class, 'store'])->name('mentores.store');
@@ -108,7 +108,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mentores/{id}/editar', [MentorIndustrialController::class, 'edit'])->name('mentores.edit');
     Route::get('/mentores/{id}/empresa', [MentorIndustrialController::class, 'showForEmpresa']);
     Route::patch('/mentores/{id}', [MentorIndustrialController::class, 'update'])->name('mentores.update');
-    Route::delete('/mentores/{id}/delete', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
+   // Route::delete('/mentores/{id}/delete', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
+    // Route::delete('/mentores/{id}', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
+    Route::delete('/mentores/{id}', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
 
     // Rutas para el modulo de carreras
     Route::get('/carreras/crear', [CarreraController::class, 'create'])->name('carreras.create');
@@ -203,7 +205,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('anexo2_1', Anexo2_1Controller::class);
     Route::get('anexo2_1/{anexo2_1}/generatePdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
     Route::get('anexo2_1/{anexo2_1}/generateWord', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
-    
+
     // Rutas para la Navegación Principal
     // Route::get('/anexos', function () {
     //     return view('anexos.index');

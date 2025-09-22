@@ -23,38 +23,68 @@ class EstadisticaController extends Controller
 
         if ($user->rol_id === 1) {
             // Gráfica de Estudiantes por Empresa
-            $empresas = Empresa::withCount('estudiantes')->get();
+            $empresas = Empresa::withCount('estudiantes')
+                ->having('estudiantes_count', '>', 0) 
+                ->get();
+
+                $totalEstudiantes = $empresas->sum('estudiantes_count');
+
+                $labels = $empresas->map(function($empresa) use ($totalEstudiantes) {
+                $porcentaje = $totalEstudiantes > 0 ? round(($empresa->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
+                return "{$empresa->nombre} ({$porcentaje}%)";
+                });
+
             $chartEmpresa = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Empresa')
-                ->setLabels($empresas->pluck('nombre')->toArray())
+                ->setLabels($labels->toArray())
                 ->setDataset($empresas->pluck('estudiantes_count')->toArray())
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
             // Gráfica de Estudiantes por Carrera
-            $carreras = Carrera::withCount('estudiantes')->get();
+            $carreras = Carrera::withCount('estudiantes')
+                ->having('estudiantes_count', '>', 0)
+                ->get();
+
+                $totalEstudiantes = $carreras->sum('estudiantes_count');
+
+                $labels = $carreras->map(function($carrera) use ($totalEstudiantes) {
+                $porcentaje = $totalEstudiantes > 0 ? round(($carrera->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
+                return "{$carrera->nombre} ({$porcentaje}%)";
+                });
+
             $chartCarrera = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Carrera')
-                ->setLabels($carreras->pluck('nombre')->toArray())
+                ->setLabels($labels->toArray())
                 ->setDataset($carreras->pluck('estudiantes_count')->toArray())
                 ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
             // Gráfica de Estudiantes por Mentor Académico
-            $mentores = User::mentoresAcademicos()->withCount('estudiantes')->get();
+            $mentores = User::mentoresAcademicos()->withCount('estudiantes')
+                ->having('estudiantes_count', '>', 0)
+                ->get();
+
+                $totalEstudiantes = $mentores->sum('estudiantes_count');
+
+                $labels = $mentores->map(function($mentor) use ($totalEstudiantes) {
+                $porcentaje = $totalEstudiantes > 0 ? round(($mentor->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
+                return "{$mentor->name} ({$porcentaje}%)";
+                });
+
             $chartMentor = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Mentor Académico')
-                ->setLabels($mentores->pluck('name')->toArray())
+                ->setLabels($labels->toArray())
                 ->setDataset($mentores->pluck('estudiantes_count')->toArray())
                 ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
 
             // Gráfica de Estudiantes Becados
-            $becas = Estudiantes::select('beca', \DB::raw('count(*) as count'))
-                ->groupBy('beca')
+            $becas = Estudiantes::select('tipoBeca', \DB::raw('count(*) as count'))
+                ->groupBy('tipoBeca')
                 ->get();
             $chartBeca = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes Becados')
-                ->setLabels($becas->pluck('beca')->map(fn($beca) => $beca ? 'Becados' : 'Sin Beca')->toArray())
+                ->setLabels($becas->pluck('tipoBeca')->map(fn($beca) => $beca ? 'Apoyo por Empresa' : 'Dual Comecyt')->toArray())
                 ->setDataset($becas->pluck('count')->toArray())
                 ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB']);

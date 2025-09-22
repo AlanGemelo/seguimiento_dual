@@ -76,12 +76,19 @@ class EstudiantesController extends Controller
         // $direccionId = session('direccion')->id ?? null;
         $direccionId = session('direccion')?->id ?? null;
 
-        $estudiantes = Estudiantes::with('academico', 'carrera', 'usuario')
-            ->where('activo', true)
-            ->where('name', 'LIKE', '%' . $search . '%')
-            ->where('direccion_id', $direccionId)
-            ->orderBy('name', 'asc')
-            ->paginate(10);
+        $query = Estudiantes::with('academico', 'carrera', 'usuario')
+        ->where('activo', true)
+        ->where('direccion_id', $direccionId)
+        ->orderBy('name', 'asc');
+
+        if ($request->has('search') && !empty($search)) {
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%');
+        });
+    }
+
+        $estudiantes = $query->paginate(10);
+
         Log::info('El ID de dirección es: ' . $direccionId);
         $candidatos = Estudiantes::where('activo', false)
             ->where('name', 'LIKE', '%' . $searchCandidatos . '%')
@@ -125,7 +132,7 @@ class EstudiantesController extends Controller
 
         $tipoBeca = [
             ['id' => 0, 'name' => 'Apoyo por Empresa'],
-            ['id' => 1, 'name' => 'Beca Dual Comecyt']
+            ['id' => 1, 'name' => 'Beca Dual Comecyt'],
         ];
 
         $becas = [

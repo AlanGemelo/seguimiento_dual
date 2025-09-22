@@ -103,12 +103,13 @@
                     </div>
 
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <form method="GET" action="{{ route('estudiantes.index') }}" class="mb-3">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
                                 <input type="text" id="search" class="form-control" name="search" value="{{ $search }}"
-                                    placeholder="Buscar estudiantes..."
-                                    onkeydown="if(event.key === 'Enter') this.form.submit()">
-                            </form>
+                                    placeholder="Buscar estudiantes...">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -132,7 +133,7 @@
                                         @foreach ($estudiantes as $estudiante)
                                             <tr class="animate__animated animate__fadeInDown " id='aiuda'>
 
-                                                <td>{{ $loop->index + 1 }}</td>
+                                                <td>{{ ($estudiantes->currentPage() - 1) * $estudiantes->perPage() + $loop->iteration }}</td>
                                                 <td>{{ $estudiante->name . ' ' . $estudiante->apellidoP . ' ' . $estudiante->apellidoM }}
                                                 </td>
                                                 <td>{{ $estudiante->carrera->nombre }}</td>
@@ -161,7 +162,7 @@
                                 </tbody>
                             </table>
                             <div class="d-flex justify-content-center mt-4">
-                                {{ $estudiantes->onEachSide(1)->links('pagination::bootstrap-5') }}
+                                {{ $estudiantes->appends(request()->query())->links('pagination::bootstrap-5') }}
                             </div>
                         </div>
                     </div>
@@ -559,55 +560,20 @@
 
 
         // Filtrar tabla
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let input = document.getElementById('searchInput');
-            let filter = input.value.toLowerCase();
-            let tableBody = document.getElementById('tableBody');
-            let rows = tableBody.getElementsByTagName('tr');
-
-            for (let i = 0; i < rows.length; i++) {
-                let cells = rows[i].getElementsByTagName('td');
-                let match = false;
-
-                for (let j = 0; j < cells.length; j++) {
-                    if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
-                        match = true;
-                        break;
-                    }
-                }
-
-                if (match) {
-                    rows[i].style.display = '';
+        document.getElementById('search').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('table #tableBody tr');
+            rows.forEach(row => {
+                let name = row.cells[1].textContent.toLowerCase();
+                let email = row.cells[2].textContent.toLowerCase();
+                if (name.includes(value) || email.includes(value)) {
+                    row.style.display = '';
                 } else {
-                    rows[i].style.display = 'none';
+                    row.style.display = 'none';
                 }
-            }
+            });
         });
 
-        function filterTable(inputId, tableBodyId) {
-            let input = document.getElementById(inputId);
-            let filter = input.value.toLowerCase();
-            let tableBody = document.getElementById(tableBodyId);
-            let rows = tableBody.getElementsByTagName('tr');
-
-            for (let i = 0; i < rows.length; i++) {
-                let cells = rows[i].getElementsByTagName('td');
-                let match = false;
-
-                for (let j = 0; j < cells.length; j++) {
-                    if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
-                        match = true;
-                        break;
-                    }
-                }
-
-                if (match) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
-            }
-        }
     </script>
 @endsection
 </body>

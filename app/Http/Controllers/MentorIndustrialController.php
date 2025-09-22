@@ -118,23 +118,27 @@ class MentorIndustrialController extends Controller
 
     public function destroy($id)
     {
+        $decoded = Hashids::decode($id);
+        $id = $decoded[0] ?? null;
+
+        if (!$id) {
+            return redirect()->route('mentores.index')->with('statusError', 'ID inválido');
+        }
+
         try {
-            $id = MentorIndustrial::find($id);
-            $id->delete();
+            $mentor = MentorIndustrial::findOrFail($id);
+            $mentor->delete();
 
             return redirect()->route('mentores.index')->with('status', 'Mentor industrial eliminado');
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
-
             if ($errorCode == 1451) {
-                // Error de integridad referencial (clave foránea)
                 return redirect()->route('mentores.index')->with('statusError', 'No se puede eliminar el Mentor industrial. Primero elimina los estudiantes asociados');
             }
-
-            // Otro tipo de error, puedes manejarlo según tus necesidades
             return redirect()->route('mentores.index')->with('statusError', 'Error al eliminar el Mentor industrial: ' . $e->getMessage());
         }
     }
+
 
     public function showJson($id): JsonResponse
     {

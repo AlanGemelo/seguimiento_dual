@@ -30,7 +30,12 @@ class EmpresaController extends Controller
 
     public function index()
     {
-        $empresas = Empresa::where('status', 1)->get();              // Empresas activas
+        //Obtiene la cantidad de estudiantes asignados
+          $empresas = Empresa::where('status', 1)
+        ->withCount('estudiantes') 
+        ->get();
+
+       // $empresas = Empresa::where('status', 1)->get();              // Empresas activas
         $empresasInteresadas = Empresa::where('status', 0)->get();  // Empresas interesadas
         $empresasSuspendidas = Empresa::where('status', 2)->get();  // Empresas con baja temporal (suspendidas)
 
@@ -175,7 +180,7 @@ class EmpresaController extends Controller
         if (empty($id)) {
             return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
         }
-
+        
         $empresa = Empresa::with('direcciones')->find($id[0]);
 
         if (!$empresa) {

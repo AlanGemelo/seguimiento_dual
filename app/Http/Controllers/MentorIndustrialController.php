@@ -93,26 +93,36 @@ class MentorIndustrialController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'titulo' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'string', 'max:255'],
-            'apellidoP' => ['string', 'min:3', 'max:255'],
-            'apellidoM' => ['string', 'min:3', 'max:255'],
-            'puesto' => ['required', 'string', 'max:255'],
-            'empresa_id' => ['required', 'integer'],
-        ]);
+        //dd($request->all());
+        try {
+            $request->validate([
+                'titulo' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255'],
+                'apellidoP' => ['required', 'string', 'min:3', 'max:255'],
+                'apellidoM' => ['required', 'string', 'min:3', 'max:255'],
+                'puesto' => ['required', 'string', 'max:255'],
+                'empresa_id' => ['required', 'integer'],
+            ]);
 
-        $mentor = MentorIndustrial::findOrFail($id);
-        $mentor->update([
-            'titulo' => $request->titulo,
-            'name' => $request->name,
-            'apellidoP' => $request->apellidoP,
-            'apellidoM' => $request->apellidoM,
-            'puesto' => $request->puesto,
-            'empresa_id' => $request->empresa_id,
-        ]);
+            $mentor = MentorIndustrial::findOrFail($id);
+            $mentor->update([
+                'titulo' => $request->titulo,
+                'name' => $request->name,
+                'apellidoP' => $request->apellidoP,
+                'apellidoM' => $request->apellidoM,
+                'puesto' => $request->puesto,
+                'empresa_id' => $request->empresa_id,
+            ]);
 
-        return redirect()->route('mentores.index')->with('message', 'Mentor Industrial actualizado correctamente');
+            return redirect()->route('mentores.index')->with('message', 'Mentor Industrial actualizado correctamente');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->back()->with('error', 'Mentor no encontrado.');
+        } catch (\Throwable $e) {
+            // Log del error para depuración
+            \Log::error('Error al actualizar mentor: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el mentor.');
+        }
     }
 
 
@@ -120,7 +130,7 @@ class MentorIndustrialController extends Controller
     {
         $decoded = Hashids::decode($id);
         $id = $decoded[0] ?? null;
-
+        // dd($id);
         if (!$id) {
             return redirect()->route('mentores.index')->with('statusError', 'ID inválido');
         }
@@ -142,6 +152,10 @@ class MentorIndustrialController extends Controller
 
     public function showJson($id): JsonResponse
     {
+        //Descodificacion del ID
+        $decoded = Hashids::decode($id);
+        $id = $decoded[0] ?? null;
+
         $mentor = MentorIndustrial::find($id);
         return response()->json($mentor);
     }

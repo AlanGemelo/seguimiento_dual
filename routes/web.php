@@ -108,9 +108,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mentores/{id}/editar', [MentorIndustrialController::class, 'edit'])->name('mentores.edit');
     Route::get('/mentores/{id}/empresa', [MentorIndustrialController::class, 'showForEmpresa']);
     Route::patch('/mentores/{id}', [MentorIndustrialController::class, 'update'])->name('mentores.update');
-   // Route::delete('/mentores/{id}/delete', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
+    Route::delete('/mentores/{id}/delete', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
     // Route::delete('/mentores/{id}', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
-    Route::delete('/mentores/{id}', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
+    // Route::delete('/mentores/{id}', [MentorIndustrialController::class, 'destroy'])->name('mentores.destroy');
 
     // Rutas para el modulo de carreras
     Route::get('/carreras/crear', [CarreraController::class, 'create'])->name('carreras.create');

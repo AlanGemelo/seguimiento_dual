@@ -84,15 +84,15 @@
                                                                     <i class="mdi mdi-account-edit btn-icon-prepend"
                                                                         style="font-size: 1.5em;"></i>
                                                                 </a>
-                                                                {{--   <button class="btn btn-danger"
+                                                                <button class="btn btn-danger"
                                                                     style=" background-color: #e63946"
                                                                     data-bs-toggle="modal" data-bs-target="#exampleModal1"
-                                                                    onclick="deleteMentorIdustrial({{ $mentor->id }})">
+                                                                    onclick="deleteMentorIdustrial('{{ Hashids::encode($mentor->id) }}')">
                                                                     <i class="mdi mdi-delete btn-icon-prepend"
                                                                         style="font-size: 1.5em;"></i>
-                                                                </button> --}}
+                                                                </button>
 
-                                                                <form
+                                                                {{--  <form
                                                                     action="{{ route('mentores.destroy', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
                                                                     method="POST" style="display:inline-block;">
                                                                     @csrf
@@ -102,7 +102,7 @@
                                                                         <i class="mdi mdi-delete btn-icon-prepend"
                                                                             style="font-size: 1.5em;"></i>
                                                                     </button>
-                                                                </form>
+                                                                </form> --}}
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -121,8 +121,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Industrial
-                                            Temporalmente</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Industrial</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -191,15 +190,17 @@
 
 @section('scripts')
     <script>
-        // hace una peticion ajax para obtener la informacion de la asesor Industrial
-        function deleteMentorIdustrial(id) {
-            let form = document.getElementById('deleteForm')
-            form.action = `${window.BASE_URL}/mentores/${id}`;
+        function deleteMentorIdustrial(hashedId) {
+            let form = document.getElementById('deleteForm');
 
+            // form.action = `${window.BASE_URL}/mentores/${id}/delete`;
+            form.action = `${window.BASE_URL}/mentores/${hashedId}/delete`;
+
+            console.log('El id es: ', hashedId);
             console.log('Form action:', form.action);
-
+            // hace una peticion ajax para obtener la informacion de la asesor Industrial
             $.ajax({
-                url: `${window.BASE_URL}/mentores/${id}/json`,
+                url: `${window.BASE_URL}/mentores/${hashedId}/json`,
                 type: 'GET',
                 success: function(response) {
                     $('#banner').text('¿Estas seguro de eliminar este registro: ' +
@@ -208,17 +209,17 @@
                         response.apellidoP + ' ' +
                         response.apellidoM + '?');
                 }
-            })
+            });
         }
 
         function restoreRegistro(id) {
             let form = document.getElementById('restaurarForm')
             form.action = `${window.BASE_URL}/mentores/${id}/restaurar`
             $.ajax({
-                url: `/mentores/${id}/json`,
+                url: `${window.BASE_URL}/mentores/${id}/json`,
                 type: 'GET',
                 success: function(response) {
-                    $('#bannerRestore').text('¿Estas seguro de restaurar este registro? '
+                    $('#bannerRestore').text('¿Estas seguro de restaurar este registro? ' +
                         response.titulo + ' ' +
                         response.name + ' ' +
                         response.apellidoP + ' ' +

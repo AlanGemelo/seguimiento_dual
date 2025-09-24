@@ -77,15 +77,15 @@ class EstudiantesController extends Controller
         $direccionId = session('direccion')?->id ?? null;
 
         $query = Estudiantes::with('academico', 'carrera', 'usuario')
-        ->where('activo', true)
-        ->where('direccion_id', $direccionId)
-        ->orderBy('name', 'asc');
+            ->where('activo', true)
+            ->where('direccion_id', $direccionId)
+            ->orderBy('name', 'asc');
 
         if ($request->has('search') && !empty($search)) {
-        $query->where(function($q) use ($search) {
-            $q->where('name', 'like', '%' . $search . '%');
-        });
-    }
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        }
 
         $estudiantes = $query->paginate(10);
 
@@ -222,7 +222,6 @@ class EstudiantesController extends Controller
                 ['id' => 1, 'name' => 'No']
             ];
         }
-
 
         return view('estudiantes.createCandidato', compact('academico', 'carreras', 'situation', 'direcciones'));
     }

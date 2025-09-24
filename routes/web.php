@@ -64,7 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/estudiantes/{matricula}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
     Route::patch('/estudiantes/{matricula}/dual', [EstudiantesController::class, 'updateDocDual'])->name('estudiantes.updateDocDual');
 
-    //Rutas para el módulo academicos
+    //Rutas para el módulo Mentores academicos
     Route::get('/academicos', [MentorAcademicoController::class, 'index'])->name('academicos.index');
     Route::get('/academicos/crear', [MentorAcademicoController::class, 'create'])->name('academicos.create');
     Route::post('/academicos', [MentorAcademicoController::class, 'store'])->name('academicos.store');

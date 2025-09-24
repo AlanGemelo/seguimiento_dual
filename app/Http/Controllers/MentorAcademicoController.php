@@ -172,10 +172,16 @@ class MentorAcademicoController extends Controller
 
     public function restoreMentor($id): RedirectResponse
     {
-        $mentor = User::onlyTrashed()->find($id);
-        $mentor->restore();
+        try {
 
-        return redirect()->route('academicos.index')->with('success', 'Mentor Academico Restaurado.');
+            $mentor = User::onlyTrashed()->find($id);
+            $mentor->restore();
+
+            return redirect()->route('academicos.index')->with('success', 'Mentor Academico Restaurado.');
+        } catch (\Exception $e) {
+            // En caso de error, redirigir con mensaje de error
+            return redirect()->route('academicos.index')->with('error', 'Hubo un problema al restaurar al mentor: ' . $e->getMessage());
+        }
     }
 
     public function forceDelete($id): RedirectResponse

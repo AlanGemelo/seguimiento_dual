@@ -15,10 +15,10 @@ return [
     |
     */
 
-    ['id' => 0, 'tamano_eu' => 'Micro'],
-    ['id' => 1, 'tamano_eu' => 'Pequeña'],
-    ['id' => 2, 'tamano_eu' => 'Mediana'],
-    ['id' => 3, 'tamano_eu' => 'Grande'],
-
-
+    'tamanos' => [
+        ['id' => 0, 'tamano_eu' => 'Micro'],
+        ['id' => 1, 'tamano_eu' => 'Pequeña'],
+        ['id' => 2, 'tamano_eu' => 'Mediana'],
+        ['id' => 3, 'tamano_eu' => 'Grande'],
+    ],
 ];

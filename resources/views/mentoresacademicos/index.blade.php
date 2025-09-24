@@ -24,104 +24,110 @@
                     </button>
                 </div>
             @endif
-<body class="body">
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
 
-                        <div class="card-header-adjusted">
-                            <h6 class="card-title">Lista De Mentores Academicos</h6>
-                            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                <div class="float-end">
-                                    {{-- Button del modal --}}
-                                    <a href="{{ route('academicos.create') }}" class="btn btn-add"
-                                        title="Agregar una nuevo Mentor Academico">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
-                                    </a>
-                                </div>
-                            @endif
-                        </div>
+            <body class="body">
+                <div class="row">
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
 
-                        <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <input type="text" id="search" class="form-control"
-                                        placeholder="Buscar mentor...">
-                                </div>
+                            <div class="card-header-adjusted">
+                                <h6 class="card-title">Lista De Mentores Academicos</h6>
+                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                    <div class="float-end">
+                                        {{-- Button del modal --}}
+                                        <a href="{{ route('academicos.create') }}" class="btn btn-add"
+                                            title="Agregar una nuevo Mentor Academico">
+                                            <i class="mdi mdi-plus-circle-outline"></i>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Identificación Profesional</th>
-                                            <th>Correo Electronico</th>
-                                            <th>Direccion de Carrera</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="mentorTable">
-                                        @foreach ($mentores as $mentor)
-                                            <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
-                                                id='aiuda'>
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
-                                                </td>
-                                                <td>{{ $mentor->email }}</td>
-                                                <td>{{ $mentor->direccion->name }}</td>
-                                                <td>
-                                                    <a href="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                        class="btn btn-facebook" style=" background-color: #00798c">
-                                                        <i class="mdi mdi-eye btn-icon-prepend" style="font-size: 1.5em;"></i>
-                                                    </a>
-                                                    {{-- <a href="{{ route('academicos.showE', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <input type="text" id="search" class="form-control"
+                                            placeholder="Buscar mentor...">
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Identificación Profesional</th>
+                                                <th>Correo Electronico</th>
+                                                <th>Direccion de Carrera</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="mentorTable">
+                                            @foreach ($mentores as $mentor)
+                                                <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
+                                                    id='aiuda'>
+                                                    <td>{{ $loop->index + 1 }}</td>
+                                                    <td>{{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
+                                                    </td>
+                                                    <td>{{ $mentor->email }}</td>
+                                                    <td>{{ $mentor->direccion->name }}</td>
+                                                    <td>
+                                                        <a href="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                            class="btn btn-facebook" style=" background-color: #00798c">
+                                                            <i class="mdi mdi-eye btn-icon-prepend"
+                                                                style="font-size: 1.5em;"></i>
+                                                        </a>
+                                                        {{-- <a href="{{ route('academicos.showE', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
                                                    class="btn btn-facebook" style=" background-color: #00798c">
                                                     <i class="mdi mdi-account-details btn-icon-prepend" style="font-size: 1.5em;"></i>
                                                 </a> --}}
-                                                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                        <a href="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                            class="btn btn-twitter" style=" background-color: #ffa719">
-                                                            <i class="mdi mdi-account-edit btn-icon-prepend" style="font-size: 1.5em;"></i>
-                                                        </a>
-                                                        <button class="btn btn-danger" style=" background-color: #e63946" data-bs-toggle="modal"
-                                                            data-bs-target="#exampleModal1"
-                                                            onclick="deleteMentor({{ $mentor->id }})">
-                                                            <i class="mdi mdi-delete btn-icon-prepend" style="font-size: 1.5em;"></i>
-                                                        </button>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                                            <a href="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                                class="btn btn-twitter" style=" background-color: #ffa719">
+                                                                <i class="mdi mdi-account-edit btn-icon-prepend"
+                                                                    style="font-size: 1.5em;"></i>
+                                                            </a>
+                                                            <button class="btn btn-danger"
+                                                                style=" background-color: #e63946" data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModal1"
+                                                                onclick="deleteMentor({{ $mentor->id }})">
+                                                                <i class="mdi mdi-delete btn-icon-prepend"
+                                                                    style="font-size: 1.5em;"></i>
+                                                            </button>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Academico
-                                        Temporalmente</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container">
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-12">
-                                                <form action="" id="deleteForm" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <p id="banner">¿Estas seguro de eliminar este registro?</p>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-secondary" type="button"
-                                                            data-bs-dismiss="modal">Cancelar
-                                                        </button>
-                                                        <button class="btn btn-danger" type="submit">Eliminar</button>
-                                                    </div>
-                                                </form>
+                        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Academico
+                                            Temporalmente</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-12">
+                                                    <form action="" id="deleteForm" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <p id="banner">¿Estas seguro de eliminar este registro?</p>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-secondary" type="button"
+                                                                data-bs-dismiss="modal">Cancelar
+                                                            </button>
+                                                            <button class="btn btn-danger" type="submit">Eliminar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +136,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
         @if ($mentoresDeleted->count() !== 0)
             @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
@@ -222,6 +227,8 @@
                 </div>
             </div>
         </div>
+
+        {{-- Modal para resturar un mentor academico --}}
         <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -280,7 +287,7 @@
         function restoreRegistro(id) {
             let form = document.getElementById('restaurarForm')
 
-            form.action = `${BASE_URL}/${id}/restaurar`
+            form.action = `${BASE_URL}/academicos/${id}/restaurar`
             $.ajax({
                 url: `${BASE_URL}/academicos/${id}/json`,
                 type: 'GET',

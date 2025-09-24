@@ -2,7 +2,8 @@
 @section('title', 'Dar de Alta UE')
 
 @section('content')
-<body class="body"></body>
+
+    <body class="body"></body>
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">
@@ -61,21 +62,18 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="tamano_ue" class="form-label">Tamaño de la UE</label>
+                                    <label for="tamano_ue" class="form-label">Tamaño de la UE p</label>
                                     <select name="tamano_ue" id="tamano_ue" class="form-control" required>
                                         <option value="" disabled>
                                             Seleccione el tamaño de la unidad económica
                                         </option>
                                         @foreach ($tamano_eu['tamanos'] as $tamano)
-                                            <option value="{{ $tamano['tamano_eu'] }}"
-                                                {{ old('tamano_ue', $empresa->tamano_ue ?? '') == $tamano['tamano_eu'] ? 'selected' : '' }}>
+                                            <option value="{{ $tamano['id'] }}"
+                                                {{ old('tamano_ue', $empresa->tamano_ue ?? '') == $tamano['id'] ? 'selected' : '' }}>
                                                 {{ $tamano['tamano_eu'] }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('tamano_ue')
-                                        <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="folio" class="form-label">Folio</label>
@@ -249,8 +247,8 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="convenioA">Convenio A</label>
                                     <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
-                                        <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control d-none"
-                                            id="inputConvenioA" name="convenioA">
+                                        <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                            class="form-control d-none" id="inputConvenioA" name="convenioA">
                                         @if ($empresa->convenioA)
                                             <a href="{{ url(Storage::url($empresa->convenioA)) }}"
                                                 class="btn btn-primary flex-grow-1" target="_blank" id="linkConvenioA">
@@ -277,8 +275,8 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="convenioMA">Convenio MA</label>
                                     <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
-                                        <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control d-none"
-                                            id="inputConvenioMA" name="convenioMA">
+                                        <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                            class="form-control d-none" id="inputConvenioMA" name="convenioMA">
                                         @if ($empresa->convenioMA)
                                             <a href="{{ url(Storage::url($empresa->convenioMA)) }}"
                                                 class="btn btn-primary flex-grow-1" target="_blank" id="linkConvenioMA">

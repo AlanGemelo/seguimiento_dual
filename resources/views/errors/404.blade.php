@@ -1,0 +1,17 @@
+@extends('errors.layout')
+
+@section('title', 'Página no encontrada')
+@section('code', '404')
+
+@section('message', '¡Lo sentimos! No pudimos encontrar la página que estás buscando.')
+
+@section('description')
+    <p>Tal vez puedas econtrarla desde la pagina principal.</p>
+@endsection
+
+@section('action')
+    <a href="{{ url('/') }}" class="btn-home">Volver al inicio</a>
+@endsection
+
+{{-- Sección de la imagen --}}
+{{-- @section('image', asset('images/errors/404.png')) --}}

@@ -10,7 +10,6 @@ use App\Http\Controllers\Anexo1_2Controller;
 use App\Http\Controllers\Anexo1_3Controller;
 use App\Http\Controllers\Anexo2_1Controller;
 use App\Http\Controllers\EmpresaController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +35,10 @@ Route::get('/migrate', function () {
     Debugbar::addMessage('Migraciones  generado', 'listo!!');
 })->name('migrate');
 
+//Captura rutas no definidas
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
 
 Route::get('/', [HomeController::class, 'welcome']);
 

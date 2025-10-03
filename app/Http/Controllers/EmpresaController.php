@@ -14,12 +14,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Vinkla\Hashids\Facades\Hashids;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rule;
+use PhpParser\Node\Stmt\TryCatch;
 
 class EmpresaController extends Controller
 {
@@ -222,7 +224,7 @@ class EmpresaController extends Controller
             'razon_social' => 'nullable|string|max:255',
             'actividad_economica' => 'nullable|string|max:255',
             'unidad_economica' => 'nullable|string|max:255',
-            'tamano_ue' => ['required', Rule::in($ue_size)],
+            'tamano_ue' => ['required', 'integer', Rule::in(array_column(config('ue_size.tamanos'), 'id'))],
             'folio' => 'nullable|string|max:255',
             'direccion' => 'nullable|string|max:255',
             'fecha_registro' => 'nullable|date',
@@ -291,19 +293,51 @@ class EmpresaController extends Controller
     }
 
 
-    public function destroy(Empresa $id)
+
+    public function destroy($id)
     {
-        // dd($id);
-        MentorIndustrial::where('empresa_id', $id->id)->delete();
-        $id->delete();
-        return redirect()->route('empresas.index')->with('success', 'Empresa eliminada exitosamente.');
+        try {
+            $decoded = Hashids::decode($id);
+
+            if (empty($decoded)) {
+
+                return redirect()->route('empresas.index')->with('error', 'ID inválido.');
+            }
+
+            $empresaId = $decoded[0];
+            $empresa = Empresa::findOrFail($empresaId);
+
+            MentorIndustrial::where('empresa_id', $empresa->id)->delete();
+            $empresa->delete();
+
+            return redirect()->route('empresas.index')->with('success', 'Empresa eliminada exitosamente.');
+        } catch (ModelNotFoundException $e) {
+
+            return redirect()->route('empresas.index')->with('error', 'La empresa no existe.');
+        } catch (\Exception $e) {
+            \Log::error('Error al eliminar empresa: ' . $e->getMessage());
+            dd($e);
+            return redirect()->route('empresas.index')->with('error', 'Ocurrió un error al eliminar la empresa.');
+        }
     }
+
 
     public function showJson($id): JsonResponse
     {
-        $empresa = Empresa::find($id);
-        return response()->json($empresa);
+        $decoded = Hashids::decode($id);
+
+        if (empty($decoded)) {
+            return response()->json(['error' => 'ID inválido'], 404);
+        }
+        $empresa = Empresa::find($decoded[0]);
+        if (!$empresa) {
+            return response()->json(['error' => 'Empresa no encontrada'], 404);
+        }
+        return response()->json([
+            'nombre' => $empresa->nombre
+        ]);
     }
+
 
     public function downloadPDF(Empresa $empresa)
     {
@@ -375,11 +409,14 @@ class EmpresaController extends Controller
 
     public function suspend(Request $request, $id)
     {
+
+        $id = Hashids::decode($id);
+
         $validated = $request->validate([
             'motivo_baja' => 'required',
             'fecha_baja' => 'required|date',
         ]);
-        $empresa = Empresa::findOrFail($id);
+        $empresa = Empresa::findOrFail($id[0]);
         //dd($request->all());
         $empresa->update([
             'STATUS' => 2,
@@ -394,33 +431,37 @@ class EmpresaController extends Controller
 
     public function reactivate($id)
     {
-        $decodedId = Hashids::decode($id);
+        try {
+            $decodedId = Hashids::decode($id);
 
-        if (empty($decodedId)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Empresa no encontrada'
-            ], 404);
+            if (empty($decodedId)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Empresa no encontrada'
+                ], 404);
+            }
+
+            $empresa = Empresa::findOrFail($decodedId[0]);
+
+            if ($empresa->STATUS != 2) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Solo se pueden reactivar empresas suspendidas'
+                ], 400);
+            }
+
+            $empresa->update([
+                'STATUS' => 1,
+                'motivo_baja' => null,
+                'comentarios_baja' => null,
+                'fecha_baja' => null
+            ]);
+
+            return redirect()->route('empresas.index')->with('success', 'La empresa ha sido reactivada temporalmente.');
+        } catch (Exception $e) {
+            Log::error('Error al reactivar empresa: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Ocurrió un error al intentar reactivar la empresa.');
         }
-
-        $empresa = Empresa::findOrFail($decodedId[0]);
-
-        // Verificar que esté suspendida
-        if ($empresa->STATUS != 2) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Solo se pueden reactivar empresas suspendidas'
-            ], 400);
-        }
-
-        // Reactivar la empresa
-        $empresa->update([
-            'STATUS' => 1, // 1 = Activa
-            'motivo_baja' => null,
-            'comentarios_baja' => null,
-            'fecha_baja' => null
-        ]);
-
-        return redirect()->route('empresas.index')->with('success', 'La empresa ha sido reactivada temporalmente.');
     }
 }

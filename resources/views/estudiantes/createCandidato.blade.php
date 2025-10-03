@@ -36,9 +36,9 @@
                                         <div class="input-group-append">
                                             <span class="input-group-text" style="color:black; height: 100%;">al</span>
                                         </div>
-                                        <input type="text" data-tipo="numbers" class="form-control form-control-lg"
-                                            id="email" name="email" placeholder="No. Matricula"
-                                            value="{{ old('email') }}" required>
+                                        <input type="text" data-tipo="numbers" class="form-control"
+                                            style="max-width: 50% !important" id="email" name="email"
+                                            placeholder="No. Matricula" value="{{ old('email') }}" required>
                                         <div class="input-group-append">
                                             <span class="input-group-text"
                                                 style="color:black; height: 100%;">@utvtol.edu.mx</span>

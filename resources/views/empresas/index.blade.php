@@ -51,12 +51,9 @@
                                             <a href="{{ route('empresas.downloadPDF', $empresa->id) }}"
                                                 class="btn btn-info">PDF</a>
                                             <a href="{{ route('empresas.suspendForm', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
-                                                class="btn btn-danger">Baja</a>
-
-                                            {{-- <button type="button" class="btn btn-danger"
-                                                onclick="openSuspendModal('{{ Vinkla\Hashids\Facades\Hashids::encode($empresa->id) }}')">
+                                                class="btn btn-danger">
                                                 Baja
-                                            </button> --}}
+                                            </a>
 
                                         </td>
                                     </tr>
@@ -174,7 +171,7 @@
                                                 <button class="btn btn-danger btn-sm rounded-pill"
                                                     style=" background-color: #e63946" title="Eliminar Permanentemente"
                                                     data-bs-toggle="modal" data-bs-target="#exampleModal2"
-                                                    onclick="openPermanentDeleteModal({{ $empresa->id }})">
+                                                    onclick="openPermanentDeleteModal('{{ Hashids::encode($empresa->id) }}')">
                                                     <i class="mdi mdi-delete me-1" style="font-size: 1.5em;"></i> Eliminar
                                                 </button>
                                             </div>
@@ -318,17 +315,15 @@
 
             // Función para abrir el modal de la suspencion
             function openSuspendModal(id) {
-                console.log("ID recibido:", id);
                 let form = document.getElementById('suspendForm');
-                form.action = `${window.BASE_URL}/empresas/${id}/suspend`;
-
+                form.action = `empresas/${id}/suspend`;
                 $.ajax({
-                    url: `${window.BASE_URL}/empresas/${id}/json`,
+                    url: `empresas/${id}/json`,
                     type: 'GET',
                     success: function(response) {
                         $('#bannerSuspend').text(
-                            `¿Estás seguro de que deseas dar de baja esta Unidad Económica 
-                <strong>${response.nombre}</strong>?`);
+                            `¿Estás seguro de que deseas dar de baja esta Unidad Económica
+               ${response.nombre}?`);
                         $('#suspendModal').modal('show');
                     },
                     error: function() {
@@ -341,15 +336,15 @@
             // Función para abrir el modal de reactivación
             function openReactivateModal(id) {
                 let form = document.getElementById('reactivarForm');
-                form.action = `${window.BASE_URL}/empresas/${id}/reactivate`;
-
+                form.action = `empresas/${id}/reactivate`;
                 // Obtener datos de la empresa vía AJAX
                 $.ajax({
-                    url: `${window.BASE_URL}/empresas/${id}/json`,
+                    url: `empresas/${id}/json`,
                     type: 'GET',
                     success: function(response) {
+                        console.log('Es: ', response);
                         $('#bannerRestore').text(
-                            `¿Estás seguro de reactivar la empresa <strong>${response.nombre}</strong>?`);
+                            `¿Estás seguro de reactivar la empresa ${response.nombre} ?`);
                         $('#reactivarModal').modal('show');
                     },
                     error: function() {
@@ -361,16 +356,15 @@
             //Manejo del formulario con  AJAX para eliminacion permanentemente
             function openPermanentDeleteModal(id) {
                 let form = document.getElementById('permanentDeleteForm');
-                form.action = `${window.BASE_URL}/empresas/${id}/delete`;
+                form.action = `empresas/${id}/delete`;
 
                 // Obtener datos de la empresa vía AJAX
                 $.ajax({
-                    url: `${window.BASE_URL}/empresas/${id}/json`,
+                    url: `empresas/${id}/json`,
                     type: 'GET',
                     success: function(response) {
                         $('#bannerpermanentDelete').text(
-                            `¿Estás seguro de eliminar permantemente la UI <strong>${response.nombre}</strong>?`
-                        );
+                            `¿Estás seguro de eliminar permantemente la UI ${response.nombre} ?`);
                         $('#permanentDeleteModal').modal('show');
                     },
                     error: function() {

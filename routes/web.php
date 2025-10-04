@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
     //Rutas para el módulo estudiantes
     Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
     Route::get('/estudiantes/crear', [EstudiantesController::class, 'create'])->name('estudiantes.create');
@@ -145,6 +146,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/estadisticas/filtro', [EstadisticaController::class, 'filtroEstudiantes']);
     Route::get('/estadisticas/graficas', [EstadisticaController::class, 'getGraficasData']);
 
+    //Ruta para los reportes generales
+    Route::get('/reporte-general', [EstadisticaController::class, 'reporteGeneral'])->name('reporte.general');
+
+
+    //Rutas para Direccion de carrera
     Route::get('/direcciones', [DireccionCarreraController::class, 'index'])->name('direcciones.index');
     Route::post('/direcciones', [DireccionCarreraController::class, 'store'])->name('direcciones.store');
     Route::get('/direcciones/{direccion}/show', [DireccionCarreraController::class, 'show'])->name('direcciones.show');

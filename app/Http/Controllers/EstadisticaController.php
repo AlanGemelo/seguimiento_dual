@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EstadisticasExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\reporteGeneral;
 
 class EstadisticaController extends Controller
 {
@@ -24,15 +25,15 @@ class EstadisticaController extends Controller
         if ($user->rol_id === 1) {
             // Gráfica de Estudiantes por Empresa
             $empresas = Empresa::withCount('estudiantes')
-                ->having('estudiantes_count', '>', 0) 
+                ->having('estudiantes_count', '>', 0)
                 ->get();
 
-                $totalEstudiantes = $empresas->sum('estudiantes_count');
+            $totalEstudiantes = $empresas->sum('estudiantes_count');
 
-                $labels = $empresas->map(function($empresa) use ($totalEstudiantes) {
+            $labels = $empresas->map(function ($empresa) use ($totalEstudiantes) {
                 $porcentaje = $totalEstudiantes > 0 ? round(($empresa->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
                 return "{$empresa->nombre} ({$porcentaje}%)";
-                });
+            });
 
             $chartEmpresa = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Empresa')
@@ -46,12 +47,12 @@ class EstadisticaController extends Controller
                 ->having('estudiantes_count', '>', 0)
                 ->get();
 
-                $totalEstudiantes = $carreras->sum('estudiantes_count');
+            $totalEstudiantes = $carreras->sum('estudiantes_count');
 
-                $labels = $carreras->map(function($carrera) use ($totalEstudiantes) {
+            $labels = $carreras->map(function ($carrera) use ($totalEstudiantes) {
                 $porcentaje = $totalEstudiantes > 0 ? round(($carrera->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
                 return "{$carrera->nombre} ({$porcentaje}%)";
-                });
+            });
 
             $chartCarrera = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Carrera')
@@ -65,12 +66,12 @@ class EstadisticaController extends Controller
                 ->having('estudiantes_count', '>', 0)
                 ->get();
 
-                $totalEstudiantes = $mentores->sum('estudiantes_count');
+            $totalEstudiantes = $mentores->sum('estudiantes_count');
 
-                $labels = $mentores->map(function($mentor) use ($totalEstudiantes) {
+            $labels = $mentores->map(function ($mentor) use ($totalEstudiantes) {
                 $porcentaje = $totalEstudiantes > 0 ? round(($mentor->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
                 return "{$mentor->name} ({$porcentaje}%)";
-                });
+            });
 
             $chartMentor = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Mentor Académico')
@@ -85,7 +86,7 @@ class EstadisticaController extends Controller
                 ->get();
             $chartBeca = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes Becados')
-                ->setLabels($becas->pluck('tipoBeca')->map(fn($beca) => $beca ? 'Beca Comecyt' : 'Apoyo por Empresa' )->toArray())
+                ->setLabels($becas->pluck('tipoBeca')->map(fn($beca) => $beca ? 'Beca Comecyt' : 'Apoyo por Empresa')->toArray())
                 ->setDataset($becas->pluck('count')->toArray())
                 ->setHeight(300)
                 ->setColors(['#FF6384', '#36A2EB', '#FFCE56']);
@@ -100,10 +101,10 @@ class EstadisticaController extends Controller
                 $q->where('direccion_id', $direccionId);
             })->withCount('estudiantes')->get();
 
-                $labels = $empresas->map(function($empresa) use ($totalEstudiantes) {
+            $labels = $empresas->map(function ($empresa) use ($totalEstudiantes) {
                 $porcentaje = $totalEstudiantes > 0 ? round(($empresa->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
                 return "{$empresa->nombre} ({$porcentaje}%)";
-                });
+            });
 
             $chartEmpresa = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Empresa')
@@ -115,10 +116,10 @@ class EstadisticaController extends Controller
             // Gráfica de Estudiantes por Carrera
             $carreras = Carrera::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
 
-            $labels = $carreras->map(function($carrera) use ($totalEstudiantes) {
+            $labels = $carreras->map(function ($carrera) use ($totalEstudiantes) {
                 $porcentaje = $totalEstudiantes > 0 ? round(($carrera->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
                 return "{$carrera->nombre} ({$porcentaje}%)";
-                });
+            });
 
             $chartCarrera = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Carrera')
@@ -130,10 +131,10 @@ class EstadisticaController extends Controller
             // Gráfica de Estudiantes por Mentor Académico
             $mentores = User::mentoresAcademicos()->where('direccion_id', $direccionId)->withCount('estudiantes')->get();
 
-            $labels = $mentores->map(function($mentor) use ($totalEstudiantes) {
+            $labels = $mentores->map(function ($mentor) use ($totalEstudiantes) {
                 $porcentaje = $totalEstudiantes > 0 ? round(($mentor->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
                 return "{$mentor->nombre} ({$porcentaje}%)";
-                });
+            });
 
             $chartMentor = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes por Mentor Académico')
@@ -148,10 +149,10 @@ class EstadisticaController extends Controller
                 ->groupBy('tipoBeca')
                 ->get();
 
-                $labels = $becas->map(function($beca) use ($totalEstudiantes) {
+            $labels = $becas->map(function ($beca) use ($totalEstudiantes) {
                 $porcentaje = $totalEstudiantes > 0 ? round(($beca->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
                 return "{$beca->nombre} ({$porcentaje}%)";
-                });
+            });
 
             $chartBeca = (new LarapexChart)->pieChart()
                 ->setTitle('Estudiantes Becados')
@@ -405,5 +406,14 @@ class EstadisticaController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    //Funcion para generar el reporte general en excel
+    public function reporteGeneral()
+    {
+        $fecha = date('Y-m-d_H-i-s');
+        $nombreArchivo = "reporte general dual {$fecha}.xlsx";
+
+        return Excel::download(new reporteGeneral, $nombreArchivo);
     }
 }

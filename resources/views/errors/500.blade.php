@@ -1,5 +1,17 @@
-@extends('errors::minimal')
+@extends('errors.layout')
 
-@section('title', __('Server Error'))
+@section('title', 'Error interno del servidor')
 @section('code', '500')
-@section('message', __('Server Error'))
+
+@section('message', '¡Ups! Algo salió mal en nuestro servidor.')
+
+@section('description')
+    <p>Estamos trabajando para solucionar este problema. Por favor, intenta nuevamente más tarde.</p>
+@endsection
+
+@section('action')
+    <a href="{{ url('/') }}" class="btn-home">Volver al inicio</a>
+@endsection
+
+{{-- Sección de la imagen --}}
+{{-- @section('image', asset('images/errors/500.png')) --}}

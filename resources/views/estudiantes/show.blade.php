@@ -202,11 +202,20 @@
                                 <div class="col-md-4 mb-3">
                                     <label for="ine">INE</label>
                                     <div class="mt-1">
-                                        <a href="{{ url(Storage::url($estudiante->ine)) }}" class="btn btn-primary"
-                                            target="_blank">Ver
-                                            Documento
-                                            <span class="mdi mdi-file-pdf-box"></span>
-                                        </a>
+                                        @if (!empty($estudiante->ine))
+                                            <a href="{{ url(Storage::url($estudiante->ine)) }}" class="btn btn-primary"
+                                                target="_blank">Ver
+                                                Documento
+                                                <span class="mdi mdi-file-pdf-box"></span>
+                                            </a>
+                                        @else
+                                            <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                No hay documentos disponibles.
+                                            </p>
+                                        @endif
+
+
                                     </div>
                                 </div>
 
@@ -214,23 +223,39 @@
                                     <label for="historial_academico">
                                         Historial Académico
                                     </label>
-                                    <div class="bt-1">
-                                        <a href="{{ url(Storage::url($estudiante->historial_academico)) }}"
-                                            class="btn btn-primary" target="_blank">Ver
-                                            Documento
-                                            <span class="mdi mdi-file-pdf-box"></span>
-                                        </a>
+                                    <div class="mt-1">
+                                        @if (!empty($estudiante->historial_academico))
+                                            <a href="{{ url(Storage::url($estudiante->historial_academico)) }}"
+                                                class="btn btn-primary" target="_blank">Ver
+                                                Documento
+                                                <span class="mdi mdi-file-pdf-box "></span>
+                                            </a>
+                                        @else
+                                            <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                No hay documentos disponibles.
+                                            </p>
+                                        @endif
+
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="perfil_ingles">Perfil de Inglés
                                     </label>
                                     <div class="mt-1">
-                                        <a href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
-                                            class="btn btn-primary" target="_blank">Ver
-                                            Documento
-                                            <span class="mdi mdi-file-pdf-box"></span>
-                                        </a>
+                                        @if (!empty($estudiante->perfil_ingles))
+                                            <a href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
+                                                class="btn btn-primary" target="_blank">Ver
+                                                Documento
+                                                <span class="mdi mdi-file-pdf-box"></span>
+                                            </a>
+                                        @else
+                                            <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                No hay documentos disponibles.
+                                            </p>
+                                        @endif
+
                                     </div>
                                 </div>
 
@@ -241,30 +266,57 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="formato51">Carta de Aceptación</label>
-                                            <div class="mt-1"><a href="{{ url(Storage::url($estudiante->carta_ap)) }}"
-                                                    class="btn btn-primary" target="_blank">Ver
-                                                    Documento
-                                                    <span class="mdi mdi-file-pdf-box"></span>
-                                                </a></div>
+                                            <div class="mt-1">
+                                                @if (!@empty($estudiante->carta_ap))
+                                                    <a href="{{ url(Storage::url($estudiante->carta_ap)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                @else
+                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        No hay documentos disponibles.
+                                                    </p>
+                                                @endif
+
+                                            </div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
                                             <label for="formato54">Plan de Formación</label>
-                                            <div class="mt-1"><a href="{{ url(Storage::url($estudiante->plan_form)) }}"
-                                                    class="btn btn-primary" target="_blank">Ver
-                                                    Documento
-                                                    <span class="mdi mdi-file-pdf-box"></span>
-                                                </a></div>
+                                            <div class="mt-1">
+                                                @if (!empty($estudiante->plan_form))
+                                                    <a href="{{ url(Storage::url($estudiante->plan_form)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                @else
+                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        No hay documentos disponibles.
+                                                    </p>
+                                                @endif
+                                            </div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
                                             <label for="formato55">Evaluación de Formación</label>
-                                            <div class="mt-1"> <a
-                                                    href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
-                                                    class="btn btn-primary" target="_blank">Ver
-                                                    Documento
-                                                    <span class="mdi mdi-file-pdf-box"></span>
-                                                </a></div>
+                                            <div class="mt-1">
+                                                @if (!empty($estudiante->evaluacion_form))
+                                                    <a href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                @else
+                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        No hay documentos disponibles.
+                                                    </p>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -277,11 +329,18 @@
                                         <div class="col-md-6 mb-3">
                                             <label for="formato51">Formato 5.1</label>
                                             <div class="mt-1">
-                                                <a href="{{ url(Storage::url($estudiante->formato51)) }}"
-                                                    class="btn btn-primary" target="_blank">Ver
-                                                    Documento
-                                                    <span class="mdi mdi-file-pdf-box"></span>
-                                                </a>
+                                                @if (!empty($estudiante->formato51))
+                                                    <a href="{{ url(Storage::url($estudiante->formato51)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                @else
+                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        No hay documentos disponibles.
+                                                    </p>
+                                                @endif
                                             </div>
                                         </div>
 
@@ -304,11 +363,18 @@
                                         <div class="col-md-6 mb-3">
                                             <label for="formato55">Formato 5.5</label>
                                             <div class="mt-1">
-                                                <a href="{{ url(Storage::url($estudiante->formato55)) }}"
-                                                    class="btn btn-primary" target="_blank">Ver
-                                                    Documento
-                                                    <span class="mdi mdi-file-pdf-box"></span>
-                                                </a>
+                                                @if (!empty($estudiante->formato55))
+                                                    <a href="{{ url(Storage::url($estudiante->formato55)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                @else
+                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        No hay documentos disponibles.
+                                                    </p>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -326,32 +392,55 @@
                                         <div class="col-md-6 mb-3">
                                             <label for="formatoA">Formato A </label>
                                             <div class="mt-1">
-                                                <a href="{{ url(Storage::url($estudiante->formatoA)) }}"
-                                                    class="btn btn-primary" target="_blank">Ver
-                                                    Documento
-                                                    <span class="mdi mdi-file-pdf-box"></span>
-                                                </a>
-
+                                                @if (!empty($estudiante->formatoA))
+                                                    <a href="{{ url(Storage::url($estudiante->formatoA)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                @else
+                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        No hay documentos disponibles.
+                                                    </p>
+                                                @endif
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
                                             <label for="formatoB">Formato B </label>
-                                            <div class="mt-1"> <a href="{{ url(Storage::url($estudiante->formatoB)) }}"
-                                                    class="btn btn-primary" target="_blank">Ver
-                                                    Documento
-                                                    <span class="mdi mdi-file-pdf-box"></span>
-                                                </a>
+                                            <div class="mt-1">
+                                                @if (!empty($estudiante->formatoB))
+                                                    <a href="{{ url(Storage::url($estudiante->formatoB)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                @else
+                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        No hay documentos disponibles.
+                                                    </p>
+                                                @endif
                                             </div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
                                             <label for="formatoC">Formato C </label>
-                                            <div class="mt-1"><a href="{{ url(Storage::url($estudiante->formatoC)) }}"
-                                                    class="btn btn-primary" target="_blank">Ver
-                                                    Documento
-                                                    <span class="mdi mdi-file-pdf-box"></span>
-                                                </a></div>
+                                            <div class="mt-1">
+                                                @if (!empty($estudiante->formatoC))
+                                                    <a href="{{ url(Storage::url($estudiante->formatoC)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver
+                                                        Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                @else
+                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                        <i class="fas fa-info-circle me-2"></i>
+                                                        No hay documentos disponibles.
+                                                    </p>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

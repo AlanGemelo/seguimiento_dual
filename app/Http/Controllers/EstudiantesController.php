@@ -490,7 +490,7 @@ class EstudiantesController extends Controller
     /**
      * Muestra los detalles de un estudiante.
      */
-    public function show($id)
+    public function show($id): View
     {
         $id = Hashids::decode($id);
 
@@ -521,7 +521,6 @@ class EstudiantesController extends Controller
 
     public function edit($id)
     {
-
 
         $user = Auth::user();
         $direccionId = session('direccion')->id;
@@ -633,8 +632,11 @@ class EstudiantesController extends Controller
             'tipoBeca' => $request->tipoBeca
         ]); */
 
+        //Formateo de la fecha en D-M-Y
         $inicioDual = Carbon::parse($request->inicio_dual);
         $finDual = Carbon::parse($request->fin_dual);
+        $inicio = Carbon::parse($request->inicio);
+        $fin = Carbon::parse($request->fin);
 
         $id = Hashids::decode($id);
         $estudiantes = Estudiantes::find($id[0]);

@@ -510,101 +510,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 mt-3" id="formatosBeca" style="display: none">
-                                        <h6 class="section-subtitle mt-1">
-                                            Formatos de Beca
-                                            <small class="text-muted text-danger" style="color: #dc3545 !important;">
-                                                (Solo en caso de aplicar a una beca)
-                                            </small>
-                                        </h6>
-                                        <div class="dropdown-divider mb-3"></div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="formatoA" class="mb-1">Formato A <span
-                                                        class="text-danger">*</span></label>
-                                                <div
-                                                    style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                                    <input hidden type="file"
-                                                        accept="application/pdf, image/jpeg, image/png"
-                                                        class="form-control form-control-lg" id="formatoA"
-                                                        placeholder="formatoA" name="formatoA"
-                                                        value="{{ old('formatoA') }}">
-                                                    @error('formatoA')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                    <a id='formatoA_'
-                                                        href="{{ url(Storage::url($estudiante->formatoA)) }}"
-                                                        class=" form-control form-control-lg btn-primary"
-                                                        target="_blank">Ver
-                                                        Formato A
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                    <button class="btn btn-secondary w-50  " id='formatoAC'
-                                                        onclick="ocultar('formatoA_','formatoA','formatoAC')"
-                                                        type="button">Cambiar Documento</button>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6 mb-3">
-                                                <label for="formatoB" class="mb-1">Formato B <span
-                                                        class="text-danger">*</span></label>
-                                                <div
-                                                    style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                                    <input hidden type="file"
-                                                        accept="application/pdf, image/jpeg, image/png"
-                                                        class="form-control form-control-lg" id="formatoB"
-                                                        placeholder="formatoB" name="formatoB"
-                                                        value="{{ old('formatoB') }}">
-                                                    @error('formatoB')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                    <a id='formatoB_'
-                                                        href="{{ url(Storage::url($estudiante->formatoB)) }}"
-                                                        class=" form-control form-control-lg btn-primary"
-                                                        target="_blank">Ver
-                                                        Formato B
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                    <button class="btn btn-secondary w-50  " id='formatoBC'
-                                                        onclick="ocultar('formatoB_','formatoB','formatoBC')"
-                                                        type="button">Cambiar Documento</button>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="formatoC" class="mb-1">Formato C <span
-                                                        class="text-danger">*</span></label>
-                                                <div
-                                                    style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
-                                                    <input hidden type="file"
-                                                        accept="application/pdf, image/jpeg, image/png"
-                                                        class="form-control form-control-lg" id="formatoC"
-                                                        placeholder="formatoC" name="formatoC"
-                                                        value="{{ old('formatoC') }}">
-                                                    @error('formatoC')
-                                                        <div class="text-danger">{{ $message }}</div>
-                                                    @enderror
-                                                    <a id='formatoC_'
-                                                        href="{{ url(Storage::url($estudiante->formatoC)) }}"
-                                                        class=" form-control form-control-lg btn-primary"
-                                                        target="_blank">Ver
-                                                        formato C
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                    <button class="btn btn-secondary w-50  " id='formatoCC'
-                                                        onclick="ocultar('formatoC_','formatoC','formatoCC')"
-                                                        type="button">Cambiar Documento</button>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     <div class="col-12 mt-2">
                                         <h6 class="section-subtitle mt-3">Documentos de Proceso Dual</h6>
                                         <div class="dropdown-divider mb-3"></div>
@@ -722,6 +627,103 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-12 mt-3" id="formatosBeca" style="display: none">
+                                        <h6 class="section-subtitle mt-1">
+                                            Formatos de Beca
+                                            <small class="text-muted text-danger" style="color: #dc3545 !important;">
+                                                (Solo en caso de aplicar a una beca)
+                                            </small>
+                                        </h6>
+                                        <div class="dropdown-divider mb-3"></div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="formatoA" class="mb-1">Formato A <span
+                                                        class="text-danger">*</span></label>
+                                                <div
+                                                    style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
+                                                    <input hidden type="file"
+                                                        accept="application/pdf, image/jpeg, image/png"
+                                                        class="form-control form-control-lg" id="formatoA"
+                                                        placeholder="formatoA" name="formatoA"
+                                                        value="{{ old('formatoA') }}">
+                                                    @error('formatoA')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                    <a id='formatoA_'
+                                                        href="{{ url(Storage::url($estudiante->formatoA)) }}"
+                                                        class=" form-control form-control-lg btn-primary"
+                                                        target="_blank">Ver
+                                                        Formato A
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                    <button class="btn btn-secondary w-50  " id='formatoAC'
+                                                        onclick="ocultar('formatoA_','formatoA','formatoAC')"
+                                                        type="button">Cambiar Documento</button>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="formatoB" class="mb-1">Formato B <span
+                                                        class="text-danger">*</span></label>
+                                                <div
+                                                    style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
+                                                    <input hidden type="file"
+                                                        accept="application/pdf, image/jpeg, image/png"
+                                                        class="form-control form-control-lg" id="formatoB"
+                                                        placeholder="formatoB" name="formatoB"
+                                                        value="{{ old('formatoB') }}">
+                                                    @error('formatoB')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                    <a id='formatoB_'
+                                                        href="{{ url(Storage::url($estudiante->formatoB)) }}"
+                                                        class=" form-control form-control-lg btn-primary"
+                                                        target="_blank">Ver
+                                                        Formato B
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                    <button class="btn btn-secondary w-50  " id='formatoBC'
+                                                        onclick="ocultar('formatoB_','formatoB','formatoBC')"
+                                                        type="button">Cambiar Documento</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="formatoC" class="mb-1">Formato C <span
+                                                        class="text-danger">*</span></label>
+                                                <div
+                                                    style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
+                                                    <input hidden type="file"
+                                                        accept="application/pdf, image/jpeg, image/png"
+                                                        class="form-control form-control-lg" id="formatoC"
+                                                        placeholder="formatoC" name="formatoC"
+                                                        value="{{ old('formatoC') }}">
+                                                    @error('formatoC')
+                                                        <div class="text-danger">{{ $message }}</div>
+                                                    @enderror
+                                                    <a id='formatoC_'
+                                                        href="{{ url(Storage::url($estudiante->formatoC)) }}"
+                                                        class=" form-control form-control-lg btn-primary"
+                                                        target="_blank">Ver
+                                                        formato C
+                                                        <span class="mdi mdi-file-pdf-box"></span>
+                                                    </a>
+                                                    <button class="btn btn-secondary w-50  " id='formatoCC'
+                                                        onclick="ocultar('formatoC_','formatoC','formatoCC')"
+                                                        type="button">Cambiar Documento</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                 </div>
 
                                 <div class="mt-3">

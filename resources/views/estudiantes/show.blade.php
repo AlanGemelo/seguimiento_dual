@@ -264,60 +264,86 @@
                                     <div class="dropdown-divider mb-3"></div>
 
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formato51">Carta de Aceptación</label>
-                                            <div class="mt-1">
-                                                @if (!@empty($estudiante->carta_ap))
-                                                    <a href="{{ url(Storage::url($estudiante->carta_ap)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                @else
-                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
-                                                        <i class="fas fa-info-circle me-2"></i>
-                                                        No hay documentos disponibles.
-                                                    </p>
-                                                @endif
 
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="formato51">Carta de Aceptación</label>
+                                                <div class="mt-1">
+                                                    @if (!@empty($estudiante->carta_ap))
+                                                        <a href="{{ url(Storage::url($estudiante->carta_ap)) }}"
+                                                            class="btn btn-primary" target="_blank">Ver
+                                                            Documento
+                                                            <span class="mdi mdi-file-pdf-box"></span>
+                                                        </a>
+                                                    @else
+                                                        <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                            <i class="fas fa-info-circle me-2"></i>
+                                                            No hay documentos disponibles.
+                                                        </p>
+                                                    @endif
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="formato51">Minutas</label>
+                                                <div class="mt-1">
+                                                    @if (!@empty($estudiante->minutas))
+                                                        <a href="{{ url(Storage::url($estudiante->minutas)) }}"
+                                                            class="btn btn-primary" target="_blank">Ver
+                                                            Documento
+                                                            <span class="mdi mdi-file-pdf-box"></span>
+                                                        </a>
+                                                    @else
+                                                        <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                            <i class="fas fa-info-circle me-2"></i>
+                                                            No hay documentos disponibles.
+                                                        </p>
+                                                    @endif
+
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formato54">Plan de Formación</label>
-                                            <div class="mt-1">
-                                                @if (!empty($estudiante->plan_form))
-                                                    <a href="{{ url(Storage::url($estudiante->plan_form)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                @else
-                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
-                                                        <i class="fas fa-info-circle me-2"></i>
-                                                        No hay documentos disponibles.
-                                                    </p>
-                                                @endif
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="formato54">Plan de Formación</label>
+                                                <div class="mt-1">
+                                                    @if (!empty($estudiante->plan_form))
+                                                        <a href="{{ url(Storage::url($estudiante->plan_form)) }}"
+                                                            class="btn btn-primary" target="_blank">Ver
+                                                            Documento
+                                                            <span class="mdi mdi-file-pdf-box"></span>
+                                                        </a>
+                                                    @else
+                                                        <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                            <i class="fas fa-info-circle me-2"></i>
+                                                            No hay documentos disponibles.
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="formato55">Evaluación de Formación</label>
+                                                <div class="mt-1">
+                                                    @if (!empty($estudiante->evaluacion_form))
+                                                        <a href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
+                                                            class="btn btn-primary" target="_blank">Ver
+                                                            Documento
+                                                            <span class="mdi mdi-file-pdf-box"></span>
+                                                        </a>
+                                                    @else
+                                                        <p class="btn text-white mb-3" style="background-color: #43A047;">
+                                                            <i class="fas fa-info-circle me-2"></i>
+                                                            No hay documentos disponibles.
+                                                        </p>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6 mb-3">
-                                            <label for="formato55">Evaluación de Formación</label>
-                                            <div class="mt-1">
-                                                @if (!empty($estudiante->evaluacion_form))
-                                                    <a href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
-                                                        class="btn btn-primary" target="_blank">Ver
-                                                        Documento
-                                                        <span class="mdi mdi-file-pdf-box"></span>
-                                                    </a>
-                                                @else
-                                                    <p class="btn text-white mb-3" style="background-color: #43A047;">
-                                                        <i class="fas fa-info-circle me-2"></i>
-                                                        No hay documentos disponibles.
-                                                    </p>
-                                                @endif
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
 

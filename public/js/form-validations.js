@@ -211,24 +211,25 @@ document.addEventListener("DOMContentLoaded", function () {
         fechaNacimientoInput.max = formatoFecha(maxFecha);
     }
 
-    //Validation For Dual Dates
-
-
     const inicioDualInput = document.getElementById("inicio_dual");
     const finDualInput = document.getElementById("fin_dual");
 
     function crearFechaSinHora(dateString) {
         const [year, month, day] = dateString.split("-").map(Number);
-        return new Date(year, month - 1, day); // Mes base 0
+        return new Date(year, month - 1, day);
     }
 
     if (inicioDualInput && finDualInput) {
         inicioDualInput.addEventListener("change", function () {
             const inicio = crearFechaSinHora(this.value);
+
+            // Solo continuar si la fecha es válida
             if (!isNaN(inicio)) {
+                // Calcular fecha de fin (+1 año)
                 let fin = new Date(inicio);
                 fin.setFullYear(fin.getFullYear() + 1);
 
+                // Ajustar si la fecha era 29 de febrero
                 if (inicio.getDate() === 29 && inicio.getMonth() === 1) {
                     if (fin.getMonth() !== 1) {
                         fin.setDate(28);
@@ -236,15 +237,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
 
+                // Formatear la fecha a YYYY-MM-DD
                 const year = fin.getFullYear();
                 const month = String(fin.getMonth() + 1).padStart(2, "0");
                 const day = String(fin.getDate()).padStart(2, "0");
                 finDualInput.value = `${year}-${month}-${day}`;
-            } else {
-                finDualInput.value = "";
             }
         });
     }
+
 
 
 
@@ -254,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const fechaMinima = "2001-09-03";
     fechaIngresoInput.min = fechaMinima;
-    fechaIngresoInput.value = fechaMinima;
+
 
     fechaEgresoInput.min = fechaIngresoInput.value;
 
@@ -278,6 +279,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
+
+
 
     //get born date
     const curpInput = document.getElementById("curp");

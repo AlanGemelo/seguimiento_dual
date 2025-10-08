@@ -5,7 +5,6 @@
 @section('title', 'Mostrar Estudiante')
 
 @section('content')
-<body class="body">
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">
@@ -35,21 +34,18 @@
 
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label for="name" class="form-label">Nombre(s) <span
-                                            class="text-danger">*</span></label>
+                                    <label for="name" class="form-label">Nombre(s) </label>
                                     <input type="text" class="form-control form-control-lg" id="name"
                                         placeholder="Nombre(s)" name="name" value="{{ $estudiante->name }}" disabled>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="apellidoP" class="form-label">Apellido Paterno <span
-                                            class="text-danger">*</span></label>
+                                    <label for="apellidoP" class="form-label">Apellido Paterno </label>
                                     <input type="text" class="form-control form-control-lg" id="apellidoP"
                                         placeholder="Apellido Paterno" name="apellidoP" value="{{ $estudiante->apellidoP }}"
                                         disabled>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="apellidoM" class="form-label">Apellido Materno <span
-                                            class="text-danger">*</span></label>
+                                    <label for="apellidoM" class="form-label">Apellido Materno </label>
                                     <input type="text" class="form-control form-control-lg" id="apellidoM"
                                         placeholder="Apellido Materno" name="apellidoM" value="{{ $estudiante->apellidoM }}"
                                         disabled>
@@ -57,7 +53,7 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="curp" class="form-label">CURP <span class="text-danger">*</span></label>
+                                <label for="curp" class="form-label">CURP </label>
                                 <input type="text" class="form-control form-control-lg" id="curp" name="curp"
                                     value="{{ $estudiante->curp }}" disabled>
                             </div>
@@ -273,7 +269,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-12">
                                     <h6 class="section-subtitle mt-1 fw-bold">Formatos Institucionales</h6>
                                     <div class="dropdown-divider mb-3"></div>
@@ -306,7 +301,6 @@
                                             </div>
                                         </div>
 
-
                                         <div class="col-md-6 mb-3">
                                             <label for="formato55">Formato 5.5</label>
                                             <div class="mt-1">
@@ -320,7 +314,8 @@
                                     </div>
                                 </div>
 
-                                <div class="col-12" id="formatosBeca" style="display: none">
+                                <div class="col-12" id="formatosBeca"
+                                    style="display: {{ $estudiante->beca == 0 ? 'block' : 'none' }}">
                                     <h6 class="section-subtitle mt-1">
                                         Formatos de Beca
 
@@ -329,7 +324,7 @@
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <label for="formatoA">Formato A <span class="text-danger">*</span></label>
+                                            <label for="formatoA">Formato A </label>
                                             <div class="mt-1">
                                                 <a href="{{ url(Storage::url($estudiante->formatoA)) }}"
                                                     class="btn btn-primary" target="_blank">Ver
@@ -341,7 +336,7 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="formatoB">Formato B <span class="text-danger">*</span></label>
+                                            <label for="formatoB">Formato B </label>
                                             <div class="mt-1"> <a href="{{ url(Storage::url($estudiante->formatoB)) }}"
                                                     class="btn btn-primary" target="_blank">Ver
                                                     Documento
@@ -351,7 +346,7 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="formatoC">Formato C <span class="text-danger">*</span></label>
+                                            <label for="formatoC">Formato C </label>
                                             <div class="mt-1"><a href="{{ url(Storage::url($estudiante->formatoC)) }}"
                                                     class="btn btn-primary" target="_blank">Ver
                                                     Documento
@@ -373,4 +368,3 @@
         </div>
     </div>
 @endsection
-</body>

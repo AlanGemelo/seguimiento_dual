@@ -574,7 +574,6 @@ class EstudiantesController extends Controller
             })->get();
         }
 
-        dd($empresas);
         $vista = $user->rol_id == 1 || $user->rol_id == 4 ? 'editAdmin' : 'edit';
 
         return view('estudiantes.' . $vista, compact(

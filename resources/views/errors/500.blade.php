@@ -10,7 +10,7 @@
 @endsection
 
 @section('action')
-    <a href="{{ url('/') }}" class="btn-home">Volver al inicio</a>
+    <a href="javascript:history.go(-1)" class="btn-home">Volver atrás</a>
 @endsection
 
 {{-- Sección de la imagen --}}

@@ -96,7 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/empresas/{id}/suspend', [EmpresaController::class, 'suspendForm'])->name('empresas.suspendForm');
     Route::put('/empresas/{id}/suspend', [EmpresaController::class, 'suspend'])->name('empresas.suspend');
     Route::put('/empresas/{id}/reactivate', [EmpresaController::class, 'reactivate'])->name('empresas.reactivate');
-    Route::resource('empresas', EmpresaController::class);
+  //  Route::resource('empresas', EmpresaController::class);
     Route::get('empresas/interesadas', [EmpresaController::class, 'interesadas'])->name('empresas.interesadas');
     Route::get('empresas/{empresa}/darAlta', [EmpresaController::class, 'darAlta'])->name('empresas.darAlta');
     Route::patch('empresas/{empresa}/registrar', [EmpresaController::class, 'registrar'])->name('empresas.registrar');
@@ -147,7 +147,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/estadisticas/graficas', [EstadisticaController::class, 'getGraficasData']);
 
     //Ruta para los reportes generales
-    Route::get('/reporte-general', [EstadisticaController::class, 'reporteGeneral'])->name('reporte.general');
+    //  Route::get('/reporte-general', [EstadisticaController::class, 'reporteGeneral'])->name('reporte.general');
+    Route::get('/reporte-general', [EstadisticaController::class, 'prueba'])->name('reporte.general');
 
 
     //Rutas para Direccion de carrera

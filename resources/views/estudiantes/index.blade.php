@@ -9,6 +9,9 @@
             }
         </style>
     @endsection
+    @php
+        $activeTab = request('tab', 'estudiantes'); // Por defecto abre la pestaña "estudiantes"
+    @endphp
     @section('content')
         <div class="row">
             <div class="col-12 grid-margin">
@@ -307,6 +310,48 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="tab-pane fade" id="vencimientos" role="tabpanel">
+                        @if (count($registros) > 0 || count($registrosConvenio) > 0)
+                            <div class="alert alert-warning">
+                                <h4>Documentación próxima a vencer</h4>
+
+                                @if (count($registros) > 0)
+                                    <h5>Estudiantes</h5>
+                                    <ul>
+                                        @foreach ($registros as $estudiante)
+                                            <li>
+                                                {{ $estudiante->name }} — vence el
+                                                <strong>{{ \Carbon\Carbon::parse($estudiante->fin_dual)->format('d/m/Y') }}</strong>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>No hay estudiantes con documentación próxima a vencer.</p>
+                                @endif
+
+                                @if (count($registrosConvenio) > 0)
+                                    <h5>Empresas</h5>
+                                    <ul>
+                                        @foreach ($registrosConvenio as $empresa)
+                                            <li>
+                                                {{ $empresa->nombre }} — vence el
+                                                <strong>{{ \Carbon\Carbon::parse($empresa->fin_conv)->format('d/m/Y') }}</strong>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>No hay empresas con documentación próxima a vencer.</p>
+                                @endif
+                            </div>
+                        @else
+                            <div class="alert alert-success">
+                                No hay documentación próxima a vencer en los próximos 15 días.
+                            </div>
+                        @endif
+                    </div>
+
                     <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
@@ -595,6 +640,14 @@
                         row.style.display = 'none';
                     }
                 });
+            });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const tab = "{{ $activeTab }}";
+                const trigger = document.querySelector(`#${tab}-tab`);
+                if (trigger) {
+                    new bootstrap.Tab(trigger).show();
+                }
             });
         </script>
     @endsection

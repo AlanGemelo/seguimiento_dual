@@ -11,67 +11,73 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class reporteGeneral implements FromCollection, WithHeadings, WithStyles, WithColumnWidths
 {
+    /**
+     * Recupera la colección de datos para el reporte.
+     */
     public function collection()
     {
         $data = DB::select("
-     SELECT
-    e.matricula AS Matricula,
-    
-    IFNULL(CONCAT(e.name, ' ', e.apellidoP, ' ', e.apellidoM), 'No disponible') AS Alumno,
+            SELECT
+                e.matricula AS Matricula,
 
-    IFNULL(c.nombre, 'No disponible') AS Nombre_Carrera,
+                IFNULL(CONCAT(e.name, ' ', e.apellidoP, ' ', e.apellidoM), 'No disponible') AS Alumno,
 
-    IFNULL(e.inicio, 'No disponible') AS Fecha_Inicio,
-    IFNULL(e.fin, 'No disponible') AS Fecha_Termino,
+                IFNULL(c.nombre, 'No disponible') AS Nombre_Carrera,
 
-    CASE e.status
-        WHEN 0 THEN 'Primera vez'
-        WHEN 1 THEN 'Renovación Dual'
-        WHEN 2 THEN 'Reprobación'
-        WHEN 3 THEN 'Término de convenio'
-        WHEN 4 THEN 'Ciclo de renovación concluido'
-        WHEN 5 THEN 'Término del PE'
-        ELSE 'Desconocido'
-    END AS Estatus_Estudiante,
+                IFNULL(e.inicio, 'No disponible') AS Fecha_Inicio,
+                IFNULL(e.fin, 'No disponible') AS Fecha_Termino,
 
-    -- Beca
-    CASE 
-        WHEN e.beca = 0 THEN 'Sí'
-        WHEN e.beca = 1 THEN 'No'
-        ELSE 'No disponible'
-    END AS Beca,
+                CASE e.status
+                    WHEN 0 THEN 'Primera vez'
+                    WHEN 1 THEN 'Renovación Dual'
+                    WHEN 2 THEN 'Reprobación'
+                    WHEN 3 THEN 'Término de convenio'
+                    WHEN 4 THEN 'Ciclo de renovación concluido'
+                    WHEN 5 THEN 'Término del PE'
+                    ELSE 'Desconocido'
+                END AS Estatus_Estudiante,
 
-    -- Tipo de beca
-    CASE 
-        WHEN e.tipoBeca = 0 THEN 'Apoyo por Empresa'
-        WHEN e.tipoBeca = 1 THEN 'Beca Dual Comecyt'
-        ELSE 'No disponible'
-    END AS Tipo_Beca,
+                CASE 
+                    WHEN e.beca = 0 THEN 'Sí'
+                    WHEN e.beca = 1 THEN 'No'
+                    ELSE 'No disponible'
+                END AS Beca,
 
-    IFNULL(CONCAT(ma.name, ' ', ma.apellidoP, ' ', ma.apellidoM), 'No disponible') AS Mentor_Academico,
+                CASE 
+                    WHEN e.tipoBeca = 0 THEN 'Apoyo por Empresa'
+                    WHEN e.tipoBeca = 1 THEN 'Beca Dual Comecyt'
+                    ELSE 'No disponible'
+                END AS Tipo_Beca,
 
-    (
-        SELECT COUNT(*)
-        FROM estudiantes e2
-        WHERE e2.academico_id = e.academico_id
-    ) AS Num_Alumnos_Mentor,
+                IFNULL(CONCAT(ma.name, ' ', ma.apellidoP, ' ', ma.apellidoM), 'No disponible') AS Mentor_Academico,
 
-    IFNULL(emp.nombre, 'No disponible') AS Empresa,
+                (
+                    SELECT COUNT(*)
+                    FROM estudiantes e2
+                    WHERE e2.academico_id = e.academico_id
+                ) AS Num_Alumnos_Mentor,
 
-    IFNULL(CONCAT(mi.name, ' ', mi.apellidoP, ' ', mi.apellidoM), 'No disponible') AS Mentor_Industrial,
+                IFNULL(emp.nombre, 'No disponible') AS Empresa,
 
-    IFNULL(e.nombre_proyecto, 'No disponible') AS Proyecto
+                IFNULL(CONCAT(mi.name, ' ', mi.apellidoP, ' ', mi.apellidoM), 'No disponible') AS Mentor_Industrial,
 
-    FROM estudiantes e
-    LEFT JOIN carreras c ON e.carrera_id = c.id
-    LEFT JOIN users ma ON e.academico_id = ma.id AND ma.rol_id = 2
-    LEFT JOIN empresas emp ON e.empresa_id = emp.id
-    LEFT JOIN mentor_industrials mi ON e.asesorin_id = mi.id;  ");
+                IFNULL(e.nombre_proyecto, 'No disponible') AS Proyecto
 
+            FROM estudiantes e
+            LEFT JOIN carreras c ON e.carrera_id = c.id
+            LEFT JOIN users ma ON e.academico_id = ma.id AND ma.rol_id = 2
+            LEFT JOIN empresas emp ON e.empresa_id = emp.id
+            LEFT JOIN mentor_industrials mi ON e.asesorin_id = mi.id
+
+            ORDER BY Alumno ASC;
+        ");
 
         return collect($data);
     }
 
+    /**
+     * Define los encabezados de las columnas del Excel.
+     */
     public function headings(): array
     {
         return [
@@ -91,6 +97,9 @@ class reporteGeneral implements FromCollection, WithHeadings, WithStyles, WithCo
         ];
     }
 
+    /**
+     * Aplica estilos al archivo de Excel.
+     */
     public function styles(Worksheet $sheet)
     {
         return [
@@ -104,6 +113,9 @@ class reporteGeneral implements FromCollection, WithHeadings, WithStyles, WithCo
         ];
     }
 
+    /**
+     * Define anchos personalizados para cada columna.
+     */
     public function columnWidths(): array
     {
         return [

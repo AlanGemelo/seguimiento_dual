@@ -54,8 +54,7 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item-custom">
-                    <a class="nav-link-custom {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                        aria-current="page"
+                    <a class="nav-link-custom {{ request()->routeIs('dashboard') ? 'active' : '' }}" aria-current="page"
                         href="{{ route('dashboard') }}">
                         <i class="mdi mdi-home"></i>
                         <span class="nav-link-text">Inicio</span>
@@ -83,11 +82,11 @@
                     <li class="nav-item-custom dropdown">
                         <a class="nav-link-custom dropdown-toggle" href="#" id="empresasDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="mdi mdi-factory"></i><span>Empresas</span>
+                            <i class="mdi mdi-factory"></i><span>Unidades Económicas</span>
                         </a>
                         <ul class="dropdown-menu text-center" aria-labelledby="empresasDropdown">
                             <li><a class="dropdown-item" href="{{ route('empresas.index') }}"><i
-                                        class="mdi mdi-domain"></i> Empresas</a>
+                                        class="mdi mdi-domain"></i> Unidades Económicas</a>
                             </li>
                             <li><a class="dropdown-item" href="{{ route('mentores.index') }}"><i
                                         class="mdi mdi-account-tie"></i> Mentores
@@ -134,23 +133,27 @@
                             <li class="dropdown-submenu">
                                 <a class="dropdown-item dropdown-toggle" href="#" role="button">Anexo 1</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('anexo1_1.index') }}">Anexo 1.1: Planeación y Difusión de
+                                    <li><a class="dropdown-item" href="{{ route('anexo1_1.index') }}">Anexo 1.1:
+                                            Planeación y Difusión de
                                             la ED</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('anexo1_2.index') }}">Anexo 1.2: Programa de Difusión de la
+                                    <li><a class="dropdown-item" href="{{ route('anexo1_2.index') }}">Anexo 1.2:
+                                            Programa de Difusión de la
                                             ED</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('anexo1_3.index') }}">Anexo 1.3: Formato de Registro de
+                                    <li><a class="dropdown-item" href="{{ route('anexo1_3.index') }}">Anexo 1.3:
+                                            Formato de Registro de
                                             Interesados</a></li>
-                             </ul>
-                                </li>
-                                    <li class="dropdown-submenu">
-                                        <a class="dropdown-item dropdown-toggle" href="#" role="button">Anexo 2</a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{ route('anexo2_1.index') }}">Anexo 2.1: Evaluación y
-                                                    Selección de la UE</a></li>
-                                        </ul>
-                                    </li>
                                 </ul>
                             </li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item dropdown-toggle" href="#" role="button">Anexo 2</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ route('anexo2_1.index') }}">Anexo 2.1:
+                                            Evaluación y
+                                            Selección de la UE</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
                 @endif
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-sm-none d-lg-block">

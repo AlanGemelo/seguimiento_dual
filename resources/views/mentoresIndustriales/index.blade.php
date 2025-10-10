@@ -87,10 +87,10 @@
                                                                 <button class="btn btn-danger"
                                                                     style=" background-color: #e63946"
                                                                     data-bs-toggle="modal" data-bs-target="#exampleModal1"
-                                                                    onclick="deleteMentorIdustrial('{{ Hashids::encode($mentor->id) }}')">
+                                                                    onclick="deleteMentorIndustrial('{{ Hashids::encode($mentor->id) }}')">
                                                                     <i class="mdi mdi-delete btn-icon-prepend"
                                                                         style="font-size: 1.5em;"></i>
-                                                                </button>
+                                                                </button> -
 
                                                                 {{--  <form
                                                                     action="{{ route('mentores.destroy', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
@@ -190,7 +190,7 @@
 
 @section('scripts')
     <script>
-        function deleteMentorIdustrial(hashedId) {
+        function deleteMentorIndustrial(hashedId) {
             let form = document.getElementById('deleteForm');
 
             // form.action = `${window.BASE_URL}/mentores/${id}/delete`;
@@ -208,25 +208,35 @@
                         response.name + ' ' +
                         response.apellidoP + ' ' +
                         response.apellidoM + '?');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error al obtener los datos del mentor:", error);
                 }
             });
         }
 
-        function restoreRegistro(id) {
-            let form = document.getElementById('restaurarForm')
-            form.action = `${window.BASE_URL}/mentores/${id}/restaurar`
+        function restoreRegistro(hashedId) {
+            let form = document.getElementById('restaurarForm');
+            form.action = `${window.BASE_URL}/mentores/${hashedId}/restaurar`;
+
             $.ajax({
-                url: `${window.BASE_URL}/mentores/${id}/json`,
+                url: `${window.BASE_URL}/mentores/${hashedId}/json`,
                 type: 'GET',
                 success: function(response) {
-                    $('#bannerRestore').text('¿Estas seguro de restaurar este registro? ' +
+                    $('#bannerRestore').text(
+                        '¿Estás seguro de restaurar este registro? ' +
                         response.titulo + ' ' +
                         response.name + ' ' +
                         response.apellidoP + ' ' +
-                        response.apellidoM + '?');
+                        response.apellidoM + '?'
+                    );
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error al obtener los datos del mentor:", error);
                 }
-            })
+            });
         }
+
 
         // Filtrar tabla
         document.getElementById('searchInput').addEventListener('keyup', function() {

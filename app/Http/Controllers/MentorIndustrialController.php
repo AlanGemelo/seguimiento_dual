@@ -128,23 +128,30 @@ class MentorIndustrialController extends Controller
 
     public function destroy($id)
     {
-        $decoded = Hashids::decode($id);
-        $id = $decoded[0] ?? null;
-        // dd($id);
+        $idDecoded = Hashids::decode($id);
+        $id = $idDecoded[0] ?? null;
+
         if (!$id) {
-            return redirect()->route('mentores.index')->with('statusError', 'ID inválido');
+            return redirect()->route('mentores.index')->with('statusError', 'ID inválido.');
         }
 
         try {
-            $mentor = MentorIndustrial::findOrFail($id);
+            $mentor = MentorIndustrial::find($id);
+
+            if (!$mentor) {
+                return redirect()->route('mentores.index')->with('statusError', 'Mentor no encontrado.');
+            }
+
             $mentor->delete();
 
             return redirect()->route('mentores.index')->with('status', 'Mentor industrial eliminado');
-        } catch (QueryException $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
             $errorCode = $e->errorInfo[1];
+
             if ($errorCode == 1451) {
                 return redirect()->route('mentores.index')->with('statusError', 'No se puede eliminar el Mentor industrial. Primero elimina los estudiantes asociados');
             }
+
             return redirect()->route('mentores.index')->with('statusError', 'Error al eliminar el Mentor industrial: ' . $e->getMessage());
         }
     }

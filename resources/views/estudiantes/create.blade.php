@@ -175,7 +175,7 @@
                                     <label for="nombre_proyecto" class="form-label">Nombre del Proyecto <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
-                                        placeholder="Integrador" name="nombre_proyecto"
+                                        placeholder="Nombre del Proyecto" name="nombre_proyecto"
                                         value="{{ old('nombre_proyecto') }}">
                                     @error('nombre_proyecto')
                                         <div class="text-danger">{{ $message }}</div>

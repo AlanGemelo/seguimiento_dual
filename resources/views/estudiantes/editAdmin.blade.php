@@ -365,8 +365,7 @@
                                     </div>
 
                                     <div class="col-md-4 mb-3">
-                                        <label for="historial_academico" class="mb-1">Historial Academico <span
-                                                class="text-danger">*</span></label>
+                                        <label for="historial_academico" class="mb-1">Historial Academico</label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                             <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
@@ -391,8 +390,7 @@
 
 
                                     <div class="col-md-4 mb-3">
-                                        <label for="perfil_ingles" class="mb-1">Perfil de Ingles <span
-                                                class="text-danger">*</span></label>
+                                        <label for="perfil_ingles" class="mb-1">Perfil de Ingles</label>
                                         <div
                                             style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                             <input hidden type="file" accept="application/pdf, image/jpeg, image/png"
@@ -421,8 +419,7 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label for="formato51" class="mb-1">Formato 5.1 <span
-                                                        class="text-danger">*</span></label>
+                                                <label for="formato51" class="mb-1">Formato 5.1</label>
                                                 <div
                                                     style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file"
@@ -448,8 +445,7 @@
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label for="formato54" class="mb-1">Formato 5.4 <span
-                                                        class="text-danger">*</span></label>
+                                                <label for="formato54" class="mb-1">Formato 5.4 </label>
                                                 <div style="display: flex; flex-direction: column; gap: 10px;">
                                                     <!-- Input para nuevos archivos -->
                                                     <input type="file" accept="application/pdf, image/jpeg, image/png"
@@ -482,8 +478,7 @@
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label for="formato55" class="mb-1">Formato 5.5 <span
-                                                        class="text-danger">*</span></label>
+                                                <label for="formato55" class="mb-1">Formato 5.5 </label>
                                                 <div
                                                     style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file"
@@ -516,8 +511,7 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label for="carta_acp" class="mb-1">Carta de Aceptación <span
-                                                        class="text-danger">*</span></label>
+                                                <label for="carta_acp" class="mb-1">Carta de Aceptación</label>
                                                 <div
                                                     style="display: flex; justify-content: space-between; align-items: center; gap: 4px">
                                                     <!-- Input oculto para subir nuevo archivo -->
@@ -547,8 +541,7 @@
 
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <label for="minutas" class="mb-1">Minutas<span
-                                                        class="text-danger">*</span></label>
+                                                <label for="minutas" class="mb-1">Minutas </label>
                                                 <div
                                                     style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file"
@@ -575,8 +568,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label for="plan_form" class="mb-1">Plan de Formacion<span
-                                                        class="text-danger">*</span></label>
+                                                <label for="plan_form" class="mb-1">Plan de Formacion </label>
                                                 <div
                                                     style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file"
@@ -602,7 +594,7 @@
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="evaluacion_form" class="mb-1">Evaluación de
-                                                    Formación<span class="text-danger">*</span></label>
+                                                    Formación</label>
                                                 <div
                                                     style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file"
@@ -639,8 +631,7 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label for="formatoA" class="mb-1">Formato A <span
-                                                        class="text-danger">*</span></label>
+                                                <label for="formatoA" class="mb-1">Formato A </label>
                                                 <div
                                                     style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file"
@@ -666,8 +657,7 @@
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label for="formatoB" class="mb-1">Formato B <span
-                                                        class="text-danger">*</span></label>
+                                                <label for="formatoB" class="mb-1">Formato B </label>
                                                 <div
                                                     style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file"
@@ -695,8 +685,7 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label for="formatoC" class="mb-1">Formato C <span
-                                                        class="text-danger">*</span></label>
+                                                <label for="formatoC" class="mb-1">Formato C </label>
                                                 <div
                                                     style=" display: flex; justify-content: space-between;align-items: center; gap: 4px">
                                                     <input hidden type="file"

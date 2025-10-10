@@ -36,7 +36,7 @@
                                         <input type="text" data-tipo="text" class="form-control uppercase" id="name"
                                             placeholder="Ingrese su(s) nombre(s)" name="name"
                                             value="{{ old('name') }}">
-                                        @error('titulo')
+                                        @error('name')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>

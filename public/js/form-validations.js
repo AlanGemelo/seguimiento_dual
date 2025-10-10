@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
 
     //Text UpperCase
@@ -253,59 +254,56 @@ document.addEventListener("DOMContentLoaded", function () {
     const fechaIngresoInput = document.getElementById("inicio");
     const fechaEgresoInput = document.getElementById("fin");
 
-    const fechaMinima = "2001-09-03";
-    fechaIngresoInput.min = fechaMinima;
+    if (fechaIngresoInput && !fechaIngresoInput.disabled && fechaEgresoInput) {
+        const fechaMinima = "2001-09-03";
+        fechaIngresoInput.min = fechaMinima;
+        fechaEgresoInput.min = fechaIngresoInput.value;
 
+        fechaIngresoInput.addEventListener("change", () => {
+            if (fechaIngresoInput.value) {
+                fechaEgresoInput.min = fechaIngresoInput.value;
 
-    fechaEgresoInput.min = fechaIngresoInput.value;
-
-    fechaIngresoInput.addEventListener("change", () => {
-        if (fechaIngresoInput.value) {
-            fechaEgresoInput.min = fechaIngresoInput.value;
-
-            if (
-                fechaEgresoInput.value &&
-                fechaEgresoInput.value < fechaIngresoInput.value
-            ) {
-                fechaEgresoInput.value = "";
+                if (
+                    fechaEgresoInput.value &&
+                    fechaEgresoInput.value < fechaIngresoInput.value
+                ) {
+                    fechaEgresoInput.value = "";
+                }
             }
-        }
-    });
+        });
 
-    fechaEgresoInput.addEventListener("blur", () => {
-        if (fechaEgresoInput.value && fechaIngresoInput.value) {
-            if (fechaEgresoInput.value < fechaIngresoInput.value) {
-                fechaEgresoInput.value = "";
+        fechaEgresoInput.addEventListener("blur", () => {
+            if (fechaEgresoInput.value && fechaIngresoInput.value) {
+                if (fechaEgresoInput.value < fechaIngresoInput.value) {
+                    fechaEgresoInput.value = "";
+                }
             }
-        }
-    });
+        });
+    }
+
 
 
 
     //get born date
-    const curpInput = document.getElementById("curp");
-    const fechaInput = document.getElementById("fecha_na");
+    const curpInput = document.getElementById("curpInput"); // puede estar deshabilitado o solo lectura
+    const fechaInput = document.getElementById("fechaInput");
 
-    curpInput.addEventListener("input", function () {
+    if (curpInput && fechaInput && curpInput.value.length >= 10) {
         const curp = curpInput.value.toUpperCase();
 
-        if (curp.length >= 10) {
-            const year = curp.substring(4, 6);
-            const month = curp.substring(6, 8);
-            const day = curp.substring(8, 10);
+        const year = curp.substring(4, 6);
+        const month = curp.substring(6, 8);
+        const day = curp.substring(8, 10);
 
-            // Si el año es mayor a la fecha actual, se asume 1900s, si no 2000s
-            const currentYear = new Date().getFullYear() % 100;
-            const fullYear = parseInt(year) > currentYear ? `19${year}` : `20${year}`;
+        const currentYear = new Date().getFullYear() % 100;
+        const fullYear = parseInt(year) > currentYear ? `19${year}` : `20${year}`;
 
-            const fechaNacimiento = `${fullYear}-${month}-${day}`;
-            // Validamos si es una fecha real
-            const fechaValida = !isNaN(new Date(fechaNacimiento).getTime());
+        const fechaNacimiento = `${fullYear}-${month}-${day}`;
+        const fechaValida = !isNaN(new Date(fechaNacimiento).getTime());
 
-            if (fechaValida) {
-                fechaInput.value = fechaNacimiento;
-            }
+        if (fechaValida) {
+            fechaInput.value = fechaNacimiento;
         }
-    });
+    }
 
 });

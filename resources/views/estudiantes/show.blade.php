@@ -83,14 +83,16 @@
 
                             <div class="col-md-6 mb-3">
                                 <label for="inicio" class="form-label">Fecha de Ingreso </label>
-                                <input type="text" class="form-control form-control-lg" id="inicio" name="inicio"
-                                    value="{{ $estudiante->inicio }} " disabled>
+                                <input type="date" class="form-control form-control-lg" id="inicio" name="inicio"
+                                    value="{{ \Carbon\Carbon::parse($estudiante->inicio)->format('Y-m-d') }}" disabled>
+
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="fin" class="form-label">Fecha de Egreso </label>
-                                <input type="text" class="form-control form-control-lg" id="fin" name="fin"
-                                    value="{{ $estudiante->fin }} " disabled>
+                                <input type="date" class="form-control form-control-lg" id="fin" name="fin"
+                                    value="{{ \Carbon\Carbon::parse($estudiante->fin)->format('Y-m-d') }}" disabled>
+
                             </div>
 
                             <div class="col-md-4 mb-3">

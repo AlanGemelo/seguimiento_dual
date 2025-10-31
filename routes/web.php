@@ -96,7 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/empresas/{id}/suspend', [EmpresaController::class, 'suspendForm'])->name('empresas.suspendForm');
     Route::put('/empresas/{id}/suspend', [EmpresaController::class, 'suspend'])->name('empresas.suspend');
     Route::put('/empresas/{id}/reactivate', [EmpresaController::class, 'reactivate'])->name('empresas.reactivate');
-  //  Route::resource('empresas', EmpresaController::class);
+    //  Route::resource('empresas', EmpresaController::class);
     Route::get('empresas/interesadas', [EmpresaController::class, 'interesadas'])->name('empresas.interesadas');
     Route::get('empresas/{empresa}/darAlta', [EmpresaController::class, 'darAlta'])->name('empresas.darAlta');
     Route::patch('empresas/{empresa}/registrar', [EmpresaController::class, 'registrar'])->name('empresas.registrar');
@@ -167,6 +167,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/directores/{id}/json', [DirectorController::class, 'showJson'])->name('direcciones.showJson');
 
     Route::post('alerts', [MentorAcademicoController::class, 'alerts'])->name('alerts');
+
+    //Rutas para administracion de venciminetos
+    Route::get('/documentacion', [DocumentacionController::class, 'index'])->name('documentacion.index');
+    Route::put('/documentacion/renovar/estudiante/{id}', [DocumentacionController::class, 'renovarEstudiante'])->name('documentacion.renovar.estudiante');
+    Route::put('/documentacion/renovar/convenio/{id}', [DocumentacionController::class, 'renovarConvenio'])->name('documentacion.renovar.convenio');
 
     // Rutas para Anexo 1.1
     Route::get('/anexo1_1', [Anexo1_1Controller::class, 'index'])->name('anexo1_1.index');

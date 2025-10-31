@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DireccionCarrera;
 use App\Models\Estudiantes;
+use App\Models\Empresa;
 use App\Models\MentorIndustrial;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +20,7 @@ class HomeController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function dashboard()
+    /* public function dashboard()
     {
         $direccion = DireccionCarrera::find(Auth::user()->direccion_id);
 
@@ -40,6 +41,72 @@ class HomeController extends Controller
             return view('dashboard', compact(['estudiantes', 'mentores']));
         } else {
             return view('dashboard', compact(['estudiantes', 'mentores']));
+        }
+    } */
+
+    public function dashboard()
+    {
+        $user = Auth::user();
+        $hoy = now();
+
+        $estudiantes = Estudiantes::count();
+        $mentores = MentorIndustrial::count();
+
+        switch ($user->rol_id) {
+            case 1: // Super Admin
+                session()->forget('direccion');
+                $direcciones = DireccionCarrera::all();
+
+                $registrosEstudiantes = Estudiantes::with('academico', 'asesorin')
+                    ->whereDate('fin_dual', '<=', $hoy->copy()->addDays(15))
+                    ->where('activo', true)
+                    ->get();
+
+                $registrosConvenio = Empresa::with('asesorin')
+                    ->whereDate('fin_conv', '<=', $hoy->copy()->addDays(15))
+                    ->get();
+
+                $hayAlertas = $registrosEstudiantes->count() > 0 || $registrosConvenio->count() > 0;
+
+
+                return view('dashboardSuperAdmin', compact(
+                    'estudiantes',
+                    'mentores',
+                    'direcciones',
+                    'registrosEstudiantes',
+                    'registrosConvenio',
+                    'hayAlertas'
+                ));
+
+            case 3: // Estudiante
+                $estudiante = Estudiantes::withTrashed()
+                    ->where('user_id', $user->id)
+                    ->first();
+
+                return view('dashboardEstudiante', compact('estudiante'));
+
+            case 4: // Admin / Docente / Dirección
+            default:
+                $direccion = DireccionCarrera::find($user->direccion_id);
+                session()->put('direccion', $direccion ?? '');
+
+                $registrosEstudiantes = Estudiantes::with('academico', 'asesorin')
+                    ->whereDate('fin_dual', '<=', $hoy->copy()->addDays(15))
+                    ->where('activo', true)
+                    ->get();
+
+                $registrosConvenio = Empresa::with('asesorin')
+                    ->whereDate('fin_conv', '<=', $hoy->copy()->addDays(15))
+                    ->get();
+                $hayAlertas = $registrosEstudiantes->count() > 0 || $registrosConvenio->count() > 0;
+
+                return view('dashboard', compact(
+                    'estudiantes',
+                    'mentores',
+                    'registrosEstudiantes',
+                    'registrosConvenio',
+                    'hayAlertas'
+                ));
         }
     }
 }

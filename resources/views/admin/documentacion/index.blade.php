@@ -73,7 +73,7 @@
                                                                 class="btn btn-outline-danger btn-sm d-flex align-items-center"
                                                                 data-bs-toggle="modal" data-bs-target="#exampleModal1"
                                                                 onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
-                                                                <i class="mdi mdi-delete me-1"></i> Eliminar
+                                                                <i class="mdi mdi-delete me-1"></i> Baja
                                                             </button>
                                                         </div>
                                                     </td>
@@ -182,7 +182,7 @@
                                     <div class="modal-footer">
                                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar
                                         </button>
-                                        <button class="btn btn-danger" type="submit">Eliminar</button>
+                                        <button class="btn btn-danger" type="submit">Baja</button>
                                     </div>
                                 </form>
                             </div>
@@ -230,9 +230,9 @@
         // Petición AJAX para obtener la información del estudiante a eliminar
         function deleteEstudiante(matricula, motivo) {
             let form = document.getElementById('deleteForm');
-            form.action = `/documentacion/destroy/estudiante/${matricula}`;
+            form.action = `documentacion/destroy/estudiante/${matricula}`;
             $.ajax({
-                url: `/estudiantes/${matricula}/json`,
+                url: `estudiantes/${matricula}/json`,
                 type: 'GET',
                 success: function(response) {
                     $('#banner').text('¿Estás seguro de eliminar este registro? \n' +

@@ -172,6 +172,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/documentacion', [DocumentacionController::class, 'index'])->name('documentacion.index');
     Route::put('/documentacion/renovar/estudiante/{id}', [DocumentacionController::class, 'renovarEstudiante'])->name('documentacion.renovar.estudiante');
     Route::put('/documentacion/renovar/convenio/{id}', [DocumentacionController::class, 'renovarConvenio'])->name('documentacion.renovar.convenio');
+    Route::delete('/documentacion/destroy/estudiante/{id}', [DocumentacionController::class, 'destroyEstudiante'])
+        ->name('documentacion.destroyEstudiante');
 
     // Rutas para Anexo 1.1
     Route::get('/anexo1_1', [Anexo1_1Controller::class, 'index'])->name('anexo1_1.index');

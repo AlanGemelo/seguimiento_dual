@@ -7,6 +7,10 @@
             .xd:hover .btn-text {
                 display: none;
             }
+
+            .row.xd {
+                padding: 0px 0px !important;
+            }
         </style>
     @endsection
     @php
@@ -309,92 +313,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="tab-pane fade" id="vencimientos" role="tabpanel">
-                        @if (count($registros) > 0 || count($registrosConvenio) > 0)
-                            <div class="alert alert-warning">
-                                <h4>Documentación próxima a vencer</h4>
 
-                                @if (count($registros) > 0)
-                                    <h5>Estudiantes</h5>
-                                    <ul>
-                                        @foreach ($registros as $estudiante)
-                                            <li>
-                                                {{ $estudiante->name }} — vence el
-                                                <strong>{{ \Carbon\Carbon::parse($estudiante->fin_dual)->format('d/m/Y') }}</strong>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    <p>No hay estudiantes con documentación próxima a vencer.</p>
-                                @endif
-
-                                @if (count($registrosConvenio) > 0)
-                                    <h5>Empresas</h5>
-                                    <ul>
-                                        @foreach ($registrosConvenio as $empresa)
-                                            <li>
-                                                {{ $empresa->nombre }} — vence el
-                                                <strong>{{ \Carbon\Carbon::parse($empresa->fin_conv)->format('d/m/Y') }}</strong>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    <p>No hay empresas con documentación próxima a vencer.</p>
-                                @endif
-                            </div>
-                        @else
-                            <div class="alert alert-success">
-                                No hay documentación próxima a vencer en los próximos 15 días.
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Estudiante Temporalmente</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container">
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-12">
-                                                <form action="" id="deleteForm" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <p id="banner">¿Estás seguro de eliminar este registro?</p>
-                                                    <hr>
-                                                    <p id="warningMessage" style="color: red; display: none;">Por favor,
-                                                        seleccione una razón para la baja.</p>
-                                                    <select class="form-select" id='selectMotivo'
-                                                        aria-label="Seleccionar Motivo" name="status">
-                                                        <option value="" selected>Seleccione razón de la baja
-                                                        </option>
-                                                        @foreach ($situation as $carrera)
-                                                            <option value="{{ $carrera['id'] }}">
-                                                                {{ $carrera['name'] }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-secondary" type="button"
-                                                            data-bs-dismiss="modal">Cancelar
-                                                        </button>
-                                                        <button class="btn btn-danger" type="submit">Eliminar</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -477,59 +398,112 @@
                 @endif
             </div>
         </div>
-        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Eliminar estudiante Academico Permanentemente</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-md-12">
-                                    <form action="" id="permanentDelete" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <p id="bannerDelete">¿Estás seguro de eliminar este registro?</p>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button"
-                                                data-bs-dismiss="modal">Cancelar
-                                            </button>
-                                            <button class="btn btn-danger" type="submit">Eliminar</button>
-                                        </div>
-                                    </form>
+
+        <div>
+            <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar Estudiante Temporalmente
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12">
+                                        <form action="" id="deleteForm" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <p id="banner">¿Estás seguro de eliminar este registro?</p>
+                                            <hr>
+                                            <p id="warningMessage" style="color: red; display: none;">Por
+                                                favor,
+                                                seleccione una razón para la baja.</p>
+                                            <select class="form-select" id='selectMotivo' aria-label="Seleccionar Motivo"
+                                                name="status">
+                                                <option value="" selected>Seleccione razón de la baja
+                                                </option>
+                                                @foreach ($situation as $carrera)
+                                                    <option value="{{ $carrera['id'] }}">
+                                                        {{ $carrera['name'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button"
+                                                    data-bs-dismiss="modal">Cancelar
+                                                </button>
+                                                <button class="btn btn-danger" type="submit">Eliminar</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Restaurar Estudiante</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar estudiante Academico Permanentemente
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12">
+                                        <form action="" id="permanentDelete" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <p id="bannerDelete">¿Estás seguro de eliminar este registro?</p>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button"
+                                                    data-bs-dismiss="modal">Cancelar
+                                                </button>
+                                                <button class="btn btn-danger" type="submit">Eliminar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-md-12">
-                                    <form action="" id="restaurarForm" method="POST">
-                                        @csrf
-                                        @method('PATCH')
-                                        <p id="bannerRestore">¿Estás seguro de restaurar este registro?</p>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button"
-                                                data-bs-dismiss="modal">Cancelar
-                                            </button>
-                                            <button class="btn btn-rounded-check" type="submit">Restaurar</button>
-                                        </div>
-                                    </form>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Restaurar Estudiante</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-12">
+                                        <form action="" id="restaurarForm" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <p id="bannerRestore">¿Estás seguro de restaurar este registro?</p>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button"
+                                                    data-bs-dismiss="modal">Cancelar
+                                                </button>
+                                                <button class="btn btn-rounded-check" type="submit">Restaurar</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -1,0 +1,121 @@
+{{-- ===============================
+|  TAB: ESTUDIANTES DUAL
+|  Estado: Aceptados
+|=============================== --}}
+
+<div class="row">
+
+    {{-- Header --}}
+    <div class="col-12 mb-3 d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">
+            <i class="mdi mdi-check-circle text-success me-1"></i>
+            Estudiantes Dual
+        </h6>
+
+        {{--   @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 2 || Auth::user()->rol_id === 4)
+            <a href="{{ route('estudiantes.create') }}" class="btn btn-sm btn-add" title="Agregar estudiante dual">
+                <i class="mdi mdi-plus-circle-outline"></i>
+            </a>
+        @endif --}}
+    </div>
+
+    {{-- Buscador --}}
+    <div class="col-md-6 mb-3">
+        <form method="GET" action="{{ route('estudiantes.index') }}">
+            <input type="hidden" name="tab" value="dual">
+
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" style ="height: 40px;" value="{{ $search ?? '' }}"
+                    placeholder="Buscar estudiante dual...">
+
+                @if (!empty($search))
+                    <a href="{{ route('estudiantes.index', ['tab' => 'dual']) }}"
+                        class="btn btn-outline-secondary d-flex justify-content-center align-items-center"
+                        title="Limpiar búsqueda" style="width: 40px; height: 40px;">
+                        <i class="mdi mdi-close"></i>
+                    </a>
+                @endif
+            </div>
+        </form>
+    </div>
+
+
+
+    {{-- Tabla --}}
+    <div class="col-12">
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Matricula</th>
+                        <th>Estudiante</th>
+                        <th>Carrera</th>
+                        <th>Cuatrimestre</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @forelse ($estudiantes as $estudiante)
+                        <tr>
+                            <td>
+                                {{ ($estudiantes->currentPage() - 1) * $estudiantes->perPage() + $loop->iteration }}
+                            </td>
+                            <td>{{ $estudiante->matricula }}</td>
+                            <td>
+                                {{ $estudiante->name }}
+                                {{ $estudiante->apellidoP }}
+                                {{ $estudiante->apellidoM }}
+                            </td>
+
+                            <td>{{ $estudiante->carrera->nombre }}</td>
+                            <td>{{ $estudiante->cuatrimestre }}</td>
+
+                            <td class="text-center">
+
+                                {{-- Ver --}}
+                                <a href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                    class="btn btn-sm btn-facebook" title="Ver estudiante">
+                                    <i class="mdi mdi-eye"></i>
+                                </a>
+
+                                {{-- Editar --}}
+                                <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                    class="btn btn-sm btn-warning" title="Editar estudiante">
+                                    <i class="mdi mdi-account-edit"></i>
+                                </a>
+
+                                {{-- Eliminar --}}
+                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal1"
+                                        onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
+                                        <i class="mdi mdi-delete"></i>
+                                    </button>
+                                @endif
+
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5">
+                                <div class="alert alert-info mb-0">
+                                    No hay estudiantes dual registrados
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            {{-- Paginación --}}
+            <div class="d-flex justify-content-center mt-3">
+                {{ $estudiantes->appends(['tab' => 'dual'])->links('pagination::bootstrap-5') }}
+            </div>
+
+        </div>
+    </div>
+
+</div>

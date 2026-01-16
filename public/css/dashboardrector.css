@@ -92,8 +92,8 @@
 
 /* Contenedor principal debajo del navbar */
 .row {
-  margin-top: 30px; /* Espacio para el navbar */
-  padding-top: 20px;
+  margin-top: 5px; /* Espacio para el navbar */
+  padding-top: 0px;
 }
 
 

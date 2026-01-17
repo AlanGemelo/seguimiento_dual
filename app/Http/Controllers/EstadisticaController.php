@@ -27,6 +27,7 @@ class EstadisticaController extends Controller
             $empresas = Empresa::withCount('estudiantes')
                 ->having('estudiantes_count', '>', 0)
                 ->get();
+                
 
             $totalEstudiantes = $empresas->sum('estudiantes_count');
 
@@ -101,6 +102,7 @@ class EstadisticaController extends Controller
                 $q->where('direccion_id', $direccionId);
             })->withCount('estudiantes')->get();
 
+    $totalEstudiantes = $empresas->sum('estudiantes_count');
             $labels = $empresas->map(function ($empresa) use ($totalEstudiantes) {
                 $porcentaje = $totalEstudiantes > 0 ? round(($empresa->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
                 return "{$empresa->nombre} ({$porcentaje}%)";
@@ -416,4 +418,5 @@ class EstadisticaController extends Controller
 
         return Excel::download(new reporteGeneral, $nombreArchivo);
     }
+
 }

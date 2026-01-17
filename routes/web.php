@@ -240,7 +240,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         } else {
             abort(404); // Si el archivo no existe, mostrar error 404
         }
-    })->name('descargar');
+    });
 });
 
 require __DIR__ . '/auth.php';

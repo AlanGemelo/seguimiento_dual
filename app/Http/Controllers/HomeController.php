@@ -85,20 +85,29 @@ class HomeController extends Controller
 
                 return view('dashboardEstudiante', compact('estudiante'));
 
-            case 4: // Admin / Docente / Dirección
+            case 4:
             default:
                 $direccion = DireccionCarrera::find($user->direccion_id);
                 session()->put('direccion', $direccion ?? '');
 
+                $estudiantes = Estudiantes::where('direccion_id', $user->direccion_id)->count();
+                $mentores = MentorIndustrial::whereHas('estudiantes', function ($query) use ($user) {
+                    $query->where('direccion_id', $user->direccion_id);
+                })->count();
+
                 $registrosEstudiantes = Estudiantes::with('academico', 'asesorin')
+                    ->where('direccion_id', $user->direccion_id)
                     ->whereDate('fin_dual', '<=', $hoy->copy()->addDays(15))
                     ->where('activo', true)
                     ->get();
 
-                $registrosConvenio = Empresa::with('asesorin')
+                $registrosConvenio = Empresa::whereHas('direccionesCarrera', function ($q) use ($user) {
+                    $q->where('direccion_id', $user->direccion_id);
+                })
                     ->whereDate('fin_conv', '<=', $hoy->copy()->addDays(15))
                     ->get();
-                $hayAlertas = $registrosEstudiantes->count() > 0 || $registrosConvenio->count() > 0;
+
+                $hayAlertas = $registrosEstudiantes->isNotEmpty() || $registrosConvenio->isNotEmpty();
 
                 return view('dashboard', compact(
                     'estudiantes',

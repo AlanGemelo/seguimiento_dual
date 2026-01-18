@@ -102,12 +102,12 @@
                             <span>Anexo 5.1 – Plan de Formación</span>
 
                             <div class="btn-group">
-                                <a href="/descargar/Anexo 5.1 Plan de Formación.docx" class="btn btn-sm btn-info"
+                                <a href="descargar/Anexo 5.1 Plan de Formación.docx" class="btn btn-sm btn-info"
                                     data-bs-toggle="tooltip" title="Descargar Word">
                                     <i class="mdi mdi-file-word"></i>
                                 </a>
 
-                                <a href="/descargar/5.1 Plan de Formación.pdf" class="btn btn-sm btn-danger"
+                                <a href="descargar/5.1 Plan de Formación.pdf" class="btn btn-sm btn-danger"
                                     data-bs-toggle="tooltip" title="Descargar PDF">
                                     <i class="mdi mdi-file-pdf"></i>
                                 </a>
@@ -119,11 +119,11 @@
                             <span>Anexo 5.4 – Reporte de Actividades</span>
 
                             <div class="btn-group">
-                                <a href="/descargar/Anexo 5.4 Reporte de Actividades.docx" class="btn btn-sm btn-info">
+                                <a href="descargar/Anexo 5.4 Reporte de Actividades.docx" class="btn btn-sm btn-info">
                                     <i class="mdi mdi-file-word"></i>
                                 </a>
 
-                                <a href="/descargar/anexo 5.4 .pdf" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
+                                <a href="descargar/anexo 5.4 .pdf" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
                                     title="Descargar PDF">
                                     <i class="mdi mdi-file-pdf"></i>
                                 </a>
@@ -135,11 +135,11 @@
                             <span>Anexo 5.5 – Seguimiento y Evaluación</span>
 
                             <div class="btn-group">
-                                <a href="/descargar/Anexo 5.5 Seguimiento y Evaluación.docx" class="btn btn-sm btn-info">
+                                <a href="descargar/Anexo 5.5 Seguimiento y Evaluación.docx" class="btn btn-sm btn-info">
                                     <i class="mdi mdi-file-word"></i>
                                 </a>
 
-                                <a href="/descargar/anexo 5.5.pdf" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
+                                <a href="descargar/anexo 5.5.pdf" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
                                     title="Descargar PDF">
                                     <i class="mdi mdi-file-pdf"></i>
                                 </a>

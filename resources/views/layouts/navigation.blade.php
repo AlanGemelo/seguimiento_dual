@@ -76,28 +76,38 @@
                         <a class="nav-link-custom {{ request()->routeIs('academicos.*') ? 'active' : '' }}"
                             href="{{ route('academicos.index') }}">
                             <i class="mdi mdi-teach"></i>
-                            <span>Mentores Académicos</span>
+                            <span class="linea">Mentores</span>
+                            <span class="linea">Académicos</span>
                         </a>
                     </li>
                     <li class="nav-item-custom dropdown">
                         <a class="nav-link-custom dropdown-toggle" href="#" id="empresasDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="mdi mdi-factory"></i><span>Unidades Económicas</span>
+                            <i class="mdi mdi-factory"></i>
+                            <span class="linea">Unidades</span>
+                            <span class="linea">Económicas</span>
                         </a>
                         <ul class="dropdown-menu text-center" aria-labelledby="empresasDropdown">
-                            <li><a class="dropdown-item" href="{{ route('empresas.index') }}"><i
-                                        class="mdi mdi-domain"></i> Unidades Económicas</a>
+                            <li><a class="dropdown-item" href="{{ route('empresas.index') }}">
+                                    <i class="mdi mdi-domain"></i>
+                                    Unidades Económicas
+                                </a>
                             </li>
-                            <li><a class="dropdown-item" href="{{ route('mentores.index') }}"><i
-                                        class="mdi mdi-account-tie"></i> Mentores
-                                    Industriales</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('mentores.index') }}">
+                                    <i class="mdi mdi-account-tie"></i>
+                                    Mentores Industriales
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                         <li class="nav-item-custom dropdown">
                             <a class="nav-link-custom dropdown-toggle" href="#" id="direccionDropdown"
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="mdi mdi-map-marker"></i><span>Direcciones de Carrera</span>
+                                <i class="mdi mdi-map-marker"></i>
+                                <span class="linea">Direcciones </span>
+                                <span class="linea">de Carrera</span>
                             </a>
                             <ul class="dropdown-menu text-center" aria-labelledby="direccionDropdown">
                                 @if (Auth::user()->rol_id === 1)

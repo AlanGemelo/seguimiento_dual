@@ -6,16 +6,22 @@
 }
 
 .navbar {
-        backdrop-filter: blur(10px);
-        height: 100px;/* Ajusta la altura del navbar */
-    }
+  backdrop-filter: blur(10px);
+  height: 100px;
+  /* Ajusta la altura del navbar */
+}
 
-    .navbar-brand img {
-        height: 100px; /* Ajusta la altura del logo */
-        width: 150px;
-    }
+nav .linea {
+  display: block;
+}
 
-/*Contenedor principal del navbar */    
+.navbar-brand img {
+  height: 100px;
+  /* Ajusta la altura del logo */
+  width: 150px;
+}
+
+/*Contenedor principal del navbar */
 .navbar-collapse {
   justify-content: center;
 }
@@ -30,31 +36,32 @@
 
 /* Estilo para el enlace */
 .nav-link-custom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    text-decoration: none; 
-    color: #333; 
-    transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.3s ease;
 }
 
 /* Estilo para el icono */
 .nav-link-custom .mdi {
-    font-size: 2rem !important;
-    color: #006837 !important;
+  font-size: 2rem !important;
+  color: #006837 !important;
 }
 
 /* Estilo para el texto */
 .nav-link-custom span {
-    font-size: 0.85rem ;
-    line-height: 1.2;
-    font-weight: 600;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  font-weight: 600;
 }
 
 /* Efecto hover para el texto */
 .nav-link-custom:hover span {
-  color: #006837 !important; /* Verde al pasar el mouse */
+  color: #006837 !important;
+  /* Verde al pasar el mouse */
   font-weight: 600;
 }
 
@@ -74,13 +81,15 @@
   height: 90px;
   width: 90px;
   object-fit: cover;
-  border: 3px solid #006837; /* Borde verde */
+  border: 3px solid #006837;
+  /* Borde verde */
   transition: all 0.3s ease;
 }
 
 /* Imagen grande en el dropdown */
 .dropdown-header img.rounded-circle {
-  height: 120px; /* Un poco más grande en el menú desplegable */
+  height: 120px;
+  /* Un poco más grande en el menú desplegable */
   width: 120px;
   object-fit: cover;
   border: 3px solid #006837;
@@ -127,19 +136,19 @@
   position: relative;
 }
 
-.dropdown-submenu > .dropdown-menu {
+.dropdown-submenu>.dropdown-menu {
   top: 0;
   left: 100%;
-  margin-top: -0.5rem ;
-  margin-left: 0.1rem ;
+  margin-top: -0.5rem;
+  margin-left: 0.1rem;
   min-width: 280px;
-  display: none ;
-  opacity: 0 ;
+  display: none;
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 /* Mostrar submenús */
-.dropdown-submenu:hover > .dropdown-menu {
+.dropdown-submenu:hover>.dropdown-menu {
   display: block;
   opacity: 1;
 }
@@ -152,7 +161,7 @@
 }
 
 /* Flecha indicadora */
-.dropdown-submenu > a::after {
+.dropdown-submenu>a::after {
   content: "→" !important;
   margin-left: 0.5rem;
   font-weight: bold;
@@ -183,11 +192,34 @@
   box-shadow: 0 0 10px rgba(0, 104, 55, 0.3);
 }
 
+@media (max-width: 1230px) {
+  .nav-link-custom .mdi {
+    font-size: 2rem !important;
+    color: #006837 !important;
+  }
+
+  .dropdown-submenu>.dropdown-menu {
+    left: auto;
+    right: 100%;
+    margin-left: 0;
+    margin-right: 0.1rem;
+  }
+
+  /* Cambiamos la flecha */
+  .dropdown-submenu>a::after {
+    content: "←" !important;
+  }
+}
+
+/*Version para desktop pequeños*/
+
 /* Versión responsive para móviles */
 
-@media (max-width: 768px) {
+@media (max-width: 1130px) {
   .navbar-nav {
     width: 100%;
+    background-color: #ffffff;
+    padding: 0.5rem;
   }
 
   .nav-item-custom {
@@ -200,7 +232,7 @@
     height: auto;
   }
 
-   .nav-link-custom {
+  .nav-link-custom {
     flex-direction: row;
     justify-content: flex-start;
   }
@@ -210,7 +242,7 @@
     margin-right: 15px;
     margin-bottom: 0;
   }
-  
+
   .nav-link-custom span {
     text-align: left;
     font-size: 1rem;
@@ -238,8 +270,8 @@
     border: none;
     box-shadow: none;
   }
-  
-  .dropdown-submenu > .dropdown-menu {
+
+  .dropdown-submenu>.dropdown-menu {
     left: 15px;
     margin-left: 0;
   }

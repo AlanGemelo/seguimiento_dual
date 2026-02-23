@@ -16,17 +16,19 @@
                             <div class="form-group">
                                 <label for="name">Nombre <span class="text-danger">*</span></label>
                                 <input type="text" data-tipo="text" class="form-control form-control-lg" id="name"
-                                    placeholder="" name="name" value="{{ $direccion->name, old('name') }}">
+                                    placeholder="" name="name" value="{{ old('name', $direccion->name) }}">
                             </div>
                             <div class="form-group">
                                 <label for="email">Correo Electronico <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control form-control-lg" id="email" placeholder=""
-                                    name="email" value="{{ $direccion->email, old('email') }}">
+                                    name="email" value="{{ old('email', $direccion->email) }}">
                             </div>
+
                             <div class="mt-3">
                                 <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                     type="submit">Actualizar
                                 </button>
+
                                 <x-buttons.cancel-button url="{{ route('direcciones.index') }}" />
                             </div>
                         </form>

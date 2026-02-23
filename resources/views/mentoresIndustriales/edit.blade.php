@@ -26,7 +26,7 @@
                                         <label for="titulo" class="form-label">Grado académico</label>
                                         <input type="text" data-tipo="text" class="form-control" id="titulo"
                                             placeholder="Ej. Ingeniero en TIC" name="titulo"
-                                            value="{{ $mentorIndustrial->titulo, old('titulo') }}">
+                                            value="{{ old('titulo', $mentorIndustrial->titulo) }}">
                                         @error('titulo')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror

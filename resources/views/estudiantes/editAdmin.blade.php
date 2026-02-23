@@ -27,7 +27,8 @@
                                         <label for="matricula" class="form-label">Matrícula <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" data-tipo="numbers" class="form-control" id="matricula"
-                                            name="matricula" value="{{ $estudiante->matricula, old('matricula') }}">
+                                            name="matricula" value="{{ old('matricula', $estudiante->matricula) }}">
+
                                         @error('matricula')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -47,21 +48,22 @@
                                                 class="text-danger">*</span></label>
                                         <input type="text" data-tipo="text" class="form-control uppercase" id="name"
                                             placeholder="Ingrese su(s) nombre(s)" name="name"
-                                            value="{{ $estudiante->name, old('name') }}">
+                                            value="{{ old('name', $estudiante->name) }}">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="apellidoP" class="form-label">Apellido Paterno <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" data-tipo="text" class="form-control uppercase" id="apellidoP"
                                             placeholder="Ingrese su apellido paterno" name="apellidoP"
-                                            value="{{ $estudiante->apellidoP, old('apellidoP') }}">
+                                            value="{{ old('apellidoP', $estudiante->apellidoP) }}">
                                     </div>
+
                                     <div class="col-md-4 mb-3">
                                         <label for="apellidoM" class="form-label">Apellido Materno <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" data-tipo="text" class="form-control uppercase" id="apellidoM"
                                             placeholder="Ingrese su apellido materno" name="apellidoM"
-                                            value="{{ $estudiante->apellidoM, old('apellidoM') }}">
+                                            value="{{ old('apellidoM', $estudiante->apellidoM) }}">
                                     </div>
                                 </div>
 
@@ -70,7 +72,7 @@
                                         <label for="curp" class="form-label">CURP <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" data-tipo="curp" class="form-control uppercase" id="curp"
-                                            name="curp" value="{{ $estudiante->curp, old('curp') }}">
+                                            name="curp" value="{{ old('curp', $estudiante->curp) }}">
                                         @error('curp')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -80,7 +82,7 @@
                                         <label for="fecha_na" class="form-label">Fecha de Nacimiento <span
                                                 class="text-danger">*</span></label>
                                         <input type="date" class="form-control" name="fecha_na" id="fecha_na"
-                                            value="{{ $estudiante->fecha_na, old('fecha_na') }}">
+                                            value="{{ old('fecha_na', $estudiante->fecha_na) }}">
                                         @error('fecha_na')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -136,7 +138,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="inicio" class="form-label">Fecha de Ingreso </label>
                                     <input type="date" class="form-control" name="inicio" id="inicio"
-                                        value="{{ $estudiante->inicio, old('inicio') }}">
+                                        value="{{ old('inicio', $estudiante->inicio) }}">
                                     @error('inicio')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -145,7 +147,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="fin" class="form-label">Fecha de Egreso </label>
                                     <input type="date" class="form-control" name="fin" id="fin"
-                                        value="{{ $estudiante->fin, old('fin') }}">
+                                        value="{{ old('fin', $estudiante->fin) }}">
                                     @error('fin')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -196,7 +198,7 @@
                                     <label for="nombre_proyecto" class="form-label">Nombre del Proyecto </label>
                                     <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
                                         placeholder="Nombre del Proyecto" name="nombre_proyecto"
-                                        value="{{ $estudiante->nombre_proyecto, old('nombre_proyecto') }}">
+                                        value="{{ old('nombre_proyecto', $estudiante->nombre_proyecto) }}">
                                     @error('nombre_proyecto')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror

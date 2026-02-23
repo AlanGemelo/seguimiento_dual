@@ -56,7 +56,7 @@
                     @forelse ($candidatos as $candidato)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $estudiante->matricula }}</td>
+                            <td>{{ $candidato->matricula }}</td>
                             <td>
                                 {{ $candidato->name }}
                                 {{ $candidato->apellidoP }}

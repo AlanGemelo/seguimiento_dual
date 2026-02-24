@@ -2,7 +2,6 @@
 @section('title', 'Editar Director de Carrera')
 
 @section('content')
-
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">

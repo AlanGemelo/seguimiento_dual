@@ -22,20 +22,27 @@
             <input type="hidden" name="tab" value="dual">
 
             <div class="input-group">
-                <input type="text" name="search" class="form-control" style ="height: 40px;"
+                <input type="text" name="search" class="form-control" style="height: 40px;"
                     value="{{ $search ?? '' }}" placeholder="Buscar estudiante dual...">
 
+                <!-- Botón para enviar la búsqueda -->
+                <button type="submit" class="btn btn-primary d-flex align-items-center"
+                    style="gap: 5px; height: 40px; font-weight: 500;">
+                    <i class="mdi mdi-magnify"></i> Buscar
+                </button>
+
                 @if (!empty($search))
+                    <!-- Botón para limpiar búsqueda -->
                     <a href="{{ route('estudiantes.index', ['tab' => 'dual']) }}"
-                        class="btn btn-outline-secondary d-flex justify-content-center align-items-center"
-                        title="Limpiar búsqueda" style="width: 40px; height: 40px;">
-                        <i class="mdi mdi-close"></i>
+                        class="btn btn-outline-secondary d-flex align-items-center"
+                        style="gap: 5px; height: 40px; font-weight: 500; background: #f4b400; color: #2e2e2e;"
+                        title="Limpiar búsqueda">
+                        <i class="mdi mdi-broom"></i> Limpiar búsqueda
                     </a>
                 @endif
             </div>
         </form>
     </div>
-
 
 
     {{-- Tabla --}}

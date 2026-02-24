@@ -1,7 +1,4 @@
-{{-- ===============================
-|  TAB: ESTUDIANTES ELIMINADOS
-|  Estado: Histórico
-|=============================== --}}
+{{-- TAB: ESTUDIANTES ELIMINADOS --}}
 
 <div class="row">
 
@@ -14,24 +11,35 @@
     </div>
 
     {{-- Buscador --}}
+
     <div class="col-md-6 mb-3">
         <form method="GET" action="{{ route('estudiantes.index') }}">
             <input type="hidden" name="tab" value="eliminados">
 
             <div class="input-group">
+                <!-- Input de búsqueda -->
                 <input type="text" name="search_eliminados" class="form-control"
-                    value="{{ $search_eliminados ?? '' }}" placeholder="Buscar estudiante eliminado...">
+                    value="{{ $searchEliminados ?? '' }}" placeholder="Buscar registro eliminado..."
+                    style="height: 40px";>
 
-                @if (!empty($search_eliminados))
+                <!-- Botón para enviar la búsqueda -->
+                <button type="submit" class="btn btn-primary d-flex align-items-center"
+                    style="gap: 5px; height: 40px; font-weight: 500;">
+                    <i class="mdi mdi-magnify"></i> Buscar
+                </button>
+
+                <!-- Botón para limpiar búsqueda -->
+                @if (!empty($searchEliminados))
                     <a href="{{ route('estudiantes.index', ['tab' => 'eliminados']) }}"
-                        class="btn btn-outline-secondary d-flex align-items-center" title="Limpiar búsqueda">
-                        <i class="mdi mdi-close"></i>
+                        class="btn btn-outline-secondary d-flex align-items-center"
+                        style="gap: 5px; height: 40px; font-weight: 500; background: #f4b400; color: #2e2e2e;""
+                        title="Limpiar búsqueda">
+                        <i class="mdi mdi-broom"></i> Limpiar búsqueda
                     </a>
                 @endif
             </div>
         </form>
     </div>
-
 
     {{-- Tabla --}}
     <div class="col-12">

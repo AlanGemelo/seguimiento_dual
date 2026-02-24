@@ -16,7 +16,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -73,7 +72,6 @@ class EstudiantesController extends Controller
         $searchAcademicos = $request->input('search_academicos');
         $searchEliminados = $request->input('search_eliminados');
 
-        $pageEstudiantes = $request->input('page_estudiantes', 1);
         $pageCandidatos = $request->input('page_candidatos', 1);
         $pageAcademicos = $request->input('page_academicos', 1);
         $pageEliminados = $request->input('page_eliminados', 1);
@@ -81,36 +79,55 @@ class EstudiantesController extends Controller
         // $direccionId = session('direccion')->id ?? null;
         $direccionId = session('direccion')?->id ?? null;
 
+        // Filtrado y busqueda de tab Duales
         $query = Estudiantes::with('academico', 'carrera', 'usuario')
             ->where('activo', true)
             ->where('direccion_id', $direccionId)
             ->orderBy('name', 'asc');
 
-        if ($request->has('search') && ! empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%'.$search.'%');
+                $q->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('apellidoP', 'like', '%'.$search.'%')
+                    ->orWhere('apellidoM', 'like', '%'.$search.'%')
+                    ->orWhere('matricula', 'like', '%'.$search.'%');
             });
         }
 
         $estudiantes = $query->paginate(10);
 
-        Log::info('El ID de dirección es: '.$direccionId);
-        $candidatos = Estudiantes::where('activo', false)
-            ->where('name', 'LIKE', '%'.$searchCandidatos.'%')
+        // Filtrado y busqueda de tab Candidatos
+        $candidatosQuery = Estudiantes::where('activo', false)
             ->where('direccion_id', $direccionId)
-            ->orderBy('name', 'asc')
-            ->paginate(10, ['*'], 'page_candidatos', $pageCandidatos);
+            ->orderBy('name', 'asc');
 
-        $academico = User::where('rol_id', 2)
-            ->where('name', 'LIKE', '%'.$searchAcademicos.'%')
-            ->where('direccion_id', $direccionId)
-            ->paginate(10, ['*'], 'page_academicos', $pageAcademicos);
+        if (! empty($searchCandidatos)) {
+            $candidatosQuery->where(function ($q) use ($searchCandidatos) {
+                $q->where('name', 'like', '%'.$searchCandidatos.'%')
+                    ->orWhere('apellidoP', 'like', '%'.$searchCandidatos.'%')
+                    ->orWhere('apellidoM', 'like', '%'.$searchCandidatos.'%')
+                    ->orWhere('matricula', 'like', '%'.$searchCandidatos.'%');
+            });
+        }
 
-        $estudiantesDeleted = Estudiantes::where('direccion_id', $direccionId)
-            ->with('academico', 'carrera')->onlyTrashed()
-            ->where('name', 'LIKE', '%'.$searchEliminados.'%')
-            ->orderBy('deleted_at', 'desc')
-            ->paginate(10, ['*'], 'page_eliminados', $pageEliminados);
+        $candidatos = $candidatosQuery->paginate(10, ['*'], 'page_candidatos', $pageCandidatos);
+
+        // Filtrado y busqueda de tab Eliminar
+        $deletedQuery = Estudiantes::where('direccion_id', $direccionId)
+            ->with('academico', 'carrera')
+            ->onlyTrashed()
+            ->orderBy('deleted_at', 'desc');
+
+        if (! empty($searchEliminados)) {
+            $deletedQuery->where(function ($q) use ($searchEliminados) {
+                $q->where('name', 'like', '%'.$searchEliminados.'%')
+                    ->orWhere('apellidoP', 'like', '%'.$searchEliminados.'%')
+                    ->orWhere('apellidoM', 'like', '%'.$searchEliminados.'%')
+                    ->orWhere('matricula', 'like', '%'.$searchEliminados.'%');
+            });
+        }
+
+        $estudiantesDeleted = $deletedQuery->paginate(10, ['*'], 'page_eliminados', $pageEliminados);
 
         $situation = [
             ['id' => 0, 'name' => 'Reprobacion'],
@@ -130,7 +147,6 @@ class EstudiantesController extends Controller
             'estudiantesDeleted',
             'situation',
             'becas',
-            'academico',
             'candidatos',
             'search',
             'searchCandidatos',

@@ -1,3 +1,3 @@
-<a href="{{ $url }}" class="btn btn-facebook rounded-pill">
-    <i class="mdi mdi-eye btn-icon-prepend"></i>
+<a href="{{ $url }}" class="btn btn-sm btn-facebook" title="{{ $title ?? 'Ver detalle' }}">
+    <i class="mdi mdi-eye"></i>
 </a>

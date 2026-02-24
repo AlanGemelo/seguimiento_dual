@@ -1,7 +1,4 @@
-{{-- ===============================
-|  TAB: ESTUDIANTES DUAL
-|  Estado: Aceptados
-|=============================== --}}
+{{-- TAB: ESTUDIANTES DUAL --}}
 
 <div class="row">
 
@@ -25,8 +22,8 @@
             <input type="hidden" name="tab" value="dual">
 
             <div class="input-group">
-                <input type="text" name="search" class="form-control" style ="height: 40px;" value="{{ $search ?? '' }}"
-                    placeholder="Buscar estudiante dual...">
+                <input type="text" name="search" class="form-control" style ="height: 40px;"
+                    value="{{ $search ?? '' }}" placeholder="Buscar estudiante dual...">
 
                 @if (!empty($search))
                     <a href="{{ route('estudiantes.index', ['tab' => 'dual']) }}"
@@ -76,22 +73,18 @@
                             <td class="text-center">
 
                                 {{-- Ver --}}
-                                <a href="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                    class="btn btn-sm btn-facebook" title="Ver estudiante">
-                                    <i class="mdi mdi-eye"></i>
-                                </a>
-
+                                <x-buttons.show-button :url="route(
+                                    'estudiantes.show',
+                                    Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula),
+                                )" />
                                 {{-- Editar --}}
-                                <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                    class="btn btn-sm btn-warning" title="Editar estudiante">
-                                    <i class="mdi mdi-account-edit"></i>
-                                </a>
-
+                                <x-buttons.edit-button
+                                    url="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
+                                    title="Editar Dual" />
                                 {{-- Eliminar --}}
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal1"
-                                        onclick="deleteEstudiante({{ $estudiante->matricula }},5)">
+                                    <button class="btn btn-sm btn-danger"
+                                        onclick="deleteEstudiante('{{ $estudiante->matricula }}')">
                                         <i class="mdi mdi-delete"></i>
                                     </button>
                                 @endif

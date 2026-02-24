@@ -109,6 +109,7 @@ class EstudiantesController extends Controller
         $estudiantesDeleted = Estudiantes::where('direccion_id', $direccionId)
             ->with('academico', 'carrera')->onlyTrashed()
             ->where('name', 'LIKE', '%'.$searchEliminados.'%')
+            ->orderBy('deleted_at', 'desc')
             ->paginate(10, ['*'], 'page_eliminados', $pageEliminados);
 
         $situation = [
@@ -874,16 +875,25 @@ class EstudiantesController extends Controller
     /**
      * Elimina un estudiante.
      */
-    public function destroy($id, Request $request)
+    public function destroy($matricula, Request $request)
     {
 
-        $estudiante = Estudiantes::find($id);
+        $request->validate([
+            'status' => 'required|in:0,1,2,3',
+        ]);
+
+        $estudiante = Estudiantes::where('matricula', $matricula)->firstOrFail();
+
+        // Actualiza el status antes de eliminar
         $estudiante->update([
             'status' => $request->status,
         ]);
+
+        // Elimina el registro
         $estudiante->delete();
 
-        return redirect()->route('estudiantes.index')->with('status', 'Estudiante eliminado');
+        return redirect()->route('estudiantes.index', ['tab' => 'eliminados'])
+            ->with('success', 'Estudiante eliminado correctamente.');
     }
 
     /**
@@ -902,9 +912,19 @@ class EstudiantesController extends Controller
     public function restoreEstudiante($id)
     {
         $elemento = Estudiantes::withTrashed()->where('matricula', $id)->first();
+
+        if (! $elemento) {
+            return redirect()->route('estudiantes.index')
+                ->with('error', 'Estudiante no encontrado.');
+        }
+
         $elemento->restore();
 
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante Restaurado.');
+        // Determinar la pestaña según tipo
+        $tab = $elemento->tipo == 0 ? 'dual' : 'candidatos';
+
+        return redirect()->route('estudiantes.index', ['tab' => $tab])
+            ->with('success', 'Estudiante restaurado correctamente.');
     }
 
     /**
@@ -917,7 +937,9 @@ class EstudiantesController extends Controller
         $estudiante->forceDelete();
 
         //
-        return redirect()->route('estudiantes.index')->with('success', 'Estudiante Eliminado Correctamente.');
+        return redirect()
+            ->route('estudiantes.index', ['tab' => 'eliminados'])
+            ->with('success', 'Estudiante Eliminado Correctamente.');
     }
 
     public function exportPdf($matricula)

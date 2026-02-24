@@ -46,7 +46,6 @@
                         <th>Matricula</th>
                         <th>Candidato</th>
                         <th>Carrera</th>
-                        <th>Email</th>
                         <th>Cuatrimestre</th>
                         <th class="text-center">Acciones</th>
                     </tr>
@@ -65,19 +64,13 @@
 
                             <td>{{ $candidato->carrera->nombre }}</td>
 
-                            <td>
-                                {{ $candidato->usuario?->email ?? 'Sin correo' }}
-                            </td>
-
                             <td>{{ $candidato->cuatrimestre }}</td>
 
                             <td class="text-center">
 
                                 {{-- Ver --}}
-                                <a href="{{ route('estudiantes.showC', Vinkla\Hashids\Facades\Hashids::encode($candidato->matricula)) }}"
-                                    class="btn btn-sm btn-facebook" title="Ver candidato">
-                                    <i class="mdi mdi-eye"></i>
-                                </a>
+                                <x-buttons.show-button
+                                    url="{{ route('estudiantes.showC', Vinkla\Hashids\Facades\Hashids::encode($candidato->matricula)) }}" />
 
                                 {{-- Aprobar (sube a Dual) --}}
                                 <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($candidato->matricula)) }}"
@@ -87,11 +80,11 @@
 
                                 {{-- Eliminar --}}
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal1"
-                                        onclick="deleteEstudiante({{ $candidato->matricula }},5)">
+                                    <button class="btn btn-sm btn-danger"
+                                        onclick="deleteEstudiante('{{ $candidato->matricula }}')">
                                         <i class="mdi mdi-delete"></i>
                                     </button>
+                                    <x-buttons.delete-button />
                                 @endif
 
                             </td>

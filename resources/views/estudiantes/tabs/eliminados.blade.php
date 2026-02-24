@@ -43,7 +43,6 @@
                         <th>#</th>
                         <th>Matrícula</th>
                         <th>Estudiante</th>
-                        <th>CURP</th>
                         <th>Cuatrimestre</th>
                         <th>Motivo</th>
                         <th class="text-center">Acciones</th>
@@ -64,23 +63,22 @@
                                 {{ $deleted->apellidoP }}
                                 {{ $deleted->apellidoM }}
                             </td>
-
-                            <td>{{ $deleted->curp }}</td>
                             <td>{{ $deleted->cuatrimestre }}</td>
                             <td>{{ $deleted->status_text }}</td>
 
                             <td class="text-center">
 
                                 {{-- Restaurar --}}
-                                <button class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal3"
-                                    onclick="restoreRegistro({{ $deleted->matricula }})">
+                                <button class="btn btn-sm btn-success"
+                                    onclick="restoreEstudiante({{ $deleted->matricula }})">
                                     <i class="mdi mdi-backup-restore"></i>
                                 </button>
 
                                 {{-- Eliminar permanente --}}
+
                                 <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal2" onclick="destroyMentor({{ $deleted->matricula }})">
+                                    data-bs-target="#restoreEstudiante"
+                                    onclick="destroyPermanent({{ $deleted->matricula }})">
                                     <i class="mdi mdi-delete-forever"></i>
                                 </button>
 

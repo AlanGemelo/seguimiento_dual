@@ -94,7 +94,7 @@ class MentorAcademicoController extends Controller
                 'search_eliminados' => $search_eliminados,
             ]);
 
-        return view('mentoresacademicos.indexT', compact(
+        return view('mentoresacademicos.index', compact(
             'mentores',
             'mentoresDeleted',
             'search_mentores',

@@ -296,6 +296,8 @@
         </div>
     </div>
 @endsection
+
+{{-- Section de scripts JS --}}
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {

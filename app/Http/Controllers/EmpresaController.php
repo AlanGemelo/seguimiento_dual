@@ -2,26 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anexo2_1;
 use App\Models\DireccionCarrera;
 use App\Models\Empresa;
-use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
-use App\Models\Anexo2_1;
-use Carbon\Carbon;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Vinkla\Hashids\Facades\Hashids;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Arr;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use PhpParser\Node\Stmt\TryCatch;
+use Vinkla\Hashids\Facades\Hashids;
 
 class EmpresaController extends Controller
 {
@@ -30,33 +24,87 @@ class EmpresaController extends Controller
         $this->middleware('admin');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        //Obtiene la cantidad de estudiantes asignados
-        $empresas = Empresa::where('status', 1)
+        $activeTab = $request->input('tab', 'unidades_registradas');
+
+        $searchUE = $request->input('search_ue');
+        $searchUEInteresadas = $request->input('search_ue_interesadas');
+        $searchBajasTemporales = $request->input('search_bajas_temporales');
+
+        // UNIDADES REGISTRADAS (status = 1)
+
+        $empresasQuery = Empresa::where('status', 1)
             ->withCount('estudiantes')
-            ->get();
+            ->orderBy('nombre', 'asc');
 
-        // $empresas = Empresa::where('status', 1)->get();              // Empresas activas
-        $empresasInteresadas = Empresa::where('status', 0)->get();  // Empresas interesadas
-        $empresasSuspendidas = Empresa::where('status', 2)->get();  // Empresas con baja temporal (suspendidas)
+        if (! empty($searchUE)) {
+            $empresasQuery->where(function ($q) use ($searchUE) {
+                $q->where('nombre', 'LIKE', "%{$searchUE}%")
+                    ->orWhere('email', 'LIKE', "%{$searchUE}%")
+                    ->orWhere('telefono', 'LIKE', "%{$searchUE}%");
+            });
+        }
 
-        return view('empresas.index', compact('empresas', 'empresasInteresadas', 'empresasSuspendidas'));
+        $empresas = $empresasQuery->paginate(10)->appends($request->all());
+
+        // UNIDADES INTERESADAS
+        $empresasInteresadasQuery = Empresa::where('status', 0)
+            ->orderBy('nombre', 'asc');
+
+        if (! empty($searchUEInteresadas)) {
+            $empresasInteresadasQuery->where(function ($q) use ($searchUEInteresadas) {
+                $q->where('nombre', 'LIKE', "%{$searchUEInteresadas}%")
+                    ->orWhere('email', 'LIKE', "%{$searchUEInteresadas}%")
+                    ->orWhere('telefono', 'LIKE', "%{$searchUEInteresadas}%");
+            });
+        }
+
+        $empresasInteresadas = $empresasInteresadasQuery
+            ->paginate(10, ['*'], 'page_interesadas')
+            ->appends($request->all());
+
+        // BAJAS TEMPORALES
+        $empresasSuspendidasQuery = Empresa::where('status', 2)
+            ->orderBy('fecha_baja', 'desc');
+
+        if (! empty($searchBajasTemporales)) {
+            $empresasSuspendidasQuery->where(function ($q) use ($searchBajasTemporales) {
+                $q->where('nombre', 'LIKE', "%{$searchBajasTemporales}%")
+                    ->orWhere('email', 'LIKE', "%{$searchBajasTemporales}%")
+                    ->orWhere('telefono', 'LIKE', "%{$searchBajasTemporales}%");
+            });
+        }
+
+        $empresasSuspendidas = $empresasSuspendidasQuery
+            ->paginate(10, ['*'], 'page_bajas')
+            ->appends($request->all());
+
+        return view('empresas.indext', compact(
+            'empresas',
+            'empresasInteresadas',
+            'empresasSuspendidas',
+            'searchUE',
+            'searchUEInteresadas',
+            'searchBajasTemporales',
+            'activeTab'
+        ));
     }
-
 
     public function interesadas()
     {
         $empresas = Empresa::where('status', 0)->get();
+
         return view('empresas.interesadas', compact('empresas'));
     }
 
     public function create(Request $request)
     {
         $direcciones = DireccionCarrera::get();
-        //dd($direcciones);// Asegúrate de obtener las direcciones
-        //$direcciones = DireccionCarrera::where('id',session('direccion')->id)->get();
+        // dd($direcciones);// Asegúrate de obtener las direcciones
+        // $direcciones = DireccionCarrera::where('id',session('direccion')->id)->get();
         $anexo2_1 = Anexo2_1::find($request->anexo2_1_id);
+
         return view('empresas.create', compact('direcciones'));
     }
 
@@ -64,10 +112,10 @@ class EmpresaController extends Controller
     {
 
         $ue_size = array_column(config('ue_size.tamanos'), 'tamano_eu');
-        //dd($ue_size);
+        // dd($ue_size);
         $data = $request->validate([
             'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
+            'email' => 'required|email|unique:empresas,email,'.$empresa->id,
             'telefono' => 'required|string|size:10',
             'inicio_conv' => 'required|date',
             'fin_conv' => 'required|date',
@@ -92,22 +140,21 @@ class EmpresaController extends Controller
 
         if ($request->hasFile('ine')) {
             $file = $request->file('ine');
-            $filename = "{$fecha}_{$empresaNombre}_ine." . $file->getClientOriginalExtension();
+            $filename = "{$fecha}_{$empresaNombre}_ine.".$file->getClientOriginalExtension();
             $data['ine'] = $file->storeAs('empresas/documentos/ine', $filename, 'public');
         }
 
         if ($request->hasFile('convenioA')) {
             $file = $request->file('convenioA');
-            $filename = "{$fecha}_{$empresaNombre}_convenioA." . $file->getClientOriginalExtension();
+            $filename = "{$fecha}_{$empresaNombre}_convenioA.".$file->getClientOriginalExtension();
             $data['convenioA'] = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
         }
 
         if ($request->hasFile('convenioMA')) {
             $file = $request->file('convenioMA');
-            $filename = "{$fecha}_{$empresaNombre}_convenioMA." . $file->getClientOriginalExtension();
+            $filename = "{$fecha}_{$empresaNombre}_convenioMA.".$file->getClientOriginalExtension();
             $data['convenioMA'] = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
         }
-
 
         $empresa->update(Arr::except($data, ['direcciones_ids']));
 
@@ -136,7 +183,7 @@ class EmpresaController extends Controller
             'convenioMA' => 'required|file|mimes:pdf,jpeg,png|max:5120',
         ]);
 
-        //Procesamiento de documentos pdf jpg
+        // Procesamiento de documentos pdf jpg
         $empresaNombre = Str::slug($request->input('nombre'));
         $fecha = now()->format('d-m-Y');
 
@@ -145,13 +192,13 @@ class EmpresaController extends Controller
 
         if ($request->hasFile('convenioA')) {
             $file = $request->file('convenioA');
-            $filename = $fecha . '_' . $empresaNombre . '_convenioA.' . $file->getClientOriginalExtension();
+            $filename = $fecha.'_'.$empresaNombre.'_convenioA.'.$file->getClientOriginalExtension();
             $convenioAPath = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
         }
 
         if ($request->hasFile('convenioMA')) {
             $file = $request->file('convenioMA');
-            $filename = $fecha . '_' . $empresaNombre . '_convenioMA.' . $file->getClientOriginalExtension();
+            $filename = $fecha.'_'.$empresaNombre.'_convenioMA.'.$file->getClientOriginalExtension();
             $convenioMAPath = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
         }
 
@@ -169,7 +216,7 @@ class EmpresaController extends Controller
         ]);
 
         // Asociar direcciones de carrera
-        if (isset($data['direcciones_ids']) && !empty($data['direcciones_ids'])) {
+        if (isset($data['direcciones_ids']) && ! empty($data['direcciones_ids'])) {
             $empresa->direcciones()->sync($data['direcciones_ids']);
         }
 
@@ -185,7 +232,7 @@ class EmpresaController extends Controller
 
         $empresa = Empresa::with('direcciones')->find($id[0]);
 
-        if (!$empresa) {
+        if (! $empresa) {
             return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
         }
 
@@ -202,17 +249,25 @@ class EmpresaController extends Controller
 
         $empresa = Empresa::with('direcciones')->find($id[0]);
 
-        if (!$empresa) {
+        if (! $empresa) {
             return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
         }
 
         return view('empresas.show_establecidas', compact('empresa'));
     }
 
-    public function edit(Empresa $empresa): View
+    public function edit($id): View
     {
+        $decoded = Hashids::decode($id);
+        if (count($decoded) === 0) {
+            abort(404);
+        }
+
+        $empresa = Empresa::findOrFail($decoded[0]);
+
         $tamano_eu = config('ue_size');
-        $direcciones = DireccionCarrera::all(); // Asegúrate de obtener las direcciones
+        $direcciones = DireccionCarrera::all();
+
         return view('empresas.edit', compact('empresa', 'direcciones', 'tamano_eu'));
     }
 
@@ -228,7 +283,7 @@ class EmpresaController extends Controller
             'folio' => 'nullable|string|max:255',
             'direccion' => 'nullable|string|max:255',
             'fecha_registro' => 'nullable|date',
-            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
+            'email' => 'required|email|unique:empresas,email,'.$empresa->id,
             'telefono' => 'required|string|size:10',
             'nombre_representante' => 'required|string|max:255',
             'cargo_representante' => 'required|string|max:255',
@@ -251,19 +306,19 @@ class EmpresaController extends Controller
 
         if ($request->hasFile('ine')) {
             $file = $request->file('ine');
-            $filename = $fecha . '_' . $empresaNombre . '_ine.' . $file->getClientOriginalExtension();
+            $filename = $fecha.'_'.$empresaNombre.'_ine.'.$file->getClientOriginalExtension();
             $inePath = $file->storeAs('empresas/documentos/ine', $filename, 'public');
         }
 
         if ($request->hasFile('convenioA')) {
             $file = $request->file('convenioA');
-            $filename = $fecha . '_' . $empresaNombre . '_convenioA.' . $file->getClientOriginalExtension();
+            $filename = $fecha.'_'.$empresaNombre.'_convenioA.'.$file->getClientOriginalExtension();
             $convenioAPath = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
         }
 
         if ($request->hasFile('convenioMA')) {
             $file = $request->file('convenioMA');
-            $filename = $fecha . '_' . $empresaNombre . '_convenioMA.' . $file->getClientOriginalExtension();
+            $filename = $fecha.'_'.$empresaNombre.'_convenioMA.'.$file->getClientOriginalExtension();
             $convenioMAPath = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
         }
 
@@ -292,8 +347,6 @@ class EmpresaController extends Controller
         return redirect()->route('empresas.index')->with('success', 'Empresa actualizada exitosamente.');
     }
 
-
-
     public function destroy($id)
     {
         try {
@@ -315,12 +368,11 @@ class EmpresaController extends Controller
 
             return redirect()->route('empresas.index')->with('error', 'La empresa no existe.');
         } catch (\Exception $e) {
-            \Log::error('Error al eliminar empresa: ' . $e->getMessage());
-            dd($e);
+            \Log::error('Error al eliminar empresa: '.$e->getMessage());
+
             return redirect()->route('empresas.index')->with('error', 'Ocurrió un error al eliminar la empresa.');
         }
     }
-
 
     public function showJson($id): JsonResponse
     {
@@ -330,18 +382,18 @@ class EmpresaController extends Controller
             return response()->json(['error' => 'ID inválido'], 404);
         }
         $empresa = Empresa::find($decoded[0]);
-        if (!$empresa) {
+        if (! $empresa) {
             return response()->json(['error' => 'Empresa no encontrada'], 404);
         }
+
         return response()->json([
-            'nombre' => $empresa->nombre
+            'nombre' => $empresa->nombre,
         ]);
     }
 
-
     public function downloadPDF(Empresa $empresa)
     {
-        //return response()->json($empresa);
+        // return response()->json($empresa);
         $data = [
             'unidad_economica' => $empresa->unidad_economica,
             'fecha_registro' => $empresa->fecha_registro,
@@ -357,26 +409,28 @@ class EmpresaController extends Controller
         ];
 
         $pdf = Pdf::loadView('empresas.pdf', $data);
-        return $pdf->download('empresa_' . $empresa->id . '.pdf');
+
+        return $pdf->download('empresa_'.$empresa->id.'.pdf');
     }
 
     public function darAlta(Empresa $empresa): View
     {
         $tamano_eu = config('ue_size');
-        //dd($tamano_eu);
+        // dd($tamano_eu);
         $direcciones = DireccionCarrera::all();
+
         return view('empresas.darAlta', compact('empresa', 'direcciones', 'tamano_eu'));
     }
-
 
     public function exportUeiPdf()
     {
         $empresasInteresadas = Empresa::where('status', 0)->get();
         $data = [
-            'empresas' => $empresasInteresadas
+            'empresas' => $empresasInteresadas,
         ];
 
         $pdf = Pdf::loadView('empresas.uei_pdf', $data);
+
         return $pdf->download('uei_interesadas.pdf');
     }
 
@@ -392,7 +446,7 @@ class EmpresaController extends Controller
             'Problemas de calidad o desempeño en la formación',
             'Motivos voluntarios de la empresa',
             'Cambio de domicilio fuera del área de cobertura',
-            'Cambio de giro o actividad económica de la empresa'
+            'Cambio de giro o actividad económica de la empresa',
         ];
 
         $id = Hashids::decode($id);
@@ -400,7 +454,7 @@ class EmpresaController extends Controller
             return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
         }
         $empresa = Empresa::find($id[0]);
-        if (!$empresa) {
+        if (! $empresa) {
             return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
         }
 
@@ -417,14 +471,13 @@ class EmpresaController extends Controller
             'fecha_baja' => 'required|date',
         ]);
         $empresa = Empresa::findOrFail($id[0]);
-        //dd($request->all());
+        // dd($request->all());
         $empresa->update([
             'STATUS' => 2,
             'motivo_baja' => $request->motivo_baja,
             'fecha_baja' => $request->fecha_baja,
             'comentarios_baja' => $request->comentarios,
         ]);
-
 
         return redirect()->route('empresas.index')->with('success', 'La empresa ha sido suspendida temporalmente.');
     }
@@ -437,7 +490,7 @@ class EmpresaController extends Controller
             if (empty($decodedId)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Empresa no encontrada'
+                    'message' => 'Empresa no encontrada',
                 ], 404);
             }
 
@@ -446,7 +499,7 @@ class EmpresaController extends Controller
             if ($empresa->STATUS != 2) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Solo se pueden reactivar empresas suspendidas'
+                    'message' => 'Solo se pueden reactivar empresas suspendidas',
                 ], 400);
             }
 
@@ -454,12 +507,12 @@ class EmpresaController extends Controller
                 'STATUS' => 1,
                 'motivo_baja' => null,
                 'comentarios_baja' => null,
-                'fecha_baja' => null
+                'fecha_baja' => null,
             ]);
 
             return redirect()->route('empresas.index')->with('success', 'La empresa ha sido reactivada temporalmente.');
         } catch (Exception $e) {
-            Log::error('Error al reactivar empresa: ' . $e->getMessage());
+            Log::error('Error al reactivar empresa: '.$e->getMessage());
 
             return redirect()->back()->with('error', 'Ocurrió un error al intentar reactivar la empresa.');
         }

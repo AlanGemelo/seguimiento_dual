@@ -4,6 +4,7 @@
             background-color: transparent; 
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;">
-     {{ $text ?? 'Volver' }}
+            transition: background-color 0.3s, color 0.3s;"
+    data-bs-toggle="tooltip" data-bs-placement="top">
+    {{ $text ?? 'Volver' }}
 </a>

@@ -1,148 +1,65 @@
 @extends('layouts.app')
-@section('title', 'Mentores')
+@section('title', 'Gestión de Mentores Academicos')
+
+@php
+    $activeTab = request('tab', 'mentores');
+@endphp
 
 @section('content')
     <div class="row">
         <div class="col-12 grid-margin">
-            @if (session('status'))
-                <div class="alert alert-success alert-dismissible text-dark" role="alert">
-                    <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
-                        {{ session('status') }}.</span>
-                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-            @if (session('statusError'))
-                <div class="alert alert-danger alert-dismissible text-dark" role="alert">
-                    <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Error</a>.
-                        {{ session('statusError') }}.</span>
-                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
+            <div class="card">
 
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
+                {{-- Header --}}
+                <div class="card-header-adjusted d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Gestión de Mentores Academicos</h5>
+                </div>
 
-                        <div class="card-header-adjusted">
-                            <h6 class="card-title">Lista De Mentores Academicos</h6>
-                            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                <div class="float-end">
-                                    {{-- Button del modal --}}
-                                    <a href="{{ route('academicos.create') }}" class="btn btn-add"
-                                        title="Agregar una nuevo Mentor Academico">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
-                                    </a>
-                                </div>
-                            @endif
+                {{-- Tabs --}}
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="mentoresTabs" role="tablist">
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link {{ $activeTab === 'mentores' ? 'active' : '' }}" data-bs-toggle="tab"
+                                data-bs-target="#mentores" type="button" role="tab">
+                                <i class="mdi mdi-check-circle me-1"></i>
+                                Mentores Academicos
+                            </button>
+                        </li>
+
+                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ $activeTab === 'eliminados' ? 'active' : '' }}"
+                                    data-bs-toggle="tab" data-bs-target="#eliminados" type="button" role="tab">
+                                    <i class="mdi mdi-trash-can me-1"></i>
+                                    Eliminados
+                                </button>
+                            </li>
+                        @endif
+                    </ul>
+
+
+
+                    {{-- Contenido --}}
+                    <div class="tab-content mt-4">
+
+                        <div class="tab-pane fade {{ $activeTab === 'mentores' ? 'show active' : '' }}" id="mentores"
+                            role="tabpanel">
+                            @include('mentoresacademicos.tabs.mentores')
                         </div>
 
-                        <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <input type="text" id="search" class="form-control"
-                                        placeholder="Buscar mentor...">
-                                </div>
+                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                            <div class="tab-pane fade {{ $activeTab === 'eliminados' ? 'show active' : '' }}"
+                                id="eliminados" role="tabpanel">
+                                @include('mentoresacademicos.tabs.eliminados')
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Identificación Profesional</th>
-                                            <th>Correo Electronico</th>
-                                            <th>Direccion de Carrera</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="mentorTable">
-                                        @foreach ($mentores as $mentor)
-                                            <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
-                                                id="mentor-{{ $mentor->id }}">
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
-                                                </td>
-                                                <td>{{ $mentor->email }}</td>
-                                                <td>{{ $mentor->direccion->name }}</td>
-                                                <td>
-
-                                                    {{-- Ver --}}
-                                                    <x-buttons.show-button
-                                                        url="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}" />
-                                                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                        {{-- Editar --}}
-                                                        <x-buttons.edit-button
-                                                            url="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                            title="Editar Mentor" />
-                                                        {{-- Eliminar --}}
-                                                        <x-buttons.delete-button funcion="deleteMentorAcademico"
-                                                            parametro="{{ $mentor->id }}" />
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        @endif
                     </div>
 
                 </div>
+
             </div>
         </div>
-        @if ($mentoresDeleted->count() !== 0)
-            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                <div class="col-lg-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-primary shadow-primary rounded pt-4 pb-3">
-                                <h6 class="text-white text-capitalize ps-3">Lista De Mentores Academicos Eliminados</h6>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Identificación Profesional</th>
-                                            <th>Correo Electronico</th>
-                                            <th>Acciones</th>
-                                        </tr>mentoresDeleted
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($mentoresDeleted as $mentorDeletd)
-                                            <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
-                                                id="mentor-{{ $mentorDeletd->id }}">
-                                                <td>{{ $loop->index + 1 }}</td>
-                                                <td>{{ $mentorDeletd->titulo . ' ' . $mentorDeletd->name . ' ' . $mentorDeletd->apellidoP . ' ' . $mentorDeletd->apellidoM }}
-                                                </td>
-                                                <td>{{ $mentorDeletd->email }}</td>
-                                                <td>
-                                                    {{-- Restaurar --}}
-                                                    <x-buttons.restore-button funcion="restoreMentorAcademico"
-                                                        parametro="{{ $mentorDeletd->id }}" />
-
-
-                                                    {{-- Eliminar permanente --}}
-                                                    <x-buttons.delete-button funcion="destroyPermanentMentorAcademico"
-                                                        parametro="{{ $mentorDeletd->id }}" />
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        @endif
     </div>
 @endsection
 
@@ -184,8 +101,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-success text-white" style="    background: #34B1AA;">
                     <h5 class="modal-title" id="deleteModalMentoresAcademicosLabel">Restaurar Mentor Academico</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar">
                     </button>
                 </div>
                 <div class="modal-body">
@@ -215,8 +131,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="deleteModalMentoresAcademicosLabel">Destruir Registro</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar">
                     </button>
                 </div>
                 <div class="modal-body">

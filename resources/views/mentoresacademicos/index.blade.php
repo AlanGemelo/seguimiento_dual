@@ -25,117 +25,75 @@
                 </div>
             @endif
 
-            <body class="body">
-                <div class="row">
-                    <div class="col-md-12 grid-margin stretch-card">
-                        <div class="card">
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
 
-                            <div class="card-header-adjusted">
-                                <h6 class="card-title">Lista De Mentores Academicos</h6>
-                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <div class="float-end">
-                                        {{-- Button del modal --}}
-                                        <a href="{{ route('academicos.create') }}" class="btn btn-add"
-                                            title="Agregar una nuevo Mentor Academico">
-                                            <i class="mdi mdi-plus-circle-outline"></i>
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="card-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <input type="text" id="search" class="form-control"
-                                            placeholder="Buscar mentor...">
-                                    </div>
+                        <div class="card-header-adjusted">
+                            <h6 class="card-title">Lista De Mentores Academicos</h6>
+                            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                <div class="float-end">
+                                    {{-- Button del modal --}}
+                                    <a href="{{ route('academicos.create') }}" class="btn btn-add"
+                                        title="Agregar una nuevo Mentor Academico">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </a>
                                 </div>
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Identificación Profesional</th>
-                                                <th>Correo Electronico</th>
-                                                <th>Direccion de Carrera</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="mentorTable">
-                                            @foreach ($mentores as $mentor)
-                                                <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
-                                                    id='aiuda'>
-                                                    <td>{{ $loop->index + 1 }}</td>
-                                                    <td>{{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
-                                                    </td>
-                                                    <td>{{ $mentor->email }}</td>
-                                                    <td>{{ $mentor->direccion->name }}</td>
-                                                    <td>
-                                                        <a href="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                            class="btn btn-facebook" style=" background-color: #00798c">
-                                                            <i class="mdi mdi-eye btn-icon-prepend"
-                                                                style="font-size: 1.5em;"></i>
-                                                        </a>
-                                                        {{-- <a href="{{ route('academicos.showE', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                   class="btn btn-facebook" style=" background-color: #00798c">
-                                                    <i class="mdi mdi-account-details btn-icon-prepend" style="font-size: 1.5em;"></i>
-                                                </a> --}}
-                                                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                                            <a href="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
-                                                                class="btn btn-twitter" style=" background-color: #ffa719">
-                                                                <i class="mdi mdi-account-edit btn-icon-prepend"
-                                                                    style="font-size: 1.5em;"></i>
-                                                            </a>
-                                                            <button class="btn btn-danger"
-                                                                style=" background-color: #e63946" data-bs-toggle="modal"
-                                                                data-bs-target="#exampleModal1"
-                                                                onclick="deleteMentor({{ $mentor->id }})">
-                                                                <i class="mdi mdi-delete btn-icon-prepend"
-                                                                    style="font-size: 1.5em;"></i>
-                                                            </button>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            @endif
                         </div>
-                        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Academico
-                                            Temporalmente</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="container">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-12">
-                                                    <form action="" id="deleteForm" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <p id="banner">¿Estas seguro de eliminar este registro?</p>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-secondary" type="button"
-                                                                data-bs-dismiss="modal">Cancelar
-                                                            </button>
-                                                            <button class="btn btn-danger" type="submit">Eliminar</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" id="search" class="form-control"
+                                        placeholder="Buscar mentor...">
                                 </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Identificación Profesional</th>
+                                            <th>Correo Electronico</th>
+                                            <th>Direccion de Carrera</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="mentorTable">
+                                        @foreach ($mentores as $mentor)
+                                            <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
+                                                id="mentor-{{ $mentor->id }}">
+                                                <td>{{ $loop->index + 1 }}</td>
+                                                <td>{{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
+                                                </td>
+                                                <td>{{ $mentor->email }}</td>
+                                                <td>{{ $mentor->direccion->name }}</td>
+                                                <td>
+
+                                                    {{-- Ver --}}
+                                                    <x-buttons.show-button
+                                                        url="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}" />
+                                                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                                        {{-- Editar --}}
+                                                        <x-buttons.edit-button
+                                                            url="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                                            title="Editar Mentor" />
+                                                        {{-- Eliminar --}}
+                                                        <x-buttons.delete-button funcion="deleteMentorAcademico"
+                                                            parametro="{{ $mentor->id }}" />
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+
                 </div>
+            </div>
         </div>
         @if ($mentoresDeleted->count() !== 0)
             @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
@@ -155,36 +113,25 @@
                                             <th>Identificación Profesional</th>
                                             <th>Correo Electronico</th>
                                             <th>Acciones</th>
-                                        </tr>
+                                        </tr>mentoresDeleted
                                     </thead>
                                     <tbody>
                                         @foreach ($mentoresDeleted as $mentorDeletd)
                                             <tr class="animate__animated animate__fadeInDown animate__repeat-2 "
-                                                id='aiuda'>
+                                                id="mentor-{{ $mentorDeletd->id }}">
                                                 <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{ $mentorDeletd->titulo . ' ' . $mentorDeletd->name . ' ' . $mentorDeletd->apellidoP . ' ' . $mentorDeletd->apellidoM }}
                                                 </td>
                                                 <td>{{ $mentorDeletd->email }}</td>
                                                 <td>
-                                                    <button
-                                                        class="btn btn-rounded-success btn-sm align-content-md-center align-items-center align-self-center"
-                                                        title="Restore" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal3" data-bs-placement="top"
-                                                        onclick="restoreRegistro({{ $mentorDeletd->id }})">
-                                                        Reactivar
-                                                        &nbsp;&nbsp;
-                                                        <i class="mdi mdi-backup-restore"></i>
-                                                    </button>
+                                                    {{-- Restaurar --}}
+                                                    <x-buttons.restore-button funcion="restoreMentorAcademico"
+                                                        parametro="{{ $mentorDeletd->id }}" />
 
-                                                    <button
-                                                        class="btn btn-danger btn-sm align-content-md-center align-items-center align-self-center"
-                                                        data-bs-toggle="modal" data-bs-target="#exampleModal2"
-                                                        data-bs-placement="top" title="Eliminar Permanentemente"
-                                                        type="button" onclick="destroyMentor({{ $mentorDeletd->id }})">
-                                                        Eliminar
-                                                        &nbsp;&nbsp;
-                                                        <i class="mdi mdi-delete"></i>
-                                                    </button>
+
+                                                    {{-- Eliminar permanente --}}
+                                                    <x-buttons.delete-button funcion="destroyPermanentMentorAcademico"
+                                                        parametro="{{ $mentorDeletd->id }}" />
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -196,68 +143,94 @@
                 </div>
             @endif
         @endif
+    </div>
+@endsection
 
-        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Eliminar Mentor Academico Permanentemente</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" 
-                        aria-label="Close"></button>
+@section('modals')
+
+    <!-- Modal de confirmación para eliminar un Mentor Academicos -->
+    <div class="modal fade" id="deleteModalMentorAcademicos" tabindex="-1" aria-labelledby="deleteMentorAcademicosLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteMentorAcademicosLabel">Eliminar Mentor Academico
+                        Temporalmente</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="bannerMentorAcademico"></p>¿Estás seguro de eliminar este registro?</p>
+                    <div class="mb-3">
+
                     </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-md-12">
-                                    <form action="" id="permanentDelete" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <p id="bannerDelete">¿Estas seguro de eliminar este registro?</p>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button"
-                                                data-bs-dismiss="modal">Cancelar
-                                            </button>
-                                            <button class="btn btn-danger" type="submit">Eliminar</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form action="" id="deleteFormMentorAcademico" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
-        {{-- Modal para resturar un mentor academico --}}
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Restaurar Mentor Academico</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal de restauracion un Mentor Academicos -->
+    <div class="modal fade" id="restoreModalMentorAcademico" tabindex="-1"
+        aria-labelledby="restoreModalMentorAcademicoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white" style="    background: #34B1AA;">
+                    <h5 class="modal-title" id="deleteModalMentoresAcademicosLabel">Restaurar Mentor Academico</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="bannerRestore">
+                        ¿Estás seguro de restaurar este registro?
+                    </p>
+                    <div class="mb-3">
+
                     </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-md-12">
-                                    <form action="" id="restaurarForm" method="POST">
-                                        @csrf
-                                        @method('PATCH')
-                                        <p id="bannerRestore">¿Estas seguro de restaurar este registro?</p>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" type="button"
-                                                data-bs-dismiss="modal">Cancelar
-                                            </button>
-                                            <button class="btn btn-rounded-check" type="submit">Restaurar
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form id="restoreForm" method="POST">
+                        @csrf
+                        @method('patch')
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-warning">Restaurar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de eliminacion permanente de un Mentor Academicos -->
+    <div class="modal fade" id="destroyModalMentorAcademico" tabindex="-1"
+        aria-labelledby="destroyModalMentorAcademicoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalMentoresAcademicosLabel">Destruir Registro</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="bannerRestore">
+                        ¿Estás seguro de Destruir este registro?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <form id="destroyForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -266,78 +239,79 @@
 
 @section('scripts')
     <script>
-        function deleteMentor(id) {
-            let form = document.getElementById('deleteForm')
-
-            form.action = `${window.BASE_URL}/academicos/${id}/delete`
-            console.log('Form action:', form.action);
-            $.ajax({
-                url: `${BASE_URL}/academicos/${id}/json`,
-                type: 'GET',
-                success: function(response) {
-                    $('#banner').text('¿Estas seguro de eliminar este registro: ' +
-                        response.titulo + ' ' +
-                        response.name + ' ' +
-                        response.apellidoP + ' ' +
-                        response.apellidoM + '?'
-                    );
-                }
-            })
-        }
-
-        function restoreRegistro(id) {
-            let form = document.getElementById('restaurarForm')
-
-            form.action = `${BASE_URL}/academicos/${id}/restaurar`
-            $.ajax({
-                url: `${BASE_URL}/academicos/${id}/json`,
-                type: 'GET',
-                success: function(response) {
-                    $('#bannerRestore').text(
-                        '¿Estás seguro de restaurar este registro: ' +
-                        response.titulo + ' ' +
-                        response.name + ' ' +
-                        response.apellidoP + ' ' +
-                        response.apellidoM + '?'
-                    );
-                }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                new bootstrap.Tooltip(el)
             });
-        }
 
-
-        function destroyMentor(id) {
-            let form = document.getElementById('permanentDelete');
-            form.action = `${BASE_URL}/academicos/${id}/force`;
-
-            $.ajax({
-                url: `${BASE_URL}/academicos/${id}/json`,
-                type: 'GET',
-                success: function(response) {
-                    $('#bannerDelete').text(
-                        '¿Estás seguro de eliminar permanentemente este registro: ' +
-                        response.titulo + ' ' +
-                        response.name + ' ' +
-                        response.apellidoP + ' ' +
-                        response.apellidoM + '?'
-                    );
-                }
-            });
-        }
-
-        document.getElementById('search').addEventListener('keyup', function() {
-            let value = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#mentorTable tr');
-            rows.forEach(row => {
-                let name = row.cells[1].textContent.toLowerCase();
-                let email = row.cells[2].textContent.toLowerCase();
-                if (name.includes(value) || email.includes(value)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+            setupFormValidations();
         });
+        // Obtener info del Mentor Academico
+        function getMentorAcademicoInfo(id, callback) {
+            if (!id) return;
+
+            const url = `${BASE_URL}/academicos/${id}/json`;
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    if (Array.isArray(response) && response.length > 0) {
+                        callback(response[0]);
+                    } else if (response) {
+                        callback(response);
+                    } else {
+                        console.error('Mentor Academico no encontrado');
+                    }
+                },
+                error: function(err) {
+                    console.error('Error al obtener Mentor Academico:', err);
+                }
+            });
+        }
+        // Mostrar modal de eliminación temporal
+        function deleteMentorAcademico(id) {
+            getMentorAcademicoInfo(id, function(mentorAcademico) {
+                document.getElementById('bannerMentorAcademico').innerHTML =
+                    `¿Estás seguro de eliminar temporalmente a <strong>${mentorAcademico.titulo} ${mentorAcademico.name} ${mentorAcademico.apellidoP} ${mentorAcademico.apellidoM}</strong>?`;
+                document.getElementById('deleteFormMentorAcademico').action =
+                    `/academicos/${id}/delete`;
+                new bootstrap.Modal(document.getElementById('deleteModalMentorAcademicos')).show();
+            });
+        }
+
+        // Mostrar modal de resturacion 
+
+        function restoreMentorAcademico(id) {
+            getMentorAcademicoInfo(id, function(mentorAcademico) {
+                document.getElementById('bannerRestore').innerHTML =
+                    `¿Estás seguro de restaurar a <strong>${mentorAcademico.titulo} ${mentorAcademico.name} ${mentorAcademico.apellidoP} ${mentorAcademico.apellidoM}</strong>?`;
+                document.getElementById('restoreForm').action = `${BASE_URL}/academicos/${id}/restaurar`
+                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
+                    'restoreModalMentorAcademico'));
+                modal.show();
+            });
+        }
+
+        // Mostrar modal de eliminación permanente
+        function destroyPermanentMentorAcademico(id) {
+            // Traer información del mentorAcademico
+            getMentorAcademicoInfo(id, function(mentorAcademico) {
+                // Actualizar el contenido del modal
+                const modalBody = document.getElementById('destroyModalMentorAcademico').querySelector(
+                    '.modal-body');
+                modalBody.innerHTML =
+                    `¿Deseas eliminar permanentemente a <strong>${mentorAcademico.titulo} ${mentorAcademico.name} ${mentorAcademico.apellidoP} ${mentorAcademico.apellidoM}</strong>?`;
+                document.getElementById('destroyForm').action = `${BASE_URL}/academicos/${id}/force`;
+                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
+                    'destroyModalMentorAcademico'));
+                modal.show();
+            });
+        }
+
+        function setupFormValidations() {
+
+        }
     </script>
 
 @endsection
-</body>

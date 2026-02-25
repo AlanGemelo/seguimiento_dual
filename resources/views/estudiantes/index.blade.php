@@ -81,6 +81,12 @@
         </div>
     </div>
 
+
+@endsection
+
+{{-- Section de modals --}}
+@section('modals')
+    <!-- Modal de Anexos -->
     <div class="modal fade" id="modalAnexos" tabindex="-1" aria-labelledby="modalAnexosLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -159,10 +165,6 @@
             </div>
         </div>
     </div>
-@endsection
-
-{{-- Section de modals --}}
-@section('modals')
     <!-- Modal de confirmación para eliminar estudiante dual -->
     <div class="modal fade" id="deleteModalDual" tabindex="-1" aria-labelledby="deleteModalDualLabel"
         aria-hidden="true">
@@ -259,7 +261,7 @@
                         @csrf
                         @method('patch')
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Restaurar</button>
+                        <button type="submit" class="btn btn-warning">Restaurar</button>
                     </form>
                 </div>
             </div>
@@ -316,7 +318,7 @@
         // Obtener info del estudiante
         function getEstudianteInfo(matricula, callback) {
             $.ajax({
-                url: '/estudiantes/' + matricula + '/json',
+                url: `/estudiantes/${matricula}/json`,
                 type: 'GET',
                 success: function(response) {
                     if (response && response.length > 0) {
@@ -340,7 +342,7 @@
             document.getElementById(bannerId).innerHTML =
                 `¿Estás seguro de eliminar a <strong>${estudiante.name} ${estudiante.apellidoP} ${estudiante.apellidoM}</strong>, Matrícula: ${estudiante.matricula}?`;
 
-            document.getElementById(formId).action = `/estudiantes/${estudiante.matricula}/delete`;
+            document.getElementById(formId).action = `estudiantes/${estudiante.matricula}/delete`;
 
             new bootstrap.Modal(document.getElementById(modalId)).show();
         }
@@ -401,7 +403,7 @@
             getEstudianteInfo(id, function(estudiante) {
                 document.getElementById('bannerRestore').innerHTML =
                     `¿Estás seguro de restaurar a <strong>${estudiante.name} ${estudiante.apellidoP} ${estudiante.apellidoM}</strong>, Matrícula: ${estudiante.matricula}?`;
-                document.getElementById('restoreForm').action = '/estudiantes/' + id + '/restaurar';
+                document.getElementById('restoreForm').action = `/estudiantes/${id}/restaurar`;
                 const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
                     'restoreModalEstudiante'));
                 modal.show();
@@ -415,7 +417,7 @@
                 const modalBody = document.getElementById('destroyModalEstudiante').querySelector('.modal-body');
                 modalBody.innerHTML =
                     `¿Deseas eliminar permanentemente a <strong>${estudiante.name} ${estudiante.apellidoP} ${estudiante.apellidoM}</strong>, Matrícula: ${estudiante.matricula}?`;
-                document.getElementById('destroyForm').action = '/estudiantes/' + id + '/force';
+                document.getElementById('destroyForm').action = `/estudiantes/${id}/force`;
                 const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
                     'destroyModalEstudiante'));
                 modal.show();

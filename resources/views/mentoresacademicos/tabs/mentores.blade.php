@@ -1,4 +1,4 @@
-{{-- TAB: ESTUDIANTES DUAL --}}
+{{-- TAB: MENTORES ACADÉMICOS --}}
 
 <div class="row">
 
@@ -6,24 +6,24 @@
     <div class="col-12 mb-3 d-flex justify-content-between align-items-center">
         <h6 class="mb-0">
             <i class="mdi mdi-check-circle text-success me-1"></i>
-            Estudiantes Dual
+            Mentores Academicos
         </h6>
 
-        {{--   @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 2 || Auth::user()->rol_id === 4)
-            <a href="{{ route('estudiantes.create') }}" class="btn btn-sm btn-add" title="Agregar estudiante dual">
+        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 2 || Auth::user()->rol_id === 4)
+            <a href="{{ route('academicos.create') }}" class="btn btn-sm btn-add" title="Agregar Mentor Academico">
                 <i class="mdi mdi-plus-circle-outline"></i>
             </a>
-        @endif --}}
+        @endif
     </div>
 
     {{-- Buscador --}}
     <div class="col-md-6 mb-3">
-        <form method="GET" action="{{ route('estudiantes.index') }}">
-            <input type="hidden" name="tab" value="dual">
+        <form method="GET" action="{{ route('academicos.index') }}">
+            <input type="hidden" name="tab" value="mentores">
 
             <div class="input-group">
-                <input type="text" name="search" class="form-control" style="height: 40px;"
-                    value="{{ $search ?? '' }}" placeholder="Buscar estudiante dual...">
+                <input type="text" name="search_mentores" class="form-control" style="height: 40px;"
+                    value="{{ $search_mentores ?? '' }}" placeholder="Buscar mentor Academico...">
 
                 <!-- Botón para enviar la búsqueda -->
                 <button type="submit" class="btn btn-primary d-flex align-items-center"
@@ -31,9 +31,9 @@
                     <i class="mdi mdi-magnify"></i> Buscar
                 </button>
 
-                @if (!empty($search))
+                @if (!empty($search_mentores))
                     <!-- Botón para limpiar búsqueda -->
-                    <a href="{{ route('estudiantes.index', ['tab' => 'dual']) }}"
+                    <a href="{{ route('academicos.index', ['tab' => 'mentores']) }}"
                         class="btn btn-outline-secondary d-flex align-items-center"
                         style="gap: 5px; height: 40px; font-weight: 500; background: #f4b400; color: #2e2e2e;"
                         title="Limpiar búsqueda">
@@ -53,45 +53,39 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Matricula</th>
-                        <th>Estudiante</th>
-                        <th>Carrera</th>
-                        <th>Cuatrimestre</th>
+                        <th>Identificación Profesional</th>
+                        <th>Correo Electronico</th>
+                        <th>Direccion de Carrera</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse ($estudiantes ?? collect() as $estudiante)
+                    @forelse ($mentores ?? collect() as $mentor)
                         <tr>
                             <td>
-                                {{ ($estudiantes->currentPage() - 1) * $estudiantes->perPage() + $loop->iteration }}
+                                {{ ($mentores->currentPage() - 1) * $mentores->perPage() + $loop->iteration }}
                             </td>
-                            <td>{{ $estudiante->matricula }}</td>
-                            <td>
-                                {{ $estudiante->name }}
-                                {{ $estudiante->apellidoP }}
-                                {{ $estudiante->apellidoM }}
+                            <td>{{ $mentor->titulo . ' ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
                             </td>
-
-                            <td>{{ $estudiante->carrera->nombre }}</td>
-                            <td>{{ $estudiante->cuatrimestre }}</td>
+                            <td>{{ $mentor->email }}</td>
+                            <td>{{ $mentor->direccion->name }}</td>
 
                             <td class="text-center">
 
                                 {{-- Ver --}}
                                 <x-buttons.show-button
-                                    url="{{ route('estudiantes.show', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}" />
-                                {{-- Editar --}}
-                                <x-buttons.edit-button
-                                    url="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($estudiante->matricula)) }}"
-                                    title="Editar Dual" />
-                                {{-- Eliminar --}}
+                                    url="{{ route('academicos.show', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}" />
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <button class="btn btn-sm btn-danger"
-                                        onclick="deleteEstudiante('{{ $estudiante->matricula }}')">
-                                        <i class="mdi mdi-delete"></i>
-                                    </button>
+                                    {{-- Editar --}}
+                                    <x-buttons.edit-button
+                                        url="{{ route('academicos.edit', Vinkla\Hashids\Facades\Hashids::encode($mentor->id)) }}"
+                                        title="Editar Mentor" />
+                                    {{-- Eliminar --}}
+                                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                        <x-buttons.delete-button funcion="deleteMentorAcademico"
+                                            parametro="{{ $mentor->id }}" />
+                                    @endif
                                 @endif
 
                             </td>
@@ -100,7 +94,7 @@
                         <tr>
                             <td colspan="5">
                                 <div class="alert alert-info mb-0">
-                                    No hay estudiantes dual registrados
+                                    No hay Mentores Academicos Registrados
                                 </div>
                             </td>
                         </tr>
@@ -110,7 +104,7 @@
 
             {{-- Paginación --}}
             <div class="d-flex justify-content-center mt-3">
-                {{ $estudiantes->appends(['tab' => 'dual'])->links('pagination::bootstrap-5') }}
+                {{ $mentores->appends(['tab' => 'mentores'])->links('pagination::bootstrap-5') }}
             </div>
 
         </div>

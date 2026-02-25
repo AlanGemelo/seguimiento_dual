@@ -88,11 +88,8 @@
 
                                 {{-- Eliminar --}}
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <button class="btn btn-sm btn-danger"
-                                        onclick="deleteEstudiante('{{ $candidato->matricula }}')">
-                                        <i class="mdi mdi-delete"></i>
-                                    </button>
-                                    <x-buttons.delete-button />
+                                    <x-buttons.delete-button funcion="deleteEstudiante"
+                                        parametro="{{ $candidato->matricula }}" />
                                 @endif
 
                             </td>

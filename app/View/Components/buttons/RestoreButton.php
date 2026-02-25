@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components\Buttons;
+namespace App\View\Components\buttons;
 
 use Illuminate\View\Component;
 
-class DeleteButton extends Component
+class RestoreButton extends Component
 {
     /**
      * Create a new component instance.
@@ -31,6 +31,6 @@ class DeleteButton extends Component
      */
     public function render()
     {
-        return view('components.buttons.delete-button');
+        return view('components.buttons.restore-button');
     }
 }

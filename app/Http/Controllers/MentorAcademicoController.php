@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ContactMail;
-use App\Mail\DocumentoVencimientoNotification;
 use App\Models\DireccionCarrera;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Vinkla\Hashids\Facades\Hashids;
-use Illuminate\Support\Facades\Auth;
 
 class MentorAcademicoController extends Controller
 {
@@ -22,50 +19,102 @@ class MentorAcademicoController extends Controller
     {
         $this->middleware('admin')->except('showJson');
     }
+
     public function alerts()
     {
 
         return redirect()->route('estudiantes.index')->with('message', 'Correo enviado correctamente');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        // Si es administrador
-        if ($user->rol_id === 1) {
-            $mentores = User::where('rol_id', 2)->with('direccion')->get();
-            $mentoresDeleted = User::onlyTrashed()->where('rol_id', 2)->get();
-        } else {
-            // Si no es administrador, filtra por su dirección
-            $direccionId = session('direccion')->id ?? null;
+        // Busqueda por tab mentores
+        $search_mentores = $request->input('search_mentores');
 
-            $mentores = User::where('rol_id', 2)
-                ->with('direccion')
-                ->where('direccion_id', $direccionId)
-                ->get();
+        // Busqueda por tab eliminados
+        $search_eliminados = $request->input('search_eliminados');
 
-            $mentoresDeleted = User::onlyTrashed()
-                ->where('rol_id', 2)
-                ->where('direccion_id', $direccionId)
-                ->get();
+        // Obtener direccion si no es admin
+        $direccionId = session('direccion')->id ?? null;
+
+        // Query base mentores activos
+        $query = User::where('rol_id', 2)
+            ->with('direccion')
+            ->orderBy('name', 'asc');
+
+        // Filtrar por direccion si no es admin
+        if ($user->rol_id !== 1) {
+            $query->where('direccion_id', $direccionId);
         }
 
-        return view('mentoresacademicos.index', compact('mentores', 'mentoresDeleted'));
+        // Aplicar busqueda mentores activos
+        if (! empty($search_mentores)) {
+            $query->where(function ($q) use ($search_mentores) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($search_mentores).'%'])
+                    ->orWhereRaw('LOWER(apellidoP) LIKE ?', ['%'.strtolower($search_mentores).'%'])
+                    ->orWhereRaw('LOWER(apellidoM) LIKE ?', ['%'.strtolower($search_mentores).'%'])
+                    ->orWhereRaw('LOWER(email) LIKE ?', ['%'.strtolower($search_mentores).'%']);
+            });
+        }
+
+        // Paginacion mentores activos
+        $mentores = $query->paginate(10, ['*'], 'page_mentores')
+            ->appends([
+                'tab' => 'mentores',
+                'search_mentores' => $search_mentores,
+            ]);
+
+        // Query base mentores eliminados
+        $deletedQuery = User::onlyTrashed()
+            ->where('rol_id', 2)
+            ->with('direccion')
+            ->orderBy('deleted_at', 'desc');
+
+        // Filtrar por direccion si no es admin
+        if ($user->rol_id !== 1) {
+            $deletedQuery->where('direccion_id', $direccionId);
+        }
+
+        // Aplicar busqueda eliminados
+        if (! empty($search_eliminados)) {
+            $deletedQuery->where(function ($q) use ($search_eliminados) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($search_eliminados).'%'])
+                    ->orWhereRaw('LOWER(apellidoP) LIKE ?', ['%'.strtolower($search_eliminados).'%'])
+                    ->orWhereRaw('LOWER(apellidoM) LIKE ?', ['%'.strtolower($search_eliminados).'%'])
+                    ->orWhereRaw('LOWER(email) LIKE ?', ['%'.strtolower($search_eliminados).'%']);
+            });
+        }
+
+        // Paginacion eliminados
+        $mentoresDeleted = $deletedQuery->paginate(10, ['*'], 'page_eliminados')
+            ->appends([
+                'tab' => 'eliminados',
+                'search_eliminados' => $search_eliminados,
+            ]);
+
+        return view('mentoresacademicos.indexT', compact(
+            'mentores',
+            'mentoresDeleted',
+            'search_mentores',
+            'search_eliminados'
+        ));
     }
 
     public function create(): View
     {
         $direcciones = DireccionCarrera::all();
+
         return view('mentoresacademicos.create', compact('direcciones'));
     }
 
     public function store(Request $request)
     {
         $username = str_replace(['@utvtol.edu.mx', ' '], '', $request->email);
-        $emailCompleto = $username . '@utvtol.edu.mx';
+        $emailCompleto = $username.'@utvtol.edu.mx';
         $request->merge([
-            'email' => $emailCompleto
+            'email' => $emailCompleto,
         ]);
 
         $request->validate([
@@ -91,7 +140,6 @@ class MentorAcademicoController extends Controller
 
         return redirect()->route('academicos.index')->with('message', 'Mentor Académico creado correctamente');
     }
-
 
     public function show($id): View
     {
@@ -135,11 +183,10 @@ class MentorAcademicoController extends Controller
 
         $mentor = User::find($id);
         if ($request->email !== $mentor->email) {
-            $request->validate(['email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]]);
+            $request->validate(['email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class]]);
             $mentor->update(['email' => $request->email], $request->all());
         }
         $mentor->update($request->all());
-
 
         return redirect()->route('academicos.index');
     }
@@ -150,7 +197,8 @@ class MentorAcademicoController extends Controller
             $mentor = User::find($id);
             $mentor->delete();
 
-            return redirect()->route('academicos.index')->with('messageDelete', 'Mentor Academico Eliminado Correctamente');
+            return redirect()->route('academicos.index', ['tab' => 'eliminados'])
+                ->with('messageDelete', 'Mentor Academico Eliminado Correctamente');
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
 
@@ -160,13 +208,14 @@ class MentorAcademicoController extends Controller
             }
 
             // Otro tipo de error, puedes manejarlo según tus necesidades
-            return redirect()->route('academicos.index')->with('statusError', 'Error al eliminar el Mentor Academico: ' . $e->getMessage());
+            return redirect()->route('academicos.index')->with('statusError', 'Error al eliminar el Mentor Academico: '.$e->getMessage());
         }
     }
 
     public function showJson($id): JsonResponse
     {
         $mentores = User::withTrashed()->find($id);
+
         return response()->json($mentores);
     }
 
@@ -177,10 +226,10 @@ class MentorAcademicoController extends Controller
             $mentor = User::onlyTrashed()->find($id);
             $mentor->restore();
 
-            return redirect()->route('academicos.index')->with('success', 'Mentor Academico Restaurado.');
+            return redirect()->route('academicos.index', ['tab' => 'mentores'])->with('success', 'Mentor Academico Restaurado.');
         } catch (\Exception $e) {
             // En caso de error, redirigir con mensaje de error
-            return redirect()->route('academicos.index')->with('error', 'Hubo un problema al restaurar al mentor: ' . $e->getMessage());
+            return redirect()->route('academicos.index')->with('error', 'Hubo un problema al restaurar al mentor: '.$e->getMessage());
         }
     }
 
@@ -189,6 +238,7 @@ class MentorAcademicoController extends Controller
         $mentor = User::onlyTrashed()->find($id);
         $mentor->forceDelete();
 
-        return redirect()->route('academicos.index')->with('success', 'Mentor Academico Eliminado Correctamente.');
+        return redirect()->route('academicos.index', ['tab' => 'eliminados'])
+            ->with('success', 'Mentor Academico Eliminado Correctamente.');
     }
 }

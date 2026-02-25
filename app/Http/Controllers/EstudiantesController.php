@@ -87,10 +87,10 @@ class EstudiantesController extends Controller
 
         if (! empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%'.$search.'%')
-                    ->orWhere('apellidoP', 'like', '%'.$search.'%')
-                    ->orWhere('apellidoM', 'like', '%'.$search.'%')
-                    ->orWhere('matricula', 'like', '%'.$search.'%');
+                $q->whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($search).'%'])
+                    ->orWhereRaw('LOWER(apellidoP) LIKE ?', ['%'.strtolower($search).'%'])
+                    ->orWhereRaw('LOWER(apellidoM) LIKE ?', ['%'.strtolower($search).'%'])
+                    ->orWhereRaw('LOWER(matricula) LIKE ?', ['%'.strtolower($search).'%']);
             });
         }
 
@@ -103,10 +103,10 @@ class EstudiantesController extends Controller
 
         if (! empty($searchCandidatos)) {
             $candidatosQuery->where(function ($q) use ($searchCandidatos) {
-                $q->where('name', 'like', '%'.$searchCandidatos.'%')
-                    ->orWhere('apellidoP', 'like', '%'.$searchCandidatos.'%')
-                    ->orWhere('apellidoM', 'like', '%'.$searchCandidatos.'%')
-                    ->orWhere('matricula', 'like', '%'.$searchCandidatos.'%');
+                $q->where('name', 'LIKE', '%'.$searchCandidatos.'%')
+                    ->orWhere('apellidoP', 'LIKE', '%'.$searchCandidatos.'%')
+                    ->orWhere('apellidoM', 'LIKE', '%'.$searchCandidatos.'%')
+                    ->orWhere('matricula', 'LIKE', '%'.$searchCandidatos.'%');
             });
         }
 
@@ -120,13 +120,12 @@ class EstudiantesController extends Controller
 
         if (! empty($searchEliminados)) {
             $deletedQuery->where(function ($q) use ($searchEliminados) {
-                $q->where('name', 'like', '%'.$searchEliminados.'%')
-                    ->orWhere('apellidoP', 'like', '%'.$searchEliminados.'%')
-                    ->orWhere('apellidoM', 'like', '%'.$searchEliminados.'%')
-                    ->orWhere('matricula', 'like', '%'.$searchEliminados.'%');
+                $q->where('name', 'LIKE', '%'.$searchEliminados.'%')
+                    ->orWhere('apellidoP', 'LIKE', '%'.$searchEliminados.'%')
+                    ->orWhere('apellidoM', 'LIKE', '%'.$searchEliminados.'%')
+                    ->orWhere('matricula', 'LIKE', '%'.$searchEliminados.'%');
             });
         }
-
         $estudiantesDeleted = $deletedQuery->paginate(10, ['*'], 'page_eliminados', $pageEliminados);
 
         $situation = [
@@ -139,8 +138,6 @@ class EstudiantesController extends Controller
             ['id' => 0, 'name' => 'Si'],
             ['id' => 1, 'name' => 'No'],
         ];
-
-        $hoy = Carbon::now();
 
         return view('estudiantes.index', compact(
             'estudiantes',

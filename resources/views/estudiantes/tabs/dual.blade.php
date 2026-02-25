@@ -62,7 +62,7 @@
                 </thead>
 
                 <tbody>
-                    @forelse ($estudiantes as $estudiante)
+                    @forelse ($estudiantes ?? collect() as $estudiante)
                         <tr>
                             <td>
                                 {{ ($estudiantes->currentPage() - 1) * $estudiantes->perPage() + $loop->iteration }}

@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DireccionCarrera;
-use App\Http\Requests\StoreDireccionCarreraRequest;
-use App\Http\Requests\UpdateDireccionCarreraRequest;
 use App\Models\Carrera;
-use Illuminate\Contracts\View\View;
+use App\Models\DireccionCarrera;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class DireccionCarreraController extends Controller
 {
@@ -17,6 +13,7 @@ class DireccionCarreraController extends Controller
     {
         $this->middleware('admin');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +29,9 @@ class DireccionCarreraController extends Controller
 
     public function index()
     {
+
         $direcciones = DireccionCarrera::all();
+
         return view('direccionescarrera.index', compact('direcciones'));
     }
 
@@ -52,15 +51,15 @@ class DireccionCarreraController extends Controller
      * @param  \App\Http\Requests\StoreDireccionCarreraRequest  $request
      * @return \Illuminate\Http\Response
      */
-
     public function store(Request $request)
     {
         $username = str_replace(['@utvtol.edu.mx', ' '], '', $request->email);
-        $emailCompleto = $username . '@utvtol.edu.mx';
+        $emailCompleto = $username.'@utvtol.edu.mx';
         $request->merge([
-            'email' => $emailCompleto
+            'email' => $emailCompleto,
         ]);
         $direccion = DireccionCarrera::create($request->all());
+
         return redirect()->route('direcciones.index', compact('direccion'));
     }
 
@@ -73,6 +72,7 @@ class DireccionCarreraController extends Controller
     public function show(DireccionCarrera $direccion)
     {
         $direccion->load('programas', 'director');
+
         return view('direccionescarrera.show', compact('direccion'));
     }
 
@@ -97,6 +97,7 @@ class DireccionCarreraController extends Controller
     public function update(Request $request, DireccionCarrera $direccion)
     {
         $direccion->update($request->all());
+
         return redirect()->route('direcciones.index')->with('message', 'Direccion Academico Actualizado Correctamente');
     }
 
@@ -117,6 +118,7 @@ class DireccionCarreraController extends Controller
 
             if ($errorCode == 1451) {
                 dd($e);
+
                 // Error de integridad referencial (clave foránea)
                 return redirect()->route('direcciones.index')->with('statusError', 'No se puede eliminar la direccion de carrera. Primero elimina los programas educativos  asociados');
             }

@@ -1,429 +1,201 @@
 @extends('layouts.app')
-@section('title', 'Gestión de Estudiantes')
-
-@php
-    $activeTab = request('tab', 'dual');
-@endphp
+@section('title', 'Programas de Educativo')
 
 @section('content')
-    <div class="row">
-        <div class="col-12 grid-margin">
-            <div class="card">
+    @if (session('status'))
+        <div class="alert alert-success alert-dismissible text-dark" role="alert">
+            <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
+                {{ session('status') }}.</span>
+            <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    @if (session('statusError'))
+        <div class="alert alert-danger alert-dismissible text-dark" role="alert">
+            <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Error</a>.
+                {{ session('statusError') }}.</span>
+            <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 
-                {{-- Header --}}
-                <div class="card-header-adjusted d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Gestión de Estudiantes Duales</h5>
+    <body class="body">
 
-                    {{-- Botón de descarga de anexos --}}
-                    <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalAnexos">
-                        <i class="mdi mdi-download me-1"></i> Anexos
-                    </button>
 
-                </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
 
-                {{-- Tabs --}}
-                <div class="card-body">
-                    <ul class="nav nav-tabs" id="estudiantesTabs" role="tablist">
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ $activeTab === 'dual' ? 'active' : '' }}" data-bs-toggle="tab"
-                                data-bs-target="#dual" type="button" role="tab">
-                                <i class="mdi mdi-check-circle me-1"></i>
-                                Estudiantes Dual
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ $activeTab === 'candidatos' ? 'active' : '' }}" data-bs-toggle="tab"
-                                data-bs-target="#candidatos" type="button" role="tab">
-                                <i class="mdi mdi-account-clock me-1"></i>
-                                Candidatos a Dual
-                            </button>
-                        </li>
-
+                    <div class="card-header-adjusted">
+                        <h6 class="card-title">LISTA DE PROGRAMAS EDUCATIVOS </h6>
                         @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link {{ $activeTab === 'eliminados' ? 'active' : '' }}"
-                                    data-bs-toggle="tab" data-bs-target="#eliminados" type="button" role="tab">
-                                    <i class="mdi mdi-trash-can me-1"></i>
-                                    Eliminados
-                                </button>
-                            </li>
-                        @endif
-                    </ul>
-
-
-
-                    {{-- Contenido --}}
-                    <div class="tab-content mt-4">
-
-                        <div class="tab-pane fade {{ $activeTab === 'dual' ? 'show active' : '' }}" id="dual"
-                            role="tabpanel">
-                            @include('estudiantes.tabs.dual')
-                        </div>
-
-                        <div class="tab-pane fade {{ $activeTab === 'candidatos' ? 'show active' : '' }}" id="candidatos"
-                            role="tabpanel">
-                            @include('estudiantes.tabs.candidatos')
-                        </div>
-
-                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                            <div class="tab-pane fade {{ $activeTab === 'eliminados' ? 'show active' : '' }}"
-                                id="eliminados" role="tabpanel">
-                                @include('estudiantes.tabs.eliminados')
+                            <div class="float-end">
+                                {{-- Button del modal --}}
+                                <a href="{{ route('carreras.create') }}" class="btn btn-add"
+                                    title="Agregar una nueva Carrera">
+                                    <i class="mdi mdi-plus-circle-outline"></i>
+                                </a>
                             </div>
                         @endif
                     </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalAnexos" tabindex="-1" aria-labelledby="modalAnexosLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-                {{-- Header --}}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAnexosLabel">
-                        Plantillas de los Anexos
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                {{-- Body --}}
-                <div class="modal-body">
-                    <ul class="list-group">
-
-                        {{-- Anexo 5.1 --}}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Anexo 5.1 – Plan de Formación</span>
-
-                            <div class="btn-group">
-                                <a href="descargar/Anexo 5.1 Plan de Formación.docx" class="btn btn-sm btn-info"
-                                    data-bs-toggle="tooltip" title="Descargar Word">
-                                    <i class="mdi mdi-file-word"></i>
-                                </a>
-
-                                <a href="descargar/5.1 Plan de Formación.pdf" class="btn btn-sm btn-danger"
-                                    data-bs-toggle="tooltip" title="Descargar PDF">
-                                    <i class="mdi mdi-file-pdf"></i>
-                                </a>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <input type="text" id="search" class="form-control" placeholder="Buscar...">
                             </div>
-                        </li>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Grado Académico</th>
+                                        <th>Programa Educativo</th>
+                                        <th>Direccion de Carrera</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="carreraTable">
+                                    @if ($carreras->isEmpty())
+                                        <tr>
+                                            <td colspan="5">No hay carreras registradas.</td>
+                                        </tr>
+                                    @endif
 
-                        {{-- Anexo 5.4 --}}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Anexo 5.4 – Reporte de Actividades</span>
+                                    @foreach ($carreras as $carrera)
+                                        <tr class="animate__animated animate__fadeInDown animate__repeat-2 " id='aiuda'>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ $carrera->grado_academico ?? 'Sin grados acacemicos' }}</td>
+                                            <td>{{ $carrera->nombre ?? 'Sin carreras' }}</td>
+                                            <td>{{ $carrera->direccion->name ?? 'Sin dirección' }}</td>
 
-                            <div class="btn-group">
-                                <a href="descargar/Anexo 5.4 Reporte de Actividades.docx" class="btn btn-sm btn-info">
-                                    <i class="mdi mdi-file-word"></i>
-                                </a>
+                                            <td>
 
-                                <a href="descargar/anexo 5.4 .pdf" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
-                                    title="Descargar PDF">
-                                    <i class="mdi mdi-file-pdf"></i>
-                                </a>
-                            </div>
-                        </li>
+                                                <a href="{{ route('carreras.show', $carrera->id) }}"
+                                                    class="btn btn-facebook" style=" background-color: #00798c">
+                                                    <i class="mdi mdi-eye btn-icon-prepend" style="font-size: 1.5em;"></i>
+                                                </a>
 
-                        {{-- Anexo 5.5 --}}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Anexo 5.5 – Seguimiento y Evaluación</span>
-
-                            <div class="btn-group">
-                                <a href="descargar/Anexo 5.5 Seguimiento y Evaluación.docx" class="btn btn-sm btn-info">
-                                    <i class="mdi mdi-file-word"></i>
-                                </a>
-
-                                <a href="descargar/anexo 5.5.pdf" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
-                                    title="Descargar PDF">
-                                    <i class="mdi mdi-file-pdf"></i>
-                                </a>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-
-                {{-- Footer --}}
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Salir
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-@endsection
-
-{{-- Section de modals --}}
-@section('modals')
-    <!-- Modal de confirmación para eliminar estudiante dual -->
-    <div class="modal fade" id="deleteModalDual" tabindex="-1" aria-labelledby="deleteModalDualLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalDualLabel">Eliminar Estudiante Dual</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="bannerDual">¿Estás seguro de eliminar este registro?</p>
-
-                    <div class="mb-3">
-                        <label for="selectMotivoDual" class="form-label">Motivo de baja</label>
-                        <select id="selectMotivoDual" class="form-select">
-                            <option value="">-- Selecciona un motivo --</option>
-                        </select>
-                        <div id="warningMessage" class="text-danger mt-1" style="display:none;">
-                            Debes seleccionar un motivo para eliminar al estudiante.
+                                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                                    <a href="{{ route('carreras.edit', $carrera->id) }}"
+                                                        class="btn btn-twitter" style=" background-color: #ffa719">
+                                                        <i class="mdi mdi-account-edit btn-icon-prepend"
+                                                            style="font-size: 1.5em;"></i>
+                                                    </a>
+                                                    <button class="btn btn-danger" data-bs-toggle="modal"
+                                                        style=" background-color: #e63946" data-bs-target="#exampleModal1"
+                                                        onclick="deleteCarrera({{ $carrera->id }})">
+                                                        <i class="mdi mdi-delete btn-icon-prepend"
+                                                            style="font-size: 1.5em;"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <form id="deleteFormDual" method="POST" action="">
-                        @csrf
-                        @method('DELETE')
-                        <input type="hidden" name="status" id="statusInputDual">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de confirmación para eliminar estudiante dual -->
-    <div class="modal fade" id="deleteModalCandidatos" tabindex="-1" aria-labelledby="deleteModalCandidatosLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalCandidatosLabel">Eliminar Alumno Dual</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="bannerCandidato"></p>¿Estás seguro de eliminar este registro?</p>
-                    <div class="mb-3">
-                        <label for="selectMotivoCandidato" class="form-label">Motivo de baja</label>
-                        <select id="selectMotivoCandidato" class="form-select">
-                            <option value="">-- Selecciona un motivo --</option>
-                        </select>
-                        <div id="warningMessege" class="text-danger mt-1" style="display: none">
-                            Debes seleccionar un motivo para eliminar al estudiante.
+                <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Eliminar
+                                    Carrera Temporalmente</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            <form action="" id="deleteForm" method="POST">
+                                                @csrf
+                                                @method('delete')
+                                                <p id="banner">¿Estas seguro de eliminar
+                                                    este registro?</p>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-secondary" type="button"
+                                                        data-bs-dismiss="modal">Cancelar
+                                                    </button>
+                                                    <button class="btn btn-danger" type="submit">Eliminar
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <form action="" id="deleteFormCandidato" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <input type="hidden" name="status" id="statusInputCandidato">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de restauracion estudiante dual y candidato-->
-    <div class="modal fade" id="restoreModalEstudiante" tabindex="-1" aria-labelledby="restoreModalEstudianteLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white" style="    background: #34B1AA;">
-                    <h5 class="modal-title" id="deleteModalCandidatosLabel">Restaurar Alumno</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="bannerRestore">
-                        ¿Estás seguro de restaurar este registro?
-                    </p>
-                    <div class="mb-3">
-
+                <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Eliminar Carrera Temporalmente</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12">
+                                            <form action="" id="deleteForm" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <p id="banner">¿Estas seguro de eliminar este registro?</p>
+                                                <div class="modal-footer">
+                                                    <button class="btn btn-secondary" type="button"
+                                                        data-bs-dismiss="modal">Cancelar
+                                                    </button>
+                                                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <form id="restoreForm" method="POST">
-                        @csrf
-                        @method('patch')
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Restaurar</button>
-                    </form>
-                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Modal de eliminacion permanente-->
-    <div class="modal fade" id="destroyModalEstudiante" tabindex="-1" aria-labelledby="destroyModalEstudianteLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalCandidatosLabel">Destruir Registro</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="bannerRestore">
-                        ¿Estás seguro de Destruir este registro?
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <form id="destroyForm" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
-@push('scripts')
-    <script>
-        console.log(window.BASE_URL);
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                new bootstrap.Tooltip(el)
-            });
-
-            // Llenar motivos al abrir modales
-            document.getElementById('deleteModalDual').addEventListener('show.bs.modal', function() {
-                llenarMotivos('selectMotivoDual');
-            });
-
-            document.getElementById('deleteModalCandidatos').addEventListener('show.bs.modal', function() {
-                llenarMotivos('selectMotivoCandidato');
-            });
-
-            setupFormValidations();
-        });
-
-        // Obtener info del estudiante
-        function getEstudianteInfo(matricula, callback) {
-            $.ajax({
-                url: `/${window.BASE_URL}/estudiantes/${matricula}/json`,
-                type: 'GET',
-                success: function(response) {
-                    if (response && response.length > 0) {
-                        callback(response[0]);
-                    } else {
-                        console.error('Estudiante no encontrado');
+    @endsection
+    @section('scripts')
+        <script>
+            // hace una peticion ajax para obtener la informacion de la carrera
+            function deleteCarrera(id) {
+                let form = document.getElementById('deleteForm')
+                form.action = `${window.BASE_URL}/carreras/${id}/delete`
+                $.ajax({
+                    url: `${window.BASE_URL}/carreras/${id}/json`,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#banner').text('¿Estas seguro de eliminar este registro? ' + response.nombre);
                     }
-                },
-                error: function(err) {
-                    console.error('Error al obtener estudiante:', err);
-                }
+                })
+            }
+
+            // Filtrar las carreras en la tabla
+            document.getElementById('search').addEventListener('keyup', function() {
+                let value = this.value.toLowerCase();
+                let rows = document.querySelectorAll('#carreraTable tr');
+                rows.forEach(row => {
+                    let showRow = false;
+                    row.querySelectorAll('td').forEach(cell => {
+                        if (cell.textContent.toLowerCase().includes(value)) {
+                            showRow = true;
+                        }
+                    });
+                    row.style.display = showRow ? '' : 'none';
+                });
             });
-        }
-
-        // Mostrar modal de eliminación
-        function showDeleteModal(estudiante, tipo) {
-            const bannerId = tipo === 'dual' ? 'bannerDual' : 'bannerCandidato';
-            const formId = tipo === 'dual' ? 'deleteFormDual' : 'deleteFormCandidato';
-            const modalId = tipo === 'dual' ? 'deleteModalDual' : 'deleteModalCandidatos';
-
-            document.getElementById(bannerId).innerHTML =
-                `¿Estás seguro de eliminar a <strong>${estudiante.name} ${estudiante.apellidoP} ${estudiante.apellidoM}</strong>, Matrícula: ${estudiante.matricula}?`;
-            document.getElementById(formId).action = `/${window.BASE_URL}/estudiantes/${estudiante.matricula}/delete`;
-
-            new bootstrap.Modal(document.getElementById(modalId)).show();
-        }
-
-        function deleteEstudiante(matricula, tipo) {
-            getEstudianteInfo(matricula, function(estudiante) {
-                showDeleteModal(estudiante, tipo);
-            });
-        }
-
-        // Llenar select de motivos
-        function llenarMotivos(selectId) {
-            const motivos = [
-                'Reprobación',
-                'Término de Convenio',
-                'Ciclo de Renovación Concluido',
-                'Término del PE'
-            ];
-
-            const select = document.getElementById(selectId);
-            select.innerHTML = '<option value="">-- Selecciona un motivo --</option>';
-
-            motivos.forEach((motivo, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = motivo;
-                select.appendChild(option);
-            });
-        }
-
-        function setupFormValidations() {
-            // Dual
-            document.getElementById('deleteFormDual').addEventListener('submit', function(e) {
-                const select = document.getElementById('selectMotivoDual');
-                const statusInput = document.getElementById('statusInput');
-
-                if (select.value === '') {
-                    e.preventDefault();
-                    document.getElementById('warningMessage').style.display = 'block';
-                } else {
-                    statusInput.value = select.value;
-                }
-            });
-
-            document.getElementById('deleteFormCandidato').addEventListener('submit', function(e) {
-                const select = document.getElementById('selectMotivoCandidato');
-                const statusInput = document.getElementById('statusInputCandidato');
-
-                if (select.value === '') {
-                    e.preventDefault();
-                } else {
-                    statusInput.value = select.value;
-                }
-            });
-        }
-
-        //Funcion para restaurar un registro
-        function restoreEstudiante(id) {
-            getEstudianteInfo(id, function(estudiante) {
-                document.getElementById('bannerRestore').innerHTML =
-                    `¿Estás seguro de restaurar a <strong>${estudiante.name} ${estudiante.apellidoP} ${estudiante.apellidoM}</strong>, Matrícula: ${estudiante.matricula}?`;
-
-                document.getElementById('restoreForm').action =
-                    `/${window.BASE_URL}/estudiantes/${id}/restaurar`;
-                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
-                    'restoreModalEstudiante'));
-                modal.show();
-            });
-        }
-
-        //Funcion para eliminar permanentemente un registro
-        function destroyPermanent(id) {
-            // Traer información del estudiante
-            getEstudianteInfo(id, function(estudiante) {
-                // Actualizar el contenido del modal
-                const modalBody = document.getElementById('destroyModalEstudiante').querySelector('.modal-body');
-                modalBody.innerHTML =
-                    `¿Deseas eliminar permanentemente a <strong>${estudiante.name} ${estudiante.apellidoP} ${estudiante.apellidoM}</strong>, Matrícula: ${estudiante.matricula}?`;
-                document.getElementById('destroyForm').action = `/${window.BASE_URL}/estudiantes/${id}/force`;
-                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
-                    'destroyModalEstudiante'));
-                modal.show();
-            });
-        }
-    </script>
-@endpush
+        </script>
+    @endsection
+</body>

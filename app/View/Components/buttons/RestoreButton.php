@@ -13,15 +13,18 @@ class RestoreButton extends Component
      */
     public $parametro;
 
+    public $title;
+
     public $clases;
 
     public $funcion; // NUEVO: función a llamar
 
-    public function __construct($parametro = null, $funcion = null, $clases = null)
+    public function __construct($parametro = null, $funcion = null, $clases = null, $title = null)
     {
         $this->parametro = $parametro;
         $this->funcion = $funcion;
         $this->clases = $clases;
+        $this->title = $title;
     }
 
     /**

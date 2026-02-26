@@ -9,9 +9,12 @@
         </h6>
 
         @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-            <a href="{{ route('estudiantes.crearC') }}" class="btn btn-sm btn-add" title="Agregar nuevo candidato">
-                <i class="mdi mdi-plus-circle-outline"></i>
-            </a>
+            <div class="row g-2">
+                <div class="col-auto">
+                    <x-buttons.add-button url="{{ route('estudiantes.crearC') }}"
+                        title="{{ 'Agregar nuevo candidato' }}" />
+                </div>
+            </div>
         @endif
     </div>
     {{-- Buscador --}}
@@ -81,10 +84,9 @@
                                     url="{{ route('estudiantes.showC', Vinkla\Hashids\Facades\Hashids::encode($candidato->matricula)) }}" />
 
                                 {{-- Aprobar (sube a Dual) --}}
-                                <a href="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($candidato->matricula)) }}"
-                                    class="btn btn-sm btn-success" title="Aprobar candidato">
-                                    <i class="mdi mdi-arrow-up-bold"></i>
-                                </a>
+                                <x-buttons.approve-button
+                                    url="{{ route('estudiantes.edit', Vinkla\Hashids\Facades\Hashids::encode($candidato->matricula)) }}"
+                                    title="Aprobar candidato" />
 
                                 {{-- Eliminar --}}
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)

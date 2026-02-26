@@ -80,7 +80,7 @@ class EmpresaController extends Controller
             ->paginate(10, ['*'], 'page_bajas')
             ->appends($request->all());
 
-        return view('empresas.indext', compact(
+        return view('empresas.index', compact(
             'empresas',
             'empresasInteresadas',
             'empresasSuspendidas',
@@ -165,7 +165,9 @@ class EmpresaController extends Controller
         $empresa->status = 1;
         $empresa->save();
 
-        return redirect()->route('empresas.index')->with('success', 'Empresa registrada exitosamente.');
+        return redirect()
+            ->route('empresas.index', ['tab' => 'unidades_interesadas'])
+            ->with('success', 'Empresa registrada exitosamente.');
     }
 
     public function store(Request $request)
@@ -220,7 +222,9 @@ class EmpresaController extends Controller
             $empresa->direcciones()->sync($data['direcciones_ids']);
         }
 
-        return redirect()->route('empresas.index')->with('success', 'Empresa creada exitosamente.');
+        return redirect()
+            ->route('empresas.index', ['tab' => 'unidades_interesadas'])
+            ->with('success', 'Empresa creada exitosamente.');
     }
 
     public function show($id)
@@ -349,6 +353,7 @@ class EmpresaController extends Controller
 
     public function destroy($id)
     {
+
         try {
             $decoded = Hashids::decode($id);
 
@@ -370,7 +375,8 @@ class EmpresaController extends Controller
         } catch (\Exception $e) {
             \Log::error('Error al eliminar empresa: '.$e->getMessage());
 
-            return redirect()->route('empresas.index')->with('error', 'Ocurrió un error al eliminar la empresa.');
+            return redirect()->route('empresas.index', ['tab' => 'bajas_temporales'])
+                ->with('error', 'Ocurrió un error al eliminar la empresa.');
         }
     }
 
@@ -413,10 +419,17 @@ class EmpresaController extends Controller
         return $pdf->download('empresa_'.$empresa->id.'.pdf');
     }
 
-    public function darAlta(Empresa $empresa): View
+    public function darAlta($hashid): View
     {
+        $decoded = Hashids::decode($hashid);
+
+        if (empty($decoded)) {
+            abort(404);
+        }
+
+        $empresa = Empresa::findOrFail($decoded[0]);
+
         $tamano_eu = config('ue_size');
-        // dd($tamano_eu);
         $direcciones = DireccionCarrera::all();
 
         return view('empresas.darAlta', compact('empresa', 'direcciones', 'tamano_eu'));

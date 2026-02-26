@@ -11,15 +11,11 @@
         @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
             <div class="row g-2">
                 <div class="col-auto">
-                    <a href="{{ route('empresas.create') }}" class="btn btn-sm btn-add"
-                        title="Agregar nueva unidad económica">
-                        <i class="mdi mdi-plus-circle-outline"></i>
-                    </a>
+                    <x-buttons.add-button url="{{ route('empresas.create') }}"
+                        title="{{ 'Agregar nueva unidad económica' }}" />
                 </div>
                 <div class="col-auto">
-                    <a href="{{ route('empresas.exportUeiPdf') }}" class="btn btn-danger" title="Descargar PDF">
-                        <i class="mdi mdi-file-pdf"></i>
-                    </a>
+                    <x-buttons.pdf-button url="{{ route('empresas.exportUeiPdf') }} " title="{{ 'Exportar PDF' }}" />
                 </div>
             </div>
         @endif
@@ -84,19 +80,17 @@
 
                                 {{-- Ver --}}
                                 <x-buttons.show-button
-                                    url="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" />
-
+                                    url="{{ route('empresas.show', Hashids::encode($empresa->id)) }}"
+                                    title="{{ 'Ver Unidad Academica' }}" />
                                 {{-- Aprobar --}}
-                                <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success"
-                                    style=" background-color: #ffa719; font-size: 1.5em;">
-                                    <i class="mdi mdi-check-circle"></i></a>
-
+                                <x-buttons.approve-button
+                                    url="{{ route('empresas.darAlta', Hashids::encode($empresa->id)) }}"
+                                    title="{{ 'Aprobar Unidad Economica' }}" />
                                 {{-- Eliminar --}}
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     {{-- <x-buttons.delete-button funcion="deleteUnidadEconomica"
                                         parametro="{{ $empresa->id }}" /> --}}
                                 @endif
-
                             </td>
                         </tr>
                     @empty

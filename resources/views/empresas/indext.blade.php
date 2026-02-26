@@ -1,256 +1,395 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
+
 @section('title', 'Empresas')
 
-@php
-    $activeTab = request('tab', 'unidades_registradas');
-@endphp
-
 @section('content')
-    <div class="row">
-        <div class="col-12 grid-margin">
+
+    <body class="body">
+        <div class="container">
             <div class="card">
 
-                {{-- Header --}}
-                <div class="card-header-adjusted d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Gestión de Unidades Economicas</h5>
+                <div class="card-header-adjusted">
+                    <h6 class="card-title">Empresas Registradas</h6>
                 </div>
 
-                {{-- Tabs --}}
                 <div class="card-body">
-                    <ul class="nav nav-tabs" id="empresasTabs" role="tablist">
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ $activeTab === 'unidades_registradas' ? 'active' : '' }}"
-                                data-bs-toggle="tab" data-bs-target="#unidades_registradas" type="button" role="tab">
-                                <i class="mdi mdi-check-circle me-1"></i>
-                                Empresas Registradas
-                            </button>
-                        </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ $activeTab === 'unidades_interesadas' ? 'active' : '' }}"
-                                data-bs-toggle="tab" data-bs-target="#unidades_interesadas" type="button" role="tab">
-                                <i class="mdi mdi-account-clock me-1"></i>
-                                Unidades Económicas Interesadas (UEI)
-                            </button>
-                        </li>
-
-                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link {{ $activeTab === 'bajas_temporales' ? 'active' : '' }}"
-                                    data-bs-toggle="tab" data-bs-target="#bajas_temporales" type="button" role="tab">
-                                    <i class="mdi mdi-trash-can me-1"></i>
-                                    Bajas Temporales
-                                </button>
-                            </li>
-                        @endif
-                    </ul>
-
-
-
-                    {{-- Contenido --}}
-                    <div class="tab-content mt-4">
-
-                        <div class="tab-pane fade {{ $activeTab === 'unidades_registradas' ? 'show active' : '' }}"
-                            id="unidades_registradas" role="tabpanel">
-                            @include('empresas.tabs.unidades_registradas')
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <input type="text" id="search" class="form-control" placeholder="Buscar...">
                         </div>
-
-                        <div class="tab-pane fade {{ $activeTab === 'unidades_interesadas' ? 'show active' : '' }}"
-                            id="unidades_interesadas" role="tabpanel">
-                            @include('empresas.tabs.unidades_interesadas')
-                        </div>
-
-                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                            <div class="tab-pane fade {{ $activeTab === 'bajas_temporales' ? 'show active' : '' }}"
-                                id="bajas_temporales" role="tabpanel">
-                                @include('empresas.tabs.bajas_temporales')
-                            </div>
-                        @endif
                     </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre de la UE</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Fecha de Registro</th>
+                                    <th>Convenio </th>
+                                    <th>No.<br>Alumnos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="empresaTable">
+                                @foreach ($empresas as $empresa)
+                                    <tr>
+                                        <td>{{ $empresa->nombre }}</td>
+                                        <td>{{ $empresa->email }}</td>
+                                        <td>{{ $empresa->telefono }}</td>
+                                        <td>{{ $empresa->created_at->format('d \d\e F \d\e Y') }}</td>
+                                        <td>{{ $empresa->inicio_conv }} a {{ $empresa->fin_conv }}</td>
+                                        <td>{{ $empresa->estudiantes_count }}</td>
+                                        <td>
 
+                                            <x-buttons.show-button
+                                                url="{{ route('empresas.show_establecidas', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
+                                                style=" background-color: #00798c font-size: 1.5em;" />
+
+                                            <a href="{{ route('empresas.edit', $empresa->id) }}" class="btn btn-warning"
+                                                style=" background-color: #ffa719 font-size: 1.5em;">Editar</a>
+                                            <a href="{{ route('empresas.downloadPDF', $empresa->id) }}"
+                                                class="btn btn-info">PDF</a>
+                                            <a href="{{ route('empresas.suspendForm', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
+                                                class="btn btn-danger">
+                                                Baja
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Componente de Empresas Interesadas -->
+            <div class="card mt-4">
+
+                <div class="card-header-adjusted">
+                    <h6 class="card-title">Unidades Económicas Interesadas (UEI)</h6>
+                    <div class="float-end">
+                        <a href="{{ route('empresas.exportUeiPdf') }}" class="btn btn-danger" title="Descargar PDF">
+                            <i class="mdi mdi-file-pdf"></i>
+                        </a>
+                        <div class="float-end ms-2">
+                            <a href="{{ route('empresas.create') }}" class="btn btn-add" title="Crear Nueva Empresa">
+                                <i class="mdi mdi-plus-circle-outline"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <input type="text" id="search" class="form-control" placeholder="Buscar...">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre de la UE</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Fecha de Registro</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="empresaInteresadasTable">
+                                @foreach ($empresasInteresadas as $empresa)
+                                    <tr>
+                                        <td>{{ $empresa->nombre }}</td>
+                                        <td>{{ $empresa->email }}</td>
+                                        <td>{{ $empresa->telefono }}</td>
+                                        <td>{{ $empresa->created_at->translatedFormat('d \d\e F \d\e Y') }}</td>
+                                        <td>
+                                            <a href="{{ route('empresas.darAlta', $empresa->id) }}" class="btn btn-success"
+                                                style=" background-color: #ffa719; font-size: 1.5em;">Alta 🡩</a>
+                                            <a href="{{ route('empresas.show', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
+                                                class="btn btn-facebook" style=" background-color: #00798c">
+                                                <i class="mdi mdi-eye btn-icon-prepend" style="font-size: 1.5em;"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Seccion de Bajas Temporales --}}
+
+<div class="card mt-4">
+    <div class="card-header-adjusted">
+
+        <h6 class="card-title">Historial de UEI - Bajas Temporales</h6>
+
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <input type="text" id="search" class="form-control" placeholder="Buscar...">
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre Empresa</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Motivo Baja</th>
+                        <th>Fecha Baja</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($empresasSuspendidas as $empresa)
+                        <tr>
+                            <td>{{ $empresa->nombre }}</td>
+                            <td>{{ $empresa->telefono }}</td>
+                            <td>{{ $empresa->email }}</td>
+                            <td>{{ $empresa->motivo_baja }}</td>
+                            <td>{{ $empresa->fecha_baja }}</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-success btn-sm rounded-pill"
+                                        style=" background-color: #ffa719" title="Restaurar" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal3"
+                                        onclick="openReactivateModal('{{ Hashids::encode($empresa->id) }}')">
+                                        <i class="mdi mdi-backup-restore me-1" style="font-size: 1.5em;"></i>
+                                        Reactivar
+                                    </button>
+
+                                    <x-buttons.show-button class="ver"
+                                        url="{{ route('empresas.show_establecidas', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" />
+
+                                    <button class="btn btn-danger btn-sm rounded-pill"
+                                        style=" background-color: #e63946" title="Eliminar Permanentemente"
+                                        data-bs-toggle="modal" data-bs-target="#exampleModal2"
+                                        onclick="openPermanentDeleteModal('{{ Hashids::encode($empresa->id) }}')">
+                                        <i class="mdi mdi-delete me-1" style="font-size: 1.5em;"></i> Eliminar
+                                    </button>
+                                </div>
+
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+</div>
+
+{{-- Seccion de el Modal de proceso de baja --}}
+<div class="modal fade" id="suspendModal" tabindex="-1" aria-labelledby="suspendModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="suspendModalLabel">Proceso de baja de la Unidad Económica</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <form id="suspendForm" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <p id="bannerSuspend">¿Estás seguro de que deseas dar de baja esta Unidad
+                                    Económica?</p>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <button class="btn btn-primary" type="submit">Confirmar baja</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
+{{-- Seccion de el Modal de restauracion --}}
+<div class="modal fade" id="reactivarModal" tabindex="-1" aria-labelledby="reactivarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reactivarModalLabel">Restaurar Unidad Económica</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <form id="reactivarForm" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <p id="bannerRestore">¿Estás seguro de restaurar esta UE?</p>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <button class="btn btn-primary" type="submit">Confirmar Reactivación</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Seccion del Model de eliminacion permanente --}}
+
+<div class="modal fade" id="permanentDeleteModal" tabindex="-1" aria-labelledby="permanentDeleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="permanentDeleteModalLabel">Eliminar Permanentemente esta Unidad
+                    Económica</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <form id="permanentDeleteForm" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <p id="bannerpermanentDelete">¿Estás seguro de eliminar permanentemente esta UE?
+                                </p>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" type="button"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <button class="btn btn-primary" type="submit">Confirmar Eliminación</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
-
-{{-- Section de modals --}}
-@section('modals')
-
-    <!-- Modal de confirmación para eliminar unidad Interesadas -->
-    <div class="modal fade" id="deleteModalInteresadas" tabindex="-1" aria-labelledby="deleteModalInteresadasLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalInteresadasLabel">Eliminar Unidad Economica</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="bannerInteresadas">¿Estás seguro de eliminar este registro?</p>
-                    <div class="mb-3">
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <form action="" id="deleteFormInteresadas" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de restauracion Unidades economicas-->
-    <div class="modal fade" id="restoreModalUnidadEconomica" tabindex="-1"
-        aria-labelledby="restoreModalUnidadEconomicaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white" style="    background: #34B1AA;">
-                    <h5 class="modal-title" id="restoreModalUnidadEconomicaLabel">Restaurar Unidad Economica</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="bannerRestore">
-                        ¿Estás seguro de restaurar este registro?
-                    </p>
-                    <div class="mb-3">
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <form id="restoreForm" method="POST">
-                        @csrf
-                        @method('patch')
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-warning">Restaurar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de eliminacion permanente-->
-    <div class="modal fade" id="destroyModalEstudiante" tabindex="-1" aria-labelledby="destroyModalEstudianteLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="destroyModalEstudianteLabel">Destruir Registro</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Cerrar">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="bannerRestore">
-                        ¿Estás seguro de Destruir este registro?
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <form id="destroyForm" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
-
-{{-- Section de scripts JS --}}
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                new bootstrap.Tooltip(el)
-            });
-            setupFormValidations();
-        });
-
-        // Obtener info del estudiante
-        function getUnidadEconomicaInfo(hashId, callback) {
-            const url = `${BASE_URL}/empresas/${hashId}/json`;
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(response) {
-                    if (response && Object.keys(response).length > 0) {
-                        // response es un objeto, no un array
-                        callback(response);
-                    } else {
-                        console.error('Unidad Economica no encontrada');
-                    }
-                },
-                error: function(err) {
-                    console.error('Error al obtener unidad economica:', err);
+@section('scripts')
+<script>
+    document.getElementById('search').addEventListener('keyup', function() {
+        let value = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#empresaTable tr');
+        rows.forEach(row => {
+            let showRow = false;
+            row.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(value)) {
+                    showRow = true;
                 }
             });
-        }
+            row.style.display = showRow ? '' : 'none';
+        });
+    });
 
-        // Mostrar modal de eliminación
-        function showDeleteModal(unidad_economica, hashId) {
-            document.getElementById('bannerUnidadesRegistradas').innerHTML =
-                `¿Estás seguro de eliminar a <strong>${unidad_economica.nombre}</strong>?`;
-            document.getElementById('deleteFormUnidadesRegistradas').action =
-                `${BASE_URL}/empresas/${hashId}/suspend`;
-            bootstrap.Modal.getOrCreateInstance(
-                document.getElementById('deleteModalUnidadesRegistradas')
-            ).show();
-        }
-
-        //Funcion para eliminar UE 
-
-        function deleteUnidadEconomica(hashId) {
-            getUnidadEconomicaInfo(hashId, function(unidad_economica) {
-                showDeleteModal(unidad_economica, hashId);
+    document.getElementById('searchInteresadas').addEventListener('keyup', function() {
+        let value = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#empresaInteresadasTable tr');
+        rows.forEach(row => {
+            let showRow = false;
+            row.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(value)) {
+                    showRow = true;
+                }
             });
-        }
+            row.style.display = showRow ? '' : 'none';
+        });
+    });
 
-        function setupFormValidations() {
+    // Función para abrir el modal de la suspencion
+    function openSuspendModal(id) {
+        let form = document.getElementById('suspendForm');
+        form.action = `empresas/${id}/suspend`;
+        $.ajax({
+            url: `empresas/${id}/json`,
+            type: 'GET',
+            success: function(response) {
+                $('#bannerSuspend').text(
+                    `¿Estás seguro de que deseas dar de baja esta Unidad Económica
+               ${response.nombre}?`);
+                $('#suspendModal').modal('show');
+            },
+            error: function() {
+                alert('Error al cargar datos de la empresa');
+            }
+        });
+    }
 
-            document.getElementById('deleteFormUnidadesRegistradas').addEventListener('submit', function(e) {
 
-            });
+    // Función para abrir el modal de reactivación
+    function openReactivateModal(id) {
+        let form = document.getElementById('reactivarForm');
+        form.action = `empresas/${id}/reactivate`;
+        // Obtener datos de la empresa vía AJAX
+        $.ajax({
+            url: `empresas/${id}/json`,
+            type: 'GET',
+            success: function(response) {
+                console.log('Es: ', response);
+                $('#bannerRestore').text(
+                    `¿Estás seguro de reactivar la empresa ${response.nombre} ?`);
+                $('#reactivarModal').modal('show');
+            },
+            error: function() {
+                alert('Error al cargar datos de la empresa');
+            }
+        });
+    }
 
-            document.getElementById('deleteFormInteresadas').addEventListener('submit', function(e) {
+    //Manejo del formulario con  AJAX para eliminacion permanentemente
+    function openPermanentDeleteModal(id) {
+        let form = document.getElementById('permanentDeleteForm');
+        form.action = `empresas/${id}/delete`;
 
-            });
-        }
+        // Obtener datos de la empresa vía AJAX
+        $.ajax({
+            url: `empresas/${id}/json`,
+            type: 'GET',
+            success: function(response) {
+                $('#bannerpermanentDelete').text(
+                    `¿Estás seguro de eliminar permantemente la UI ${response.nombre} ?`);
+                $('#permanentDeleteModal').modal('show');
+            },
+            error: function() {
+                alert('Error al cargar datos de la UE');
+            }
+        });
+    }
 
-        function restoreUnidadEconomica(id) {
-            getUnidadEconomicaInfo(id, function(unidad_economica) {
-                document.getElementById('bannerRestore').innerHTML =
-                    `¿Estás seguro de restaurar a <strong>${unidad_economica.nombre}?`;
-                document.getElementById('restoreForm').action = `/empresas/${id}/reactivate`;
-                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
-                    'restoreModalUnidadEconomica'));
-                modal.show();
-            });
-        }
+    $('#permanentDeleteForm').on('submit', function(e) {
+        e.preventDefault();
 
-        function destroyPermanent(id) {
-            // Traer información del estudiante
-            getUnidadEconomicaInfo(id, function(unidad_economica) {
-                // Actualizar el contenido del modal
-                const modalBody = document.getElementById('destroyModalEstudiante').querySelector('.modal-body');
-                modalBody.innerHTML =
-                    `¿Deseas eliminar permanentemente a <strong>${unidad_economica.nombre}?`;
-                document.getElementById('destroyForm').action = `empresas/${id}/delete`;
-                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(
-                    'destroyModalEstudiante'));
-                modal.show();
-            });
-        }
-    </script>
-@endpush
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                $('#permanentDeleteModal').modal('hide');
+                alert('Empresa eliminada con éxito');
+                location.reload(); // Recargar la página para ver cambios
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseJSON.message);
+            }
+        });
+    });
+</script>
+@endsection
+</body> --}}

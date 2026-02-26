@@ -78,14 +78,14 @@
                             <td class="text-center">
                                 {{-- Ver --}}
                                 <x-buttons.show-button
-                                    url="{{ route('empresas.show_establecidas', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" />
+                                    url="{{ route('empresas.show_establecidas', Hashids::encode($empresa->id)) }}" />
                                 {{-- Editar --}}
                                 <x-buttons.edit-button
-                                    url="{{ route('empresas.edit', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
+                                    url="{{ route('empresas.edit', Hashids::encode($empresa->id)) }}"
                                     title="Editar UE" />
                                 {{-- Eliminar --}}
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <a href="{{ route('empresas.suspendForm', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}"
+                                    <a href="{{ route('empresas.suspendForm', Hashids::encode($empresa->id)) }}"
                                         class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top"
                                         title="Dar de baja">
                                         <i class="mdi mdi-store-off"></i>

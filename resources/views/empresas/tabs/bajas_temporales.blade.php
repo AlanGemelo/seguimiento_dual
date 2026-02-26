@@ -72,11 +72,11 @@
                             <td class="text-center">
                                 {{-- Ver --}}
                                 <x-buttons.show-button
-                                    url="{{ route('empresas.show_establecidas', Vinkla\Hashids\Facades\Hashids::encode($empresa->id)) }}" />
+                                    url="{{ route('empresas.show_establecidas', Hashids::encode($empresa->id)) }}" />
 
                                 {{-- Restaurar --}}
-                                <x-buttons.restore-button funcion="restoreEstudiante"
-                                    parametro="{{ $empresa->id }}" />
+                                <x-buttons.restore-button funcion="restoreUnidadEconomica"
+                                    parametro="{{ Hashids::encode($empresa->id) }}" />
 
                                 {{-- Eliminar permanente --}}
                                 <x-buttons.delete-button funcion="destroyPermanent"

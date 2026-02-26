@@ -18,7 +18,7 @@ class EditButton extends Component
     public function __construct($url, $title)
     {
         $this->url = $url;
-        $this->text = $title;
+        $this->title = $title;
     }
 
     /**

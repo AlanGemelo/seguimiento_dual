@@ -23,6 +23,9 @@
 
                 {{-- Tabs --}}
                 <div class="card-body">
+                    {{-- Alertas generales --}}
+                    <x-alerts.flash-messages />
+                    {{-- Pestanas para la seccion --}}
                     <ul class="nav nav-tabs" id="estudiantesTabs" role="tablist">
 
                         <li class="nav-item" role="presentation">

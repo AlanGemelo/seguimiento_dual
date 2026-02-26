@@ -1,24 +1,24 @@
 <?php
 
-namespace App\View\Components\Buttons;
+namespace App\View\Components\buttons;
 
 use Illuminate\View\Component;
 
-class ShowButton extends Component
+class PdfButton extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-
     public $url;
-    public $title;
 
-    public function __construct($url = null, $title = null)
+    public $text;
+
+    public function __construct($url = null, $text = null)
     {
         $this->url = $url;
-        $this->title = $title;
+        $this->text = $text;
     }
 
     /**
@@ -28,6 +28,6 @@ class ShowButton extends Component
      */
     public function render()
     {
-        return view('components.buttons.show-button');
+        return view('components.buttons.pdf-button');
     }
 }

@@ -1,21 +1,21 @@
 <?php
 
-namespace App\View\Components\Buttons;
+namespace App\View\Components\buttons;
 
 use Illuminate\View\Component;
 
-class ShowButton extends Component
+class AddButton extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-
     public $url;
+
     public $title;
 
-    public function __construct($url = null, $title = null)
+    public function __construct($url, $title)
     {
         $this->url = $url;
         $this->title = $title;
@@ -28,6 +28,6 @@ class ShowButton extends Component
      */
     public function render()
     {
-        return view('components.buttons.show-button');
+        return view('components.buttons.add-button');
     }
 }

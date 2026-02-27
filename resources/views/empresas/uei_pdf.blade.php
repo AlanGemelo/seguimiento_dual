@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Anexo 1.3A - Educación Dual</title>
+    <title>ANEXO 1.3 - A CONCENTRADO DE UNIDADES ECONÓMICAS INTERESADAS EN EDUCACIÓN DUAL</title>
     <style>
         /* Configuración de la página (Horizontal) */
         @page {

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Empresa extends Model
 {
@@ -17,6 +16,7 @@ class Empresa extends Model
         'nombre',
         'email',
         'direccion',
+        'ext_telefonica',
         'telefono',
         'inicio_conv',
         'fin_conv',
@@ -55,7 +55,6 @@ class Empresa extends Model
     {
         return $this->hasMany(Estudiantes::class, 'empresa_id');
     }
-
 
     public function direccionesCarrera()
     {

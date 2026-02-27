@@ -109,7 +109,8 @@
                                 <h5 class="section-title fw-bold">Datos de Contacto </h5>
                                 <small class="text-muted text-stone-950">(Comunicación directa)</small>
                                 <div class="dropdown-divider mb-4"></div>
-                                <div class="col-md-6 mb-3">
+
+                                <div class="col-md-5 mb-3">
                                     <label for="email" class="form-label">Correo Electrónico <span
                                             class="text-danger">*</span></label>
                                     <input type="email" class="form-control  " id="email" name="email"
@@ -119,7 +120,20 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-6 mb-3">
+                                <!-- Extensión -->
+                                <div class="col-md-2 mb-3" style="max-width: 10%">
+
+                                    <label for="ext_telefonica" class="form-label">Ext.<small
+                                            class="text-muted">(Opcional)</small>
+                                    </label>
+                                    <input type="text" class="form-control" id="ext_telefonica" name="ext_telefonica"
+                                        placeholder="Ext." value="{{ old('telefono', $empresa->ext_telefonica) }}">
+                                    @error('ext_telefonica')
+                                        <div class="text-danger invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-5 mb-3">
                                     <label for="telefono" class="form-label">Teléfono de contacto <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control  " id="telefono" name="telefono"
@@ -129,6 +143,8 @@
                                     @enderror
                                 </div>
                             </div>
+
+
 
                             <!-- Representante Legal  -->
                             <div class="row mb-4">

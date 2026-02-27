@@ -11,8 +11,8 @@ class ShowButton extends Component
      *
      * @return void
      */
-
     public $url;
+
     public $title;
 
     public function __construct($url = null, $title = null)

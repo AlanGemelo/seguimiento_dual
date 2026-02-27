@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Error')</title>
 
+    <!-- Styles -->
     <style>
         * {
             box-sizing: border-box;

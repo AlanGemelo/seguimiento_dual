@@ -694,7 +694,7 @@
 
                             </div>
 
-                            <div class=" d-flex justify-content-end mt-3 ">
+                            <div class="d-flex justify-content-end mt-3 ">
                                 <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn mr-4"
                                     type="submit" style="margin-right: 15px ">Actualizar
                                 </button>

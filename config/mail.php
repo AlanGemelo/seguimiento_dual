@@ -43,8 +43,14 @@ return [
             'password' => env('MAIL_PASSWORD'), // La contraseña de tu cuenta de correo
             'timeout' => null,
             'auth_mode' => null,
+            'stream' => [
+                'ssl' => [
+                    'allow_self_signed' => true,
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ],
         ],
-
         'ses' => [
             'transport' => 'ses',
         ],
@@ -91,11 +97,10 @@ return [
     |
     */
 
-  'from' => [
-    'address' => env('MAIL_FROM_ADDRESS', 'SistemasDual@outlook.com'), // Cambia a tu dirección de correo
-    'name' => env('MAIL_FROM_NAME', 'Universidad Tecnologica del Valle de Toluca'), // Cambia al nombre que quieres mostrar
-],
-
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'SistemasDual@outlook.com'), // Cambia a tu dirección de correo
+        'name' => env('MAIL_FROM_NAME', 'Universidad Tecnologica del Valle de Toluca'), // Cambia al nombre que quieres mostrar
+    ],
 
     /*
     |--------------------------------------------------------------------------

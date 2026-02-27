@@ -10,8 +10,8 @@
 @endsection
 
 @section('action')
-    <a href="javascript:history.go(-1)" class="btn-home">Volver atrás</a>
+      <a href="javascript:history.go(-1)" class="btn-home">Volver atrás</a>
 @endsection
 
 {{-- Sección de la imagen --}}
-{{-- @section('image', asset('images/errors/500.png')) --}}
+@section('image', asset('assets/images/errors/error-505-cuervo.webp'))

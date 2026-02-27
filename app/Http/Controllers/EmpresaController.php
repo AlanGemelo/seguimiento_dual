@@ -438,11 +438,12 @@ class EmpresaController extends Controller
     public function exportUeiPdf()
     {
         $empresasInteresadas = Empresa::where('status', 0)->get();
+
         $data = [
             'empresas' => $empresasInteresadas,
         ];
-
-        $pdf = Pdf::loadView('empresas.uei_pdf', $data);
+        $pdf = Pdf::loadView('empresas.uei_pdf', $data)
+            ->setPaper('letter', 'landscape');
 
         return $pdf->download('uei_interesadas.pdf');
     }

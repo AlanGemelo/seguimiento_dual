@@ -10,9 +10,15 @@
         </h6>
 
         @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 2 || Auth::user()->rol_id === 4)
-            <a href="{{ route('academicos.create') }}" class="btn btn-sm btn-add" title="Agregar Mentor Academico">
-                <i class="mdi mdi-plus-circle-outline"></i>
-            </a>
+            <div class="row g-2">
+                <div class="col-auto">
+                    <x-buttons.add-button url="{{ route('academicos.create') }}"
+                        title="{{ 'Agregar Mentor Academico' }}" />
+                </div>
+                <div class="col-auto">
+
+                </div>
+            </div>
         @endif
     </div>
 

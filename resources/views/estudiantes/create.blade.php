@@ -343,7 +343,8 @@
 
                         </div>
 
-                        <div class="mt-3">
+                       
+                            <div class="d-flex justify-content-end mt-3">
                             <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                 type="submit">Guardar</button>
 

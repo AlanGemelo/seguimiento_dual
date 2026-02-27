@@ -15,7 +15,7 @@ class AddButton extends Component
 
     public $title;
 
-    public function __construct($url, $title)
+    public function __construct($url, $title = null)
     {
         $this->url = $url;
         $this->title = $title;

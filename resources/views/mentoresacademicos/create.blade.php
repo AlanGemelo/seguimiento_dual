@@ -5,31 +5,32 @@
         <div class="col-lg-12">
             <div class="card shadow">
                 <!-- Encabezado -->
-                <x-forms.section-header title="Registro del Mentor Académico "
+                <x-forms.section-header title="Registro del Mentor Académico"
                     description="Formulario para registrar docentes responsables del acompañamiento a estudiantes en el Modelo de Formación Dual." />
 
-
                 <div class="card-body">
-                    <!-- Información General -->
+                    <!-- Formulario -->
                     <form class="pt-3" action="{{ route('academicos.store') }}" method="post">
                         @csrf
-                        <div class="mb-4">
-                            <h5 class="section-title fw-bold">Identificación del Mentor Académico</h5>
-                            <div class="dropdown-divider mb-4"></div>
-                            <div class="row">
 
-                                <div class="col-md-4 mb-3">
-                                    <label for="email" class="form-label">Correo electrónico institucional</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="email"
-                                            placeholder="nombre_de_usuario" name="email" value="{{ old('email') }}">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text" style="color:black;">@utvtol.edu.mx</span>
-                                        </div>
-                                    </div>
+                        <!-- Identificación del Mentor Académico -->
+                        <h5 class="section-title fw-bold">Identificación del Mentor Académico</h5>
+                        <div class="dropdown-divider mb-4"></div>
+
+                        <div class="row">
+                            <!-- Correo electrónico -->
+                            <div class="col-12 mb-3">
+                                <label for="email" class="form-label">Correo electrónico institucional</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" style="color:black;">al</span>
+                                    <input type="text" class="form-control" id="email"
+                                        placeholder="nombre_de_usuario" name="email" value="{{ old('email') }}"
+                                        style="max-width: 25%">
+                                    <span class="input-group-text" style="color:black;">@utvtol.edu.mx</span>
                                 </div>
-
-
+                            </div>
+                            <!-- Nombre y apellidos -->
+                            <div class="col-12">
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="name" class="form-label">Nombre(s)</label>
@@ -59,45 +60,49 @@
                                         @enderror
                                     </div>
                                 </div>
-
-                                <h5 class="section-title mt-4 fw-bold">Información Académica</h5>
-                                <div class="dropdown-divider mb-4"></div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="cuatrimestre" class="form-label">Grado Académico</label>
-                                    <input type="text" class="form-control uppercase" id="titulo"
-                                        placeholder="Ej. Licenciado, Ingeniero, Doctor" name="titulo"
-                                        value="{{ old('titulo') }}">
-                                    @error('titulo')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="cuatrimestre" class="form-label">Dirección de carrera</label>
-                                    <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id">
-                                        <option selected>Seleccione una opcion</option>
-                                        @foreach ($direcciones as $carrera)
-                                            <option value="{{ $carrera->id }}"
-                                                data-direccion="{{ $carrera->direccion_id }}">
-                                                {{ $carrera->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('direccion_id')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
                             </div>
                         </div>
 
-                        <div class="mt-3">
-                            <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                type="submit">Guardar</button>
+                        <!-- Información Académica -->
+                        <h5 class="section-title mt-4 fw-bold">Información Académica</h5>
+                        <div class="dropdown-divider mb-4"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="titulo" class="form-label">Grado Académico</label>
+                                <input type="text" class="form-control uppercase" id="titulo"
+                                    placeholder="Ej. Licenciado, Ingeniero, Doctor" name="titulo"
+                                    value="{{ old('titulo') }}">
+                                @error('titulo')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="direccion_id" class="form-label">Dirección de carrera</label>
+                                <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id">
+                                    <option selected>Seleccione una opción</option>
+                                    @foreach ($direcciones as $carrera)
+                                        <option value="{{ $carrera->id }}" data-direccion="{{ $carrera->direccion_id }}">
+                                            {{ $carrera->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('direccion_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-end mt-3">
+                            <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit"
+                                style="margin-right: 8px">Guardar</button>
 
                             <x-buttons.cancel-button url="{{ route('academicos.index') }}" />
-
                         </div>
+
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

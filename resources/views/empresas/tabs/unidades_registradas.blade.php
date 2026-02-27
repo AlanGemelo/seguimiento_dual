@@ -83,8 +83,11 @@
                                 <x-buttons.edit-button
                                     url="{{ route('empresas.edit', Hashids::encode($empresa->id)) }}"
                                     title="Editar UE" />
-                                {{-- Eliminar --}}
+                                {{-- Exportar PDF --}}
+                                <x-buttons.pdf-button url="{{ route('empresas.downloadPDF', $empresa->id) }} "
+                                    title="{{ 'Exportar PDF' }}" />
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                    {{-- Eliminar --}}
                                     <a href="{{ route('empresas.suspendForm', Hashids::encode($empresa->id)) }}"
                                         class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top"
                                         title="Dar de baja">

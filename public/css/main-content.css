@@ -1,0 +1,273 @@
+body {
+    background-color: #c7dfcc;
+}
+
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.main-content {
+    flex: 1;
+    padding: 70px 20px 20px;
+    margin-top: 0;
+}
+
+/* Tarjeta blanca interior */
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    /* sombra más sutil */
+    overflow: hidden;
+    /* menos espacio arriba */
+}
+
+/* Card ajustada para casos especiales */
+.card-adjusted {
+    margin-top: 0;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    border-top: none;
+}
+
+/* Cuerpo de la tarjeta */
+.card-body {
+    padding: 15px;
+    /* reducir de 25px a 15px */
+}
+
+/* Encabezado de la tarjeta */
+.card-header-adjusted {
+    margin: 10px 15px 0;
+    /* menos margen superior */
+    padding: 15px;
+    /* menos padding interno */
+    border-radius: 8px 8px 0 0;
+    /* background-color: #006837; */
+    background-color: #66BB6A;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    /* sombra más suave */
+}
+
+/* Título ajustado */
+.card-header-adjusted .card-title {
+    color: #fff;
+    font-size: 1.25rem;
+    /* un poco más pequeño */
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+/* Contenedor del botón */
+.card-header-adjusted .btn-container {
+    position: absolute;
+    right: 10px;
+    /* menos separación lateral */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Botón de acción */
+.card-header-adjusted .btn-add {
+    background-color: #fff;
+    color: #006837;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    /* más compacto */
+    height: 35px;
+    /* más compacto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card-header-adjusted .btn-add:hover {
+    transform: scale(1.1) translateY(-50%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+/* Icono dentro del botón */
+.card-header-adjusted .btn-add i {
+    font-size: 1.2rem;
+    /* ligeramente más pequeño */
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    display: inline-block;
+}
+
+.dropdown-divider {
+    height: 0;
+    margin: 1rem 0;
+    overflow: hidden;
+    border-top: 3px solid #006837 !important;
+}
+
+h4 {
+    color: #006837 !important;
+    font-weight: 600;
+}
+
+/* Personalización adicional del buscador */
+#search {
+    border: 1px solid #ced4da;
+    /* Verde */
+    padding: 8px 15px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+#search::placeholder {
+    color: #6c757d;
+    /* Color más suave para el placeholder */
+    font-style: italic;
+}
+
+#search:focus {
+    border-color: #004d27;
+    /* Verde más oscuro al enfocar */
+    box-shadow: 0 0 0 0.2rem rgba(0, 104, 55, 0.25);
+    /* Sombra verde */
+}
+
+#email {
+    border: 1px solid #ced4da;
+    /* Verde */
+    padding: 8px 15px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+#email:focus {
+    border-color: #004d27;
+    /* Verde más oscuro al enfocar */
+    box-shadow: 0 0 0 0.2rem rgba(0, 104, 55, 0.25);
+    /* Sombra verde */
+}
+
+/* Estilos para la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    border: 1px solid #dee2e6;
+    /* Bordes para celdas */
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    color: #006837;
+    font-weight: 600;
+    border-bottom-width: 2px;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #c7dfcc;
+}
+
+/* Botones de acción */
+.btn-add {
+    background-color: #006837;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: right;
+}
+
+.btn-primary {
+    background-color: #006837 !important;
+    color: white;
+}
+
+/* Modal de confirmación */
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-header {
+    background-color: #006837;
+    color: white;
+    border-bottom: none;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+
+/*Estilos para descargar anexos*/
+.row.xd {
+    margin-top: 30px;
+    /* Altura del navbar*/
+    padding: 20px 15px;
+}
+
+.ver {
+    background-color: #00798c !important;
+    font-size: 1.5em;
+}
+
+/*    */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .main-area {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    .btn-container {
+        margin-top: 10px;
+        float: none !important;
+    }
+}
+
+/*  MOBILE VERSION  */
+@media (max-width: 767px) {
+    .main-area {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/*  MOBILE VERSION  */
+@media (max-width: 1024px) {}

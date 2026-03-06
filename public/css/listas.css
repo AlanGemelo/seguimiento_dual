@@ -1,9 +1,21 @@
-.body{
-    background-color: #c7dfcc;
+body {
+  background-color: #c7dfcc;
 }
 
-body{
-    background-color: #c7dfcc;
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 25px;
 }
 
 /* Tarjeta blanca interior */
@@ -16,10 +28,13 @@ body{
 }
 
 .card-adjusted {
-  margin-top: 0; /* Elimina márgenes superiores */
-  border-radius: 0 0 8px 8px; /* Redondeo solo en la parte inferior */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  border-top: none; /* Elimina borde superior si existe */
+  margin-top: 0;
+  /* Elimina márgenes superiores */
+  border-radius: 0 0 8px 8px;
+  /* Redondeo solo en la parte inferior */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-top: none;
+  /* Elimina borde superior si existe */
 }
 
 /* Cuerpo de la tarjeta */
@@ -30,22 +45,28 @@ body{
 /* Contenedor principal del encabezado */
 .card-header-adjusted {
   position: relative;
-  margin: 40px 15px 0; /* Margen superior para separación de la navbar */
-  z-index: 1; /* Valor menor que la navbar */
+  margin: 40px 15px 0;
+  /* Margen superior para separación de la navbar */
+  z-index: 1;
+  /* Valor menor que la navbar */
   border-radius: 8px 8px 0 0;
-  background-color: #006837; /* Verde sólido */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background-color: #006837;
+  /* Verde sólido */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
 
 /* Título ajustado */
 .card-header-adjusted .card-title {
-  color: #fff; /* Texto negro */
-  font-size: 1.5rem; /* Tamaño aumentado */
+  color: #fff;
+  /* Texto negro */
+  font-size: 1.5rem;
+  /* Tamaño aumentado */
   font-weight: 600;
   margin: 0;
   padding: 0;
-  text-transform: uppercase; /* Opcional: mayúsculas */
+  text-transform: uppercase;
+  /* Opcional: mayúsculas */
 }
 
 /* Contenedor del botón */
@@ -67,13 +88,13 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
 .card-header-adjusted .btn-add:hover {
   transform: scale(1.1) translateY(-50%);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Icono dentro del botón */
@@ -95,39 +116,46 @@ body{
   border-top: 3px solid #006837 !important;
 }
 
-h4{
+h4 {
   color: #006837 !important;
   font-weight: 600;
 }
 
 /* Personalización adicional del buscador */
 #search {
-  border: 1px solid #ced4da; /* Verde */
+  border: 1px solid #ced4da;
+  /* Verde */
   padding: 8px 15px;
   border-radius: 4px;
   width: 100%;
 }
 
 #search::placeholder {
-  color: #6c757d; /* Color más suave para el placeholder */
+  color: #6c757d;
+  /* Color más suave para el placeholder */
   font-style: italic;
 }
 
 #search:focus {
-  border-color: #004d27; /* Verde más oscuro al enfocar */
-  box-shadow: 0 0 0 0.2rem rgba(0, 104, 55, 0.25); /* Sombra verde */
+  border-color: #004d27;
+  /* Verde más oscuro al enfocar */
+  box-shadow: 0 0 0 0.2rem rgba(0, 104, 55, 0.25);
+  /* Sombra verde */
 }
 
 #email {
-  border: 1px solid #ced4da; /* Verde */
+  border: 1px solid #ced4da;
+  /* Verde */
   padding: 8px 15px;
   border-radius: 4px;
   width: 100%;
 }
 
 #email:focus {
-  border-color: #004d27; /* Verde más oscuro al enfocar */
-  box-shadow: 0 0 0 0.2rem rgba(0, 104, 55, 0.25); /* Sombra verde */
+  border-color: #004d27;
+  /* Verde más oscuro al enfocar */
+  box-shadow: 0 0 0 0.2rem rgba(0, 104, 55, 0.25);
+  /* Sombra verde */
 }
 
 /* Estilos para la tabla */
@@ -136,8 +164,10 @@ h4{
   border-collapse: collapse;
 }
 
-.table th, .table td {
-  border: 1px solid #dee2e6; /* Bordes para celdas */
+.table th,
+.table td {
+  border: 1px solid #dee2e6;
+  /* Bordes para celdas */
   padding: 12px 15px;
   text-align: left;
 }
@@ -196,12 +226,13 @@ h4{
   .card-body {
     padding: 15px;
   }
-  
-  .table th, .table td {
+
+  .table th,
+  .table td {
     padding: 8px 10px;
     font-size: 0.9rem;
   }
-  
+
   .btn-container {
     margin-top: 10px;
     float: none !important;
@@ -210,11 +241,12 @@ h4{
 
 /*Estilos para descargar anexos*/
 .row.xd {
-  margin-top: 30px; /* Altura del navbar*/
+  margin-top: 30px;
+  /* Altura del navbar*/
   padding: 20px 15px;
 }
 
-.ver{
-  background-color: #00798c !important; 
+.ver {
+  background-color: #00798c !important;
   font-size: 1.5em;
 }

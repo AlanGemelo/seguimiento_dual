@@ -38,8 +38,8 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('css/listas.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main-content.css') }}">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Solucion tenporar a que no hay dominio-->
@@ -49,40 +49,39 @@
 
     <style>
         .custom-loader {
-            height: 100vh;
-            width: 100vw;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.8);
             z-index: 9999;
+            transition: opacity 0.5s ease;
         }
 
         .loader-image {
-            width: 100px;
-            height: 100px;
-            animation: loader-animation 2s infinite;
+            width: 80px;
+            height: 80px;
+            animation: pulse 1.5s infinite;
         }
 
-        @keyframes loader-animation {
-            0% {
-                transform: scale(0) rotate(0deg);
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
                 opacity: 1;
             }
 
             50% {
-                transform: scale(1.5) rotate(180deg);
-                opacity: 0.5;
-            }
-
-            100% {
-                transform: scale(1) rotate(360deg);
-                opacity: 1;
+                transform: scale(1.2);
+                opacity: 0.7;
             }
         }
+
 
         .content-blur {
             filter: blur(5px);
@@ -101,22 +100,26 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        {{-- Navigation --}}
-        @include('layouts.navigation')
 
-        <div class="row" id="content" style="margin-top: 80px;">
-            <div class="custom-loader" id="loading">
-                <img src="{{ asset('assets/images/logo-utvt-removebg-preview.png') }}" alt="Loading"
-                    class="loader-image">
-            </div>
+    <div class="wrapper">
+        {{-- SIDEBAR --}}
+        @include('partials.sidebar')
 
-            {{-- Content --}}
-            @yield('content')
+        <div class="main-area">
+            {{-- TOPBAR --}}
+            @include('partials.topbar')
+            {{-- CONTENIDO --}}
+            <main class="main-content">
+                <div class="custom-loader" id="loading">
+                    <img src="{{ asset('assets/images/logo-utvt-removebg-preview.png') }}" alt="Loading"
+                        class="loader-image">
+                </div>
+                @yield('content')
+            </main>
         </div>
     </div>
 
-    {{-- MODALS (siempre fuera de los tabs / contenido dinámico) --}}
+    {{-- MODALS --}}
     @yield('modals')
 
 
@@ -147,7 +150,7 @@
     <script src="{{ asset('assets/js/tooltips.js') }}"></script>
     <script src="{{ asset('assets/js/sweetAlert.js') }}"></script>
     <script src="{{ asset('js/form-validations.js') }}"></script>
-
+    <script src="{{ asset('js/navbar.js') }}"></script>
 
     <!-- End custom js for this page-->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
@@ -156,10 +159,10 @@
 
 
     <script>
-        $(window).on('load', function() {
-            $('#loading').fadeOut('slow', function() {
-                $('#content').removeClass('content-blur');
-            });
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loading');
+            loader.style.opacity = 0;
+            setTimeout(() => loader.style.display = 'none', 500);
         });
 
         function filterTable(inputId, tableBodyId) {

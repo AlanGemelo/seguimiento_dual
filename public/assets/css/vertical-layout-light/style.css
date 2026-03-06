@@ -124,7 +124,8 @@ canvas {
   padding: 20px;
   box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
 }
-.chart-container{
+
+.chart-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,17 +134,20 @@ canvas {
 }
 
 .alert-3d {
-  perspective: 1000px; /* Define la perspectiva */
+  perspective: 1000px;
+  /* Define la perspectiva */
 }
 
 .alert-3d .swal2-popup {
-  transform: translateZ(30px); /* Desplaza el popup hacia el espectador */
+  transform: translateZ(30px);
+  /* Desplaza el popup hacia el espectador */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
 }
 
 .alert-3d .swal2-popup:hover {
-  transform: translateZ(40px); /* Efecto de acercamiento al pasar el mouse */
+  transform: translateZ(40px);
+  /* Efecto de acercamiento al pasar el mouse */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
@@ -152,7 +156,7 @@ canvas {
   transition: all 0.3s ease-in-out;
   border-radius: 15px;
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  
+
 }
 
 .card-hover:hover {
@@ -193,10 +197,17 @@ canvas {
   font-size: 0.9rem;
 }
 
-.card:hover {  
+/* .card:hover {  
   transform: translateY(-10px);
+} */
+.card {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: box-shadow .2s ease;
 }
 
+.card:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
 
 
 

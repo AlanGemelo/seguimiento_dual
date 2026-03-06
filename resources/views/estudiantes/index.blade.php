@@ -84,7 +84,6 @@
         </div>
     </div>
 
-
 @endsection
 
 {{-- Section de modals --}}

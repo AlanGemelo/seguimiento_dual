@@ -11,11 +11,14 @@
 
             <img src="{{ asset('assets/images/logo-utvt-new.png') }}" class="profile-avatar mb-3">
 
-            <button class="btn btn-outline-secondary btn-sm w-100">
-                {{-- Cambiar avatar --}}
-            </button>
+            {{-- <button class="btn btn-outline-secondary btn-sm w-100">
+                Cambiar avatar 
+            </button> --}}
 
-            <input type="text" value="{{ $user->rol->name ?? '' }}" class="form-control" readonly>
+            <p class="text-muted mb-2">
+                <i class="bi bi-person-badge"></i> <!-- Icono de rol (Bootstrap Icons) -->
+                {{ $user->rol->name ?? 'Sin rol asignado' }}
+            </p>
         </div>
 
         <!-- FORMULARIO -->

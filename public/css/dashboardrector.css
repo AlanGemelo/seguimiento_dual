@@ -1,101 +1,90 @@
-/*Estilos para dashboard de rectores de carrera*/
-/*Flexbox Utilidades*/
-.d-flex {
-  display: flex !important;
+.stat-card {
+  border-radius: 12px;
+  transition: .25s;
 }
 
-.flex-column {
-  flex-direction: column !important;
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
 }
 
-.flex-grow {
-  flex-grow: 1;
-}
-
-/*Variantes de color*/
-.btn-success {
-  color: #fff;
-  background-color: #006837; /* Verde institucional */
-  border-color: #006837;
-}
-
-.btn-success:hover {
-  background-color: #005630;
-  border-color: #004d27;
-}
-
-/*Tipografía*/
-.text-secondary {
-  color: #6c757d !important;
-}
-
-.font-weight-bold {
-  font-weight: 700 !important;
-}
-
-.mb-3 {
-  margin-bottom: 1rem !important;
-}
-
-.text-primary {
-  color: #006837 !important; /* Verde institucional */
-}
-
-.display-4 {
-  font-size: 3.5rem;
-  font-weight: 300;
-  line-height: 1.2;
-}
-
-.text-warning {
-  color: #ffc107 !important;
-}
-
-/*Cuerpo de Tarjeta*/
-.card-body {
-  flex: 1 1 auto;
-  padding: 2rem;
-}
-
-.text-center {
-  text-align: center !important;
-}
-
-/*Estructura de tarjetas*/
-.card {
-  position: relative;
+.stat-icon {
+  width: 50px;
+  height: 50px;
   display: flex;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1px solid rgba(0,0,0,.125);
-  border-radius: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: white;
+  font-size: 22px;
 }
 
-.card-rounded {
-  border-radius: 1rem !important;
+.action-card {
+  border-radius: 12px;
+  transition: .25s;
 }
 
-.shadow-lg {
-  box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
 }
 
-.border-0 {
-  border: 0 !important;
+.right-sidebar {
+  position: sticky;
+  top: 90px;
 }
 
-.body{
-    background-color: #c7dfcc;
+.sidebar-widget {
+  border-radius: 12px;
+  transition: .2s;
 }
 
-/* Contenedor principal debajo del navbar */
-.row {
-  margin-top: 5px; /* Espacio para el navbar */
-  padding-top: 0px;
+.sidebar-widget:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .08);
 }
 
+.sidebar-widget h6 {
+  font-size: .9rem;
+  margin-bottom: 10px;
+}
 
+.sidebar-widget p {
+  font-size: .85rem;
+}
 
+.sidebar-widget ul li {
+  margin-bottom: 6px;
+}
 
+.right-panel {
+  width: 280px;
+  min-height: 100vh;
+  background: #f8fafc;
+  border-left: 1px solid #e5e7eb;
+  padding: 20px;
+}
+
+.panel-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.panel-list {
+  padding-left: 15px;
+  font-size: 13px;
+}
+
+.panel-text {
+  font-style: italic;
+  font-size: 13px;
+}

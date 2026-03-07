@@ -33,6 +33,113 @@ body {
   display: flex;
 }
 
+.dropdown i {
+  color: #C7DFCC;
+}
+
+/*  TOPBAR  */
+
+.topbar {
+  height: 60px;
+  background: #C7DFCC;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border-bottom: 2px solid #004D40;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 250px;
+  width: calc(100% - 250px);
+  z-index: 1000;
+  transition: 0.3s;
+}
+
+/* Zonas topbar */
+
+.topbar-left,
+.topbar-center,
+.topbar-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Zona izquierda */
+.topbar-left {
+  margin-bottom: 8px;
+}
+
+#openSidebar {
+  display: none;
+}
+
+/* Centro (logo + nombre) */
+
+.topbar-center {
+  gap: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Zona derecha */
+
+.topbar-right {
+  gap: 15px;
+}
+
+/* Botón sidebar */
+
+.btn-toggle {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #374151;
+}
+
+/* Logo */
+
+.logo {
+  height: 40px;
+}
+
+/* Nombre sistema */
+
+.system-name {
+  font-weight: bold;
+  font-size: larger;
+  color: #2E2E2E;
+}
+
+/* Avatar */
+.avatar {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #C7DFCC;
+  cursor: pointer;
+}
+
+/* Dropdown alineación */
+
+.topbar-right .dropdown {
+  display: flex;
+  align-items: center;
+}
+
+/* Dropdown hover */
+.dropdown-menu .dropdown-item:hover {
+  background-color: #66BB6A;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+
 
 /*  SIDEBAR  */
 
@@ -47,6 +154,10 @@ body {
   left: 0;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.sidebar hr {
+  margin: 0;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -85,6 +196,8 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+
 
 .menu-item {
   display: flex;
@@ -147,111 +260,6 @@ body {
   white-space: normal;
   line-height: 1.3;
 }
-
-
-
-/*  TOPBAR  */
-
-.topbar {
-  height: 60px;
-  background: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 24px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  border-bottom: 2px solid #004D40;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 250px;
-  width: calc(100% - 250px);
-  z-index: 1000;
-  transition: 0.3s;
-}
-
-/* Zonas topbar */
-
-.topbar-left,
-.topbar-center,
-.topbar-right {
-  display: flex;
-  align-items: center;
-}
-
-/* Zona izquierda */
-.topbar-left {
-  margin-bottom: 8px;
-}
-
-#openSidebar {
-  display: none;
-}
-
-/* Centro (logo + nombre) */
-
-.topbar-center {
-  gap: 10px;
-
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* Zona derecha */
-
-.topbar-right {
-  gap: 15px;
-}
-
-/* Botón sidebar */
-
-.btn-toggle {
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: #374151;
-}
-
-/* Logo */
-
-.logo {
-  height: 40px;
-}
-
-/* Nombre sistema */
-
-.system-name {
-  font-weight: bold;
-  color: #2E2E2E;
-}
-
-/* Avatar */
-.avatar {
-  height: 36px;
-  width: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #006837;
-  cursor: pointer;
-}
-
-/* Dropdown alineación */
-
-.topbar-right .dropdown {
-  display: flex;
-  align-items: center;
-}
-
-/* Dropdown hover */
-.dropdown-menu .dropdown-item:hover {
-  background-color: #66BB6A;
-  color: #FFFFFF;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
 
 /*  SIDEBAR COLLAPSED  */
 
@@ -362,7 +370,7 @@ body {
   }
 
   .sidebar-menu {
-    margin-top: 30px;
+    margin-top: 0px;
   }
 
   .sidebar.show {

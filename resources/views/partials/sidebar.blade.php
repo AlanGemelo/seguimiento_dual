@@ -5,9 +5,21 @@
         <button id="closeSidebar" class="btn-toggle">
             <i class="mdi mdi-menu"></i>
         </button>
+
     </div>
-    @if (!request()->routeIs('dashboard') && !session('id_carrera'))
-        <nav class="sidebar-menu">
+    <nav class="sidebar-menu">
+        @if (Auth::user()->rol_id == 1 && session()->has('direccion_id'))
+            <li class="nav-item">
+                <hr>
+                <a href="{{ route('direcciones.reset') }}"
+                    class="menu-item cambiar-carrera {{ request()->routeIs('direcciones.reset') ? 'active' : '' }}">
+                    <i class="mdi mdi-swap-horizontal"></i>
+                    <span>Cambiar Carrera</span>
+                </a>
+                <hr>
+            </li>
+        @endif
+        @if (Auth::user()->rol_id != 1 || session()->has('direccion_id'))
 
             {{-- Seccion del Dashboard --}}
             <a href="{{ route('dashboard') }}" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -165,7 +177,8 @@
 
             </div>
 
-        </nav>
-    @endif
+        @endif
+    </nav>
+
 </aside>
 <div id="overlay"></div>

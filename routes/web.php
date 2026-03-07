@@ -21,20 +21,6 @@ use App\Http\Controllers\EmpresaController;
 |
 */
 
-
-
-Route::get('/optimize', function () {
-    Artisan::call('optimize:clear');
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-
-    Debugbar::addMessage('Comando generado', 'listo!!');
-})->name('optimize');
-Route::get('/migrate', function () {
-    Artisan::call('migrate');
-    Debugbar::addMessage('Migraciones  generado', 'listo!!');
-})->name('migrate');
-
 //Captura rutas no definidas
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
@@ -44,9 +30,15 @@ Route::get('/', [HomeController::class, 'welcome']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    // 1. Ruta principal (El controlador decidirá qué vista mostrar según el rol)
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    
+    // 2. Rutas para el flujo del SuperAdmin
+    Route::get('/dashboard/seleccionar-carrera/{id}', [HomeController::class, 'seleccionarCarrera'])->name('direcciones.select');
+    Route::get('/dashboard/reset-carrera', [HomeController::class, 'resetearCarrera'])->name('direcciones.reset');
+    
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
@@ -160,8 +152,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/direcciones/{direccion}/delete', [DireccionCarreraController::class, 'destroy'])->name('direcciones.destroy');
     Route::get('/direcciones/crear', [DireccionCarreraController::class, 'create'])->name('direcciones.create');
     Route::get('/direcciones/{direccion}/edit', [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
-    Route::get('/direcciones/{direccion}/select', [DireccionCarreraController::class, 'select'])->name('direcciones.select');
-
+   
     //Rutas RESTful 
     Route::resource('directores', DirectorController::class);
     Route::get('/directores/{id}/json', [DirectorController::class, 'showJson'])->name('direcciones.showJson');

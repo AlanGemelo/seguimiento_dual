@@ -1,124 +1,312 @@
 @extends('layouts.app')
 @section('title', 'Dashboard')
+
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/dashboardrector.css') }}">
 @endsection
+
+
 @section('content')
-    <div class="row">
-        <div class="col-12 grid-margin">
-            @if (session('status'))
-                <div class="alert alert-success alert-dismissible text-dark" role="alert">
-                    <span class="text-sm"> <a href="javascript:" class="alert-link text-dark">Excelente</a>.
-                        {{ session('status') }}.</span>
-                    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-            <div class="row flex-grow justify-content-center">
-                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                    <div class="col-lg-4 d-flex flex-column">
-                        <div class="row flex-grow">
-                            <div class="col-12 grid-margin stretch-card">
-                                <div class="card card-rounded shadow-lg border-0">
-                                    <div class="card-body text-center">
-                                        <h4 class="text-secondary font-weight-bold mb-3">Mentores Industriales
-                                            Registrados</h4>
-                                        <h2 class="text-primary display-4">{{ $mentores }}</h2>
-                                        <br>
-                                        <a type="button" class="btn btn-success btn-lg btn-block"
-                                            href="{{ route('mentores.create') }}">
-                                            <i class="mdi mdi-account-plus mdi-24px align-middle"></i> Crear Mentor
-                                            Industriales
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+    <div class="container-fluid py-4">
+
+        <div class="row">
+
+            {{-- CONTENIDO PRINCIPAL --}}
+
+            <div class="col-xl-9 col-lg-8">
+
+
+                @if (session('status'))
+                    <div class="alert alert-success shadow-sm">
+                        <strong>Excelente:</strong> {{ session('status') }}
                     </div>
                 @endif
 
-                <div class="col-lg-4 d-flex flex-column">
-                    <div class="row flex-grow justify-content-center">
-                        <div class="col-12 grid-margin stretch-card">
-                            <div class="card card-rounded shadow-lg border-0">
-                                <div class="card-body text-center">
-                                    <h4 class="text-secondary font-weight-bold mb-3">Estudiantes Registrados</h4>
-                                    <h2 class="text-primary display-4">{{ $estudiantes }}</h2>
-                                    <br>
-                                    <a type="button" class="btn btn-success btn-lg btn-block"
-                                        href="{{ route('estudiantes.create') }}">
-                                        <i class="mdi mdi-account-plus mdi-24px align-middle"></i> Crear Estudiante
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 d-flex flex-column">
-                    <div class="row flex-grow justify-content-center">
-                        <div class="col-12 grid-margin stretch-card">
-                            <div class="card card-rounded shadow-lg border-0">
-                                <div class="card-body text-center">
 
-                                    <h4 class="text-secondary font-weight-bold mb-3">
-                                        Documentación por vencer
-                                    </h4>
-
-                                    <i class="mdi mdi-file-document-box mdi-48px text-warning mb-2"></i>
-
-                                    <p class="mb-2">
-                                        <strong>{{ $registrosEstudiantes->count() }}</strong> estudiantes por finalizar
-                                        dual.
-                                    </p>
-
-                                    <p class="mb-3">
-                                        <strong>{{ $registrosConvenio->count() }}</strong> convenios próximos a vencer.
-                                    </p>
-
-                                    <a href="{{ route('documentacion.index') }}" class="btn btn-success btn-lg btn-block">
-                                        <i class="mdi mdi-file-document-box-outline mdi-24px align-middle"></i> Ver
-                                        Documentación por Vencer
-                                    </a>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mb-4">
+                    <h3 class="fw-bold">Panel de Control</h3>
+                    <p class="text-muted">Sistema de Seguimiento de Educación Dual</p>
                 </div>
 
 
-                <div class="col-lg-4 d-flex flex-column">
-                    <div class="row flex-grow justify-content-center">
-                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                            <div class="col-12 grid-margin stretch-card">
-                                <div class="card card-rounded shadow-lg border-0">
-                                    <div class="card-body text-center">
-                                        <h4 class="text-secondary font-weight-bold mb-3">Reporte General</h4>
-                                        <p class="text-muted">
-                                            Este es el reporte general de los alumnos del modelo de formación dual, que
-                                            incluye información relevante sobre su trayectoria académica, mentores,
-                                            proyectos y unidades economicas asignadas.
-                                        </p>
-                                        <br>
-                                        <a type="button" class="btn btn-success btn-lg btn-block"
-                                            href="{{ route('reporte.general') }}">
-                                            <i class="mdi mdi-file-excel mdi-24px align-middle"></i>
-                                            Descargar Reporte General (Excel)
-                                        </a>
+                {{-- ESTADISTICAS --}}
+                <div class="row mb-4">
+
+                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                        <div class="col-md-3">
+                            <div class="card stat-card shadow-sm border-0">
+                                <div class="card-body d-flex align-items-center">
+
+                                    <div class="stat-icon bg-success">
+                                        <i class="mdi mdi-account-tie"></i>
                                     </div>
+
+                                    <div class="ms-3">
+                                        <h6 class="text-muted mb-1">Mentores</h6>
+                                        <h3 class="fw-bold mb-0">{{ $mentores }}</h3>
+                                    </div>
+
                                 </div>
                             </div>
-                        @endif
+                        </div>
+                    @endif
+
+
+                    <div class="col-md-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body d-flex align-items-center">
+
+                                <div class="stat-icon bg-primary">
+                                    <i class="mdi mdi-account-school"></i>
+                                </div>
+
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1">Estudiantes</h6>
+                                    <h3 class="fw-bold mb-0">{{ $estudiantes }}</h3>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body d-flex align-items-center">
+
+                                <div class="stat-icon bg-warning">
+                                    <i class="mdi mdi-file-document"></i>
+                                </div>
+
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1">Finalizan Dual</h6>
+                                    <h3 class="fw-bold mb-0">{{ $registrosEstudiantes->count() }}</h3>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body d-flex align-items-center">
+
+                                <div class="stat-icon bg-danger">
+                                    <i class="mdi mdi-file-alert"></i>
+                                </div>
+
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1">Convenios por vencer</h6>
+                                    <h3 class="fw-bold mb-0">{{ $registrosConvenio->count() }}</h3>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                {{-- ACCIONES RAPIDAS --}}
+                <div class="row mb-4">
+
+                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                        <div class="col-md-4">
+
+                            <div class="card action-card shadow-sm border-0 h-100">
+                                <div class="card-body">
+
+                                    <h5 class="fw-bold mb-3">
+                                        <i class="mdi mdi-account-plus text-success"></i>
+                                        Crear Mentor Industrial
+                                    </h5>
+
+                                    <p class="text-muted small">
+                                        Registrar nuevos mentores industriales que participarán en el modelo dual.
+                                    </p>
+
+                                    <a href="{{ route('mentores.create') }}" class="btn btn-success btn-sm">
+                                        Registrar Mentor
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    @endif
+
+
+                    <div class="col-md-4">
+
+                        <div class="card action-card shadow-sm border-0 h-100">
+                            <div class="card-body">
+
+                                <h5 class="fw-bold mb-3">
+                                    <i class="mdi mdi-account-plus text-primary"></i>
+                                    Registrar Estudiante
+                                </h5>
+
+                                <p class="text-muted small">
+                                    Agregar nuevos estudiantes al sistema de educación dual.
+                                </p>
+
+                                <a href="{{ route('estudiantes.create') }}" class="btn btn-primary btn-sm">
+                                    Registrar Estudiante
+                                </a>
+
+                            </div>
+                        </div>
 
                     </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="card action-card shadow-sm border-0 h-100">
+                            <div class="card-body">
+
+                                <h5 class="fw-bold mb-3">
+                                    <i class="mdi mdi-file-document text-warning"></i>
+                                    Documentación por vencer
+                                </h5>
+
+                                <p class="text-muted small">
+                                    Revisa estudiantes o convenios que están próximos a vencer.
+                                </p>
+
+                                <a href="{{ route('documentacion.index') }}" class="btn btn-warning btn-sm">
+                                    Revisar documentación
+                                </a>
+
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
+
+
+
+                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                    <div class="card shadow-sm border-0">
+
+                        <div class="card-body">
+
+                            <h5 class="fw-bold mb-3">
+                                <i class="mdi mdi-file-excel text-success"></i>
+                                Reporte General
+                            </h5>
+
+                            <p class="text-muted small">
+                                Descarga el reporte general del modelo dual.
+                            </p>
+
+                            <a href="{{ route('reporte.general') }}" class="btn btn-success btn-sm">
+                                Descargar Excel
+                            </a>
+
+                        </div>
+
+                    </div>
+                @endif
+
             </div>
+
+            {{-- PANEL DERECHO --}}
+            <div class="col-xl-3 col-lg-4">
+
+                <div class="right-sidebar">
+
+                    @if ($usaPasswordPorDefecto)
+                        <div class="card sidebar-widget shadow-sm mb-3">
+                            <div class="card-body">
+                                <h6 class="fw-bold">
+                                    <i class="mdi mdi-shield-lock-outline text-warning"></i>
+                                    Seguridad
+                                </h6>
+
+                                <p class="small text-muted">
+                                    Estás usando la contraseña por defecto, cámbiala por seguridad.
+                                </p>
+
+                                <a href="{{ route('profile.index') }}" class="btn btn-warning btn-sm w-100">
+                                    Cambiar contraseña
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+
+
+                    <div class="card sidebar-widget shadow-sm mb-3">
+                        <div class="card-body">
+
+                            <h6 class="fw-bold">
+                                <i class="mdi mdi-lightbulb-outline text-success"></i>
+                                Motivación
+                            </h6>
+
+                            <blockquote class="small mb-0">
+                                “La educación es el arma más poderosa para cambiar el mundo.”
+                            </blockquote>
+
+                        </div>
+                    </div>
+
+
+                    <div class="card sidebar-widget shadow-sm mb-3">
+                        <div class="card-body">
+
+                            <h6 class="fw-bold">
+                                <i class="mdi mdi-calendar-star text-primary"></i>
+                                Efeméride
+                            </h6>
+
+                            <p class="small">
+                                5 de Marzo — Día de la eficiencia energética.
+                            </p>
+
+                        </div>
+                    </div>
+
+
+                    <div class="card sidebar-widget shadow-sm">
+
+                        <div class="card-body">
+
+                            <h6 class="fw-bold">
+                                <i class="mdi mdi-bell-outline text-danger"></i>
+                                Recordatorios
+                            </h6>
+
+                            <ul class="small ps-3 mb-0">
+
+                                <li>{{ $registrosConvenio->count() }} convenios por vencer</li>
+
+                                <li>{{ $registrosEstudiantes->count() }} estudiantes finalizan dual</li>
+
+                                <li>Actualizar mentores industriales</li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
         </div>
     </div>
 
+@endsection
+
+@section('modals')
     <!-- Modal de Alerta -->
     <div class="modal fade" id="alertaVencimientosModal" tabindex="-1" aria-labelledby="alertaVencimientosLabel"
         aria-hidden="true">

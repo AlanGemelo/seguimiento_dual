@@ -14,9 +14,16 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+    public function index(Request $request): View
+    {
+        return view('profile.index', [
+            'user' => $request->user(),
+        ]);
+    }
+
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('profile.index', [
             'user' => $request->user(),
         ]);
     }
@@ -34,7 +41,9 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'sa');
+        return Redirect::route('profile.index')
+            ->with('success', 'Contraseña actualizada correctamente.')
+            ->with('activeTab', 'password');
     }
 
     /**

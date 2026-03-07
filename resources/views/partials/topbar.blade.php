@@ -8,9 +8,11 @@
     <div class="topbar-center">
         <img src="{{ asset('assets/images/Logo-utvt.png') }}" class="logo">
 
-        <span class="system-name">
-            Sistema de Educación Dual
-        </span>
+        <a href="{{ route('dashboard') }}" class="d-flex align-items-center text-decoration-none">
+            <span class="system-name fw-bold text-dark">
+                Sistema de Educación Dual
+            </span>
+        </a>
     </div>
 
     <div class="topbar-right">
@@ -19,7 +21,6 @@
             <i class="mdi mdi-bell-outline"></i>
         </button> --}}
 
-        <!-- Usuario -->
         <!-- Usuario -->
         <div class="dropdown">
             <img src="{{ asset('assets/images/logo-utvt-new.png') }}" class="avatar dropdown-toggle"
@@ -32,7 +33,7 @@
                     <small>{{ Auth::user()->email }}</small>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                    <a class="dropdown-item" href="{{ route('profile.index') }}">
                         <i class="mdi mdi-account-circle"></i> Mi Perfil
                     </a>
                 </li>

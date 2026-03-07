@@ -15,10 +15,10 @@
                 Cambiar avatar 
             </button> --}}
 
-            <p class="text-muted mb-2">
+            <h4 class="text-muted mb-2">
                 <i class="bi bi-person-badge"></i> <!-- Icono de rol (Bootstrap Icons) -->
                 {{ $user->rol->name ?? 'Sin rol asignado' }}
-            </p>
+            </h4>
         </div>
 
         <!-- FORMULARIO -->

@@ -105,7 +105,8 @@
                                             <div class="form-group">
                                                 <label for="carta_acp">Carta de Aceptación <span
                                                         class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control form-control-lg" id="carta_acp"
+                                                <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                                    class="form-control form-control-lg" id="carta_acp"
                                                     placeholder="carta_acp" name="carta_acp"
                                                     value="{{ old('carta_acp') }}">
                                                 @error('carta_acp')
@@ -115,7 +116,8 @@
                                             {{-- Cargar documento Minutas --}}
                                             <div class="form-group">
                                                 <label for="minutas">Minutas <span class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control form-control-lg" id="minutas"
+                                                <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                                    class="form-control form-control-lg" id="minutas"
                                                     placeholder="minutas" name="minutas" value="{{ old('minutas') }}">
                                                 @error('minutas')
                                                     <div class="text-danger">{{ $message }}</div>
@@ -126,7 +128,8 @@
                                             <div class="form-group">
                                                 <label for="plan_form">Plan Formacion<span
                                                         class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control form-control-lg" id="plan_form"
+                                                <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                                    class="form-control form-control-lg" id="plan_form"
                                                     placeholder="plan_form" name="plan_form"
                                                     value="{{ old('plan_form') }}">
                                                 @error('plan_form')
@@ -137,9 +140,10 @@
                                             <div class="form-group">
                                                 <label for="historial_academico">Reporte Dual<span
                                                         class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control form-control-lg"
-                                                    id="historial_academico" placeholder="historial_academico"
-                                                    name="historial_academico" value="{{ old('historial_academico') }}">
+                                                <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                                    class="form-control form-control-lg" id="historial_academico"
+                                                    placeholder="historial_academico" name="historial_academico"
+                                                    value="{{ old('historial_academico') }}">
                                                 @error('historial_academico')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
@@ -148,8 +152,9 @@
                                             <div class="form-group">
                                                 <label for="perfil_ingles">Perfil de inglés<span
                                                         class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control form-control-lg"
-                                                    id="perfil_ingles" placeholder="perfil_ingles" name="perfil_ingles"
+                                                <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                                    class="form-control form-control-lg" id="perfil_ingles"
+                                                    placeholder="perfil_ingles" name="perfil_ingles"
                                                     value="{{ old('perfil_ingles') }}">
                                                 @error('perfil_ingles')
                                                     <div class="text-danger">{{ $message }}</div>
@@ -158,22 +163,22 @@
                                             <div class="form-group">
                                                 <label for="evaluacion_form">Evaluación de Formación<span
                                                         class="text-danger">*</span></label>
-                                                <input type="file" accept="application/pdf, image/jpeg, image/png" class="form-control form-control-lg"
-                                                    id="evaluacion_form" placeholder="evaluacion_form"
-                                                    name="evaluacion_form" value="{{ old('evaluacion_form') }}">
+                                                <input type="file" accept="application/pdf, image/jpeg, image/png"
+                                                    class="form-control form-control-lg" id="evaluacion_form"
+                                                    placeholder="evaluacion_form" name="evaluacion_form"
+                                                    value="{{ old('evaluacion_form') }}">
                                                 @error('evaluacion_form')
                                                     <div class="text-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                         {{-- Boton par enviar el formulario --}}
-                                        
-                            <div class="d-flex justify-content-end mt-3">
-                                            <button
-                                                class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                                type="submit">Guardar
-                                            </button>
-                                        </div>
+
+                                        <!-- Botones de Acción -->
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                        <x-buttons.success-button text="Guardar" />
+                                        <x-buttons.cancel-button url="{{ route('estudiantes.index') }}" />
+                                    </div>
                                     </div>
                             </form>
                         </div>

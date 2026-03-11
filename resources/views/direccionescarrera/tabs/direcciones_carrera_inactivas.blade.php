@@ -1,4 +1,4 @@
-{{-- TAB: ESTUDIANTES ELIMINADOS --}}
+{{-- TAB: Direcciones Inactibas --}}
 
 <div class="row">
 
@@ -6,20 +6,20 @@
     <div class="col-12 mb-3">
         <h6 class="mb-0">
             <i class="mdi mdi-trash-can text-danger me-1"></i>
-            Historial de UEI - Bajas Temporales
+            Direcciones de Carrera Inactivas
         </h6>
     </div>
 
     {{-- Buscador --}}
 
     <div class="col-md-6 mb-3">
-        <form method="GET" action="{{ route('empresas.index') }}">
-            <input type="hidden" name="tab" value="bajas_temporales">
+        <form method="GET" action="{{ route('direcciones.index') }}">
+            <input type="hidden" name="tab" value="direcciones_carrera_inactivas">
 
             <div class="input-group">
                 <!-- Input de búsqueda -->
-                <input type="text" name="search_bajas_temporales" class="form-control"
-                    value="{{ $searchBajasTemporales ?? '' }}" placeholder="Buscar registro eliminado..."
+                <input type="text" name="search_direcciones_carrera_inactivas" class="form-control"
+                    value="{{ $searchDireccionesInactivas ?? '' }}" placeholder="Buscar registro eliminado..."
                     style="height: 40px";>
 
                 <!-- Botón para enviar la búsqueda -->
@@ -29,8 +29,8 @@
                 </button>
 
                 <!-- Botón para limpiar búsqueda -->
-                @if (!empty($searchBajasTemporales))
-                    <a href="{{ route('empresas.index', ['tab' => 'bajas_temporales']) }}"
+                @if (!empty($searchDireccionesInactivas))
+                    <a href="{{ route('direcciones.index', ['tab' => 'direcciones_carrera_inactivas']) }}"
                         class="btn btn-outline-secondary d-flex align-items-center"
                         style="gap: 5px; height: 40px; font-weight: 500; background: #f4b400; color: #2e2e2e;""
                         title="Limpiar búsqueda">
@@ -49,39 +49,41 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nombre Empresa</th>
-                        <th>Teléfono</th>
+                        <th>Nombre</th>
                         <th>Email</th>
-                        <th>Motivo Baja</th>
-                        <th>Fecha Baja</th>
+                        <th>Teléfono</th>
+                        <th>Inactivado</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse ($empresasSuspendidas as $empresa)
+                    @forelse ($direccionesInactivas as $carreras)
                         <tr>
                             <td>
-                                {{ ($empresasSuspendidas->currentPage() - 1) * $empresasSuspendidas->perPage() + $loop->iteration }}
+                                {{ ($direccionesInactivas->currentPage() - 1) * $direccionesInactivas->perPage() + $loop->iteration }}
                             </td>
-                            <td>{{ $empresa->nombre }}</td>
-                            <td>{{ $empresa->telefono }}</td>
-                            <td>{{ $empresa->email }}</td>
-                            <td>{{ $empresa->motivo_baja }}</td>
-                            <td>{{ $empresa->fecha_baja }}</td>
+                            <td>{{ $carreras->name }}</td>
+                            <td>{{ $carreras->email }}</td>
+                            <td>
+                                {{ $carreras->telefono ? $carreras->telefono . ($carreras->ext_telefonica ? ' ext. ' . $carreras->ext_telefonica : '') : 'N/A' }}
+                            </td>
+                            <td>{{ $carreras->deleted_at ? $carreras->deleted_at->format('d-m-Y') : '' }}</td>
 
                             <td class="text-center">
                                 {{-- Ver --}}
                                 <x-buttons.show-button
-                                    url="{{ route('empresas.show_establecidas', Hashids::encode($empresa->id)) }}" />
+                                    url="{{ route('direcciones.show', Hashids::encode($carreras->id)) }}" />
 
-                                {{-- Restaurar --}}
-                                <x-buttons.restore-button funcion="restoreUnidadEconomica"
-                                    parametro="{{ Hashids::encode($empresa->id) }}" />
+                                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                                    {{-- Restaurar --}}
+                                    <x-buttons.restore-button funcion="restoreDireccionCarrera"
+                                        parametro="{{ Hashids::encode($carreras->id) }}" />
 
-                                {{-- Eliminar permanente --}}
-                                <x-buttons.delete-button funcion="destroyPermanent"
-                                    parametro="{{ Hashids::encode($empresa->id) }}" />
+                                    {{-- Eliminar permanente --}}
+                                    <x-buttons.delete-button funcion="destroyPermanent"
+                                        parametro="{{ Hashids::encode($carreras->id) }}" />
+                                @endif
 
                             </td>
                         </tr>
@@ -99,7 +101,7 @@
 
             {{-- Paginación --}}
             <div class="d-flex justify-content-center mt-3">
-                {{ $empresasSuspendidas->appends(['tab' => 'bajas_temporales'])->links('pagination::bootstrap-5') }}
+                {{ $direccionesInactivas->appends(['tab' => 'direcciones_carrera_inactivas'])->links('pagination::bootstrap-5') }}
             </div>
 
         </div>

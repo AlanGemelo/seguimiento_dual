@@ -49,7 +49,7 @@
                                                 @foreach ($mentores as $mentor)
                                                     <tr>
                                                         <td>{{ $loop->index + 1 }}</td>
-                                                        <td>{{ $mentor->titulo }} .
+                                                        <td>
                                                             {{ $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
                                                         </td>
                                                         <td>{{ $mentor->puesto }}</td>

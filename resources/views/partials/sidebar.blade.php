@@ -19,8 +19,15 @@
                 <hr>
             </li>
         @endif
-        @if (Auth::user()->rol_id != 1 || session()->has('direccion_id'))
+        @if (Auth::user()->rol_id == 1 && !session()->has('direccion_id'))
 
+            <div class="sidebar-empty">
+                <i class="mdi mdi-information-outline"></i>
+                <p>Selecciona una dirección de carrera para comenzar.</p>
+
+
+            </div>
+        @else
             {{-- Seccion del Dashboard --}}
             <a href="{{ route('dashboard') }}" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="mdi mdi-view-dashboard-outline"></i>

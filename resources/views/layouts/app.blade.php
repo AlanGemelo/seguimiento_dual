@@ -40,12 +40,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main-content.css') }}">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Solucion tenporar a que no hay dominio-->
-    <script>
-        window.BASE_URL = '{{ env('BASE_URL', '') }}';
-    </script>
 
     <style>
         .custom-loader {
@@ -155,8 +149,11 @@
     <!-- End custom js for this page-->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
+    <!-- Para el ruteo-->
+    <script>
+        window.BASE_URL = '{{ env('BASE_URL', '') }}';
+    </script>
 
     <script>
         window.addEventListener('load', function() {

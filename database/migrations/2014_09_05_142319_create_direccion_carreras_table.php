@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('email')->unique();
+            $table->string('ext_telefonica')->nullable();
+            $table->string('telefono')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

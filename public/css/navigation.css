@@ -321,6 +321,35 @@ body {
   font-weight: 600;
 }
 
+.sidebar-empty {
+  display: flex;
+  /* Activamos flexbox */
+  flex-direction: column;
+  /* Colocamos los elementos en columna */
+  justify-content: center;
+  /* Centramos verticalmente */
+  align-items: center;
+  /* Centramos horizontalmente */
+  text-align: center;
+  /* Alineamos el texto al centro */
+  padding: 30px;
+  /* Espacio interno */
+  height: 100%;
+  /* Si quieres que ocupe toda la altura del contenedor */
+  box-sizing: border-box;
+  /* Para que el padding no aumente el tamaño total */
+}
+
+.sidebar-empty i {
+  margin-bottom: 15px;
+  font-size: 36px;
+  /* Ajusta el tamaño del ícono si quieres */
+}
+
+.sidebar-empty p {
+  margin-bottom: 20px;
+}
+
 /* Rotación flecha */
 
 .menu-group.open .arrow {

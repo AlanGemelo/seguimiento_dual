@@ -10,8 +10,13 @@
 
 
 @section('action')
-    <a href="{{ url('/') }}" class=" btn-home">Ir al Inicio</a>
-    <a href="javascript:location.reload()" class="btn-home-secondary">Recargar Página</a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+    </a>
 @endsection
 
 

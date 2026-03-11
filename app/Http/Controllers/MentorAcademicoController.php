@@ -198,17 +198,19 @@ class MentorAcademicoController extends Controller
             $mentor->delete();
 
             return redirect()->route('academicos.index', ['tab' => 'eliminados'])
-                ->with('messageDelete', 'Mentor Academico Eliminado Correctamente');
+                ->with('success', 'Mentor Academico Eliminado Correctamente');
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
 
             if ($errorCode == 1451) {
                 // Error de integridad referencial (clave foránea)
-                return redirect()->route('academicos.index')->with('statusError', 'No se puede eliminar el Mentor Academico. Primero elimina los estudiantes asociados');
+                return redirect()->route('academicos.index')
+                    ->with('warning', 'No se puede eliminar el Mentor Academico. Primero elimina los estudiantes asociados');
             }
 
             // Otro tipo de error, puedes manejarlo según tus necesidades
-            return redirect()->route('academicos.index')->with('statusError', 'Error al eliminar el Mentor Academico: '.$e->getMessage());
+            return redirect()->route('academicos.index')
+                ->with('error', 'Error al eliminar el Mentor Academico: '.$e->getMessage());
         }
     }
 

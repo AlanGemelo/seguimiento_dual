@@ -25,44 +25,69 @@
 
                                 <form class="pt-3" action="{{ route('direcciones.store') }}" method="post">
                                     @csrf
+                                    <!-- Información Básica -->
                                     <div class="mb-4">
                                         <h5 class="section-title fw-bold">Identificación de la Direccion de Carrera</h5>
                                         <div class="dropdown-divider mb-4"></div>
+
                                         <div class="row">
-                                            <div class="col-md-4 mb-3">
-                                                <label for="titulo" class="form-label">Nombre de la Direccion<span
+                                            <div class="col-md-6 mb-3">
+                                                <label for="name" class="form-label">Nombre de la Dirección <span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" id="search" data-tipo="text"
-                                                    class="form-control form-control-lg" id="name" name="name"
-                                                    value="{{ old('name') }}">
+                                                <input type="text" class="form-control" id="name"
+                                                    placeholder="Nombre de la dirección de carrera" name="name"
+                                                    value="{{ old('name') }}" required>
                                                 @error('name')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-4 mb-3">
-                                                <label for="email" class="form-label">Correo <span
-                                                        class="text-danger">*</span></label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control form-control-lg"
-                                                        id="email" name="email" value="{{ old('email') }}">
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text"
-                                                            style="color:black; height: 100%;">@utvtol.edu.mx</span>
-                                                    </div>
-                                                </div>
-                                                @error('email')
-                                                    <div class="text-danger">{{ $message }}</div>
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
 
-                                            <div class="d-flex justify-content-end mt-3">
-                                                <button
-                                                    class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                                                    type="submit">Guardar
-                                                </button>
-                                                <x-buttons.cancel-button url="{{ route('direcciones.index') }}" />
+                                            <div class="col-md-6 mb-3">
+                                                <label for="email_user" class="form-label">Correo Electrónico <span
+                                                        class="text-danger">*</span></label>
+                                                <div class="input-group" style="max-width: 350px;">
+                                                    <input type="text" class="form-control" id="email_user"
+                                                        name="email_user" placeholder="usuario"
+                                                        value="{{ old('email_user') }}" required>
+                                                    <span class="input-group-text">@utvtol.edu.mx</span>
+                                                </div>
+                                                @error('email_user')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 mb-3">
+                                            <label for="ext_telefonica" class="form-label">
+                                                Ext. <small class="text-muted">(Opcional)</small>
+                                            </label>
+                                            <input type="text" class="form-control" id="ext_telefonica"
+                                                name="ext_telefonica" placeholder="Ext."
+                                                value="{{ old('ext_telefonica') }}">
+                                            @error('ext_telefonica')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-4 mb-3">
+                                            <label for="telefono" class="form-label">Teléfono de contacto <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="telefono" name="telefono"
+                                                maxlength="13" placeholder="Ingrese el número de contacto"
+                                                value="{{ old('telefono') }}" required>
+                                            @error('telefono')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Botones de Acción -->
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                        <x-buttons.success-button text="Guardar" />
+                                        <x-buttons.cancel-button url="{{ route('direcciones.index') }}" />
+                                    </div>
+
                                 </form>
                             </div>
                         </div>

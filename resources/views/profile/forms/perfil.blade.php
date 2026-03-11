@@ -50,10 +50,13 @@
                     <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control">
                 </div>
 
-                <button class="btn btn-success">
-                    Guardar cambios
-                </button>
 
+                <!-- Botones de Acción -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <button class="btn btn-success">
+                        Guardar cambios
+                    </button>
+                </div>
             </form>
 
         </div>

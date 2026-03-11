@@ -92,12 +92,9 @@
                                 @enderror
                             </div>
                         </div>
-
-                        <!-- Botones -->
-                        <div class="d-flex justify-content-end mt-3">
-                            <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit"
-                                style="margin-right: 8px">Guardar</button>
-
+                        <!-- Botones de Acción -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <x-buttons.success-button text="Guardar" />
                             <x-buttons.cancel-button url="{{ route('academicos.index') }}" />
                         </div>
 

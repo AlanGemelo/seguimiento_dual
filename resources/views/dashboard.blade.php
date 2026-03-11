@@ -240,7 +240,7 @@
                     @endif
 
 
-                    <div class="card sidebar-widget shadow-sm mb-3">
+                    {{-- <div class="card sidebar-widget shadow-sm mb-3">
                         <div class="card-body">
 
                             <h6 class="fw-bold">
@@ -253,10 +253,10 @@
                             </blockquote>
 
                         </div>
-                    </div>
+                    </div> --}}
 
 
-                    <div class="card sidebar-widget shadow-sm mb-3">
+                    {{-- <div class="card sidebar-widget shadow-sm mb-3">
                         <div class="card-body">
 
                             <h6 class="fw-bold">
@@ -269,10 +269,10 @@
                             </p>
 
                         </div>
-                    </div>
+                    </div> --}}
 
 
-                    <div class="card sidebar-widget shadow-sm">
+                    {{-- <div class="card sidebar-widget shadow-sm">
 
                         <div class="card-body">
 
@@ -293,7 +293,7 @@
 
                         </div>
 
-                    </div>
+                    </div> --}}
 
 
                 </div>

@@ -2,14 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Barryvdh\Debugbar\Facades\Debugbar;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Anexo1_1Controller;
-use App\Http\Controllers\Anexo1_2Controller;
-use App\Http\Controllers\Anexo1_3Controller;
-use App\Http\Controllers\Anexo2_1Controller;
-use App\Http\Controllers\EmpresaController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,7 +15,7 @@ use App\Http\Controllers\EmpresaController;
 |
 */
 
-//Captura rutas no definidas
+// Captura rutas no definidas
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
@@ -32,18 +26,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 1. Ruta principal (El controlador decidirá qué vista mostrar según el rol)
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-    
+
     // 2. Rutas para el flujo del SuperAdmin
     Route::get('/dashboard/seleccionar-carrera/{id}', [HomeController::class, 'seleccionarCarrera'])->name('direcciones.select');
     Route::get('/dashboard/reset-carrera', [HomeController::class, 'resetearCarrera'])->name('direcciones.reset');
-    
+
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
-    //Rutas para el módulo estudiantes
+    // Rutas para el módulo estudiantes
     Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
     Route::get('/estudiantes/crear', [EstudiantesController::class, 'create'])->name('estudiantes.create');
     Route::get('/estudiantes/crearC', [EstudiantesController::class, 'crearC'])->name('estudiantes.crearC');
@@ -60,7 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/estudiantes/{matricula}', [EstudiantesController::class, 'update'])->name('estudiantes.update');
     Route::patch('/estudiantes/{matricula}/dual', [EstudiantesController::class, 'updateDocDual'])->name('estudiantes.updateDocDual');
 
-    //Rutas para el módulo Mentores academicos
+    // Rutas para el módulo Mentores academicos
     Route::get('/academicos', [MentorAcademicoController::class, 'index'])->name('academicos.index');
     Route::get('/academicos/crear', [MentorAcademicoController::class, 'create'])->name('academicos.create');
     Route::post('/academicos', [MentorAcademicoController::class, 'store'])->name('academicos.store');
@@ -73,12 +66,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/academicos/{id}/restaurar', [MentorAcademicoController::class, 'restoreMentor'])->name('academicos.restore');
     Route::delete('/academicos/{id}/force', [MentorAcademicoController::class, 'forceDelete'])->name('academicos.forceDelete');
 
-    //Rutas para el empresas
+    // Rutas para el empresas
     Route::get('/empresas', [EmpresaController::class, 'index'])->name('empresas.index');
     Route::get('/empresas/crear', [EmpresaController::class, 'create'])->name('empresas.create');
     // Route::post('/empresas/registrar', [EmpresaController::class, 'registrar'])->name('empresas.registrar');
     Route::post('/empresas', [EmpresaController::class, 'store'])->name('empresas.store');
-    //Route::post('/empresas/store', [EmpresaController::class, 'store'])->name('empresas.store');
+    // Route::post('/empresas/store', [EmpresaController::class, 'store'])->name('empresas.store');
     Route::get('/empresas/{id}/show', [EmpresaController::class, 'show'])->name('empresas.show');
     Route::get('/empresas/{id}/show_establecidas', [EmpresaController::class, 'show_establecidas'])->name('empresas.show_establecidas');
     Route::get('/empresas/{id}/json', [EmpresaController::class, 'showJson'])->name('empresas.showJson');
@@ -138,28 +131,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/estadisticas/filtro', [EstadisticaController::class, 'filtroEstudiantes']);
     Route::get('/estadisticas/graficas', [EstadisticaController::class, 'getGraficasData']);
 
-    //Ruta para los reportes generales
-    //  Route::get('/reporte-general', [EstadisticaController::class, 'reporteGeneral'])->name('reporte.general');
-    Route::get('/reporte-general', [EstadisticaController::class, 'prueba'])->name('reporte.general');
+    // Ruta para los reportes generales
+    Route::get('/reporte-general', [EstadisticaController::class, 'reporteGeneral'])->name('reporte.general');
+    // Route::get('/reporte-general', [EstadisticaController::class, 'prueba'])->name('reporte.general');
 
-
-    //Rutas para Direccion de carrera
+    // Rutas para Direccion de carrera
     Route::get('/direcciones', [DireccionCarreraController::class, 'index'])->name('direcciones.index');
     Route::post('/direcciones', [DireccionCarreraController::class, 'store'])->name('direcciones.store');
     Route::get('/direcciones/{direccion}/show', [DireccionCarreraController::class, 'show'])->name('direcciones.show');
     Route::get('/direcciones/{id}/json', [DireccionCarreraController::class, 'showJson'])->name('direcciones.showJson');
     Route::patch('/direcciones/{direccion}', [DireccionCarreraController::class, 'update'])->name('direcciones.update');
     Route::delete('/direcciones/{direccion}/delete', [DireccionCarreraController::class, 'destroy'])->name('direcciones.destroy');
+    Route::delete('/direcciones/{direccion}/force', [DireccionCarreraController::class, 'forceDelete'])->name('direcciones.forceDelete');
     Route::get('/direcciones/crear', [DireccionCarreraController::class, 'create'])->name('direcciones.create');
-    Route::get('/direcciones/{direccion}/edit', [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
-   
-    //Rutas RESTful 
+    Route::get('/direcciones/{direccion}/edit', action: [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
+    Route::put('/direcciones/{direccion}/reactivate', [DireccionCarreraController::class, 'reactivate'])->name('direcciones.reactivate');
+    
+    // Rutas RESTful
     Route::resource('directores', DirectorController::class);
     Route::get('/directores/{id}/json', [DirectorController::class, 'showJson'])->name('direcciones.showJson');
 
     Route::post('alerts', [MentorAcademicoController::class, 'alerts'])->name('alerts');
 
-    //Rutas para administracion de venciminetos
+    // Rutas para administracion de venciminetos
     Route::get('/documentacion', [DocumentacionController::class, 'index'])->name('documentacion.index');
     Route::put('/documentacion/renovar/estudiante/{id}', [DocumentacionController::class, 'renovarEstudiante'])->name('documentacion.renovar.estudiante');
     Route::put('/documentacion/renovar/convenio/{id}', [DocumentacionController::class, 'renovarConvenio'])->name('documentacion.renovar.convenio');
@@ -223,9 +217,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //     return redirect()->route('anexos.index');
     // });
 
-
     Route::get('/descargar/{archivo}', function ($archivo) {
-        $path = public_path('storage/anexos/' . $archivo);
+        $path = public_path('storage/anexos/'.$archivo);
         if (file_exists($path)) {
             return response()->download($path);
         } else {
@@ -234,4 +227,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

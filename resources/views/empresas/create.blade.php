@@ -205,11 +205,9 @@
                             </div>
                             <!-- Botones de Acción -->
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                                <x-buttons.cancel-button url="{{ route('empresas.index') }}" />
-                                <button type="submit" class="btn" style="background-color: #006837; color: white;">
-                                    <i class="fas fa-save me-1"></i> Guardar Empresa
-                                </button>
-
+                                    <x-buttons.success-button text="Guardar" />
+                                    <x-buttons.cancel-button url="{{ route('empresas.index') }}" />
+                                </div>
                             </div>
                         </form>
                     </div>

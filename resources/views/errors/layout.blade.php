@@ -80,6 +80,34 @@
             background-color: #e0a800;
         }
 
+        /* Botón de cerrar sesión estilizado */
+        .btn-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            /* separa el icono del texto */
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            /* rojo degradado */
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+        }
+
+        /* Icono dentro del botón (opcional) */
+        .btn-logout i {
+            font-size: 16px;
+        }
+
         @media (max-width: 768px) {
             .error-container {
                 flex-direction: column;
@@ -93,6 +121,7 @@
                 height: auto;
                 padding: 20px;
             }
+
         }
     </style>
 </head>

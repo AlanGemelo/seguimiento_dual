@@ -1,4 +1,4 @@
-{{-- TAB: ESTUDIANTES DUAL --}}
+{{-- TAB: Unidades Registradas --}}
 
 <div class="row">
 
@@ -56,7 +56,6 @@
                         <th>Nombre de la UE</th>
                         <th>Email</th>
                         <th>Teléfono</th>
-                        <th>Fecha de Registro</th>
                         <th>Convenio </th>
                         <th>No.<br>Alumnos</th>
                         <th class="text-center">Acciones</th>
@@ -72,8 +71,9 @@
                             <td>{{ $empresa->nombre }}</td>
                             <td>{{ $empresa->email }}</td>
                             <td>{{ $empresa->telefono }}</td>
-                            <td>{{ $empresa->created_at->format('d \d\e F \d\e Y') }}</td>
-                            <td>{{ $empresa->inicio_conv }} a {{ $empresa->fin_conv }}</td>
+                            <td>{{ $empresa->inicio_conv }} <span style="font-weight: bold;">-</span>
+                                <br>{{ $empresa->fin_conv }}
+                            </td>
                             <td>{{ $empresa->estudiantes_count }}</td>
                             <td class="text-center">
                                 {{-- Ver --}}

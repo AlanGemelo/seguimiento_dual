@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->foreignId('direccion_id')->constrained('direccion_carreras');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

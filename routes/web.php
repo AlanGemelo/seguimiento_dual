@@ -110,6 +110,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/carreras/{id}', [CarreraController::class, 'update'])->name('carreras.update');
     Route::delete('/carreras/{id}/delete', [CarreraController::class, 'destroy'])->name('carreras.destroy');
     Route::get('/carreras/{id}/editar', [CarreraController::class, 'edit'])->name('carreras.edit');
+    Route::delete('/carreras/{id}/force', [CarreraController::class, 'forceDelete'])->name('carreras.forceDelete');
+    Route::PUT('/carreras/{id}/restaurar', [CarreraController::class, 'restore'])->name('carreras.restore');
+
     Route::resource('estadisticas', EstadisticaController::class)->except(['show']);
 
     // Rutas para el modulo de mentores estadisticas
@@ -146,7 +149,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/direcciones/crear', [DireccionCarreraController::class, 'create'])->name('direcciones.create');
     Route::get('/direcciones/{direccion}/edit', action: [DireccionCarreraController::class, 'edit'])->name('direcciones.edit');
     Route::put('/direcciones/{direccion}/reactivate', [DireccionCarreraController::class, 'reactivate'])->name('direcciones.reactivate');
-    
+
     // Rutas RESTful
     Route::resource('directores', DirectorController::class);
     Route::get('/directores/{id}/json', [DirectorController::class, 'showJson'])->name('direcciones.showJson');

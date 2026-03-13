@@ -9,11 +9,9 @@
             Programas Educativos
         </h6>
 
-        {{--   @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 2 || Auth::user()->rol_id === 4)
-            <a href="{{ route('carreras.create') }}" class="btn btn-sm btn-add" title="Agregar unidad Económica">
-                <i class="mdi mdi-plus-circle-outline"></i>
-            </a>
-        @endif --}}
+        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 2 || Auth::user()->rol_id === 4)
+            <x-buttons.add-button url="{{ route('carreras.create') }}" title="{{ 'Agregar dirección de carrera' }}" />
+        @endif
     </div>
 
     {{-- Buscador --}}
@@ -74,8 +72,8 @@
                                 <x-buttons.show-button
                                     url="{{ route('carreras.show', Hashids::encode($carrera->id)) }}" />
                                 {{-- Editar --}}
-                                <x-buttons.edit-button url="{{ route('carreras.edit', Hashids::encode($carrera->id)) }}"
-                                    title="Editar" />
+                                <x-buttons.edit-button
+                                    url="{{ route('carreras.edit', Hashids::encode($carrera->id)) }}" title="Editar" />
 
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     {{-- Eliminar --}}

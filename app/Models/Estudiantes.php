@@ -13,6 +13,7 @@ class Estudiantes extends Model
     use HasFactory, SoftDeletes;
 
     protected $primaryKey = 'matricula';
+
     public function getStatusTextAttribute()
     {
         $statuses = [
@@ -74,8 +75,9 @@ class Estudiantes extends Model
 
     public function academico(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'academico_id', 'id')->withTrashed();
     }
+
     public function usuario()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -90,6 +92,7 @@ class Estudiantes extends Model
     {
         return $this->belongsTo(Carrera::class);
     }
+
     public function direccion(): HasOne
     {
         return $this->hasOne(DireccionCarrera::class, 'id', 'direccion_id');

@@ -50,9 +50,22 @@ class HomeController extends Controller
                 ));
 
             case 3: // ESTUDIANTE
-                $estudiante = Estudiantes::withTrashed()->where('user_id', $user->id)->first();
+                $becas = [
+                    0 => 'Si',
+                    1 => 'No',
+                ];
 
-                return view('dashboardEstudiante', compact('estudiante'));
+                $tipoBeca = [
+                    0 => 'Apoyo por Empresa',
+                    1 => 'Beca Dual Comecyt',
+                ];
+
+                $estudiante = Estudiantes::withTrashed()
+                    ->with('academico') // cargar académico
+                    ->where('user_id', $user->id)
+                    ->first();
+
+                return view('dashboardEstudiante', compact('estudiante', 'becas', 'tipoBeca'));
 
             case 4:// DIRECTOR/TUTOR
             default:

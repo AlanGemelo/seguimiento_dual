@@ -29,9 +29,11 @@
 
             <ul class="dropdown-menu dropdown-menu-end">
                 <li class="dropdown-header text-center">
-                    <strong>{{ Auth::user()->name }}</strong><br>
+                    <strong>{{ Auth::user()->name }} {{ Auth::user()->apellidoP }}
+                        {{ Auth::user()->apellidoM }}</strong><br>
                     <small>{{ Auth::user()->email }}</small>
                 </li>
+                <hr>
                 <li>
                     <a class="dropdown-item" href="{{ route('profile.index') }}">
                         <i class="mdi mdi-account-circle"></i> Mi Perfil

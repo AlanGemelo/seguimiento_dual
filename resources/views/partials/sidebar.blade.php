@@ -118,71 +118,74 @@
 
                     </div>
                 </div>
+
+                {{-- Seccion Estadisticas --}}
+                <div class="menu-group">
+                    <a href="{{ route('estadisticas.index') }}"
+                        class="menu-item {{ request()->routeIs('estadisticas.*') ? 'active' : '' }}">
+                        <i class="mdi mdi-chart-bar"></i>
+                        <span>Estadísticas</span>
+                    </a>
+                </div>
             @endif
 
-            {{-- Seccion Estadisticas --}}
-            <div class="menu-group">
-                <a href="{{ route('estadisticas.index') }}"
-                    class="menu-item {{ request()->routeIs('estadisticas.*') ? 'active' : '' }}">
-                    <i class="mdi mdi-chart-bar"></i>
-                    <span>Estadísticas</span>
-                </a>
-            </div>
-            {{-- Seccion Anexos --}}
-            <div class="menu-group">
+            @if ((Auth::user()->rol_id === 1 && session('direccion')) || Auth::user()->rol_id === 4)
+                {{-- Seccion Anexos --}}
+                <div class="menu-group">
 
-                <button
-                    class="menu-item menu-toggle
+                    <button
+                        class="menu-item menu-toggle
         {{ request()->routeIs('anexo*') ? 'active-parent' : '' }}">
 
-                    <i class="mdi mdi-file-document-outline"></i>
-                    <span>Anexos</span>
-                    <i class="mdi mdi-chevron-down arrow"></i>
-                </button>
+                        <i class="mdi mdi-file-document-outline"></i>
+                        <span>Anexos</span>
+                        <i class="mdi mdi-chevron-down arrow"></i>
+                    </button>
 
-                <div class="submenu {{ request()->routeIs('anexo*') ? 'open' : '' }}">
+                    <div class="submenu {{ request()->routeIs('anexo*') ? 'open' : '' }}">
 
-                    <div class="submenu-group">
+                        <div class="submenu-group">
 
-                        <div class="submenu-title">
-                            <i class="mdi mdi-folder-outline"></i>
-                            Anexo 1
+                            <div class="submenu-title">
+                                <i class="mdi mdi-folder-outline"></i>
+                                Anexo 1
+                            </div>
+
+                            <a href="{{ route('anexo1_1.index') }}"
+                                class="submenu-item {{ request()->routeIs('anexo1_1.*') ? 'active' : '' }}">
+                                <span>1.1</span> Planeación y Difusión
+                            </a>
+
+                            <a href="{{ route('anexo1_2.index') }}"
+                                class="submenu-item {{ request()->routeIs('anexo1_2.*') ? 'active' : '' }}">
+                                <span>1.2</span> Programa de Difusión
+                            </a>
+
+                            <a href="{{ route('anexo1_3.index') }}"
+                                class="submenu-item {{ request()->routeIs('anexo1_3.*') ? 'active' : '' }}">
+                                <span>1.3</span> Registro de Interesados
+                            </a>
+
                         </div>
 
-                        <a href="{{ route('anexo1_1.index') }}"
-                            class="submenu-item {{ request()->routeIs('anexo1_1.*') ? 'active' : '' }}">
-                            <span>1.1</span> Planeación y Difusión
-                        </a>
+                        <div class="submenu-group">
 
-                        <a href="{{ route('anexo1_2.index') }}"
-                            class="submenu-item {{ request()->routeIs('anexo1_2.*') ? 'active' : '' }}">
-                            <span>1.2</span> Programa de Difusión
-                        </a>
+                            <div class="submenu-title">
+                                <i class="mdi mdi-folder-outline"></i>
+                                Anexo 2
+                            </div>
 
-                        <a href="{{ route('anexo1_3.index') }}"
-                            class="submenu-item {{ request()->routeIs('anexo1_3.*') ? 'active' : '' }}">
-                            <span>1.3</span> Registro de Interesados
-                        </a>
+                            <a href="{{ route('anexo2_1.index') }}"
+                                class="submenu-item {{ request()->routeIs('anexo2_1.*') ? 'active' : '' }}">
+                                <span>2.1</span> Evaluación y Selección UE
+                            </a>
 
-                    </div>
-
-                    <div class="submenu-group">
-
-                        <div class="submenu-title">
-                            <i class="mdi mdi-folder-outline"></i>
-                            Anexo 2
                         </div>
-
-                        <a href="{{ route('anexo2_1.index') }}"
-                            class="submenu-item {{ request()->routeIs('anexo2_1.*') ? 'active' : '' }}">
-                            <span>2.1</span> Evaluación y Selección UE
-                        </a>
 
                     </div>
 
                 </div>
-
-            </div>
+            @endif
 
         @endif
     </nav>

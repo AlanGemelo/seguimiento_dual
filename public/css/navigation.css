@@ -29,6 +29,14 @@ body {
   background: #f5f7fa;
 }
 
+hr {
+  background-color: #004d40 !important;
+  margin: 0 !important;
+  height: 2px;
+
+}
+
+
 .admin-layout {
   display: flex;
 }

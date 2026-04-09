@@ -266,7 +266,7 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="convenioA">Convenio A</label>
+                                        <label for="convenioA">Convenio Específico</label>
                                         <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
                                             <input type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control d-none" id="inputConvenioA" name="convenioA">
@@ -274,7 +274,7 @@
                                                 <a href="{{ url(Storage::url($empresa->convenioA)) }}"
                                                     class="btn btn-primary flex-grow-1" target="_blank"
                                                     id="linkConvenioA">
-                                                    Ver Convenio A <span class="mdi mdi-file-pdf-box"></span>
+                                                    Ver documento <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                             @else
                                                 <span class="text-muted" id="textNoConvenioA">No hay documento
@@ -296,7 +296,7 @@
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label for="convenioMA">Convenio MA</label>
+                                        <label for="convenioMA">Convenio Marco-Empresa</label>
                                         <div class="d-flex justify-content-between align-items-center gap-2 mt-1">
                                             <input type="file" accept="application/pdf, image/jpeg, image/png"
                                                 class="form-control d-none" id="inputConvenioMA" name="convenioMA">
@@ -304,7 +304,7 @@
                                                 <a href="{{ url(Storage::url($empresa->convenioMA)) }}"
                                                     class="btn btn-primary flex-grow-1" target="_blank"
                                                     id="linkConvenioMA">
-                                                    Ver Convenio MA <span class="mdi mdi-file-pdf-box"></span>
+                                                    Ver documento <span class="mdi mdi-file-pdf-box"></span>
                                                 </a>
                                             @else
                                                 <span class="text-muted" id="textNoConvenioMA">No hay documento

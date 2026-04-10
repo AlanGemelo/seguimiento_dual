@@ -15,12 +15,8 @@ return new class extends Migration
             $table->text('direccion');
             $table->string('ext_telefonica', 10)->nullable();
             $table->string('telefono', 10);
-            $table->date('inicio_conv');
-            $table->date('fin_conv');
             $table->text('ine')->nullable();
             $table->foreignId('direccion_id')->constrained('direccion_carreras');
-            $table->text('convenioA')->nullable();
-            $table->text('convenioMA')->nullable();
             // Nuevos campos
             $table->string('unidad_economica')->nullable();
             $table->date('fecha_registro')->nullable();

@@ -149,14 +149,9 @@ return [
     'url'                  => 'El campo :attribute debe ser una URL válida.',
     'uuid'                 => 'El campo :attribute debe ser un UUID válido.',
     'attributes' => [
-        'convenioA' => 'Convenio Academico',
-        'convenioMA' => 'Convenio marco-empresa'
-    ],
-    'attributes' => [
-        'convenioA' => 'Convenio Academico',
-        'convenioMA' => 'Convenio marco-empresa',
+        'convenioA' => 'Convenio Específico',
+        'convenioMA' => 'Convenio Marco - Empresa',
         'asesorin_id' => 'Asesor Industrial',
         'password' => 'Contraseña',
-
     ],
 ];

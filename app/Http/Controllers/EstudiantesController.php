@@ -48,7 +48,6 @@ class EstudiantesController extends Controller
      */
     public function index(Request $request)
     {
-
         $hoy = Carbon::now();
 
         $registros = Estudiantes::with('academico', 'asesorin')
@@ -56,9 +55,9 @@ class EstudiantesController extends Controller
             ->where('activo', true)
             ->get();
 
-        $registrosConvenio = Empresa::with('asesorin')
-            ->whereDate('fin_conv', '<=', $hoy->copy()->addDays(15))
-            ->get();
+        // $registrosConvenio = Empresa::with('asesorin')
+        //     ->whereDate('fin_conv', '<=', $hoy->copy()->addDays(15))
+        //     ->get();
 
         // Enviar correos por cada registro
         // foreach ($registrosConvenio as $registro) {
@@ -149,8 +148,6 @@ class EstudiantesController extends Controller
             'searchCandidatos',
             'searchAcademicos',
             'searchEliminados',
-            'registros',
-            'registrosConvenio'
         ));
     }
 

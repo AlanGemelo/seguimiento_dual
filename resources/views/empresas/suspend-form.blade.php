@@ -74,28 +74,55 @@
                                         <h5 class="section-title fw-bold  mt-4">Datos del Convenio </h5>
                                         <div class="dropdown-divider mb-4"></div>
 
-                                        <div class="col-md-6 mb-3">
-                                            <label for="empresa_id" class="form-label">Fecha de Inicio de Convenio </label>
-                                            <div id="datepicker-popup"
-                                                class="input-group date datepicker navbar-date-picker">
-                                                <span class="input-group-addon input-group-prepend border-right">
-                                                    <span class="icon-calendar input-group-text calendar-icon"></span>
-                                                </span>
-                                                <input type="text" class="form-control" name="inicio_conv"
-                                                    id="inicio_conv" value="{{ $empresa->inicio_conv }}" disabled>
-                                            </div>
-                                        </div>
+                                        <!-- Documentos del Convenio -->
+                                        <div class="mb-4 p-3">
+                                            <h5 class="section-title">
+                                                Documentos del Convenio
+                                            </h5>
+                                            <div class="dropdown-divider mb-4"></div>
 
-                                        <div class="col-md-6 mb-3">
-                                            <label for="asesorin_id" class="form-label">Fecha de Fin de Convenio </label>
-                                            <div id="datepicker-popup"
-                                                class="input-group date datepicker navbar-date-picker">
-                                                <span class="input-group-addon input-group-prepend border-right">
-                                                    <span class="icon-calendar input-group-text calendar-icon"></span>
-                                                </span>
-                                                <input type="date" class="form-control" name="fin_conv" id="fin_conv"
-                                                    value="{{ $empresa->fin_conv }}" disabled>
-                                            </div>
+                                            @if ($empresa->convenios->count() > 0)
+
+                                                @foreach ($empresa->convenios as $conv)
+                                                    <div class="card mb-4 shadow-sm border-0">
+                                                        <div class="card-header text-black">
+                                                            {{ $conv->tipo == 'ESPECIFICO' ? 'Convenio Específico' : 'Convenio Marco' }}
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row mb-3">
+
+                                                                <!-- VIGENCIA -->
+                                                                <div class="col-md-4">
+                                                                    <label class="fw-semibold">Tipo de vigencia</label><br>
+
+                                                                    @if ($conv->vigencia === 'INDEFINIDO')
+                                                                        <span class="badge bg-success">Indefinido</span>
+                                                                    @else
+                                                                        <span class="badge bg-primary">Limitado</span>
+                                                                    @endif
+                                                                </div>
+
+                                                                <!-- INICIO -->
+                                                                <div class="col-md-4">
+                                                                    <label class="fw-semibold">Fecha de inicio</label><br>
+                                                                    <span>{{ $conv->inicio }}</span>
+                                                                </div>
+
+                                                                <!-- FIN -->
+                                                                <div class="col-md-4">
+                                                                    <label class="fw-semibold">Fecha de fin</label><br>
+                                                                    <span>{{ $conv->fin ?? 'No aplica' }}</span>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                <div class="alert alert-warning">
+                                                    No hay convenios registrados para esta empresa.
+                                                </div>
+                                            @endif
                                         </div>
 
                                     </div>
@@ -108,8 +135,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label for="motivo_baja" class="form-label">Motivo de Baja <span
                                                     class="text-danger">*</span></label>
-                                            <select name="motivo_baja" id="motivo_baja"
-                                                class="form-control form-control-lg" required>
+                                            <select name="motivo_baja" id="motivo_baja" class="form-control form-control-lg"
+                                                required>
                                                 @foreach ($suspensionReasons as $reason)
                                                     <option value="{{ $reason }}">{{ $reason }}</option>
                                                 @endforeach

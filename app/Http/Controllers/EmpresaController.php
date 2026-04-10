@@ -16,6 +16,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Vinkla\Hashids\Facades\Hashids;
+use App\Models\Convenio;
+use Illuminate\Support\Facades\Storage;
 
 class EmpresaController extends Controller
 {
@@ -90,10 +92,11 @@ class EmpresaController extends Controller
             'activeTab'
         ));
     }
-
-    public function interesadas()
+    public function interesadas(): View
     {
-        $empresas = Empresa::where('status', 0)->get();
+        $empresas = Empresa::with('convenios')
+            ->where('status', 0)
+            ->get();
 
         return view('empresas.interesadas', compact('empresas'));
     }
@@ -108,18 +111,16 @@ class EmpresaController extends Controller
         return view('empresas.create', compact('direcciones'));
     }
 
+
     public function registrar(Request $request, Empresa $empresa): RedirectResponse
     {
-
-        $ue_size = array_column(config('ue_size.tamanos'), 'tamano_eu');
-        // dd($ue_size);
         $data = $request->validate([
             'nombre' => 'required|string|max:255',
-            'email' => 'required|email|unique:empresas,email,'.$empresa->id,
-            'ext_telefonica' => 'nullable|string|max:10',
+            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
             'telefono' => 'required|string|size:10',
-            'inicio_conv' => 'required|date',
-            'fin_conv' => 'required|date',
+            'ext_telefonica' => 'nullable|string|max:10',
+            'direccion' => 'required|string|max:255',
+
             'unidad_economica' => 'required|string|max:255',
             'fecha_registro' => 'required|date',
             'razon_social' => 'required|string|max:255',
@@ -128,10 +129,12 @@ class EmpresaController extends Controller
             'actividad_economica' => 'required|string|max:255',
             'tamano_ue' => ['required', 'integer', Rule::in(array_column(config('ue_size.tamanos'), 'id'))],
             'folio' => 'nullable|string|max:255',
-            'direccion' => 'required|string|max:255',
-            'ine' => 'required|file|mimes:pdf,jpg',
-            'convenioA' => 'nullable|file|mimes:pdf,jpg',
-            'convenioMA' => 'nullable|file|mimes:pdf,jpg',
+
+            'ine' => 'required|file|mimes:pdf,jpg,jpeg|max:5120',
+
+            'archivo_especifico' => 'nullable|file|mimes:pdf|max:5120',
+            'archivo_marco' => 'nullable|file|mimes:pdf|max:5120',
+
             'direcciones_ids' => 'required|array',
             'direcciones_ids.*' => 'exists:direccion_carreras,id',
         ]);
@@ -139,37 +142,72 @@ class EmpresaController extends Controller
         $empresaNombre = Str::slug($data['nombre']);
         $fecha = now()->format('d-m-Y');
 
+        //  INE
         if ($request->hasFile('ine')) {
             $file = $request->file('ine');
-            $filename = "{$fecha}_{$empresaNombre}_ine.".$file->getClientOriginalExtension();
+            $filename = "{$fecha}_{$empresaNombre}_ine." . $file->getClientOriginalExtension();
             $data['ine'] = $file->storeAs('empresas/documentos/ine', $filename, 'public');
         }
 
-        if ($request->hasFile('convenioA')) {
-            $file = $request->file('convenioA');
-            $filename = "{$fecha}_{$empresaNombre}_convenioA.".$file->getClientOriginalExtension();
-            $data['convenioA'] = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
-        }
-
-        if ($request->hasFile('convenioMA')) {
-            $file = $request->file('convenioMA');
-            $filename = "{$fecha}_{$empresaNombre}_convenioMA.".$file->getClientOriginalExtension();
-            $data['convenioMA'] = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
-        }
-
-        $empresa->update(Arr::except($data, ['direcciones_ids']));
-
-        // Sincronizar relaciones
-        $empresa->direcciones()->sync($data['direcciones_ids'] ?? []);
-
-        // Cambiar estado
+        //  Actualizar empresa (sin convenios)
+        $empresa->update(Arr::except($data, ['direcciones_ids', 'archivo_especifico', 'archivo_marco']));
+        $empresa->direcciones()->sync($data['direcciones_ids']);
         $empresa->status = 1;
         $empresa->save();
 
+        //  Convenio Específico
+        $convenioEspecifico = $empresa->convenios()->where('tipo', 'ESPECIFICO')->first();
+        $vigenciaEspecifico = $request->indefinido_especifico ? 'INDEFINIDO' : 'LIMITADO';
+
+        if ($request->hasFile('archivo_especifico')) {
+            $pathEspecifico = $request->file('archivo_especifico')
+                ->store('convenios/especifico', 'public');
+
+            $dataEspecifico = [
+                'inicio' => $request->inicio_especifico,
+                'fin' => $vigenciaEspecifico === 'INDEFINIDO' ? null : $request->fin_especifico,
+                'vigencia' => $vigenciaEspecifico,
+                'archivo' => $pathEspecifico,
+            ];
+
+            if ($convenioEspecifico) {
+                $convenioEspecifico->update($dataEspecifico);
+            } else {
+                $dataEspecifico['empresa_id'] = $empresa->id;
+                $dataEspecifico['tipo'] = 'ESPECIFICO';
+                Convenio::create($dataEspecifico);
+            }
+        }
+
+        // Convenio Marco
+        $convenioMarco = $empresa->convenios()->where('tipo', 'MARCO-EMPRESA')->first();
+        $vigenciaMarco = $request->indefinido_marco ? 'INDEFINIDO' : 'LIMITADO';
+
+        if ($request->hasFile('archivo_marco')) {
+            $pathMarco = $request->file('archivo_marco')
+                ->store('convenios/marco', 'public');
+
+            $dataMarco = [
+                'inicio' => $request->inicio_marco,
+                'fin' => $vigenciaMarco === 'INDEFINIDO' ? null : $request->fin_marco,
+                'vigencia' => $vigenciaMarco,
+                'archivo' => $pathMarco,
+            ];
+
+            if ($convenioMarco) {
+                $convenioMarco->update($dataMarco);
+            } else {
+                $dataMarco['empresa_id'] = $empresa->id;
+                $dataMarco['tipo'] = 'MARCO-EMPRESA';
+                Convenio::create($dataMarco);
+            }
+        }
+
         return redirect()
-            ->route('empresas.index', ['tab' => 'unidades_interesadas'])
-            ->with('success', 'Empresa registrada exitosamente.');
+            ->route('empresas.index', ['tab' => 'unidades_registradas'])
+            ->with('success', 'Empresa registrada con convenios correctamente.');
     }
+
 
     public function store(Request $request)
     {
@@ -179,55 +217,80 @@ class EmpresaController extends Controller
             'direccion' => 'required|string',
             'ext_telefonica' => 'nullable|string|max:10',
             'telefono' => 'required|string|size:10',
-            'inicio_conv' => 'required|date',
-            'fin_conv' => 'required|date',
+            'inicio_especifico' => 'required',
+            'inicio_marco' => 'required',
             'direcciones_ids' => 'required|array',
             'direcciones_ids.*' => 'exists:direccion_carreras,id',
-            'convenioA' => 'required|file|mimes:pdf,jpeg,png|max:5120',
-            'convenioMA' => 'required|file|mimes:pdf,jpeg,png|max:5120',
+            'archivo_especifico' => 'required|file|mimes:pdf|max:5120',
+            'archivo_marco' => 'required|file|mimes:pdf|max:5120',
         ]);
 
-        // Procesamiento de documentos pdf jpg
-        $empresaNombre = Str::slug($request->input('nombre'));
-        $fecha = now()->format('d-m-Y');
+        //PROCESAR ARCHIVOS
+        $pathEspecifico = null;
+        $pathMarco = null;
 
-        $convenioAPath = null;
-        $convenioMAPath = null;
-
-        if ($request->hasFile('convenioA')) {
-            $file = $request->file('convenioA');
-            $filename = $fecha.'_'.$empresaNombre.'_convenioA.'.$file->getClientOriginalExtension();
-            $convenioAPath = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
+        if ($request->hasFile('archivo_especifico')) {
+            $pathEspecifico = $request->file('archivo_especifico')
+                ->store('convenios/especifico', 'public');
         }
 
-        if ($request->hasFile('convenioMA')) {
-            $file = $request->file('convenioMA');
-            $filename = $fecha.'_'.$empresaNombre.'_convenioMA.'.$file->getClientOriginalExtension();
-            $convenioMAPath = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
+        if ($request->hasFile('archivo_marco')) {
+            $pathMarco = $request->file('archivo_marco')
+                ->store('convenios/marco', 'public');
         }
 
-        // Crear la empresa con los datos del formulario
+        $vigenciaEspecifico = $request->indefinido_especifico ? 'INDEFINIDO' : 'LIMITADO';
+        $vigenciaMarco = $request->indefinido_marco ? 'INDEFINIDO' : 'LIMITADO';
+
+        // CREAR EMPRESA 
         $empresa = Empresa::create([
             'nombre' => $data['nombre'],
             'email' => $data['email'],
             'direccion' => $data['direccion'],
             'ext_telefonica' => $data['ext_telefonica'],
             'telefono' => $data['telefono'],
-            'inicio_conv' => $data['inicio_conv'],
-            'fin_conv' => $data['fin_conv'],
-            'convenioA' => $convenioAPath,
-            'convenioMA' => $convenioMAPath,
-            'status' => 1, // Empresa registrada
+            'status' => 1,
         ]);
 
-        // Asociar direcciones de carrera
-        if (isset($data['direcciones_ids']) && ! empty($data['direcciones_ids'])) {
+        // CREAR CONVENIO ESPECÍFICO
+        if ($pathEspecifico) {
+            $finEspecifico = $vigenciaEspecifico === 'INDEFINIDO'
+                ? null
+                : $request->fin_especifico;
+
+            Convenio::create([
+                'empresa_id' => $empresa->id,
+                'tipo' => 'ESPECIFICO',
+                'inicio' => $request->inicio_especifico,
+                'fin' => $finEspecifico,
+                'vigencia' => $vigenciaEspecifico,
+                'archivo' => $pathEspecifico,
+            ]);
+        }
+
+        // CREAR CONVENIO MARCO
+        if ($pathMarco) {
+            $finMarco = $vigenciaMarco === 'INDEFINIDO'
+                ? null
+                : $request->fin_marco;
+
+            Convenio::create([
+                'empresa_id' => $empresa->id,
+                'tipo' => 'MARCO-EMPRESA',
+                'inicio' => $request->inicio_marco,
+                'fin' => $finMarco,
+                'vigencia' => $vigenciaMarco,
+                'archivo' => $pathMarco,
+            ]);
+        }
+
+        if (!empty($data['direcciones_ids'])) {
             $empresa->direcciones()->sync($data['direcciones_ids']);
         }
 
         return redirect()
             ->route('empresas.index', ['tab' => 'unidades_interesadas'])
-            ->with('success', 'Empresa creada exitosamente.');
+            ->with('success', 'Empresa registrada correctamente.');
     }
 
     public function show($id)
@@ -270,17 +333,24 @@ class EmpresaController extends Controller
             abort(404);
         }
 
-        $empresa = Empresa::findOrFail($decoded[0]);
+        $empresa = Empresa::with('convenios')->findOrFail($decoded[0]);
+
+        $convenioEspecifico = $empresa->convenios
+            ->where('tipo', 'ESPECIFICO')
+            ->first();
+
+        $convenioMarco = $empresa->convenios
+            ->where('tipo', 'MARCO-EMPRESA')
+            ->first();
 
         $tamano_eu = config('ue_size');
         $direcciones = DireccionCarrera::all();
 
-        return view('empresas.edit', compact('empresa', 'direcciones', 'tamano_eu'));
+        return view('empresas.edit', compact('empresa', 'direcciones', 'tamano_eu', 'convenioMarco', 'convenioEspecifico'));
     }
 
     public function update(Request $request, Empresa $empresa)
     {
-        $ue_size = array_column(config('ue_size.tamanos'), 'tamano_eu');
         $request->validate([
             'nombre' => 'required|string|max:255',
             'razon_social' => 'nullable|string|max:255',
@@ -290,44 +360,29 @@ class EmpresaController extends Controller
             'folio' => 'nullable|string|max:255',
             'direccion' => 'nullable|string|max:255',
             'fecha_registro' => 'nullable|date',
-            'email' => 'required|email|unique:empresas,email,'.$empresa->id,
+            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
             'ext_telefonica' => 'nullable|string|max:10',
             'telefono' => 'required|string|size:10',
             'nombre_representante' => 'required|string|max:255',
             'cargo_representante' => 'required|string|max:255',
+
             'direcciones_ids' => 'required|array',
             'direcciones_ids.*' => 'exists:direccion_carreras,id',
-            'inicio_conv' => 'required|date',
-            'anos_conv' => 'nullable|integer|min:0',
-            'fin_conv' => 'required|date|after_or_equal:inicio_conv',
+
+            'archivo_especifico' => 'nullable|file|mimes:pdf|max:5120',
+            'archivo_marco' => 'nullable|file|mimes:pdf|max:5120',
+
             'ine' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'convenioA' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'convenioMA' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
-        $empresaNombre = Str::slug($request->input('nombre'));
+        $empresaNombre = Str::slug($request->nombre);
         $fecha = now()->format('d-m-Y');
 
-        $inePath = $empresa->ine;
-        $convenioAPath = $empresa->convenioA;
-        $convenioMAPath = $empresa->convenioMA;
-
+        // 🔹 INE
         if ($request->hasFile('ine')) {
             $file = $request->file('ine');
-            $filename = $fecha.'_'.$empresaNombre.'_ine.'.$file->getClientOriginalExtension();
-            $inePath = $file->storeAs('empresas/documentos/ine', $filename, 'public');
-        }
-
-        if ($request->hasFile('convenioA')) {
-            $file = $request->file('convenioA');
-            $filename = $fecha.'_'.$empresaNombre.'_convenioA.'.$file->getClientOriginalExtension();
-            $convenioAPath = $file->storeAs('empresas/documentos/convenioA', $filename, 'public');
-        }
-
-        if ($request->hasFile('convenioMA')) {
-            $file = $request->file('convenioMA');
-            $filename = $fecha.'_'.$empresaNombre.'_convenioMA.'.$file->getClientOriginalExtension();
-            $convenioMAPath = $file->storeAs('empresas/documentos/convenioMA', $filename, 'public');
+            $filename = "{$fecha}_{$empresaNombre}_ine." . $file->getClientOriginalExtension();
+            $empresa->ine = $file->storeAs('empresas/documentos/ine', $filename, 'public');
         }
 
         $empresa->update([
@@ -344,17 +399,75 @@ class EmpresaController extends Controller
             'telefono' => $request->telefono,
             'nombre_representante' => $request->nombre_representante,
             'cargo_representante' => $request->cargo_representante,
-            'inicio_conv' => $request->inicio_conv,
-            'fin_conv' => $request->fin_conv,
-            'ine' => $inePath,
-            'convenioA' => $convenioAPath,
-            'convenioMA' => $convenioMAPath,
         ]);
 
         $empresa->direcciones()->sync($request->direcciones_ids);
 
-        return redirect()->route('empresas.index')->with('success', 'Empresa actualizada exitosamente.');
+        // 🔹 Convenio Específico
+        $convenioEspecifico = $empresa->convenios()->where('tipo', 'ESPECIFICO')->first();
+        $vigenciaEspecifico = $request->indefinido_especifico ? 'INDEFINIDO' : 'LIMITADO';
+        $pathEspecifico = $convenioEspecifico?->archivo;
+
+        if ($request->hasFile('archivo_especifico')) {
+            if ($pathEspecifico) {
+                Storage::disk('public')->delete($pathEspecifico);
+            }
+            $pathEspecifico = $request->file('archivo_especifico')
+                ->store('convenios/especifico', 'public');
+        }
+
+        $dataEspecifico = [
+            'inicio' => $request->inicio_especifico,
+            'fin' => $vigenciaEspecifico === 'INDEFINIDO' ? null : $request->fin_especifico,
+            'vigencia' => $vigenciaEspecifico,
+        ];
+        if ($pathEspecifico) {
+            $dataEspecifico['archivo'] = $pathEspecifico;
+        }
+
+        if ($convenioEspecifico) {
+            $convenioEspecifico->update($dataEspecifico);
+        } else {
+            $dataEspecifico['empresa_id'] = $empresa->id;
+            $dataEspecifico['tipo'] = 'ESPECIFICO';
+            Convenio::create($dataEspecifico);
+        }
+
+        // 🔹 Convenio Marco
+        $convenioMarco = $empresa->convenios()->where('tipo', 'MARCO-EMPRESA')->first();
+        $vigenciaMarco = $request->indefinido_marco ? 'INDEFINIDO' : 'LIMITADO';
+        $pathMarco = $convenioMarco?->archivo;
+
+        if ($request->hasFile('archivo_marco')) {
+            if ($pathMarco) {
+                Storage::disk('public')->delete($pathMarco);
+            }
+            $pathMarco = $request->file('archivo_marco')
+                ->store('convenios/marco', 'public');
+        }
+
+        $dataMarco = [
+            'inicio' => $request->inicio_marco,
+            'fin' => $vigenciaMarco === 'INDEFINIDO' ? null : $request->fin_marco,
+            'vigencia' => $vigenciaMarco,
+        ];
+        if ($pathMarco) {
+            $dataMarco['archivo'] = $pathMarco;
+        }
+
+        if ($convenioMarco) {
+            $convenioMarco->update($dataMarco);
+        } else {
+            $dataMarco['empresa_id'] = $empresa->id;
+            $dataMarco['tipo'] = 'MARCO-EMPRESA';
+            Convenio::create($dataMarco);
+        }
+
+        return redirect()
+            ->route('empresas.index')
+            ->with('success', 'Empresa y convenios actualizados correctamente.');
     }
+
 
     public function destroy($id)
     {
@@ -378,7 +491,7 @@ class EmpresaController extends Controller
 
             return redirect()->route('empresas.index')->with('error', 'La empresa no existe.');
         } catch (\Exception $e) {
-            \Log::error('Error al eliminar empresa: '.$e->getMessage());
+            \Log::error('Error al eliminar empresa: ' . $e->getMessage());
 
             return redirect()->route('empresas.index', ['tab' => 'bajas_temporales'])
                 ->with('error', 'Ocurrió un error al eliminar la empresa.');
@@ -422,9 +535,8 @@ class EmpresaController extends Controller
 
         $pdf = Pdf::loadView('empresas.pdf', $data);
 
-        return $pdf->download('empresa_'.$empresa->id.'.pdf');
+        return $pdf->download('empresa_' . $empresa->id . '.pdf');
     }
-
     public function darAlta($hashid): View
     {
         $decoded = Hashids::decode($hashid);
@@ -433,12 +545,26 @@ class EmpresaController extends Controller
             abort(404);
         }
 
-        $empresa = Empresa::findOrFail($decoded[0]);
+        $empresa = Empresa::with('convenios')->findOrFail($decoded[0]);
+
+        $convenioEspecifico = $empresa->convenios
+            ->where('tipo', 'ESPECIFICO')
+            ->first();
+
+        $convenioMarco = $empresa->convenios
+            ->where('tipo', 'MARCO-EMPRESA')
+            ->first();
 
         $tamano_eu = config('ue_size');
         $direcciones = DireccionCarrera::all();
 
-        return view('empresas.darAlta', compact('empresa', 'direcciones', 'tamano_eu'));
+        return view('empresas.darAlta', compact(
+            'empresa',
+            'direcciones',
+            'tamano_eu',
+            'convenioEspecifico',
+            'convenioMarco'
+        ));
     }
 
     public function exportUeiPdf()
@@ -454,8 +580,16 @@ class EmpresaController extends Controller
         return $pdf->download('uei_interesadas.pdf');
     }
 
-    public function suspendForm($id)
+    public function suspendForm($hashid): View
     {
+        $decoded = Hashids::decode($hashid);
+
+        if (empty($decoded)) {
+            abort(404);
+        }
+
+        $empresa = Empresa::with('convenios')->findOrFail($decoded[0]);
+
         $suspensionReasons = [
             'Cierre definitivo o quiebra',
             'Término del contrato de colaboración',
@@ -469,16 +603,20 @@ class EmpresaController extends Controller
             'Cambio de giro o actividad económica de la empresa',
         ];
 
-        $id = Hashids::decode($id);
-        if (empty($id)) {
-            return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
-        }
-        $empresa = Empresa::find($id[0]);
-        if (! $empresa) {
-            return redirect()->route('empresas.index')->with('error', 'Empresa no encontrada.');
-        }
+        $convenioEspecifico = $empresa->convenios
+            ->where('tipo', 'ESPECIFICO')
+            ->first();
 
-        return view('empresas.suspend-form', compact('empresa', 'suspensionReasons'));
+        $convenioMarco = $empresa->convenios
+            ->where('tipo', 'MARCO-EMPRESA')
+            ->first();
+
+        return view('empresas.suspend-form', compact(
+            'empresa',
+            'suspensionReasons',
+            'convenioEspecifico',
+            'convenioMarco'
+        ));
     }
 
     public function suspend(Request $request, $id)
@@ -532,7 +670,7 @@ class EmpresaController extends Controller
 
             return redirect()->route('empresas.index')->with('success', 'La empresa ha sido reactivada temporalmente.');
         } catch (Exception $e) {
-            Log::error('Error al reactivar empresa: '.$e->getMessage());
+            Log::error('Error al reactivar empresa: ' . $e->getMessage());
 
             return redirect()->back()->with('error', 'Ocurrió un error al intentar reactivar la empresa.');
         }

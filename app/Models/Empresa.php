@@ -18,11 +18,7 @@ class Empresa extends Model
         'direccion',
         'ext_telefonica',
         'telefono',
-        'inicio_conv',
-        'fin_conv',
         'ine',
-        'convenioA',
-        'convenioMA',
         // Nuevos campos
         'unidad_economica',
         'fecha_registro',
@@ -60,5 +56,10 @@ class Empresa extends Model
     {
         return $this->belongsToMany(DireccionCarrera::class, 'empresa_direccion', 'empresa_id', 'direccion_id')
             ->withTimestamps();
+    }
+
+    public function convenios()
+    {
+        return $this->hasMany(Convenio::class);
     }
 }

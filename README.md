@@ -132,19 +132,6 @@ Accede a [http://localhost:8000](http://localhost:8000)
 
 ---
 
-## 🧪 Pruebas
-
-Ejecuta las pruebas unitarias y de integración con:
-
-```sh
-php artisan test
-```
-o
-```sh
-./vendor/bin/phpunit
-```
-
----
 
 ## 🐳 Despliegue con Docker (Opcional)
 
@@ -168,19 +155,6 @@ Configura las variables de entorno para los contenedores según sea necesario.
 
 ---
 
-## 👥 Contribución
-
-Las contribuciones son bienvenidas. Por favor, sigue estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una rama para tu feature o fix (`git checkout -b feature/nueva-funcionalidad`).
-3. Realiza tus cambios y escribe pruebas si aplica.
-4. Haz commit y push a tu rama.
-5. Abre un Pull Request detallando tus cambios.
-
-Consulta la [guía de contribución](./CONTRIBUTING.md) si está disponible.
-
----
 
 ## 📄 Licencia
 
@@ -194,19 +168,3 @@ Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](./LICENS
 - [Documentación Oficial de Laravel](https://laravel.com/docs)
 
 ---
-
-## 🆘 Soporte
-
-Para dudas técnicas, incidencias o soporte, contacta al área de TI de la universidad o abre un issue en este repositorio.
-
----
-
-## 🚧 Estado del Proyecto
-
-Actualmente estamos en la fase de desarrollo activo. Se recomienda no usar en producción hasta la publicación de la versión estable.
-
----
-
-<p align="center">
-  <strong>¡Gracias por tu interés y colaboración en este emocionante viaje educativo! 🚀</strong>
-</p>

@@ -435,21 +435,20 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
             const input = document.getElementById('fecha_registro');
 
-            if (!input.value) {
-                const hoy = new Date().toISOString().split('T')[0];
-                input.value = hoy;
-            }
             // --- Convenio Específico ---
             const inicioEspecifico = document.querySelector('[name="inicio_especifico"]');
             const finEspecifico = document.querySelector('[name="fin_especifico"]');
             const anosEspecifico = document.querySelector('[name="anos_especifico"]');
+            const indefinidoEspecifico = document.getElementById('indefinido_especifico');
 
             // --- Convenio Marco ---
             const inicioMarco = document.querySelector('[name="inicio_marco"]');
             const finMarco = document.querySelector('[name="fin_marco"]');
             const anosMarco = document.querySelector('[name="anos_marco"]');
+            const indefinidoMarco = document.getElementById('indefinido_marco');
 
             // Inicializar fecha de inicio con hoy si está vacío
             function inicializarHoy(input) {
@@ -495,26 +494,40 @@
                 }
             }
 
-            // Eventos para específico
+            // Switch para vigencia indefinida
+            function inicializarVigencia(checkbox, anosInput, finInput) {
+                function actualizar() {
+                    const anosWrapper = anosInput.parentElement;
+                    const finWrapper = finInput.parentElement;
+                    if (checkbox.checked) {
+                        anosWrapper.style.display = 'none';
+                        finWrapper.style.display = 'none';
+                    } else {
+                        anosWrapper.style.display = 'block';
+                        finWrapper.style.display = 'block';
+                    }
+                }
+                checkbox.addEventListener('change', actualizar);
+                actualizar();
+            }
+
+            // Eventos específico
             inicioEspecifico.addEventListener('change', () => calcularAnios(inicioEspecifico, finEspecifico,
                 anosEspecifico));
             finEspecifico.addEventListener('change', () => calcularAnios(inicioEspecifico, finEspecifico,
                 anosEspecifico));
             anosEspecifico.addEventListener('input', () => calcularFinDesdeAnios(inicioEspecifico, finEspecifico,
                 anosEspecifico));
+            if (inicioEspecifico.value && finEspecifico.value) calcularAnios(inicioEspecifico, finEspecifico,
+                anosEspecifico);
+            inicializarVigencia(indefinidoEspecifico, anosEspecifico, finEspecifico);
 
-            if (inicioEspecifico.value && finEspecifico.value) {
-                calcularAnios(inicioEspecifico, finEspecifico, anosEspecifico);
-            }
-
-            // Eventos para marco
+            // Eventos marco
             inicioMarco.addEventListener('change', () => calcularAnios(inicioMarco, finMarco, anosMarco));
             finMarco.addEventListener('change', () => calcularAnios(inicioMarco, finMarco, anosMarco));
             anosMarco.addEventListener('input', () => calcularFinDesdeAnios(inicioMarco, finMarco, anosMarco));
-
-            if (inicioMarco.value && finMarco.value) {
-                calcularAnios(inicioMarco, finMarco, anosMarco);
-            }
+            if (inicioMarco.value && finMarco.value) calcularAnios(inicioMarco, finMarco, anosMarco);
+            inicializarVigencia(indefinidoMarco, anosMarco, finMarco);
         });
 
         // --- Funciones para botones de documentos ---
@@ -561,6 +574,7 @@
             fileInput.value = '';
         }
     </script>
+
 
 
 @endsection

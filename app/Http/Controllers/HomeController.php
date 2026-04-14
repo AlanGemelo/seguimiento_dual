@@ -6,6 +6,7 @@ use App\Models\DireccionCarrera;
 use App\Models\Empresa;
 use App\Models\Estudiantes;
 use App\Models\MentorIndustrial;
+use App\Models\Convenio;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -40,13 +41,19 @@ class HomeController extends Controller
                     ->whereDate('fin_dual', '<=', $hoy->copy()->addDays(15))
                     ->where('activo', true)->get();
 
-                $registrosConvenio = Empresa::with('asesorin')
-                    ->whereDate('fin_conv', '<=', $hoy->copy()->addDays(15))->get();
+                $registrosConvenio = Convenio::with('empresa.asesorin')
+                    ->whereDate('fin', '<=', $hoy->copy()->addDays(15))
+                    ->get();
 
                 $hayAlertas = $registrosEstudiantes->count() > 0 || $registrosConvenio->count() > 0;
 
                 return view('dashboardSuperAdmin', compact(
-                    'direcciones', 'estudiantes', 'mentores', 'registrosEstudiantes', 'registrosConvenio', 'hayAlertas'
+                    'direcciones',
+                    'estudiantes',
+                    'mentores',
+                    'registrosEstudiantes',
+                    'registrosConvenio',
+                    'hayAlertas'
                 ));
 
             case 3: // ESTUDIANTE
@@ -67,7 +74,7 @@ class HomeController extends Controller
 
                 return view('dashboardEstudiante', compact('estudiante', 'becas', 'tipoBeca'));
 
-            case 4:// DIRECTOR/TUTOR
+            case 4: // DIRECTOR/TUTOR
             default:
                 // Se carga el dashboard usando la carrera que el director tiene en la base de datos
                 return $this->cargarDashboardCarrera($user->direccion_id, $hoy);
@@ -111,14 +118,21 @@ class HomeController extends Controller
             ->whereDate('fin_dual', '<=', $hoy->copy()->addDays(15))
             ->where('activo', true)->get();
 
-        $registrosConvenio = Empresa::whereHas('direccionesCarrera', function ($q) use ($direccion_id) {
+        $registrosConvenio = Convenio::whereHas('empresa.direccionesCarrera', function ($q) use ($direccion_id) {
             $q->where('direccion_id', $direccion_id);
-        })->whereDate('fin_conv', '<=', $hoy->copy()->addDays(15))->get();
+        })
+            ->whereDate('fin', '<=', $hoy->copy()->addDays(15))
+            ->get();
 
         $hayAlertas = $registrosEstudiantes->isNotEmpty() || $registrosConvenio->isNotEmpty();
 
         return view('dashboard', compact(
-            'estudiantes', 'mentores', 'registrosEstudiantes', 'registrosConvenio', 'hayAlertas', 'usaPasswordPorDefecto'
+            'estudiantes',
+            'mentores',
+            'registrosEstudiantes',
+            'registrosConvenio',
+            'hayAlertas',
+            'usaPasswordPorDefecto'
         ));
     }
 }

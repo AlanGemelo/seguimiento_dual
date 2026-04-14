@@ -211,6 +211,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('anexo2_1/{anexo2_1}/generatePdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
     Route::get('anexo2_1/{anexo2_1}/generateWord', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
 
+
+    //Rutas para renovaciones de convenios y duales
+    Route::get('/estudiantes/{id}/renovar', [DocumentacionController::class, 'showRenovarEstudiante'])
+        ->name('estudiantes.renovar');
+    Route::post('/estudiantes/{id}/renovar', [DocumentacionController::class, 'storeRenovarEstudiante'])
+        ->name('estudiantes.renovar.store');
+    Route::get('/empresas/{id}/renovar', [DocumentacionController::class, 'showRenovarEmpresa'])
+        ->name('empresas.renovar');
+    Route::post('/empresas/{id}/renovar', [DocumentacionController::class, 'storeRenovarEmpresa'])
+        ->name('convenios.renovar.store');
+
     // Rutas para la Navegación Principal
     // Route::get('/anexos', function () {
     //     return view('anexos.index');
@@ -221,7 +232,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // });
 
     Route::get('/descargar/{archivo}', function ($archivo) {
-        $path = public_path('storage/anexos/'.$archivo);
+        $path = public_path('storage/anexos/' . $archivo);
         if (file_exists($path)) {
             return response()->download($path);
         } else {
@@ -230,4 +241,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

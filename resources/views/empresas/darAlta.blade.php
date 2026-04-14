@@ -47,11 +47,11 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="actividad_economica">Unidad Económica</label>
-                                    <input type="text" class="form-control" name="actividad_economica"
-                                        id="actividad_economica"
-                                        value="{{ old('actividad_Economica', $empresa->actividad_economica) }}" />
-                                    @error('actividad_economica')
+                                    <label for="unidad_economica">Unidad Económica</label>
+                                    <input type="text" class="form-control" name="unidad_economica"
+                                        id="unidad_economica"
+                                        value="{{ old('unidad_economica', $empresa->unidad_economica) }}" />
+                                    @error('unidad_economica')
                                         <div class="text-danger invalid-feedback d-block">
                                             {{ $message }}
                                         </div>
@@ -59,9 +59,9 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="" class="form-label">Actividad Económica</label>
-                                    <input type="text" class="form-control" name="unidad_economica" id="unidad_economica"
-                                        value="{{ old('unidad_economica', $empresa->unidad_economica) }}" />
-                                    @error('unidad_economica')
+                                    <input type="text" class="form-control" name="actividad_economica" id="actividad_economica"
+                                        value="{{ old('actividad_economica', $empresa->actividad_economica) }}" />
+                                    @error('actividad_economica')
                                         <div class="text-danger invalid-feedback d-block">
                                             {{ $message }}
                                         </div>
@@ -252,7 +252,7 @@
                                                 value="{{ old('inicio_especifico', optional($convenioEspecifico)->inicio) }}" />
                                         </div>
 
-                                        <div class="col-md-2" id="anosWrapper">
+                                        <div class="col-md-4">
                                             <label class="form-label fw-semibold">Años de vigencia</label>
                                             <input type="number" class="form-control" name="anos_especifico"
                                                 value="{{ old(
@@ -337,11 +337,6 @@
                                                 value="{{ old('inicio_marco', $convenioMarco?->inicio) }}" />
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="form-label fw-semibold">Fecha de fin</label>
-                                            <input type="date" class="form-control" name="fin_marco"
-                                                value="{{ old('fin_marco', $convenioMarco?->fin) }}" />
-                                        </div>
-                                        <div class="col-md-4">
                                             <label class="form-label fw-semibold">Años de vigencia</label>
                                             <input type="number" class="form-control" name="anos_marco"
                                                 value="{{ old(
@@ -352,6 +347,12 @@
                                                 ) }}"
                                                 min="0" max="999" />
                                         </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label fw-semibold">Fecha de fin</label>
+                                            <input type="date" class="form-control" name="fin_marco"
+                                                value="{{ old('fin_marco', $convenioMarco?->fin) }}" />
+                                        </div>
+
                                     </div>
 
                                     <!-- Archivo -->
@@ -582,6 +583,65 @@
                 const hoy = new Date().toISOString().split('T')[0];
                 input.value = hoy;
             }
+        });
+    </script>
+
+    <script>
+        function inicializarCalculo(inicioName, anosName, finName) {
+            const inicioInput = document.querySelector(`[name="${inicioName}"]`);
+            const anosInput = document.querySelector(`[name="${anosName}"]`);
+            const finInput = document.querySelector(`[name="${finName}"]`);
+
+            function calcularFin() {
+                const inicio = new Date(inicioInput.value);
+                const anos = parseInt(anosInput.value);
+
+                if (!isNaN(inicio.getTime()) && !isNaN(anos)) {
+                    const fin = new Date(inicio);
+                    fin.setFullYear(fin.getFullYear() + anos);
+
+                    // Mantiene mismo día
+                    finInput.value = fin.toISOString().split('T')[0];
+                }
+            }
+
+            function calcularAnios() {
+                const inicio = new Date(inicioInput.value);
+                const fin = new Date(finInput.value);
+
+                if (!isNaN(inicio.getTime()) && !isNaN(fin.getTime())) {
+                    let anos = fin.getFullYear() - inicio.getFullYear();
+
+                    if (
+                        fin.getMonth() < inicio.getMonth() ||
+                        (fin.getMonth() === inicio.getMonth() &&
+                            fin.getDate() < inicio.getDate())
+                    ) {
+                        anos--;
+                    }
+
+                    anosInput.value = anos >= 0 ? anos : 0;
+                }
+            }
+
+            // Eventos
+            inicioInput.addEventListener('change', () => {
+                calcularFin();
+            });
+
+            anosInput.addEventListener('input', () => {
+                calcularFin();
+            });
+
+            finInput.addEventListener('change', () => {
+                calcularAnios();
+            });
+        }
+
+        // Inicializar ambos
+        document.addEventListener('DOMContentLoaded', function() {
+            inicializarCalculo('inicio_especifico', 'anos_especifico', 'fin_especifico');
+            inicializarCalculo('inicio_marco', 'anos_marco', 'fin_marco');
         });
     </script>
 @endsection

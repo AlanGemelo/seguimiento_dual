@@ -7,362 +7,365 @@ use App\Models\Estudiantes;
 use App\Models\User;
 use App\Models\Empresa;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EstadisticasExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\reporteGeneral;
+use Illuminate\Support\Str;
+use App\Filters\EstudianteFilter;
 
 class EstadisticaController extends Controller
 {
-
     public function index()
     {
+
+        // dd(session('direccion')->id);
         $user = Auth::user();
+        $isAdmin = $user->rol_id === 1;
+        $direccionId = $isAdmin ? null : session('direccion')->id;
 
-        if ($user->rol_id === 1) {
-            // Gráfica de Estudiantes por Empresa
-            $empresas = Empresa::withCount('estudiantes')
-                ->having('estudiantes_count', '>', 0)
-                ->get();
-                
+        $empresas = $this->getEmpresas($direccionId, $isAdmin);
+        $carreras = $this->getCarreras($direccionId, $isAdmin);
+        $mentores = $this->getMentores($direccionId, $isAdmin);
+        $becas = $this->getBecas($direccionId, $isAdmin);
 
-            $totalEstudiantes = $empresas->sum('estudiantes_count');
+        $chartEmpresa = $this->barChart(
+            'Estudiantes por Empresa',
+            $empresas->pluck('nombre')->toArray(),
+            $empresas->pluck('estudiantes_count')->toArray()
+        );
 
-            $labels = $empresas->map(function ($empresa) use ($totalEstudiantes) {
-                $porcentaje = $totalEstudiantes > 0 ? round(($empresa->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
-                return "{$empresa->nombre} ({$porcentaje}%)";
-            });
+        $chartCarrera = $this->barChart(
+            'Estudiantes por Carrera',
+            $carreras->pluck('nombre')->toArray(),
+            $carreras->pluck('estudiantes_count')->toArray()
+        );
 
-            $chartEmpresa = (new LarapexChart)->pieChart()
-                ->setTitle('Estudiantes por Empresa')
-                ->setLabels($labels->toArray())
-                ->setDataset($empresas->pluck('estudiantes_count')->toArray())
-                ->setHeight(300)
-                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+        $chartMentor = $this->barChart(
+            'Estudiantes por Mentor Académico',
+            $mentores->map(function ($m) {
+                return trim($m->titulo . ' ' . $m->name . ' ' . $m->apellidoP . ' ' . $m->apellidoM);
+            })->toArray(),
+            $mentores->pluck('estudiantes_count')->toArray()
+        );
 
-            // Gráfica de Estudiantes por Carrera
-            $carreras = Carrera::withCount('estudiantes')
-                ->having('estudiantes_count', '>', 0)
-                ->get();
+        $chartBeca = $this->pieChart(
+            'Estudiantes Becados',
+            $becas->pluck('tipoBeca')->map(fn($b) => match ($b) {
+                1 => 'Beca Comecyt',
+                0 => 'Apoyo por Empresa',
+                default => 'Sin beca',
+            })->toArray(),
+            $becas->pluck('count')->toArray()
+        );
 
-            $totalEstudiantes = $carreras->sum('estudiantes_count');
+        return view('estadisticas.index', compact(
+            'chartEmpresa',
+            'chartCarrera',
+            'chartMentor',
+            'chartBeca',
+            'mentores',
+            'empresas',
+            'carreras'
+        ));
+    }
 
-            $labels = $carreras->map(function ($carrera) use ($totalEstudiantes) {
-                $porcentaje = $totalEstudiantes > 0 ? round(($carrera->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
-                return "{$carrera->nombre} ({$porcentaje}%)";
-            });
+    private function getEmpresas($direccionId, $isAdmin)
+    {
+        return Empresa::when(!$isAdmin, function ($q) use ($direccionId) {
+            $q->whereHas('direccionesCarrera', fn($sub) => $sub->where('direccion_id', $direccionId));
+        })
+            ->withCount('estudiantes')
+            ->having('estudiantes_count', '>', 0)
+            ->orderByDesc('estudiantes_count')
+            ->take(10)
+            ->get();
+    }
 
-            $chartCarrera = (new LarapexChart)->pieChart()
-                ->setTitle('Estudiantes por Carrera')
-                ->setLabels($labels->toArray())
-                ->setDataset($carreras->pluck('estudiantes_count')->toArray())
-                ->setHeight(300)
-                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
+    private function getCarreras($direccionId, $isAdmin)
+    {
+        return Carrera::when(!$isAdmin, fn($q) => $q->where('direccion_id', $direccionId))
+            ->withCount('estudiantes')
+            ->having('estudiantes_count', '>', 0)
+            ->orderByDesc('estudiantes_count')
+            ->take(10)
+            ->get();
+    }
 
-            // Gráfica de Estudiantes por Mentor Académico
-            $mentores = User::mentoresAcademicos()->withCount('estudiantes')
-                ->having('estudiantes_count', '>', 0)
-                ->get();
+    private function getMentores($direccionId, $isAdmin)
+    {
+        return User::mentoresAcademicos()
+            ->when(!$isAdmin, fn($q) => $q->where('direccion_id', $direccionId))
+            ->withCount('estudiantes')
+            ->having('estudiantes_count', '>', 0)
+            ->orderByDesc('estudiantes_count')
+            ->take(10)
+            ->get();
+    }
 
-            $totalEstudiantes = $mentores->sum('estudiantes_count');
+    private function getBecas($direccionId, $isAdmin)
+    {
+        return Estudiantes::when(!$isAdmin, fn($q) => $q->where('direccion_id', $direccionId))
+            ->select('tipoBeca', \DB::raw('count(*) as count'))
+            ->groupBy('tipoBeca')
+            ->get();
+    }
 
-            $labels = $mentores->map(function ($mentor) use ($totalEstudiantes) {
-                $porcentaje = $totalEstudiantes > 0 ? round(($mentor->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
-                return "{$mentor->name} ({$porcentaje}%)";
-            });
+    private function barChart($title, $labels, $data)
+    {
+        $chart = (new \ArielMejiaDev\LarapexCharts\BarChart)
+            ->setTitle($title)
+            ->setSubtitle('Estudiantes por empresa');
 
-            $chartMentor = (new LarapexChart)->pieChart()
-                ->setTitle('Estudiantes por Mentor Académico')
-                ->setLabels($labels->toArray())
-                ->setDataset($mentores->pluck('estudiantes_count')->toArray())
-                ->setHeight(300)
-                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
-
-            // Gráfica de Estudiantes Becados
-            $becas = Estudiantes::select('tipoBeca', \DB::raw('count(*) as count'))
-                ->groupBy('tipoBeca')
-                ->get();
-            $chartBeca = (new LarapexChart)->pieChart()
-                ->setTitle('Estudiantes Becados')
-                ->setLabels($becas->pluck('tipoBeca')->map(fn($beca) => $beca ? 'Beca Comecyt' : 'Apoyo por Empresa')->toArray())
-                ->setDataset($becas->pluck('count')->toArray())
-                ->setHeight(300)
-                ->setColors(['#FF6384', '#36A2EB', '#FFCE56']);
-        } else {
-            $direccionId = session('direccion')->id;
-
-            // Gráfica de Estudiantes por Empresa
-            /*  $empresas = Empresa::whereHas('direccionesCarrera', function ($q) use ($direccionId) {
-                $q->where('direccion_id', $direccionId);
-            })->get(); */
-            $empresas = Empresa::whereHas('direccionesCarrera', function ($q) use ($direccionId) {
-                $q->where('direccion_id', $direccionId);
-            })->withCount('estudiantes')->get();
-
-    $totalEstudiantes = $empresas->sum('estudiantes_count');
-            $labels = $empresas->map(function ($empresa) use ($totalEstudiantes) {
-                $porcentaje = $totalEstudiantes > 0 ? round(($empresa->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
-                return "{$empresa->nombre} ({$porcentaje}%)";
-            });
-
-            $chartEmpresa = (new LarapexChart)->pieChart()
-                ->setTitle('Estudiantes por Empresa')
-                ->setLabels($labels->toArray())
-                ->setDataset($empresas->pluck('estudiantes_count')->toArray())
-                ->setHeight(300)
-                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
-
-            // Gráfica de Estudiantes por Carrera
-            $carreras = Carrera::where('direccion_id', $direccionId)->withCount('estudiantes')->get();
-
-            $labels = $carreras->map(function ($carrera) use ($totalEstudiantes) {
-                $porcentaje = $totalEstudiantes > 0 ? round(($carrera->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
-                return "{$carrera->nombre} ({$porcentaje}%)";
-            });
-
-            $chartCarrera = (new LarapexChart)->pieChart()
-                ->setTitle('Estudiantes por Carrera')
-                ->setLabels($labels->toArray())
-                ->setDataset($carreras->pluck('estudiantes_count')->toArray())
-                ->setHeight(300)
-                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
-
-            // Gráfica de Estudiantes por Mentor Académico
-            $mentores = User::mentoresAcademicos()->where('direccion_id', $direccionId)->withCount('estudiantes')->get();
-
-            $labels = $mentores->map(function ($mentor) use ($totalEstudiantes) {
-                $porcentaje = $totalEstudiantes > 0 ? round(($mentor->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
-                return "{$mentor->nombre} ({$porcentaje}%)";
-            });
-
-            $chartMentor = (new LarapexChart)->pieChart()
-                ->setTitle('Estudiantes por Mentor Académico')
-                ->setLabels($labels->toArray())
-                ->setDataset($mentores->pluck('estudiantes_count')->toArray())
-                ->setHeight(300)
-                ->setColors(['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']);
-
-            // Gráfica de Estudiantes Becados
-            $becas = Estudiantes::where('direccion_id', $direccionId)
-                ->select('tipoBeca', \DB::raw('count(*) as count'))
-                ->groupBy('tipoBeca')
-                ->get();
-
-            $labels = $becas->map(function ($beca) use ($totalEstudiantes) {
-                $porcentaje = $totalEstudiantes > 0 ? round(($beca->estudiantes_count / $totalEstudiantes) * 100, 1) : 0;
-                return "{$beca->nombre} ({$porcentaje}%)";
-            });
-
-            $chartBeca = (new LarapexChart)->pieChart()
-                ->setTitle('Estudiantes Becados')
-                ->setLabels($becas->pluck('tipoBeca')->map(fn($beca) => $beca ? 'Apoyo por Empresa' : 'Beca Comecyt')->toArray())
-                ->setDataset($becas->pluck('count')->toArray())
-                ->setHeight(300)
-                ->setColors(['#FF6384', '#36A2EB', '#FFCE56']);
+        foreach ($data as $i => $value) {
+            $chart->addData(
+                $labels[$i] ?? 'Dato',
+                [$value]
+            );
         }
 
-        return view('Estadistica.index', compact('chartEmpresa', 'chartCarrera', 'chartMentor', 'chartBeca', 'mentores', 'empresas', 'carreras'));
+        return $chart
+            ->setXAxis([$title])
+            ->setOptions([
+                'tooltip' => [
+                    'enabled' => false
+                ]
+            ]);
+    }
+
+
+    private function pieChart($title, $labels, $data)
+    {
+        return (new LarapexChart)->pieChart()
+            ->setTitle($title)
+            ->setLabels($labels)
+            ->setDataset($data)
+            ->setHeight(300)
+            ->setColors([
+                '#006837',
+                '#0c4a6e',
+                '#9ca3af',
+                '#f59e0b',
+                '#ef4444',
+                '#8b5cf6',
+                '#06b6d4',
+                '#7c2d12',
+            ]);
     }
 
     public function getEstudiantesPorStatus($status)
     {
         $user = Auth::user();
 
-        if ($user->rol_id === 1) {
-            $estudiantes = Estudiantes::where('status', $status)->get();
-        } else {
-            $direccionId = session('direccion')->id;
-            $estudiantes = Estudiantes::where('status', $status)
-                ->where('direccion_id', $direccionId)
-                ->get();
+        $query = Estudiantes::where('status', $status);
+
+        if ($user->rol_id !== 1) {
+            $query->where('direccion_id', session('direccion')->id);
         }
 
-
-        return response()->json($estudiantes);
+        return response()->json($query->get());
     }
 
-    public function getEstudiantesPorBeca($beca)
+
+    public function getEstudiantesPorBeca()
     {
         $direccionId = session('direccion')->id;
-        $becaValue = $beca === 'becados' ? 1 : 0;
-        $estudiantes = Estudiantes::where('beca', $becaValue)
+
+        $data = Estudiantes::select(
+            DB::raw("
+            CASE 
+                WHEN tipoBeca = 1 THEN 'COMECyT'
+                WHEN tipoBeca = 0 THEN 'Apoyo por empresa'
+                ELSE 'Sin beca'
+            END AS beca
+        "),
+            DB::raw("COUNT(*) as total")
+        )
             ->where('direccion_id', $direccionId)
-            ->get();
-        return response()->json($estudiantes);
+            ->groupBy(DB::raw("
+        CASE 
+            WHEN tipoBeca = 1 THEN 'COMECyT'
+            WHEN tipoBeca = 0 THEN 'Apoyo por empresa'
+            ELSE 'Sin beca'
+        END
+    "))
+            ->pluck('total', 'beca');
+
+        return response()->json($data);
     }
+
 
     public function getEstudiantesPorMentor($mentorId)
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('academico_id', $mentorId)
-            ->where('direccion_id', $direccionId)
-            ->get();
-        return response()->json($estudiantes);
+        return response()->json(
+            Estudiantes::where('academico_id', $mentorId)
+                ->where('direccion_id', session('direccion')->id)
+                ->get()
+        );
     }
 
     public function getEstudiantesPorEmpresa($empresaId)
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('empresa_id', $empresaId)
-            ->where('direccion_id', $direccionId)
-            ->get();
-        return response()->json($estudiantes);
+        return response()->json(
+            Estudiantes::where('empresa_id', $empresaId)
+                ->where('direccion_id', session('direccion')->id)
+                ->get()
+        );
     }
 
     public function getEstudiantesPorCarrera($carreraId)
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('carrera_id', $carreraId)
-            ->where('direccion_id', $direccionId)
-            ->get();
-        return response()->json($estudiantes);
+        return response()->json(
+            Estudiantes::where('carrera_id', $carreraId)
+                ->where('direccion_id', session('direccion')->id)
+                ->get()
+        );
     }
 
-    public function exportEstudiantesPorStatusExcel($status)
+    public function exportEstudiantes($query, $filename)
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('status', $status)
-            ->where('direccion_id', $direccionId)
-            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
-            ->get();
-        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_status.xlsx');
+        return Excel::download(new EstadisticasExport($query->get()), $filename);
     }
 
+    public function exportEstudiantesPorStatusExcel($estatus)
+    {
+        $fecha = now()->format('d-m-y_H-i-s');
+        $query = Estudiantes::with(['empresa', 'academico', 'asesorin', 'carrera']);
+
+        switch ($estatus) {
+            case '0': // Activos
+                $query->whereNull('deleted_at');
+                $nombreArchivo = "estudiantes_activos_{$fecha}.xlsx";
+                break;
+
+            case '1': // Inactivos
+                $query->onlyTrashed();
+                $nombreArchivo = "estudiantes_inactivos_{$fecha}.xlsx";
+                break;
+
+            default:
+                abort(404, 'Estatus no válido');
+        }
+
+        return $this->exportEstudiantes($query, $nombreArchivo);
+    }
     public function exportEstudiantesPorBecaExcel($beca)
     {
-        $direccionId = session('direccion')->id;
-        $becaValue = $beca === 'becados' ? 1 : 0;
-        $estudiantes = Estudiantes::where('beca', $becaValue)
-            ->where('direccion_id', $direccionId)
-            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
-            ->get();
-        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_beca.xlsx');
+        $fecha = now()->format('d-m-y_H-i-s');
+
+        $nombreArchivo = $beca == 0
+            ? "studiantes_becados_{$fecha}.xlsx"
+            : "estudiantes_sin_beca_{$fecha}.xlsx";
+
+        return $this->exportEstudiantes(
+            Estudiantes::where('beca', $beca)
+                ->where('direccion_id', session('direccion')->id)
+                ->with(['empresa', 'academico', 'asesorin', 'carrera']),
+            $nombreArchivo
+        );
     }
 
     public function exportEstudiantesPorEmpresaExcel($empresaId)
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('empresa_id', $empresaId)
-            ->where('direccion_id', $direccionId)
-            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
-            ->get();
-        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_empresa.xlsx');
+        $fecha = now()->format('d-m-y_H-i-s');
+        $empresa = Empresa::findOrFail($empresaId);
+        $nombreEmpresa = str_replace(' ', '_', $empresa->nombre);
+
+        return $this->exportEstudiantes(
+            Estudiantes::where('empresa_id', $empresaId)
+                ->where('direccion_id', session('direccion')->id)
+                ->with(['empresa', 'academico', 'asesorin', 'carrera']),
+            "estudiantes_{$nombreEmpresa}_{$fecha}.xlsx"
+        );
     }
 
     public function exportEstudiantesPorMentorExcel($mentorId)
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('academico_id', $mentorId)
-            ->where('direccion_id', $direccionId)
-            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
-            ->get();
-        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_mentor.xlsx');
+        $fecha = now()->format('d-m-y_H-i-s');
+        $mentor = User::findOrFail($mentorId);
+        $nombreMentor = str_replace(' ', '_', $mentor->name);
+
+        return $this->exportEstudiantes(
+            Estudiantes::where('academico_id', $mentorId)
+                ->where('direccion_id', session('direccion')->id)
+                ->with(['empresa', 'academico', 'asesorin', 'carrera']),
+            "estudiantes_{$nombreMentor}_{$fecha}.xlsx"
+        );
     }
 
     public function exportEstudiantesPorCarreraExcel($carreraId)
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('carrera_id', $carreraId)
-            ->where('direccion_id', $direccionId)
-            ->with(['empresa', 'academico', 'asesorin', 'carrera'])
-            ->get();
-        return Excel::download(new EstadisticasExport($estudiantes), 'estudiantes_carrera.xlsx');
+        $fecha = now()->format('d-m-y_H-i-s');
+        $carrera = Carrera::findOrFail($carreraId);
+        $nombreCarrera = Str::slug($carrera->nombre, '_');
+
+        return $this->exportEstudiantes(
+            Estudiantes::where('carrera_id', $carreraId)
+                ->where('direccion_id', session('direccion')->id)
+                ->with(['empresa', 'academico', 'asesorin', 'carrera']),
+            "estudiantes_{$nombreCarrera}_{$fecha}.xlsx"
+        );
     }
 
     public function exportExcel()
     {
-        $direccionId = session('direccion')->id;
-        $estudiantes = Estudiantes::where('direccion_id', $direccionId)->get();
-        return Excel::download(new EstadisticasExport($estudiantes), 'estadisticas.xlsx');
+        $fecha = now()->format('d-m-y_H-i-s');
+        return Excel::download(
+            new EstadisticasExport(
+                Estudiantes::where('direccion_id', session('direccion')->id)->get()
+            ),
+            "estadisticas_{$fecha}.xlsx"
+        );
     }
 
-    public function exportEstudiantesPorEmpresaPdf($empresaId)
-    {
-        $direccionId = session('direccion')->id;
-        $empresa = Empresa::where('id', $empresaId)
-            ->where('direccion_id', $direccionId)
-            ->firstOrFail();
-        $estudiantes = Estudiantes::where('empresa_id', $empresaId)
-            ->where('direccion_id', $direccionId)
-            ->get();
+    //Funcion para filtro avanzados
+    // public function filtroEstudiantes(Request $request): JSON
+    // {
+    //     // dd($request->all());
+    //     // dd($request);
+    //     // $query = Estudiantes::query()
+    //     //     ->where('direccion_id', session('direccion')->id)
+    //     //     ->with(['empresa', 'academico', 'carrera']);
+    //     $query = Estudiantes::withTrashed()
+    //         ->where('direccion_id', session('direccion')->id)
+    //         ->with(['empresa', 'academico', 'carrera']);
+    //     $query = EstudianteFilter::apply($query, $request);
 
-        $pdf = Pdf::loadView('estadistica.estudiantes_empresa_pdf', compact('empresa', 'estudiantes'));
-        return $pdf->download('estudiantes_empresa.pdf');
-    }
+    //     $estudiantes = $query->get();
 
-    public function exportEstudiantesPorMentorPdf($mentorId)
-    {
-        $direccionId = session('direccion')->id;
-        $mentor = User::where('id', $mentorId)
-            ->where('direccion_id', $direccionId)
-            ->firstOrFail();
-        $estudiantes = Estudiantes::where('academico_id', $mentorId)
-            ->where('direccion_id', $direccionId)
-            ->get();
+    //     $data = $estudiantes->map(function ($e) {
+    //         return [
+    //             'Matrícula' => $e->matricula,
+    //             'Nombre' => $e->name . ' ' . $e->apellidoP . ' ' . $e->apellidoM,
+    //             'Categoría' => $e->activo == 1 ? 'Dual' : 'Candidato',
+    //             'Estado' => $e->status,
+    //             'Cuatrimestre' => $e->cuatrimestre,
+    //             'Beca' => $e->beca,
+    //             'Tipo de beca' => $e->tipoBeca,
+    //             'Empresa' => $e->empresa->nombre ?? null,
+    //             'Académico' => $e->academico->name ?? null,
+    //             'Asesor Industrial' => $e->asesorin->name ?? null,
+    //             'Programa Educativo' => $e->carrera->nombre ?? null,
+    //             'Proyecto' => $e->nombre_proyecto,
+    //             'Inicio Dual' => $e->inicio_dual,
+    //             'Fin Dual' => $e->fin_dual,
+    //             'Inicio IE' => $e->inicio,
+    //             'Fin IE' => $e->fin,
+    //         ];
+    //     });
 
-        $pdf = Pdf::loadView('estadistica.estudiantes_mentor_pdf', compact('mentor', 'estudiantes'));
-        return $pdf->download('estudiantes_mentor.pdf');
-    }
+    //     return response()->json($data);
+    // }
 
-    public function exportEstudiantesPorCarreraPdf($carreraId)
-    {
-        $direccionId = session('direccion')->id;
-        $carrera = Carrera::where('id', $carreraId)
-            ->where('direccion_id', $direccionId)
-            ->firstOrFail();
-        $estudiantes = Estudiantes::where('carrera_id', $carreraId)
-            ->where('direccion_id', $direccionId)
-            ->get();
-
-        $pdf = Pdf::loadView('estadistica.estudiantes_carrera_pdf', compact('carrera', 'estudiantes'));
-        return $pdf->download('estudiantes_carrera.pdf');
-    }
 
     public function filtroEstudiantes(Request $request)
     {
-        $direccionId = session('direccion')->id;
-        $query = Estudiantes::query()
-            ->where('direccion_id', $direccionId)
-            ->with(['empresa', 'academico', 'asesorin', 'carrera']);
-
-        if ($request->filled('empresa_id')) {
-            $query->where('empresa_id', $request->empresa_id);
-        }
-
-        if ($request->filled('academico_id')) {
-            $query->where('academico_id', $request->academico_id);
-        }
-
-        if ($request->filled('carrera_id')) {
-            $query->where('carrera_id', $request->carrera_id);
-        }
-
-        if ($request->filled('tipoBeca')) {
-            $query->where('beca', $request->tipoBeca);
-        }
-
-        if ($request->filled('estatus')) {
-            if ($request->estatus === 'activo') {
-                $query->where('activo', 1);
-            } else {
-                $query->onlyTrashed()->where('status', $request->estatus);
-            }
-        }
-
-        if ($request->filled('fechaFiltro')) {
-            if ($request->fechaFiltro === 'inicio' && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
-                $query->whereBetween('inicio', [$request->fechaInicio, $request->fechaFin]);
-            } elseif ($request->fechaFiltro === 'fin' && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
-                $query->whereBetween('fin', [$request->fechaInicio, $request->fechaFin]);
-            } elseif ($request->fechaFiltro === 'inicio_dual' && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
-                $query->whereBetween('inicio_dual', [$request->fechaInicio, $request->fechaFin]);
-            } elseif ($request->fechaFiltro === 'fin_dual' && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
-                $query->whereBetween('fin_dual', [$request->fechaInicio, $request->fechaFin]);
-            }
-        }
+        $query = Estudiantes::withTrashed()
+            ->where('direccion_id', session('direccion')->id)
+            ->with(['empresa', 'academico', 'carrera']);
+        $query = EstudianteFilter::apply($query, $request);
 
         $estudiantes = $query->get();
 
@@ -370,53 +373,20 @@ class EstadisticaController extends Controller
             return response()->json($estudiantes);
         }
 
-        return Excel::download(new EstadisticasExport($estudiantes), 'filtro_estudiantes.xlsx');
+        $fecha = now()->format('d-m-y_H-i-s');
+
+        return Excel::download(
+            new EstadisticasExport($estudiantes),
+            "filtro_estudiantes_{$fecha}.xlsx"
+        );
     }
 
-    public function getGraficasData()
-    {
-        try {
-            $empresas = Empresa::withCount('estudiantes')->get();
-            $carreras = Carrera::withCount('estudiantes')->get();
-            $mentores = User::mentoresAcademicos()->withCount('estudiantes')->get();
-            $becas = Estudiantes::select('beca', \DB::raw('count(*) as count'))
-                ->groupBy('beca')
-                ->get();
 
-            $data = [
-                'empresas' => [
-                    'labels' => $empresas->pluck('nombre')->toArray(),
-                    'counts' => $empresas->pluck('estudiantes_count')->toArray()
-                ],
-                'carreras' => [
-                    'labels' => $carreras->pluck('nombre')->toArray(),
-                    'counts' => $carreras->pluck('estudiantes_count')->toArray()
-                ],
-                'mentores' => [
-                    'labels' => $mentores->pluck('name')->toArray(),
-                    'counts' => $mentores->pluck('estudiantes_count')->toArray()
-                ],
-                'becas' => [
-                    'labels' => $becas->pluck('beca')->map(function ($beca) {
-                        return $beca ? 'Becados' : 'Sin Beca';
-                    })->toArray(),
-                    'counts' => $becas->pluck('count')->toArray()
-                ]
-            ];
-
-            return response()->json($data);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-
-    //Funcion para generar el reporte general en excel
     public function reporteGeneral()
     {
         $fecha = date('Y-m-d_H-i-s');
-        $nombreArchivo = "reporte general dual {$fecha}.xlsx";
+        $direccionId = session('direccion')->id;
 
-        return Excel::download(new reporteGeneral, $nombreArchivo);
+        return Excel::download(new reporteGeneral, "reporte_general_dual_{$fecha}_{$direccionId}.xlsx");
     }
-
 }

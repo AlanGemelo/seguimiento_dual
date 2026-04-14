@@ -691,7 +691,7 @@ class EstudiantesController extends Controller
             $formato55 = $request->file('formato55')->storeAs('public', 'formato55/' . $request->matricula . '_' . date('Y-m-d') . '_' . $request->file('formato55')->getClientOriginalName());
         }
 
-        // 🔁 NUEVO BLOQUE: Manejo de múltiples archivos en formato54
+        //  NUEVO BLOQUE: Manejo de múltiples archivos en formato54
         $currentFiles = ! empty($estudiantes->formato54) ? json_decode($estudiantes->formato54, true) : [];
 
         if ($request->deleted_files) {
@@ -900,7 +900,6 @@ class EstudiantesController extends Controller
         $request->validate([
             'status' => 'required|in:0,1,2,3',
         ]);
-
         $estudiante = Estudiantes::where('matricula', $matricula)->firstOrFail();
 
         // Actualiza el status antes de eliminar

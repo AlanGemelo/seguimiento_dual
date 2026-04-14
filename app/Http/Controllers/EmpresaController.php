@@ -130,7 +130,7 @@ class EmpresaController extends Controller
             'tamano_ue' => ['required', 'integer', Rule::in(array_column(config('ue_size.tamanos'), 'id'))],
             'folio' => 'nullable|string|max:255',
 
-            'ine' => 'required|file|mimes:pdf,jpg,jpeg|max:5120',
+            'ine' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
 
             'archivo_especifico' => 'nullable|file|mimes:pdf|max:5120',
             'archivo_marco' => 'nullable|file|mimes:pdf|max:5120',

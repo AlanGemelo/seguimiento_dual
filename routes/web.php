@@ -131,7 +131,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('estadisticas/status/{status}/excel', [EstadisticaController::class, 'exportEstudiantesPorStatusExcel']);
     Route::get('estadisticas/beca/{beca}/excel', [EstadisticaController::class, 'exportEstudiantesPorBecaExcel']);
     Route::get('/estadisticas/filtro/excel', [EstadisticaController::class, 'filtroEstudiantes']);
-    Route::get('/estadisticas/filtro', [EstadisticaController::class, 'filtroEstudiantes']);
+    Route::get('/estadisticas/getfiltroEstudiantes', [EstadisticaController::class, 'getfiltroEstudiantes']);
+    Route::get('/estadisticas/filtros-avanzados', [EstadisticaController::class, 'filtrosAvanzados'])
+        ->name('estadisticas.filtros');
     Route::get('/estadisticas/graficas', [EstadisticaController::class, 'getGraficasData']);
 
     // Ruta para los reportes generales

@@ -321,43 +321,43 @@ class EstadisticaController extends Controller
     }
 
     //Funcion para filtro avanzados
-    // public function filtroEstudiantes(Request $request): JSON
-    // {
-    //     // dd($request->all());
-    //     // dd($request);
-    //     // $query = Estudiantes::query()
-    //     //     ->where('direccion_id', session('direccion')->id)
-    //     //     ->with(['empresa', 'academico', 'carrera']);
-    //     $query = Estudiantes::withTrashed()
-    //         ->where('direccion_id', session('direccion')->id)
-    //         ->with(['empresa', 'academico', 'carrera']);
-    //     $query = EstudianteFilter::apply($query, $request);
+    public function getfiltroEstudiantes(Request $request)
+    {
+        // dd($request->all());
+        // dd($request);
+        // $query = Estudiantes::query()
+        //     ->where('direccion_id', session('direccion')->id)
+        //     ->with(['empresa', 'academico', 'carrera']);
+        $query = Estudiantes::withTrashed()
+            ->where('direccion_id', session('direccion')->id)
+            ->with(['empresa', 'academico', 'carrera']);
+        $query = EstudianteFilter::apply($query, $request);
 
-    //     $estudiantes = $query->get();
+        $estudiantes = $query->get();
 
-    //     $data = $estudiantes->map(function ($e) {
-    //         return [
-    //             'Matrícula' => $e->matricula,
-    //             'Nombre' => $e->name . ' ' . $e->apellidoP . ' ' . $e->apellidoM,
-    //             'Categoría' => $e->activo == 1 ? 'Dual' : 'Candidato',
-    //             'Estado' => $e->status,
-    //             'Cuatrimestre' => $e->cuatrimestre,
-    //             'Beca' => $e->beca,
-    //             'Tipo de beca' => $e->tipoBeca,
-    //             'Empresa' => $e->empresa->nombre ?? null,
-    //             'Académico' => $e->academico->name ?? null,
-    //             'Asesor Industrial' => $e->asesorin->name ?? null,
-    //             'Programa Educativo' => $e->carrera->nombre ?? null,
-    //             'Proyecto' => $e->nombre_proyecto,
-    //             'Inicio Dual' => $e->inicio_dual,
-    //             'Fin Dual' => $e->fin_dual,
-    //             'Inicio IE' => $e->inicio,
-    //             'Fin IE' => $e->fin,
-    //         ];
-    //     });
+        $data = $estudiantes->map(function ($e) {
+            return [
+                'Matrícula' => $e->matricula,
+                'Nombre' => $e->name . ' ' . $e->apellidoP . ' ' . $e->apellidoM,
+                'Categoría' => $e->activo == 1 ? 'Dual' : 'Candidato',
+                'Estado' => $e->status,
+                'Cuatrimestre' => $e->cuatrimestre,
+                'Beca' => $e->beca,
+                'Tipo de beca' => $e->tipoBeca,
+                'Empresa' => $e->empresa->nombre ?? null,
+                'Académico' => $e->academico->name ?? null,
+                'Asesor Industrial' => $e->asesorin->name ?? null,
+                'Programa Educativo' => $e->carrera->nombre ?? null,
+                'Proyecto' => $e->nombre_proyecto,
+                'Inicio Dual' => $e->inicio_dual,
+                'Fin Dual' => $e->fin_dual,
+                'Inicio IE' => $e->inicio,
+                'Fin IE' => $e->fin,
+            ];
+        });
 
-    //     return response()->json($data);
-    // }
+        return response()->json($data);
+    }
 
 
     public function filtroEstudiantes(Request $request)
@@ -388,5 +388,79 @@ class EstadisticaController extends Controller
         $direccionId = session('direccion')->id;
 
         return Excel::download(new reporteGeneral, "reporte_general_dual_{$fecha}_{$direccionId}.xlsx");
+    }
+
+    public function filtrosAvanzados(Request $request)
+    {
+        $direccionId = session('direccion')->id;
+
+        //Consulta Base (Filtros Primarios y Reglas Fijas)
+        $baseQuery = Estudiantes::withTrashed()->where('direccion_id', $direccionId);
+
+        if ($request->tipoAlumno === 'activo') {
+            $baseQuery->whereNull('deleted_at')->where('activo', 1);
+        } elseif ($request->tipoAlumno === 'inactivo') {
+            $baseQuery->whereNotNull('deleted_at')->whereIn('status', [2, 3, 4, 5]);
+        }
+
+        if ($request->filled('estatus_academico')) {
+            $baseQuery->where('status', $request->estatus_academico);
+        }
+
+        if ($request->filled('fechaFiltro') && $request->filled('fechaInicio') && $request->filled('fechaFin')) {
+            $inicio = $request->fechaInicio . '-01';
+            $fin = date('Y-m-t', strtotime($request->fechaFin . '-01')); // Último día del mes
+
+            if ($request->fechaFiltro === 'inicio_dual' || $request->fechaFiltro === 'fin_dual') {
+                $baseQuery->where('inicio_dual', '<=', $fin)
+                    ->where(function ($q) use ($inicio) {
+                        $q->whereNull('fin_dual')->orWhere('fin_dual', '>=', $inicio);
+                    });
+            }
+        }
+
+        // Closure para aplicar filtros secundarios dinámicamente
+        $applyFilters = function ($query, $exclude = null) use ($request) {
+            if ($exclude !== 'empresa_id' && $request->filled('empresa_id')) $query->where('empresa_id', $request->empresa_id);
+            if ($exclude !== 'academico_id' && $request->filled('academico_id')) $query->where('academico_id', $request->academico_id);
+            if ($exclude !== 'carrera_id' && $request->filled('carrera_id')) $query->where('carrera_id', $request->carrera_id);
+            if ($exclude !== 'tipoBeca' && $request->filled('tipoBeca') && $request->tipoBeca !== 'sin') $query->where('tipoBeca', $request->tipoBeca);
+            if ($exclude !== 'tipoBeca' && $request->tipoBeca === 'sin') $query->whereNull('tipoBeca');
+            return $query;
+        };
+
+        // Obtener IDs disponibles (Ignorando su propio filtro)
+        $empresasIds = (clone $baseQuery)->tap(fn($q) => $applyFilters($q, 'empresa_id'))->distinct()->pluck('empresa_id')->filter();
+        $mentoresIds = (clone $baseQuery)->tap(fn($q) => $applyFilters($q, 'academico_id'))->distinct()->pluck('academico_id')->filter();
+        $carrerasIds = (clone $baseQuery)->tap(fn($q) => $applyFilters($q, 'carrera_id'))->distinct()->pluck('carrera_id')->filter();
+
+        $becasDisponibles = (clone $baseQuery)->tap(fn($q) => $applyFilters($q, 'tipoBeca'))->distinct()->pluck('tipoBeca');
+
+        // Obtener Resultados Finales (Aplicando TODOS los filtros)
+        $estudiantes = (clone $baseQuery)
+            ->tap(fn($q) => $applyFilters($q))
+            ->with(['empresa', 'academico', 'carrera'])
+            ->get();
+
+        // Retornar JSON para AJAX
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'resultados' => $estudiantes->map(fn($e) => [
+                    'Matrícula' => $e->matricula,
+                    'Nombre' => $e->name . ' ' . $e->apellidoP . ' ' . $e->apellidoM,
+                    'Empresa' => $e->empresa->nombre ?? '',
+                    'Programa Educativo' => $e->carrera->nombre ?? ''
+                ]),
+                'opciones' => [
+                    'empresas' => Empresa::whereIn('id', $empresasIds)->get(['id', 'nombre']),
+                    'mentores' => User::whereIn('id', $mentoresIds)->get(['id', 'name', 'apellidoP', 'apellidoM', 'titulo']),
+                    'carreras' => Carrera::whereIn('id', $carrerasIds)->get(['id', 'nombre']),
+                    'becas' => $becasDisponibles
+                ]
+            ]);
+        }
+
+        $fecha = now()->format('d-m-y_H-i-s');
+        return Excel::download(new EstadisticasExport($estudiantes), "filtro_estudiantes_{$fecha}.xlsx");
     }
 }

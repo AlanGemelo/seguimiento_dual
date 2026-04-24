@@ -458,7 +458,7 @@
                 });
             }
 
-            // 1. Tipo alumno
+            //  Tipo alumno
             tipoAlumno.addEventListener('change', function() {
 
                 estatus.disabled = !this.value;
@@ -476,7 +476,7 @@
                 });
             });
 
-            // 2. Estatus seleccionado
+            //  Estatus seleccionado
             estatus.addEventListener('change', function() {
 
                 if (!this.value) {
@@ -494,7 +494,7 @@
                     el.addEventListener('change', ejecutarFiltro);
                 });
 
-            // 4. AJAX filtro
+            //  AJAX filtro
             function ejecutarFiltro() {
 
                 let form = document.getElementById('filtroEstudiantesForm');
@@ -503,13 +503,13 @@
                 // Validación mínima
                 if (!data.get('tipoAlumno') || data.get('estatus_academico') === '') return;
 
-                fetch(`${window.BASE_URL}/estadisticas/filtro?` + new URLSearchParams(data))
+                fetch(`${window.BASE_URL}/estadisticas/getfiltroEstudiantes?` + new URLSearchParams(data))
                     .then(res => res.json())
                     .then(data => renderResultados(data))
                     .catch(console.error);
             }
 
-            // 5. Render resultados
+            // Render resultados
             function renderResultados(data) {
 
                 let cont = document.getElementById('estudiantesFiltro');
@@ -549,5 +549,158 @@
             }
 
         });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById('filtroEstudiantesForm');
+            const tipoAlumno = document.getElementById('tipoAlumnoSelect');
+            const estatus = document.getElementById('estatusAcademicoSelect');
+            const loader = document.getElementById('filtroLoader');
+            const btnExport = document.getElementById('exportFiltroExcel');
+
+            const selectsSecundarios = {
+                'empresaSelectFiltro': 'empresas',
+                'mentorSelectFiltro': 'mentores',
+                'carreraSelectFiltro': 'carreras',
+                'tipoBecaSelect': 'becas'
+            };
+
+            let fetchController = new AbortController(); // Para cancelar peticiones previas
+
+            function toggleSecundarios(enabled) {
+                Object.keys(selectsSecundarios).forEach(id => document.getElementById(id).disabled = !enabled);
+                document.getElementById('fechaFiltro').disabled = !enabled;
+                document.getElementById('fechaInicio').disabled = !enabled;
+                document.getElementById('fechaFin').disabled = !enabled;
+                btnExport.disabled = !enabled;
+            }
+
+            function lockUI(locked) {
+                // Bloquea/Desbloquea todo durante la carga AJAX
+                Array.from(form.elements).forEach(el => el.disabled = locked);
+                loader.style.display = locked ? 'block' : 'none';
+                if (!locked && estatus.value) toggleSecundarios(true);
+            }
+
+            //Manejo de Filtros Primarios
+            tipoAlumno.addEventListener('change', function() {
+                estatus.disabled = !this.value;
+                estatus.value = '';
+                toggleSecundarios(false);
+                document.getElementById('estudiantesFiltro').innerHTML = '';
+
+                Array.from(estatus.options).forEach(opt => {
+                    if (!opt.value) return;
+                    opt.hidden = opt.dataset.group !== this.value;
+                });
+            });
+
+            estatus.addEventListener('change', function() {
+                if (!this.value) {
+                    toggleSecundarios(false);
+                    return;
+                }
+                ejecutarFiltro();
+            });
+
+            // Ejecutar al cambiar cualquier filtro
+            form.addEventListener('change', function(e) {
+                if (e.target.id === 'tipoAlumnoSelect' || !estatus.value) return;
+                ejecutarFiltro();
+            });
+
+            //  Petición AJAX Principal
+            async function ejecutarFiltro() {
+                fetchController.abort(); // Cancela la petición anterior si hay race condition
+                fetchController = new AbortController();
+
+                let data = new FormData(form);
+                if (!data.get('tipoAlumno') || data.get('estatus_academico') === '') return;
+
+                lockUI(true);
+
+                try {
+                    const response = await fetch(`/estadisticas/filtros-avanzados?` +
+                        new URLSearchParams(data), {
+                            signal: fetchController.signal,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                    const result = await response.json();
+
+                    renderResultados(result.resultados);
+                    actualizarSelects(result.opciones);
+
+                } catch (error) {
+                    if (error.name !== 'AbortError') console.error('Error AJAX:', error);
+                } finally {
+                    lockUI(false);
+                }
+            }
+
+            //  Actualizar opciones de los Dropdowns
+            function actualizarSelects(opciones) {
+                // Empresas
+                reconstruirSelect('empresaSelectFiltro', opciones.empresas, 'Seleccione una unidad economica',
+                    opt => `<option value="${opt.id}">${opt.nombre}</option>`);
+
+                // Mentores
+                reconstruirSelect('mentorSelectFiltro', opciones.mentores, 'Seleccione un mentor academico', opt =>
+                    `<option value="${opt.id}">${opt.titulo}. ${opt.name} ${opt.apellidoP} ${opt.apellidoM}</option>`
+                );
+
+                // Carreras
+                reconstruirSelect('carreraSelectFiltro', opciones.carreras, 'Seleccione un programa educativo',
+                    opt => `<option value="${opt.id}">${opt.nombre}</option>`);
+
+                // Becas (Manejo especial por valores numéricos/nulos)
+                const becaSelect = document.getElementById('tipoBecaSelect');
+                const becaVal = becaSelect.value;
+                let becaHtml = '<option value="">Seleccione un tipo de beca</option>';
+                if (opciones.becas.includes(null)) becaHtml += '<option value="sin">Sin beca</option>';
+                if (opciones.becas.includes(0)) becaHtml += '<option value="0">Apoyo Empresa</option>';
+                if (opciones.becas.includes(1)) becaHtml += '<option value="1">Comecyt</option>';
+                becaSelect.innerHTML = becaHtml;
+                if (Array.from(becaSelect.options).some(o => o.value === becaVal)) becaSelect.value = becaVal;
+            }
+
+            function reconstruirSelect(elementId, datos, placeholder, templateFn) {
+                const select = document.getElementById(elementId);
+                const valorActual = select.value;
+
+                let html = `<option value="">${placeholder}</option>`;
+                datos.forEach(item => html += templateFn(item));
+
+                select.innerHTML = html;
+
+                // Restaurar valor si sigue estando disponible
+                if (valorActual && Array.from(select.options).some(o => o.value === valorActual)) {
+                    select.value = valorActual;
+                }
+            }
+
+            // Render de Tabla (Optimizado de tu código original)
+            function renderResultados(data) {
+                let cont = document.getElementById('estudiantesFiltro');
+                if (!data.length) {
+                    cont.innerHTML =
+                        `<div class="alert alert-warning py-2 text-center">Sin resultados para esta combinación</div>`;
+                    return;
+                }
+
+                let html =
+                    `<table class="table table-sm table-bordered">
+            <thead class="table-light"><tr><th>Matrícula</th><th>Nombre</th><th>Empresa</th><th>Carrera</th></tr></thead><tbody>`;
+
+                data.forEach(e => {
+                    html +=
+                        `<tr><td>${e["Matrícula"]}</td><td>${e["Nombre"]}</td><td>${e["Empresa"]}</td><td>${e["Programa Educativo"]}</td></tr>`;
+                });
+                cont.innerHTML = html + `</tbody></table>`;
+            }
+        });
     </script>
+
+
 @endpush

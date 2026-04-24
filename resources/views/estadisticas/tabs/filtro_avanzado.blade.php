@@ -49,7 +49,9 @@
                     <select id="mentorSelectFiltro" name="academico_id" class="form-select" disabled>
                         <option value="">Seleccione un mentor academico</option>
                         @foreach ($mentores as $mentor)
-                            <option value="{{ $mentor->id }}">{{ $mentor->name }}</option>
+                            <option value="{{ $mentor->id }}">
+                                {{ $mentor->titulo . '. ' . $mentor->name . ' ' . $mentor->apellidoP . ' ' . $mentor->apellidoM }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -116,6 +118,10 @@
 
         </form>
 
+        <div id="filtroLoader" class="text-center my-2" style="display:none;">
+            <div class="spinner-border text-success" role="status"></div>
+            <div class="small text-muted">Cargando filtros...</div>
+        </div>
         {{-- Resultados --}}
         <div class="mt-4">
             <h6>Resultados</h6>

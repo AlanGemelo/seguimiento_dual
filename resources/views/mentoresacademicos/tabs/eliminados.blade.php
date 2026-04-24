@@ -6,7 +6,7 @@
     <div class="col-12 mb-3">
         <h6 class="mb-0">
             <i class="mdi mdi-trash-can text-danger me-1"></i>
-            Mentores Academicos Eliminados
+            Bajas Mentores Academicos
         </h6>
     </div>
 
@@ -78,7 +78,7 @@
                         <tr>
                             <td colspan="7">
                                 <div class="alert alert-danger mb-0">
-                                    No hay registros eliminados
+                                    No hay alumnos en baja registrados
                                 </div>
                             </td>
                         </tr>

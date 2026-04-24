@@ -46,18 +46,9 @@ class EstudiantesController extends Controller
     /**
      * Muestra la lista de estudiantes.
      */
+
     public function index(Request $request)
     {
-        $hoy = Carbon::now();
-
-        $registros = Estudiantes::with('academico', 'asesorin')
-            ->whereDate('fin_dual', '<=', $hoy->copy()->addDays(15))
-            ->where('activo', true)
-            ->get();
-
-        // $registrosConvenio = Empresa::with('asesorin')
-        //     ->whereDate('fin_conv', '<=', $hoy->copy()->addDays(15))
-        //     ->get();
 
         // Enviar correos por cada registro
         // foreach ($registrosConvenio as $registro) {
@@ -66,25 +57,58 @@ class EstudiantesController extends Controller
         // env('APP_URL'),session('direccion')->email,session('direccion')->name));
         // Mail::to($registro->email)->send(new EmpresaMailable($registro->nombre, $registro->fin_conv,$registro->asesorin));
 
+
+        $tab = $request->input('tab');
+
+        if (!$tab) {
+            return redirect()->route('estudiantes.index', ['tab' => 'dual']);
+        }
+
+
+        // Se capturan los valores de búsqueda por cada tab
         $search = $request->input('search');
         $searchCandidatos = $request->input('search_candidatos');
         $searchAcademicos = $request->input('search_academicos');
         $searchEliminados = $request->input('search_eliminados');
 
+        // Se capturan las páginas actuales de cada tab
         $pageCandidatos = $request->input('page_candidatos', 1);
-        $pageAcademicos = $request->input('page_academicos', 1);
         $pageEliminados = $request->input('page_eliminados', 1);
 
-        // $direccionId = session('direccion')->id ?? null;
+        // Se capturan los parámetros de filtrado y ordenamiento
+        $status = $request->input('status');
+        $sort = $request->input('sort', 'name');
+        $direction = $request->input('direction', 'asc');
+
+        // Se obtiene la dirección activa desde sesión
         $direccionId = session('direccion')?->id ?? null;
 
-        // Filtrado y busqueda de tab Duales
+        // catalogo general de situaciones
+        $situaciones = [
+            0 => 'Primera vez',
+            1 => 'Renovación Dual',
+            2 => 'Reprobación',
+            3 => 'Término de Convenio',
+            4 => 'Ciclo de Renovación Concluido',
+            5 => 'Término del PE',
+        ];
+
+        // Se ajustan las situaciones si el tab es eliminados o dual
+        if ($tab === 'dual') {
+            $situaciones = array_intersect_key($situaciones, array_flip([0, 1]));
+        }
+
+        if ($tab === 'eliminados') {
+            $situaciones = array_intersect_key($situaciones, array_flip([2, 3, 4, 5]));
+        }
+
+        // Se construye el query base para estudiantes duales
         $query = Estudiantes::with('academico', 'carrera', 'usuario')
             ->where('activo', true)
-            ->where('direccion_id', $direccionId)
-            ->orderBy('name', 'asc');
+            ->where('direccion_id', $direccionId);
 
-        if (! empty($search)) {
+        // Se aplica búsqueda en duales si existe
+        if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
                     ->orWhereRaw('LOWER(apellidoP) LIKE ?', ['%' . strtolower($search) . '%'])
@@ -93,14 +117,32 @@ class EstudiantesController extends Controller
             });
         }
 
-        $estudiantes = $query->paginate(10);
+        // Se aplica filtro por status en duales
+        if ($status !== null && $status !== '') {
+            $query->where('status', $status);
+        }
 
-        // Filtrado y busqueda de tab Candidatos
+        // Se valida y aplica el ordenamiento dinámico
+        $allowedSorts = ['name', 'matricula', 'cuatrimestre'];
+
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'name';
+        }
+
+        $direction = $direction === 'desc' ? 'desc' : 'asc';
+
+        $query->orderBy($sort, $direction);
+
+        // Se ejecuta la paginación de duales manteniendo filtros
+        $estudiantes = $query->paginate(10)->appends($request->all());
+
+        // Se construye el query para candidatos
         $candidatosQuery = Estudiantes::where('activo', false)
             ->where('direccion_id', $direccionId)
             ->orderBy('name', 'asc');
 
-        if (! empty($searchCandidatos)) {
+        // Se aplica búsqueda en candidatos si existe
+        if (!empty($searchCandidatos)) {
             $candidatosQuery->where(function ($q) use ($searchCandidatos) {
                 $q->where('name', 'LIKE', '%' . $searchCandidatos . '%')
                     ->orWhere('apellidoP', 'LIKE', '%' . $searchCandidatos . '%')
@@ -109,15 +151,17 @@ class EstudiantesController extends Controller
             });
         }
 
+        // Se ejecuta la paginación de candidatos
         $candidatos = $candidatosQuery->paginate(10, ['*'], 'page_candidatos', $pageCandidatos);
 
-        // Filtrado y busqueda de tab Eliminar
+        // Se construye el query para estudiantes eliminados
         $deletedQuery = Estudiantes::where('direccion_id', $direccionId)
             ->with('academico', 'carrera')
             ->onlyTrashed()
             ->orderBy('deleted_at', 'desc');
 
-        if (! empty($searchEliminados)) {
+        // Se aplica búsqueda en eliminados si existe
+        if (!empty($searchEliminados)) {
             $deletedQuery->where(function ($q) use ($searchEliminados) {
                 $q->where('name', 'LIKE', '%' . $searchEliminados . '%')
                     ->orWhere('apellidoP', 'LIKE', '%' . $searchEliminados . '%')
@@ -125,29 +169,26 @@ class EstudiantesController extends Controller
                     ->orWhere('matricula', 'LIKE', '%' . $searchEliminados . '%');
             });
         }
-        $estudiantesDeleted = $deletedQuery->paginate(10, ['*'], 'page_eliminados', $pageEliminados);
 
-        $situation = [
-            ['id' => 0, 'name' => 'Reprobacion'],
-            ['id' => 1, 'name' => 'Termino de Convenio'],
-            ['id' => 2, 'name' => 'Ciclo de Renovacion Concluido'],
-            ['id' => 3, 'name' => 'Termino del PE'],
-        ];
-        $becas = [
-            ['id' => 0, 'name' => 'Si'],
-            ['id' => 1, 'name' => 'No'],
-        ];
+        // Se aplica filtro por status en eliminados
+        if ($status !== null && $status !== '') {
+            $deletedQuery->where('status', $status);
+        }
 
+        // Se ejecuta la paginación de eliminados manteniendo filtros
+        $estudiantesDeleted = $deletedQuery->paginate(10, ['*'], 'page_eliminados', $pageEliminados)
+            ->appends($request->all());
+
+        // Se retorna la vista con todos los datos necesarios
         return view('estudiantes.index', compact(
             'estudiantes',
             'estudiantesDeleted',
-            'situation',
-            'becas',
             'candidatos',
+            'situaciones',
             'search',
             'searchCandidatos',
             'searchAcademicos',
-            'searchEliminados',
+            'searchEliminados'
         ));
     }
 
@@ -892,13 +933,13 @@ class EstudiantesController extends Controller
     }
 
     /**
-     * Elimina un estudiante.
+     * Suspende un estudiante.
      */
     public function destroy($matricula, Request $request)
     {
 
         $request->validate([
-            'status' => 'required|in:0,1,2,3',
+            'status' => 'required|in:2,3,4,5',
         ]);
         $estudiante = Estudiantes::where('matricula', $matricula)->firstOrFail();
 

@@ -6,12 +6,11 @@
     <div class="col-12 mb-3">
         <h6 class="mb-0">
             <i class="mdi mdi-trash-can text-danger me-1"></i>
-            Estudiantes Eliminados
+            Bajas duales
         </h6>
     </div>
 
     {{-- Buscador --}}
-
     <div class="col-md-6 mb-3">
         <form method="GET" action="{{ route('estudiantes.index') }}">
             <input type="hidden" name="tab" value="eliminados">
@@ -39,6 +38,39 @@
                 @endif
             </div>
         </form>
+    </div>
+
+    {{-- FILTRO (STATUS) --}}
+    <div class="col-12 mb-3">
+        <div class="d-flex flex-wrap gap-2">
+
+            {{-- Todos --}}
+            <a href="{{ route('estudiantes.index', array_merge(request()->except('status'), ['tab' => request('tab')])) }}"
+                class="btn btn-sm rounded-pill {{ request('status') === null ? 'btn-success' : 'btn-outline-secondary' }}">
+                Todos
+            </a>
+            @php
+                $situacionesFiltradas = collect($situaciones);
+
+                if (request('tab') === 'eliminados') {
+                    $situacionesFiltradas = $situacionesFiltradas->only([3, 4, 5]);
+                }
+            @endphp
+            @foreach ($situaciones as $id => $label)
+                <a href="{{ route(
+                    'estudiantes.index',
+                    array_merge(request()->all(), [
+                        'status' => $id,
+                        'tab' => request('tab'),
+                    ]),
+                ) }}"
+                    class="btn btn-sm rounded-pill 
+        {{ request('status') !== null && request('status') == $id ? 'btn-success' : 'btn-outline-secondary' }}">
+                    {{ $label }}
+                </a>
+            @endforeach
+
+        </div>
     </div>
 
     {{-- Tabla --}}
@@ -89,7 +121,7 @@
                         <tr>
                             <td colspan="7">
                                 <div class="alert alert-danger mb-0">
-                                    No hay registros eliminados
+                                    No hay alumnos en baja registrados
                                 </div>
                             </td>
                         </tr>

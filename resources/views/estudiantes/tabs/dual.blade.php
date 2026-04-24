@@ -43,7 +43,39 @@
             </div>
         </form>
     </div>
+    {{-- FILTROS TIPO CHIPS (STATUS) --}}
+    <div class="col-12 mb-3">
+        <div class="d-flex flex-wrap gap-2">
 
+            {{-- Todos --}}
+            <a href="{{ route('estudiantes.index', array_merge(request()->except('status'), ['tab' => request('tab')])) }}"
+                class="btn btn-sm rounded-pill {{ request('status') === null ? 'btn-success' : 'btn-outline-secondary' }}">
+                Todos
+            </a>
+            @php
+                $situacionesFiltradas = collect($situaciones);
+
+                if (request('tab') === 'eliminados') {
+                    $situacionesFiltradas = $situacionesFiltradas->only([3, 4, 5]);
+                }
+            @endphp
+
+            @foreach ($situaciones as $id => $label)
+                <a href="{{ route(
+                    'estudiantes.index',
+                    array_merge(request()->all(), [
+                        'status' => $id,
+                        'tab' => request('tab'),
+                    ]),
+                ) }}"
+                    class="btn btn-sm rounded-pill 
+        {{ request('status') !== null && request('status') == $id ? 'btn-success' : 'btn-outline-secondary' }}">
+                    {{ $label }}
+                </a>
+            @endforeach
+
+        </div>
+    </div>
 
     {{-- Tabla --}}
     <div class="col-12">
@@ -55,7 +87,7 @@
                         <th>#</th>
                         <th>Matricula</th>
                         <th>Estudiante</th>
-                        <th>Carrera</th>
+                        <th>Programa Educativo</th>
                         <th>Cuatrimestre</th>
                         <th class="text-center">Acciones</th>
                     </tr>

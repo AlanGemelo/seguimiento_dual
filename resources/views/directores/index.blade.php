@@ -39,7 +39,7 @@
                                                 <th>#</th>
                                                 <th>Nombre</th>
                                                 <th>Correo Electronico</th>
-                                                <th>Direccion</th>
+                                                <th>Direccion de Carrera</th>
 
                                                 <th>Acciones</th>
                                             </tr>

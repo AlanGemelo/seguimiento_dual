@@ -32,19 +32,19 @@ class EstadisticaController extends Controller
         $becas = $this->getBecas($direccionId, $isAdmin);
 
         $chartEmpresa = $this->barChart(
-            'Estudiantes por Empresa',
+            '',
             $empresas->pluck('nombre')->toArray(),
             $empresas->pluck('estudiantes_count')->toArray()
         );
 
         $chartCarrera = $this->barChart(
-            'Estudiantes por Carrera',
+            '',
             $carreras->pluck('nombre')->toArray(),
             $carreras->pluck('estudiantes_count')->toArray()
         );
 
         $chartMentor = $this->barChart(
-            'Estudiantes por Mentor Académico',
+            '',
             $mentores->map(function ($m) {
                 return trim($m->titulo . ' ' . $m->name . ' ' . $m->apellidoP . ' ' . $m->apellidoM);
             })->toArray(),
@@ -52,7 +52,7 @@ class EstadisticaController extends Controller
         );
 
         $chartBeca = $this->pieChart(
-            'Estudiantes Becados',
+            '',
             $becas->pluck('tipoBeca')->map(fn($b) => match ($b) {
                 1 => 'Beca Comecyt',
                 0 => 'Apoyo por Empresa',
@@ -117,7 +117,7 @@ class EstadisticaController extends Controller
     {
         $chart = (new \ArielMejiaDev\LarapexCharts\BarChart)
             ->setTitle($title)
-            ->setSubtitle('Estudiantes por empresa');
+            ->setSubtitle('');
 
         foreach ($data as $i => $value) {
             $chart->addData(

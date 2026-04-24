@@ -105,12 +105,12 @@
     <div class="col-md-6 mb-4">
         <div class="card shadow-sm h-100">
             <div class="card-header text-center header-carrera">
-                <h6 class="mb-0">Por Carrera</h6>
+                <h6 class="mb-0">Por Programa Educativo</h6>
             </div>
             <div class="card-body">
 
                 <select id="carreraSelect" class="form-select mb-3">
-                    <option value="">Seleccione una carrera</option>
+                    <option value="">Seleccione un programa educativo</option>
                     @foreach ($carreras as $carrera)
                         <option value="{{ $carrera->id }}">
                             {{ $carrera->nombre }}

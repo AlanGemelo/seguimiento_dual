@@ -33,7 +33,7 @@
                         <th>#</th>
                         <th>Matrícula</th>
                         <th>Estudiante</th>
-                        <th>Carrera</th>
+                        <th>Programa educativo</th>
                         <th>Fin Dual</th>
                         <th>Días</th>
                         <th>Estado</th>

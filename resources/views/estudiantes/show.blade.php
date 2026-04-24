@@ -2,17 +2,15 @@
     use Illuminate\Support\Facades\Storage;
 @endphp
 @extends ('layouts.app')
-@section ('title', 'Mostrar Estudiante')
+@section('title', 'Mostrar Estudiante')
 
-@section ('content')
+@section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="card shadow">
                 <!-- Encabezado -->
-                <x-forms.section-header
-                    title="Datos del Estudiante Dual"
-                    description="Visualización de la información personal del estudiante dual."
-                />
+                <x-forms.section-header title="Datos del Estudiante Dual"
+                    description="Visualización de la información personal del estudiante dual." />
 
                 <div class="card-body">
                     <!-- Información General -->
@@ -24,102 +22,55 @@
                         <div class="dropdown-divider mb-4"></div>
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label for="matricula" class="form-label"
-                                    >Matrícula
+                                <label for="matricula" class="form-label">Matrícula
                                 </label>
-                                <input
-                                    type="number"
-                                    class="form-control form-control-lg"
-                                    id="matricula"
-                                    name="matricula"
-                                    value="{{ $estudiante->matricula }}"
-                                    disabled
-                                />
+                                <input type="number" class="form-control form-control-lg" id="matricula" name="matricula"
+                                    value="{{ $estudiante->matricula }}" disabled />
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="email" class="form-label"
-                                    >Correo electrónico institucional
+                                <label for="email" class="form-label">Correo electrónico institucional
                                 </label>
-                                <input
-                                    type="email"
-                                    class="form-control form-control-lg"
+                                <input type="email" class="form-control form-control-lg"
                                     value="{{ $estudiante->user->email ?? 'al' . $estudiante->matricula . '@utvtol.edu.mx' }}"
-                                    disabled
-                                />
+                                    disabled />
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <label for="name" class="form-label"
-                                        >Nombre(s)
+                                    <label for="name" class="form-label">Nombre(s)
                                     </label>
-                                    <input
-                                        type="text"
-                                        class="form-control form-control-lg"
-                                        id="name"
-                                        placeholder="Nombre(s)"
-                                        name="name"
-                                        value="{{ $estudiante->name }}"
-                                        disabled
-                                    />
+                                    <input type="text" class="form-control form-control-lg" id="name"
+                                        placeholder="Nombre(s)" name="name" value="{{ $estudiante->name }}" disabled />
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="apellidoP" class="form-label"
-                                        >Apellido Paterno
+                                    <label for="apellidoP" class="form-label">Apellido Paterno
                                     </label>
-                                    <input
-                                        type="text"
-                                        class="form-control form-control-lg"
-                                        id="apellidoP"
-                                        placeholder="Apellido Paterno"
-                                        name="apellidoP"
-                                        value="{{ $estudiante->apellidoP }}"
-                                        disabled
-                                    />
+                                    <input type="text" class="form-control form-control-lg" id="apellidoP"
+                                        placeholder="Apellido Paterno" name="apellidoP" value="{{ $estudiante->apellidoP }}"
+                                        disabled />
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="apellidoM" class="form-label"
-                                        >Apellido Materno
+                                    <label for="apellidoM" class="form-label">Apellido Materno
                                     </label>
-                                    <input
-                                        type="text"
-                                        class="form-control form-control-lg"
-                                        id="apellidoM"
-                                        placeholder="Apellido Materno"
-                                        name="apellidoM"
-                                        value="{{ $estudiante->apellidoM }}"
-                                        disabled
-                                    />
+                                    <input type="text" class="form-control form-control-lg" id="apellidoM"
+                                        placeholder="Apellido Materno" name="apellidoM" value="{{ $estudiante->apellidoM }}"
+                                        disabled />
                                 </div>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="curp" class="form-label"
-                                    >CURP
+                                <label for="curp" class="form-label">CURP
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="curp"
-                                    name="curp"
-                                    value="{{ $estudiante->curp }}"
-                                    disabled
-                                />
+                                <input type="text" class="form-control form-control-lg" id="curp" name="curp"
+                                    value="{{ $estudiante->curp }}" disabled />
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="fecha_na" class="form-label"
-                                    >Fecha de Nacimiento
+                                <label for="fecha_na" class="form-label">Fecha de Nacimiento
                                 </label>
-                                <input
-                                    type="date"
-                                    class="form-control form-control-lg"
-                                    name="fecha_na"
-                                    id="fecha_na"
-                                    value="{{ $estudiante->fecha_na }}"
-                                    disabled
-                                />
+                                <input type="date" class="form-control form-control-lg" name="fecha_na" id="fecha_na"
+                                    value="{{ $estudiante->fecha_na }}" disabled />
                             </div>
                         </div>
 
@@ -130,122 +81,71 @@
                             <div class="dropdown-divider mb-4"></div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="direccion_id" class="form-label"
-                                    >Dirección de carrera
+                                <label for="direccion_id" class="form-label">Dirección de carrera
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="direccion_id"
-                                    name="direccion_id"
-                                    value="{{ $estudiante->direccion->name }} "
-                                    disabled
-                                />
+                                <input type="text" class="form-control form-control-lg" id="direccion_id"
+                                    name="direccion_id" value="{{ $estudiante->direccion->name }} " disabled />
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="carrera_id" class="form-label"
-                                    >Programa Educativo
+                                <label for="carrera_id" class="form-label">Programa Educativo
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="carrera_id"
-                                    name="carrera_id"
-                                    value="{{ $estudiante->carrera->nombre }} "
-                                    disabled
-                                />
+                                <input type="text" class="form-control form-control-lg" id="carrera_id" name="carrera_id"
+                                    value="{{ $estudiante->carrera->nombre }} " disabled />
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="inicio" class="form-label"
-                                    >Fecha de Ingreso
+                                <label for="inicio" class="form-label">Fecha de Ingreso
                                 </label>
-                                <input
-                                    type="date"
-                                    class="form-control form-control-lg"
-                                    id="inicio"
-                                    name="inicio"
-                                    value="{{ \Carbon\Carbon::parse($estudiante->inicio)->format('Y-m-d') }}"
-                                    disabled
-                                />
+                                <input type="date" class="form-control form-control-lg" id="inicio" name="inicio"
+                                    value="{{ \Carbon\Carbon::parse($estudiante->inicio)->format('Y-m-d') }}" disabled />
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="fin" class="form-label"
-                                    >Fecha de Egreso
+                                <label for="fin" class="form-label">Fecha de Egreso
                                 </label>
-                                <input
-                                    type="date"
-                                    class="form-control form-control-lg"
-                                    id="fin"
-                                    name="fin"
-                                    value="{{ \Carbon\Carbon::parse($estudiante->fin)->format('Y-m-d') }}"
-                                    disabled
-                                />
+                                <input type="date" class="form-control form-control-lg" id="fin" name="fin"
+                                    value="{{ \Carbon\Carbon::parse($estudiante->fin)->format('Y-m-d') }}" disabled />
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="cuatrimestre" class="form-label"
-                                    >Cuatrimestre
+                                <label for="cuatrimestre" class="form-label">Cuatrimestre
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="cuatrimestre"
-                                    name="cuatrimestre"
-                                    value="{{ $estudiante->cuatrimestre }}"
-                                    disabled
-                                />
+                                <input type="text" class="form-control form-control-lg" id="cuatrimestre"
+                                    name="cuatrimestre" value="{{ $estudiante->cuatrimestre }}" disabled />
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label for="status" class="form-label"
-                                    >Situación Dual
+                                <label for="status" class="form-label">Situación Dual
                                 </label>
                                 @php
                                     $situaciones = [
-    0 => 'Primera vez',
-    1 => 'Renovación Dual',
-    2 => 'Otro tipo',   // example
-    3 => 'Situación especial', // add as needed
-];
+                                        0 => 'Primera vez',
+                                        1 => 'Renovación Dual',
+                                        2 => 'Reprobación',
+                                        3 => 'Término de Convenio',
+                                        4 => 'Ciclo de Renovación Concluido',
+                                        5 => 'Término del PE',
+                                    ];
+
                                 @endphp
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="status"
-                                    name="status"
-                                    value="{{ $situaciones[$estudiante->status ?? 0] }}"
-                                    disabled
-                                />
+                                <input type="text" class="form-control form-control-lg" id="status" name="status"
+                                    value="{{ $situaciones[$estudiante->status ?? 0] }}" disabled />
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="nombre_proyecto" class="form-label"
-                                    >Nombre del Proyecto
+                                <label for="nombre_proyecto" class="form-label">Nombre del Proyecto
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="nombre_proyecto"
-                                    name="nombre_proyecto"
-                                    value="{{ $estudiante->nombre_proyecto }}"
-                                    disabled
-                                />
+                                <input type="text" class="form-control form-control-lg" id="nombre_proyecto"
+                                    name="nombre_proyecto" value="{{ $estudiante->nombre_proyecto }}" disabled />
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="academico_id" class="form-label"
-                                    >Mentor Academico
+                                <label for="academico_id" class="form-label">Mentor Academico
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="academico_id"
+                                <input type="text" class="form-control form-control-lg" id="academico_id"
                                     name="academico_id"
                                     value="{{ $estudiante->academico->name . ' ' . $estudiante->academico->apellidoP . ' ' . $estudiante->academico->apellidoM }}"
-                                    disabled
-                                />
+                                    disabled />
                             </div>
                         </div>
 
@@ -256,59 +156,32 @@
                             <div class="dropdown-divider mb-4"></div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="empresa_id" class="form-label"
-                                    >Empresa aplicable a Dual
+                                <label for="empresa_id" class="form-label">Empresa aplicable a Dual
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="empresa_id"
-                                    name="empresa_id"
-                                    value="{{ $estudiante->empresa->nombre }}"
-                                    disabled
-                                />
+                                <input type="text" class="form-control form-control-lg" id="empresa_id"
+                                    name="empresa_id" value="{{ $estudiante->empresa->nombre }}" disabled />
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="asesorin_id" class="form-label"
-                                    >Asesor Industrial
+                                <label for="asesorin_id" class="form-label">Asesor Industrial
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="asesorin"
+                                <input type="text" class="form-control form-control-lg" id="asesorin"
                                     name="asesorin"
                                     value="{{ $estudiante->asesorin->titulo }} {{ $estudiante->asesorin->name . ' ' . $estudiante->asesorin->apellidoP . ' ' . $estudiante->asesorin->apellidoM }}"
-                                    disabled
-                                />
+                                    disabled />
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="inicio_dual" class="form-label"
-                                    >Inicio Dual
+                                <label for="inicio_dual" class="form-label">Inicio Dual
                                 </label>
-                                <input
-                                    type="date"
-                                    class="form-control form-control-lg"
-                                    name="inicio_dual"
-                                    id="inicio_dual"
-                                    value="{{ $estudiante->inicio_dual }}"
-                                    disabled
-                                />
+                                <input type="date" class="form-control form-control-lg" name="inicio_dual"
+                                    id="inicio_dual" value="{{ $estudiante->inicio_dual }}" disabled />
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="fin_dual" class="form-label"
-                                    >Fin Dual
-                                    <span class="text-danger">*</span></label
-                                >
-                                <input
-                                    type="date"
-                                    class="form-control form-control-lg"
-                                    name="fin_dual"
-                                    id="fin_dual"
-                                    value="{{ $estudiante->fin_dual }}"
-                                    disabled
-                                />
+                                <label for="fin_dual" class="form-label">Fin Dual
+                                    <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control form-control-lg" name="fin_dual"
+                                    id="fin_dual" value="{{ $estudiante->fin_dual }}" disabled />
                             </div>
                         </div>
 
@@ -332,31 +205,15 @@
                             <div class="dropdown-divider mb-4"></div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="beca" class="form-label"
-                                    >Beca Dual</label
-                                >
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="beca"
-                                    name="beca"
-                                    value="{{ $estudiante->beca == 0 ? 'Sí' : 'No' }}"
-                                    disabled
-                                />
+                                <label for="beca" class="form-label">Beca Dual</label>
+                                <input type="text" class="form-control form-control-lg" id="beca" name="beca"
+                                    value="{{ $estudiante->beca == 0 ? 'Sí' : 'No' }}" disabled />
                             </div>
 
                             <div class="col-md-6 mb-3" id="tipoBeca">
-                                <label for="tipoBeca" class="form-label"
-                                    >Apoyo Económico</label
-                                >
-                                <input
-                                    type="text"
-                                    class="form-control form-control-lg"
-                                    id="tipoBeca"
-                                    name="tipoBeca"
-                                    value="{{ $tipoBecaTexto }}"
-                                    disabled
-                                />
+                                <label for="tipoBeca" class="form-label">Apoyo Económico</label>
+                                <input type="text" class="form-control form-control-lg" id="tipoBeca"
+                                    name="tipoBeca" value="{{ $tipoBecaTexto }}" disabled />
                             </div>
                         </div>
 
@@ -377,25 +234,16 @@
                                     <label for="ine">INE</label>
                                     <div class="mt-1">
                                         @if (!empty($estudiante->ine))
-                                            <a
-                                                href="{{ url(Storage::url($estudiante->ine)) }}"
-                                                class="btn btn-primary"
-                                                target="_blank"
-                                                >Ver Documento
-                                                <span
-                                                    class="mdi mdi-file-pdf-box"
-                                                ></span>
+                                            <a href="{{ url(Storage::url($estudiante->ine)) }}" class="btn btn-primary"
+                                                target="_blank">Ver Documento
+                                                <span class="mdi mdi-file-pdf-box"></span>
                                             </a>
                                         @else
-                                            <p
-                                                class="btn text-white mb-3"
+                                            <p class="btn text-white mb-3"
                                                 style="
                                                     background-color: #43a047;
-                                                "
-                                            >
-                                                <i
-                                                    class="fas fa-info-circle me-2"
-                                                ></i>
+                                                ">
+                                                <i class="fas fa-info-circle me-2"></i>
                                                 No hay documentos disponibles.
                                             </p>
                                         @endif
@@ -408,55 +256,36 @@
                                     </label>
                                     <div class="mt-1">
                                         @if (!empty($estudiante->historial_academico))
-                                            <a
-                                                href="{{ url(Storage::url($estudiante->historial_academico)) }}"
-                                                class="btn btn-primary"
-                                                target="_blank"
-                                                >Ver Documento
-                                                <span
-                                                    class="mdi mdi-file-pdf-box"
-                                                ></span>
+                                            <a href="{{ url(Storage::url($estudiante->historial_academico)) }}"
+                                                class="btn btn-primary" target="_blank">Ver Documento
+                                                <span class="mdi mdi-file-pdf-box"></span>
                                             </a>
                                         @else
-                                            <p
-                                                class="btn text-white mb-3"
+                                            <p class="btn text-white mb-3"
                                                 style="
                                                     background-color: #43a047;
-                                                "
-                                            >
-                                                <i
-                                                    class="fas fa-info-circle me-2"
-                                                ></i>
+                                                ">
+                                                <i class="fas fa-info-circle me-2"></i>
                                                 No hay documentos disponibles.
                                             </p>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="perfil_ingles"
-                                        >Perfil de Inglés
+                                    <label for="perfil_ingles">Perfil de Inglés
                                     </label>
                                     <div class="mt-1">
                                         @if (!empty($estudiante->perfil_ingles))
-                                            <a
-                                                href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
-                                                class="btn btn-primary"
-                                                target="_blank"
-                                                >Ver Documento
-                                                <span
-                                                    class="mdi mdi-file-pdf-box"
-                                                ></span>
+                                            <a href="{{ url(Storage::url($estudiante->perfil_ingles)) }}"
+                                                class="btn btn-primary" target="_blank">Ver Documento
+                                                <span class="mdi mdi-file-pdf-box"></span>
                                             </a>
                                         @else
-                                            <p
-                                                class="btn text-white mb-3"
+                                            <p class="btn text-white mb-3"
                                                 style="
                                                     background-color: #43a047;
-                                                "
-                                            >
-                                                <i
-                                                    class="fas fa-info-circle me-2"
-                                                ></i>
+                                                ">
+                                                <i class="fas fa-info-circle me-2"></i>
                                                 No hay documentos disponibles.
                                             </p>
                                         @endif
@@ -472,30 +301,19 @@
                                     <div class="row">
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label for="formato51"
-                                                    >Carta de Aceptación</label
-                                                >
+                                                <label for="formato51">Carta de Aceptación</label>
                                                 <div class="mt-1">
                                                     @if (!@empty($estudiante->carta_ap))
-                                                        <a
-                                                            href="{{ url(Storage::url($estudiante->carta_ap)) }}"
-                                                            class="btn btn-primary"
-                                                            target="_blank"
-                                                            >Ver Documento
-                                                            <span
-                                                                class="mdi mdi-file-pdf-box"
-                                                            ></span>
+                                                        <a href="{{ url(Storage::url($estudiante->carta_ap)) }}"
+                                                            class="btn btn-primary" target="_blank">Ver Documento
+                                                            <span class="mdi mdi-file-pdf-box"></span>
                                                         </a>
                                                     @else
-                                                        <p
-                                                            class="btn text-white mb-3"
+                                                        <p class="btn text-white mb-3"
                                                             style="
                                                                 background-color: #43a047;
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fas fa-info-circle me-2"
-                                                            ></i>
+                                                            ">
+                                                            <i class="fas fa-info-circle me-2"></i>
                                                             No hay documentos
                                                             disponibles.
                                                         </p>
@@ -504,30 +322,19 @@
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label for="formato51"
-                                                    >Minutas</label
-                                                >
+                                                <label for="formato51">Minutas</label>
                                                 <div class="mt-1">
                                                     @if (!@empty($estudiante->minutas))
-                                                        <a
-                                                            href="{{ url(Storage::url($estudiante->minutas)) }}"
-                                                            class="btn btn-primary"
-                                                            target="_blank"
-                                                            >Ver Documento
-                                                            <span
-                                                                class="mdi mdi-file-pdf-box"
-                                                            ></span>
+                                                        <a href="{{ url(Storage::url($estudiante->minutas)) }}"
+                                                            class="btn btn-primary" target="_blank">Ver Documento
+                                                            <span class="mdi mdi-file-pdf-box"></span>
                                                         </a>
                                                     @else
-                                                        <p
-                                                            class="btn text-white mb-3"
+                                                        <p class="btn text-white mb-3"
                                                             style="
                                                                 background-color: #43a047;
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fas fa-info-circle me-2"
-                                                            ></i>
+                                                            ">
+                                                            <i class="fas fa-info-circle me-2"></i>
                                                             No hay documentos
                                                             disponibles.
                                                         </p>
@@ -538,30 +345,19 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label for="formato54"
-                                                    >Plan de Formación</label
-                                                >
+                                                <label for="formato54">Plan de Formación</label>
                                                 <div class="mt-1">
                                                     @if (!empty($estudiante->plan_form))
-                                                        <a
-                                                            href="{{ url(Storage::url($estudiante->plan_form)) }}"
-                                                            class="btn btn-primary"
-                                                            target="_blank"
-                                                            >Ver Documento
-                                                            <span
-                                                                class="mdi mdi-file-pdf-box"
-                                                            ></span>
+                                                        <a href="{{ url(Storage::url($estudiante->plan_form)) }}"
+                                                            class="btn btn-primary" target="_blank">Ver Documento
+                                                            <span class="mdi mdi-file-pdf-box"></span>
                                                         </a>
                                                     @else
-                                                        <p
-                                                            class="btn text-white mb-3"
+                                                        <p class="btn text-white mb-3"
                                                             style="
                                                                 background-color: #43a047;
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fas fa-info-circle me-2"
-                                                            ></i>
+                                                            ">
+                                                            <i class="fas fa-info-circle me-2"></i>
                                                             No hay documentos
                                                             disponibles.
                                                         </p>
@@ -570,31 +366,20 @@
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label for="formato55"
-                                                    >Evaluación de
-                                                    Formación</label
-                                                >
+                                                <label for="formato55">Evaluación de
+                                                    Formación</label>
                                                 <div class="mt-1">
                                                     @if (!empty($estudiante->evaluacion_form))
-                                                        <a
-                                                            href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
-                                                            class="btn btn-primary"
-                                                            target="_blank"
-                                                            >Ver Documento
-                                                            <span
-                                                                class="mdi mdi-file-pdf-box"
-                                                            ></span>
+                                                        <a href="{{ url(Storage::url($estudiante->evaluacion_form)) }}"
+                                                            class="btn btn-primary" target="_blank">Ver Documento
+                                                            <span class="mdi mdi-file-pdf-box"></span>
                                                         </a>
                                                     @else
-                                                        <p
-                                                            class="btn text-white mb-3"
+                                                        <p class="btn text-white mb-3"
                                                             style="
                                                                 background-color: #43a047;
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fas fa-info-circle me-2"
-                                                            ></i>
+                                                            ">
+                                                            <i class="fas fa-info-circle me-2"></i>
                                                             No hay documentos
                                                             disponibles.
                                                         </p>
@@ -613,30 +398,19 @@
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <label for="formato51"
-                                                >Formato 5.1</label
-                                            >
+                                            <label for="formato51">Formato 5.1</label>
                                             <div class="mt-1">
                                                 @if (!empty($estudiante->formato51))
-                                                    <a
-                                                        href="{{ url(Storage::url($estudiante->formato51)) }}"
-                                                        class="btn btn-primary"
-                                                        target="_blank"
-                                                        >Ver Documento
-                                                        <span
-                                                            class="mdi mdi-file-pdf-box"
-                                                        ></span>
+                                                    <a href="{{ url(Storage::url($estudiante->formato51)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
                                                     </a>
                                                 @else
-                                                    <p
-                                                        class="btn text-white mb-3"
+                                                    <p class="btn text-white mb-3"
                                                         style="
                                                             background-color: #43a047;
-                                                        "
-                                                    >
-                                                        <i
-                                                            class="fas fa-info-circle me-2"
-                                                        ></i>
+                                                        ">
+                                                        <i class="fas fa-info-circle me-2"></i>
                                                         No hay documentos
                                                         disponibles.
                                                     </p>
@@ -645,20 +419,13 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="formato54"
-                                                >Formato 5.4</label
-                                            >
+                                            <label for="formato54">Formato 5.4</label>
                                             <div class="row mt-1">
                                                 @if (!empty($estudiante->formato54))
                                                     @foreach (json_decode($estudiante->formato54) as $file)
-                                                        <div
-                                                            class="col-md-4 mb-2"
-                                                        >
-                                                            <a
-                                                                href="{{ Storage::url($file) }}"
-                                                                class="btn btn-primary w-100"
-                                                                target="_blank"
-                                                            >
+                                                        <div class="col-md-4 mb-2">
+                                                            <a href="{{ Storage::url($file) }}"
+                                                                class="btn btn-primary w-100" target="_blank">
                                                                 Ver archivo {{ $loop->iteration }}
                                                             </a>
                                                         </div>
@@ -668,30 +435,19 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="formato55"
-                                                >Formato 5.5</label
-                                            >
+                                            <label for="formato55">Formato 5.5</label>
                                             <div class="mt-1">
                                                 @if (!empty($estudiante->formato55))
-                                                    <a
-                                                        href="{{ url(Storage::url($estudiante->formato55)) }}"
-                                                        class="btn btn-primary"
-                                                        target="_blank"
-                                                        >Ver Documento
-                                                        <span
-                                                            class="mdi mdi-file-pdf-box"
-                                                        ></span>
+                                                    <a href="{{ url(Storage::url($estudiante->formato55)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
                                                     </a>
                                                 @else
-                                                    <p
-                                                        class="btn text-white mb-3"
+                                                    <p class="btn text-white mb-3"
                                                         style="
                                                             background-color: #43a047;
-                                                        "
-                                                    >
-                                                        <i
-                                                            class="fas fa-info-circle me-2"
-                                                        ></i>
+                                                        ">
+                                                        <i class="fas fa-info-circle me-2"></i>
                                                         No hay documentos
                                                         disponibles.
                                                     </p>
@@ -701,11 +457,8 @@
                                     </div>
                                 </div>
 
-                                <div
-                                    class="col-12"
-                                    id="formatosBeca"
-                                    style="display: {{ $estudiante->beca == 0 ? 'block' : 'none' }}"
-                                >
+                                <div class="col-12" id="formatosBeca"
+                                    style="display: {{ $estudiante->beca == 0 ? 'block' : 'none' }}">
                                     <h6 class="section-subtitle mt-1">
                                         Formatos de Beca
                                     </h6>
@@ -713,30 +466,20 @@
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <label for="formatoA"
-                                                >Formato A
+                                            <label for="formatoA">Formato A
                                             </label>
                                             <div class="mt-1">
                                                 @if (!empty($estudiante->formatoA))
-                                                    <a
-                                                        href="{{ url(Storage::url($estudiante->formatoA)) }}"
-                                                        class="btn btn-primary"
-                                                        target="_blank"
-                                                        >Ver Documento
-                                                        <span
-                                                            class="mdi mdi-file-pdf-box"
-                                                        ></span>
+                                                    <a href="{{ url(Storage::url($estudiante->formatoA)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
                                                     </a>
                                                 @else
-                                                    <p
-                                                        class="btn text-white mb-3"
+                                                    <p class="btn text-white mb-3"
                                                         style="
                                                             background-color: #43a047;
-                                                        "
-                                                    >
-                                                        <i
-                                                            class="fas fa-info-circle me-2"
-                                                        ></i>
+                                                        ">
+                                                        <i class="fas fa-info-circle me-2"></i>
                                                         No hay documentos
                                                         disponibles.
                                                     </p>
@@ -745,30 +488,20 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="formatoB"
-                                                >Formato B
+                                            <label for="formatoB">Formato B
                                             </label>
                                             <div class="mt-1">
                                                 @if (!empty($estudiante->formatoB))
-                                                    <a
-                                                        href="{{ url(Storage::url($estudiante->formatoB)) }}"
-                                                        class="btn btn-primary"
-                                                        target="_blank"
-                                                        >Ver Documento
-                                                        <span
-                                                            class="mdi mdi-file-pdf-box"
-                                                        ></span>
+                                                    <a href="{{ url(Storage::url($estudiante->formatoB)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
                                                     </a>
                                                 @else
-                                                    <p
-                                                        class="btn text-white mb-3"
+                                                    <p class="btn text-white mb-3"
                                                         style="
                                                             background-color: #43a047;
-                                                        "
-                                                    >
-                                                        <i
-                                                            class="fas fa-info-circle me-2"
-                                                        ></i>
+                                                        ">
+                                                        <i class="fas fa-info-circle me-2"></i>
                                                         No hay documentos
                                                         disponibles.
                                                     </p>
@@ -777,30 +510,20 @@
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="formatoC"
-                                                >Formato C
+                                            <label for="formatoC">Formato C
                                             </label>
                                             <div class="mt-1">
                                                 @if (!empty($estudiante->formatoC))
-                                                    <a
-                                                        href="{{ url(Storage::url($estudiante->formatoC)) }}"
-                                                        class="btn btn-primary"
-                                                        target="_blank"
-                                                        >Ver Documento
-                                                        <span
-                                                            class="mdi mdi-file-pdf-box"
-                                                        ></span>
+                                                    <a href="{{ url(Storage::url($estudiante->formatoC)) }}"
+                                                        class="btn btn-primary" target="_blank">Ver Documento
+                                                        <span class="mdi mdi-file-pdf-box"></span>
                                                     </a>
                                                 @else
-                                                    <p
-                                                        class="btn text-white mb-3"
+                                                    <p class="btn text-white mb-3"
                                                         style="
                                                             background-color: #43a047;
-                                                        "
-                                                    >
-                                                        <i
-                                                            class="fas fa-info-circle me-2"
-                                                        ></i>
+                                                        ">
+                                                        <i class="fas fa-info-circle me-2"></i>
                                                         No hay documentos
                                                         disponibles.
                                                     </p>
@@ -813,9 +536,7 @@
                         </div>
                         <!-- Botón de regreso -->
                         <div class="d-flex justify-content-end mt-4">
-                            <x-buttons.back-button
-                                url="{{ route('estudiantes.index') }}"
-                            />
+                            <x-buttons.back-button url="{{ route('estudiantes.index') }}" />
                         </div>
                     </div>
                 </div>

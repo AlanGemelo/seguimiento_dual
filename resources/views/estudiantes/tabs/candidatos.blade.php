@@ -56,7 +56,7 @@
                         <th>#</th>
                         <th>Matricula</th>
                         <th>Candidato</th>
-                        <th>Carrera</th>
+                        <th>Programa Educativo</th>
                         <th>Cuatrimestre</th>
                         <th class="text-center">Acciones</th>
                     </tr>

@@ -378,7 +378,7 @@ class EmpresaController extends Controller
         $empresaNombre = Str::slug($request->nombre);
         $fecha = now()->format('d-m-Y');
 
-        // 🔹 INE
+        // INE
         if ($request->hasFile('ine')) {
             $file = $request->file('ine');
             $filename = "{$fecha}_{$empresaNombre}_ine." . $file->getClientOriginalExtension();
@@ -403,7 +403,7 @@ class EmpresaController extends Controller
 
         $empresa->direcciones()->sync($request->direcciones_ids);
 
-        // 🔹 Convenio Específico
+        // Convenio Específico
         $convenioEspecifico = $empresa->convenios()->where('tipo', 'ESPECIFICO')->first();
         $vigenciaEspecifico = $request->indefinido_especifico ? 'INDEFINIDO' : 'LIMITADO';
         $pathEspecifico = $convenioEspecifico?->archivo;
@@ -433,7 +433,7 @@ class EmpresaController extends Controller
             Convenio::create($dataEspecifico);
         }
 
-        // 🔹 Convenio Marco
+        // Convenio Marco
         $convenioMarco = $empresa->convenios()->where('tipo', 'MARCO-EMPRESA')->first();
         $vigenciaMarco = $request->indefinido_marco ? 'INDEFINIDO' : 'LIMITADO';
         $pathMarco = $convenioMarco?->archivo;

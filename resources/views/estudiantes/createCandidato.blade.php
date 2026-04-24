@@ -112,7 +112,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="carrera_id" class="form-label">Carrera <span
+                                    <label for="carrera_id" class="form-label">Programa Educativo <span
                                             class="text-danger">*</span></label>
                                     <select class="form-select" aria-label="Seleccionar Empresa" name="carrera_id"
                                         id="carrera_id">

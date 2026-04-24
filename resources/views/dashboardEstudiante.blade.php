@@ -1,11 +1,11 @@
 @extends ('layouts.app')
-@section ('title', 'Dashboard Estudiante')
+@section('title', 'Dashboard Estudiante')
 
-@section ('styles')
+@section('styles')
     <link rel="stylesheet" href="{{ asset('css/dashboardestudiante.css') }}" />
 @endsection
 
-@section ('content')
+@section('content')
     <div class="container">
         <div class="row">
             {{-- PERFIL --}}
@@ -29,8 +29,7 @@
                                 0 => 'bg-success',
                                 1 => 'bg-warning text-dark',
                                 default => 'bg-secondary',
-                            } }}"
-                        >
+                            } }}">
                             {{ match ($estudiante->status) {
                                 0 => 'Estudiante Dual',
                                 1 => 'Candidato a Dual',
@@ -53,14 +52,11 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label"
-                                    >Correo institucional</label
-                                >
+                                <label class="info-label">Correo institucional</label>
                                 <div class="info-value">
                                     {{ $estudiante->matricula }}<span>
                                         @utvtol
-                                        .edu.mx</span
-                                    >
+                                        .edu.mx</span>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12 mb-3">
@@ -71,9 +67,7 @@
                             </div>
 
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label"
-                                    >Fecha de nacimiento</label
-                                >
+                                <label class="info-label">Fecha de nacimiento</label>
                                 <div class="info-value">
                                     {{ \Carbon\Carbon::parse($estudiante->fecha_na)->locale('es')->translatedFormat('d \d\e F \d\e Y') }}
                                 </div>
@@ -92,14 +86,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label">Carrera</label>
+                                <label class="info-label">Dirección de carrera</label>
                                 <div class="info-value">
                                     {{ $estudiante->direccion->name ?? 'No asignada' }}
                                 </div>
                             </div>
 
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label">Carrera</label>
+                                <label class="info-label">Programa educativo</label>
                                 <div class="info-value">
                                     {{ $estudiante->carrera->nombre ?? 'No asignada' }}
                                 </div>
@@ -113,13 +107,12 @@
                             </div>
 
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label"
-                                    >Mentor Académico</label
-                                >
+                                <label class="info-label">Mentor Académico</label>
                                 <div class="info-value">
                                     @if ($estudiante->academico)
                                         <p>
-                                            {{ $estudiante->academico->name }} {{ $estudiante->academico->apellidoP }} {{ $estudiante->academico->apellidoM }}
+                                            {{ $estudiante->academico->name }} {{ $estudiante->academico->apellidoP }}
+                                            {{ $estudiante->academico->apellidoM }}
                                         </p>
                                     @else
                                         <p>Académico no asignado</p>
@@ -140,27 +133,21 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label"
-                                    >Unidad Económica</label
-                                >
+                                <label class="info-label">Unidad Económica</label>
                                 <div class="info-value">
                                     {{ $estudiante->empresa->nombre ?? 'No asignada' }}
                                 </div>
                             </div>
 
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label"
-                                    >Nombre del Proyecto</label
-                                >
+                                <label class="info-label">Nombre del Proyecto</label>
                                 <div class="info-value">
                                     {{ $estudiante->nombre_proyecto ?? 'No registrado' }}
                                 </div>
                             </div>
 
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label"
-                                    >Mentor Industrial</label
-                                >
+                                <label class="info-label">Mentor Industrial</label>
                                 <div class="info-value">
                                     {{ $estudiante->asesorin?->name . ' ' . $estudiante->asesorin->apellidoM . ' ' . $estudiante->asesorin->apellidoP ?? 'No asignado' }}
                                 </div>
@@ -186,9 +173,7 @@
                             </div>
 
                             <div class="col-lg-6 col-md-12 mb-3">
-                                <label class="info-label"
-                                    >Apoyo Económico</label
-                                >
+                                <label class="info-label">Apoyo Económico</label>
                                 <div class="info-value">
                                     {{ $tipoBeca[$estudiante->tipoBeca] ?? 'N/A' }}
                                 </div>
@@ -207,52 +192,37 @@
                     <div class="card-body">
                         <form
                             action="{{ route('estudiantes.updateDocDual', [Hashids::encode($estudiante->matricula), 'doc-dual']) }}"
-                            method="POST"
-                            enctype="multipart/form-data"
-                        >
+                            method="POST" enctype="multipart/form-data">
                             @csrf
                             @method ('PATCH')
 
                             <div class="list-group">
-                                <div
-                                    class="list-group-item d-flex justify-content-between align-items-center"
-                                >
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
                                         <strong>Formato 5.4</strong>
                                         <br />
-                                        <small class="text-muted"
-                                            >Documento del programa dual</small
-                                        >
+                                        <small class="text-muted">Documento del programa dual</small>
                                     </div>
 
                                     <div class="d-flex gap-2">
                                         {{-- Mostrar botón "Ver" solo si hay documento --}}
                                         @php
-    $archivos = json_decode($estudiante->formato54, true);
-@endphp
+                                            $archivos = json_decode($estudiante->formato54, true);
+                                        @endphp
 
                                         @if (!empty($archivos))
                                             @foreach ($archivos as $file)
-                                                <a
-                                                    href="{{ Storage::url($file) }}"
-                                                    target="_blank"
-                                                    class="btn btn-sm btn-outline-primary mb-1"
-                                                >
+                                                <a href="{{ Storage::url($file) }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-primary mb-1">
                                                     Ver
                                                 </a>
                                             @endforeach
                                         @else
-                                            <span class="text-muted"
-                                                >No hay documentos</span
-                                            >
+                                            <span class="text-muted">No hay documentos</span>
                                         @endif
 
                                         {{-- Botón para actualizar --}}
-                                        <button
-                                            type="button"
-                                            class="btn btn-sm btn-secondary"
-                                            onclick="mostrarInput()"
-                                        >
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="mostrarInput()">
                                             Actualizar
                                         </button>
                                     </div>
@@ -260,19 +230,8 @@
                             </div>
 
                             {{-- Input y botón de guardar ocultos inicialmente --}}
-                            <input
-                                hidden
-                                type="file"
-                                id="formato54"
-                                name="formato54[]"
-                                multiple
-                                accept=".pdf"
-                            />
-                            <button
-                                hidden
-                                id="guardar"
-                                class="btn btn-success mt-3"
-                            >
+                            <input hidden type="file" id="formato54" name="formato54[]" multiple accept=".pdf" />
+                            <button hidden id="guardar" class="btn btn-success mt-3">
                                 Guardar cambios
                             </button>
                         </form>
@@ -284,7 +243,7 @@
 
 @endsection
 
-@section ('scripts')
+@section('scripts')
     <script>
         function mostrarInput() {
             document.getElementById('formato54').hidden = false;

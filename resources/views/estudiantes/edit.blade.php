@@ -183,7 +183,7 @@
 
                                         {{-- Seleccionar Carrera del estudiante --}}
                                         <div class="form-group">
-                                            <label for="carrera_id" class="form-label">Carrera <span
+                                            <label for="carrera_id" class="form-label">Programa Educativo <span
                                                     class="text-danger">*</span></label>
                                             <select disabled class="form-select" aria-label="Seleccionar Carrera"
                                                 name="carrera_id">
@@ -579,8 +579,8 @@
                                     </div> --}}
                                     </div>
                                 </div>
-                               
-                            <div class="d-flex justify-content-end mt-3">
+
+                                <div class="d-flex justify-content-end mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                                         type="submit">Editar
                                     </button>

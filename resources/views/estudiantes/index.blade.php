@@ -5,6 +5,27 @@
     $activeTab = request('tab', 'dual');
 @endphp
 
+@section('styles')
+    <style>
+        .rounded-pill {
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        th a {
+            color: inherit;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        th a:hover {
+            color: #006837;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="row">
         <div class="col-12 grid-margin">
@@ -29,28 +50,29 @@
                     <ul class="nav nav-tabs" id="estudiantesTabs" role="tablist">
 
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ $activeTab === 'dual' ? 'active' : '' }}" data-bs-toggle="tab"
-                                data-bs-target="#dual" type="button" role="tab">
+                            <a class="nav-link {{ request('tab') === 'dual' || request('tab') === null ? 'active' : '' }}"
+                                href="{{ route('estudiantes.index', array_merge(request()->except('status'), ['tab' => 'dual'])) }}">
                                 <i class="mdi mdi-check-circle me-1"></i>
                                 Estudiantes Dual
-                            </button>
+                            </a>
                         </li>
 
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ $activeTab === 'candidatos' ? 'active' : '' }}" data-bs-toggle="tab"
-                                data-bs-target="#candidatos" type="button" role="tab">
+                            <a class="nav-link {{ request('tab') === 'candidatos' ? 'active' : '' }}"
+                                href="{{ route('estudiantes.index', array_merge(request()->except('status'), ['tab' => 'candidatos'])) }}">
                                 <i class="mdi mdi-account-clock me-1"></i>
                                 Candidatos a Dual
-                            </button>
+                            </a>
+
                         </li>
 
                         @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link {{ $activeTab === 'eliminados' ? 'active' : '' }}"
-                                    data-bs-toggle="tab" data-bs-target="#eliminados" type="button" role="tab">
-                                    <i class="mdi mdi-trash-can me-1"></i>
-                                    Eliminados
-                                </button>
+                                <a class="nav-link {{ request('tab') === 'eliminados' ? 'active' : '' }}"
+                                    href="{{ route('estudiantes.index', array_merge(request()->except('status'), ['tab' => 'eliminados'])) }}">
+                                    <i class="mdi mdi-account-off me-1"></i>
+                                    Bajas
+                                </a>
                             </li>
                         @endif
                     </ul>
@@ -167,18 +189,17 @@
             </div>
         </div>
     </div>
-    <!-- Modal de confirmación para eliminar estudiante dual -->
-    <div class="modal fade" id="deleteModalDual" tabindex="-1" aria-labelledby="deleteModalDualLabel"
-        aria-hidden="true">
+    <!-- Modal de confirmación para baja estudiante dual -->
+    <div class="modal fade" id="deleteModalDual" tabindex="-1" aria-labelledby="deleteModalDualLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalDualLabel">Eliminar Estudiante Dual</h5>
+                    <h5 class="modal-title" id="deleteModalDualLabel">Baja Estudiante Dual</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <p id="bannerDual">¿Estás seguro de eliminar este registro?</p>
+                    <p id="bannerDual">¿Estás seguro de dar de baja este registro?</p>
 
                     <div class="mb-3">
                         <label for="selectMotivoDual" class="form-label">Motivo de baja</label>
@@ -186,7 +207,7 @@
                             <option value="">-- Selecciona un motivo --</option>
                         </select>
                         <div id="warningMessage" class="text-danger mt-1" style="display:none;">
-                            Debes seleccionar un motivo para eliminar al estudiante.
+                            Debes seleccionar un motivo para dar de baja al estudiante.
                         </div>
                     </div>
                 </div>
@@ -203,26 +224,26 @@
         </div>
     </div>
 
-    <!-- Modal de confirmación para eliminar estudiante dual -->
+    <!-- Modal de confirmación para baja dual -->
     <div class="modal fade" id="deleteModalCandidatos" tabindex="-1" aria-labelledby="deleteModalCandidatosLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteModalCandidatosLabel">Eliminar Alumno Dual</h5>
+                    <h5 class="modal-title" id="deleteModalCandidatosLabel">Baja del Alumno Dual</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Cerrar">
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p id="bannerCandidato"></p>¿Estás seguro de eliminar este registro?</p>
+                    <p id="bannerCandidato"></p>¿Estás seguro de dar de baja este registro?</p>
                     <div class="mb-3">
                         <label for="selectMotivoCandidato" class="form-label">Motivo de baja</label>
                         <select id="selectMotivoCandidato" class="form-select">
                             <option value="">-- Selecciona un motivo --</option>
                         </select>
                         <div id="warningMessege" class="text-danger mt-1" style="display: none">
-                            Debes seleccionar un motivo para eliminar al estudiante.
+                            Debes seleccionar un motivo para dar de baja al estudiante.
                         </div>
                     </div>
                 </div>
@@ -359,20 +380,31 @@
 
         // Llenar select de motivos
         function llenarMotivos(selectId) {
-            const motivos = [
-                'Reprobación',
-                'Término de Convenio',
-                'Ciclo de Renovación Concluido',
-                'Término del PE'
+            const motivos = [{
+                    id: 2,
+                    name: 'Reprobación'
+                },
+                {
+                    id: 3,
+                    name: 'Término de Convenio'
+                },
+                {
+                    id: 4,
+                    name: 'Ciclo de Renovación Concluido'
+                },
+                {
+                    id: 5,
+                    name: 'Término del PE'
+                }
             ];
 
             const select = document.getElementById(selectId);
             select.innerHTML = '<option value="">-- Selecciona un motivo --</option>';
 
-            motivos.forEach((motivo, index) => {
+            motivos.forEach(motivo => {
                 const option = document.createElement('option');
-                option.value = index;
-                option.textContent = motivo;
+                option.value = motivo.id;
+                option.textContent = motivo.name;
                 select.appendChild(option);
             });
         }

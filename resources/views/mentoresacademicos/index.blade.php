@@ -31,8 +31,8 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $activeTab === 'eliminados' ? 'active' : '' }}"
                                     data-bs-toggle="tab" data-bs-target="#eliminados" type="button" role="tab">
-                                    <i class="mdi mdi-trash-can me-1"></i>
-                                    Eliminados
+                                    <i class="mdi mdi-account-off me-1"></i>
+                                    Bajas
                                 </button>
                             </li>
                         @endif

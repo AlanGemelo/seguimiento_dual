@@ -35,7 +35,7 @@
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-header text-white" style="background-color: #006837;">
-                        <h6 class="mb-0 text-center">Estudiantes por Empresa</h6>
+                        <h6 class="mb-0 text-center">Estudiantes por Mentor Academico</h6>
                     </div>
                     <div class="card-body">
                         {!! $chartMentor->container() !!}
@@ -59,7 +59,7 @@
             <div class="col-md-6 mb-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-header text-white" style="background-color: #006837;">
-                        <h6 class="mb-0 text-center">Estudiantes por Carrera</h6>
+                        <h6 class="mb-0 text-center">Estudiantes por Programa Educativo</h6>
                     </div>
                     <div class="card-body">
                         {!! $chartCarrera->container() !!}

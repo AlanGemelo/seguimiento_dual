@@ -28,7 +28,7 @@
                             </strong><br>
 
                             <small>Matrícula: {{ $estudiante->matricula }}</small><br>
-                            <small>Carrera: {{ $estudiante->carrera->nombre ?? 'Sin carrera' }}</small><br>
+                            <small>Programa educativo: {{ $estudiante->carrera->nombre ?? 'Sin carrera' }}</small><br>
 
                             <hr class="my-2">
 

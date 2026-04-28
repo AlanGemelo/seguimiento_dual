@@ -131,7 +131,7 @@
                         </div>
 
                         <!-- Extensión -->
-                        <div class="col-md-2 mb-3" style="max-width: 10%">
+                              <div class="col-12 col-md-2 mb-3 custom-width-ext">
                             <label for="ext_telefonica" class="form-label">Ext.</label>
                             <input type="text" class="form-control" id="ext_telefonica" name="ext_telefonica"
                                 placeholder="Ext." value="{{ $empresa->ext_telefonica ?? 'N/A' }}" disabled />

@@ -72,15 +72,16 @@
                                 Estudiantes Dual
                             </button>
                         </li>
+                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ $activeTab === 'empresas' ? 'active' : '' }}"
+                                    data-bs-toggle="tab" data-bs-target="#empresas" type="button" role="tab">
 
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link {{ $activeTab === 'empresas' ? 'active' : '' }}" data-bs-toggle="tab"
-                                data-bs-target="#empresas" type="button" role="tab">
-
-                                <i class="mdi mdi-office-building me-1"></i>
-                                Empresas
-                            </button>
-                        </li>
+                                    <i class="mdi mdi-office-building me-1"></i>
+                                    Empresas
+                                </button>
+                            </li>
+                        @endif
 
                     </ul>
 
@@ -95,11 +96,13 @@
                         </div>
 
                         {{-- TAB EMPRESAS --}}
-                        <div class="tab-pane fade {{ $activeTab === 'empresas' ? 'show active' : '' }}" id="empresas"
-                            role="tabpanel">
+                        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                            <div class="tab-pane fade {{ $activeTab === 'empresas' ? 'show active' : '' }}" id="empresas"
+                                role="tabpanel">
 
-                            @include('admin.renovaciones.tabs.empresas')
-                        </div>
+                                @include('admin.renovaciones.tabs.empresas')
+                            </div>
+                        @endif
 
                     </div>
 

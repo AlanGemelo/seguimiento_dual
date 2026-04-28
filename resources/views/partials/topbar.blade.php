@@ -28,10 +28,22 @@
             <i class="mdi mdi-menu-down"></i> <!-- Icono de flecha -->
 
             <ul class="dropdown-menu dropdown-menu-end">
-                <li class="dropdown-header text-center">
-                    <strong>{{ Auth::user()->name }} {{ Auth::user()->apellidoP }}
-                        {{ Auth::user()->apellidoM }}</strong><br>
-                    <small>{{ Auth::user()->email }}</small>
+                <li class="dropdown-header text-center py-2">
+                    <div style="font-size: 0.65rem; color:#6c757d;">
+                        {{ Auth::user()->titulo }}
+                    </div>
+
+                    <div class="fw-semibold" style="font-size: 0.9rem; line-height: 1.2;">
+                        {{ Auth::user()->name }}
+                    </div>
+
+                    <div style="font-size: 0.8rem; color:#6c757d;">
+                        {{ Auth::user()->apellidoP }} {{ Auth::user()->apellidoM }}
+                    </div>
+
+                    <div class="mt-1" style="font-size: 0.75rem; color:#adb5bd;">
+                        {{ Auth::user()->email }}
+                    </div>
                 </li>
                 <hr>
                 <li>

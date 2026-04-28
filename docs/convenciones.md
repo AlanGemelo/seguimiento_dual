@@ -2,10 +2,18 @@
 
 - Glosario de abreviaturas (MA, A, estatus de beca, roles)
 
+## Roles (rol_id)
+
+- **1 → Administrador**: Usuario con acceso total al sistema y permisos de gestión de todas las direcciones educativas.
+- **2 → Mentor**: Usuario encargado de supervisar y dar seguimiento a estudiantes.
+- **3 → Estudiante**: Usuario que participa en los procesos académicos del sistema.
+- **4 → Director**: Usuario con acceso total al sistema y permisos de gestión de su dirección educativa.
+
 ## Activo Alumno (activo)
 
 - **0 → Candidato**: Estudiante que ha mostrado interés en el modelo dual, pero aún no está inscrito.
 - **1 → Dual**: Estudiante formalmente inscrito y activo en el modelo de educación dual.
+
 ## Inactivo Alumno (activo)
 
 -**delete_at**: Define si el alumno está inactivo (soft delete funcional)

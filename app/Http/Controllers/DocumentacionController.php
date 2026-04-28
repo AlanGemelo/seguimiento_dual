@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentacionController extends Controller
 {
@@ -23,7 +24,11 @@ class DocumentacionController extends Controller
 
     public function index(Request $request)
     {
+        $user = Auth::user();
+
         $direccionId = session('direccion')?->id ?? null;
+        $carreraId = session('carrera')?->id ?? null;
+
         $activeTab = $request->input('tab', 'dual');
 
         $search = $request->input('search');
@@ -32,16 +37,35 @@ class DocumentacionController extends Controller
         $hoy = Carbon::now();
         $limite = $hoy->copy()->addDays(15);
 
+        // Query base estudiantes
         $query = Estudiantes::with('academico', 'carrera', 'usuario')
             ->where('activo', true)
-            ->where('direccion_id', $direccionId)
             ->whereNotNull('fin_dual')
             ->where(function ($q) use ($hoy, $limite) {
                 $q->whereDate('fin_dual', '<', $hoy)
                     ->orWhereBetween('fin_dual', [$hoy, $limite]);
-            })
-            ->orderBy('fin_dual', 'asc');
+            });
 
+        // Filtro por rol mentor académico
+        if ($user->rol_id == 2) {
+            $query->where('academico_id', $user->id);
+        }
+
+        // Filtro por rol director de carrera
+        elseif ($user->rol_id == 3) {
+            if ($carreraId) {
+                $query->where('carrera_id', $carreraId);
+            }
+        }
+
+        // Filtro para admin u otros roles
+        else {
+            if ($direccionId) {
+                $query->where('direccion_id', $direccionId);
+            }
+        }
+
+        // Filtro de búsqueda
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
@@ -51,48 +75,39 @@ class DocumentacionController extends Controller
             });
         }
 
-        $estudiantes = $query->paginate(10);
+        // Paginación estudiantes
+        $estudiantes = $query->orderBy('fin_dual', 'asc')
+            ->paginate(10)
+            ->appends($request->all());
 
-        $estudiantes_proximos = Estudiantes::with('carrera')
+        // Estudiantes próximos
+        $estudiantes_proximos = (clone $query)
             ->whereBetween('fin_dual', [$hoy, $limite])
-            ->where('activo', true)
             ->get();
 
-        $estudiantes_vencidos = Estudiantes::with('carrera')
+        // Estudiantes vencidos
+        $estudiantes_vencidos = (clone $query)
             ->whereDate('fin_dual', '<', $hoy)
-            ->where('activo', true)
             ->get();
 
-
-
+        // Empresas activas
         $empresasQuery = Empresa::where('status', 1)
-            ->whereHas('convenios', function ($q) use ($hoy, $limite) {
-                $q->whereIn('tipo', ['ESPECIFICO', 'MARCO-EMPRESA'])
-                    ->where(function ($query) use ($hoy, $limite) {
-                        $query->whereDate('fin', '<', $hoy) // vencidos
-                            ->orWhereBetween('fin', [$hoy, $limite]); // próximos
-                    });
-            })
-            ->with(['convenios' => function ($q) use ($hoy, $limite) {
-                $q->whereIn('tipo', ['ESPECIFICO', 'MARCO-EMPRESA'])
-                    ->where(function ($query) use ($hoy, $limite) {
-                        $query->whereDate('fin', '<', $hoy)
-                            ->orWhereBetween('fin', [$hoy, $limite]);
-                    })
-                    ->orderBy('fin', 'asc'); // importante: el más urgente primero
-            }])
             ->withCount('estudiantes')
             ->orderBy('nombre', 'asc');
+
         $empresas = $empresasQuery->paginate(10)->appends($request->all());
 
+        // Convenios próximos
         $convenios_proximos = Convenio::with('empresa')
             ->whereBetween('fin', [$hoy, $limite])
             ->get();
 
+        // Convenios vencidos
         $convenios_vencidos = Convenio::with('empresa')
             ->whereDate('fin', '<', $hoy)
             ->get();
 
+        // Situaciones de seguimiento
         $situation = [
             ['id' => 0, 'name' => 'Reprobacion'],
             ['id' => 1, 'name' => 'Termino de Convenio'],

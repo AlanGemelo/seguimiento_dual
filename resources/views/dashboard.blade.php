@@ -88,23 +88,25 @@
                         </div>
                     </div>
 
+                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id == 4)
+                        <div class="col-md-3">
+                            <div class="card stat-card shadow-sm border-0">
+                                <div class="card-body d-flex align-items-center">
 
-                    <div class="col-md-3">
-                        <div class="card stat-card shadow-sm border-0">
-                            <div class="card-body d-flex align-items-center">
+                                    <div class="stat-icon bg-danger">
+                                        <i class="mdi mdi-file-alert"></i>
+                                    </div>
 
-                                <div class="stat-icon bg-danger">
-                                    <i class="mdi mdi-file-alert"></i>
+                                    <div class="ms-3">
+                                        <h6 class="text-muted mb-1">Convenios por vencer</h6>
+                                        <h3 class="fw-bold mb-0">{{ $registrosConvenio->count() }}</h3>
+                                    </div>
+
                                 </div>
-
-                                <div class="ms-3">
-                                    <h6 class="text-muted mb-1">Convenios por vencer</h6>
-                                    <h3 class="fw-bold mb-0">{{ $registrosConvenio->count() }}</h3>
-                                </div>
-
                             </div>
                         </div>
-                    </div>
+                    @endif
+
 
                 </div>
 
@@ -136,54 +138,47 @@
                             </div>
 
                         </div>
-                    @endif
 
 
-                    <div class="col-md-4">
 
-                        <div class="card action-card shadow-sm border-0 h-100">
-                            <div class="card-body">
+                        <div class="col-md-4">
 
-                                <h5 class="fw-bold mb-3">
-                                    <i class="mdi mdi-account-plus text-primary"></i>
-                                    Registrar Estudiante
-                                </h5>
+                            <div class="card action-card shadow-sm border-0 h-100">
+                                <div class="card-body">
 
-                                <p class="text-muted small">
-                                    Agregar nuevos estudiantes al sistema de educación dual.
-                                </p>
+                                    <h5 class="fw-bold mb-3">
+                                        <i class="mdi mdi-account-plus text-primary"></i>
+                                        Registrar Estudiante
+                                    </h5>
 
-                                <a href="{{ route('estudiantes.create') }}" class="btn btn-primary btn-sm">
-                                    Registrar Estudiante
-                                </a>
+                                    <p class="text-muted small">
+                                        Agregar nuevos estudiantes al sistema de educación dual.
+                                    </p>
 
+                                    <a href="{{ route('estudiantes.create') }}" class="btn btn-primary btn-sm">
+                                        Registrar Estudiante
+                                    </a>
+
+                                </div>
                             </div>
+
                         </div>
-
-                    </div>
-
-
+                    @endif
                     <div class="col-md-4">
-
                         <div class="card action-card shadow-sm border-0 h-100">
                             <div class="card-body">
-
                                 <h5 class="fw-bold mb-3">
                                     <i class="mdi mdi-file-document text-warning"></i>
                                     Documentación por vencer
                                 </h5>
-
                                 <p class="text-muted small">
                                     Revisa estudiantes o convenios que están próximos a vencer.
                                 </p>
-
                                 <a href="{{ route('documentacion.index') }}" class="btn btn-warning btn-sm">
                                     Revisar documentación
                                 </a>
-
                             </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -192,24 +187,18 @@
 
                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                     <div class="card shadow-sm border-0">
-
                         <div class="card-body">
-
                             <h5 class="fw-bold mb-3">
                                 <i class="mdi mdi-file-excel text-success"></i>
                                 Reporte General
                             </h5>
-
                             <p class="text-muted small">
                                 Descarga el reporte general del modelo dual.
                             </p>
-
                             <a href="{{ route('reporte.general') }}" class="btn btn-success btn-sm">
                                 Descargar Excel
                             </a>
-
                         </div>
-
                     </div>
                 @endif
 
@@ -321,10 +310,12 @@
                         <p><strong>{{ $registrosEstudiantes->count() }}</strong> estudiantes están próximos a finalizar su
                             dual.</p>
                     @endif
-
-                    @if ($registrosConvenio->count() > 0)
-                        <p><strong>{{ $registrosConvenio->count() }}</strong> convenios están próximos a vencer.</p>
+                    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                        @if ($registrosConvenio->count() > 0)
+                            <p><strong>{{ $registrosConvenio->count() }}</strong> convenios están próximos a vencer.</p>
+                        @endif
                     @endif
+
 
                     <p>Por favor, revisa la documentación para evitar inconvenientes.</p>
                 </div>

@@ -238,7 +238,12 @@ h4 {
     font-size: 1.5em;
 }
 
-/*    */
+.custom-width-ext {
+    width: 10%;
+}
+
+
+/* TABLET VERSION */
 @media (min-width: 768px) and (max-width: 1024px) {
     .main-area {
         margin-left: 0;
@@ -259,6 +264,10 @@ h4 {
         margin-top: 10px;
         float: none !important;
     }
+
+    .custom-width-ext {
+        width: 15%;
+    }
 }
 
 /*  MOBILE VERSION  */
@@ -267,7 +276,8 @@ h4 {
         margin-left: 0;
         width: 100%;
     }
-}
 
-/*  MOBILE VERSION  */
-@media (max-width: 1024px) {}
+    .custom-width-ext {
+        width: 100%;
+    }
+}

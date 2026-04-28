@@ -44,18 +44,16 @@ class MentorAcademicoController extends Controller
             ->with('direccion')
             ->orderBy('name', 'asc');
 
-        // Filtrar por direccion si no es admin
-        if ($user->rol_id !== 1) {
-            $query->where('direccion_id', $direccionId);
-        }
+
+        $query->where('direccion_id', $direccionId);
 
         // Aplicar busqueda mentores activos
         if (! empty($search_mentores)) {
             $query->where(function ($q) use ($search_mentores) {
-                $q->whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($search_mentores).'%'])
-                    ->orWhereRaw('LOWER(apellidoP) LIKE ?', ['%'.strtolower($search_mentores).'%'])
-                    ->orWhereRaw('LOWER(apellidoM) LIKE ?', ['%'.strtolower($search_mentores).'%'])
-                    ->orWhereRaw('LOWER(email) LIKE ?', ['%'.strtolower($search_mentores).'%']);
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search_mentores) . '%'])
+                    ->orWhereRaw('LOWER(apellidoP) LIKE ?', ['%' . strtolower($search_mentores) . '%'])
+                    ->orWhereRaw('LOWER(apellidoM) LIKE ?', ['%' . strtolower($search_mentores) . '%'])
+                    ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search_mentores) . '%']);
             });
         }
 
@@ -80,10 +78,10 @@ class MentorAcademicoController extends Controller
         // Aplicar busqueda eliminados
         if (! empty($search_eliminados)) {
             $deletedQuery->where(function ($q) use ($search_eliminados) {
-                $q->whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($search_eliminados).'%'])
-                    ->orWhereRaw('LOWER(apellidoP) LIKE ?', ['%'.strtolower($search_eliminados).'%'])
-                    ->orWhereRaw('LOWER(apellidoM) LIKE ?', ['%'.strtolower($search_eliminados).'%'])
-                    ->orWhereRaw('LOWER(email) LIKE ?', ['%'.strtolower($search_eliminados).'%']);
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search_eliminados) . '%'])
+                    ->orWhereRaw('LOWER(apellidoP) LIKE ?', ['%' . strtolower($search_eliminados) . '%'])
+                    ->orWhereRaw('LOWER(apellidoM) LIKE ?', ['%' . strtolower($search_eliminados) . '%'])
+                    ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search_eliminados) . '%']);
             });
         }
 
@@ -112,7 +110,7 @@ class MentorAcademicoController extends Controller
     public function store(Request $request)
     {
         $username = str_replace(['@utvtol.edu.mx', ' '], '', $request->email);
-        $emailCompleto = $username.'@utvtol.edu.mx';
+        $emailCompleto = $username . '@utvtol.edu.mx';
         $request->merge([
             'email' => $emailCompleto,
         ]);
@@ -183,7 +181,7 @@ class MentorAcademicoController extends Controller
 
         $mentor = User::find($id);
         if ($request->email !== $mentor->email) {
-            $request->validate(['email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class]]);
+            $request->validate(['email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]]);
             $mentor->update(['email' => $request->email], $request->all());
         }
         $mentor->update($request->all());
@@ -210,7 +208,7 @@ class MentorAcademicoController extends Controller
 
             // Otro tipo de error, puedes manejarlo según tus necesidades
             return redirect()->route('academicos.index')
-                ->with('error', 'Error al eliminar el Mentor Academico: '.$e->getMessage());
+                ->with('error', 'Error al eliminar el Mentor Academico: ' . $e->getMessage());
         }
     }
 
@@ -231,7 +229,7 @@ class MentorAcademicoController extends Controller
             return redirect()->route('academicos.index', ['tab' => 'mentores'])->with('success', 'Mentor Academico Restaurado.');
         } catch (\Exception $e) {
             // En caso de error, redirigir con mensaje de error
-            return redirect()->route('academicos.index')->with('error', 'Hubo un problema al restaurar al mentor: '.$e->getMessage());
+            return redirect()->route('academicos.index')->with('error', 'Hubo un problema al restaurar al mentor: ' . $e->getMessage());
         }
     }
 

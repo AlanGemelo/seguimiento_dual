@@ -57,6 +57,9 @@ class HomeController extends Controller
                 ));
 
             case 3: // ESTUDIANTE
+
+                $usaPasswordPorDefecto = $this->usaPasswordPorDefecto($user);
+
                 $becas = [
                     0 => 'Si',
                     1 => 'No',
@@ -72,7 +75,12 @@ class HomeController extends Controller
                     ->where('user_id', $user->id)
                     ->first();
 
-                return view('dashboardEstudiante', compact('estudiante', 'becas', 'tipoBeca'));
+                return view('dashboardEstudiante', compact(
+                    'estudiante',
+                    'becas',
+                    'tipoBeca',
+                    'usaPasswordPorDefecto'
+                ));
 
             case 4: // DIRECTOR/TUTOR
             default:
@@ -99,31 +107,60 @@ class HomeController extends Controller
         return redirect()->route('dashboard');
     }
 
+    private function usaPasswordPorDefecto($user): bool
+    {
+        $passwordPorDefecto = '12345678';
+
+        return Hash::check($passwordPorDefecto, $user->password);
+    }
+
     private function cargarDashboardCarrera($direccion_id, $hoy): View
     {
         $direccion = DireccionCarrera::find($direccion_id);
         session()->put('direccion', $direccion ?? '');
+
         $user = Auth::user();
 
-        $passwordPorDefecto = '12345678'; // tu contraseña por defecto
-        $usaPasswordPorDefecto = Hash::check($passwordPorDefecto, $user->password);
+        // verifica si el usuario usa la contraseña por defecto
+        $usaPasswordPorDefecto = $this->usaPasswordPorDefecto($user);
 
-        $estudiantes = Estudiantes::where('direccion_id', $direccion_id)->count();
+        $hoy = now();
+
+        // query base de estudiantes visibles en dashboard
+        $estudiantesQuery = Estudiantes::with('academico', 'asesorin')
+            ->where('activo', true);
+
+        // si el usuario es mentor académico, solo ve sus alumnos
+        if ($user->rol_id == 2) {
+
+            $estudiantesQuery->where('academico_id', $user->id);
+        } else {
+
+            // otros roles ven estudiantes filtrados por dirección
+            $estudiantesQuery->where('direccion_id', $direccion_id);
+        }
+
+        // total de estudiantes según el filtro aplicado
+        $estudiantes = (clone $estudiantesQuery)->count();
+
+        // mentores filtrados por dirección (sin cambio de lógica)
         $mentores = MentorIndustrial::whereHas('estudiantes', function ($query) use ($direccion_id) {
             $query->where('direccion_id', $direccion_id);
         })->count();
 
-        $registrosEstudiantes = Estudiantes::with('academico', 'asesorin')
-            ->where('direccion_id', $direccion_id)
+        // estudiantes próximos a vencer (15 días)
+        $registrosEstudiantes = (clone $estudiantesQuery)
             ->whereDate('fin_dual', '<=', $hoy->copy()->addDays(15))
-            ->where('activo', true)->get();
+            ->get();
 
+        // convenios próximos a vencer
         $registrosConvenio = Convenio::whereHas('empresa.direccionesCarrera', function ($q) use ($direccion_id) {
             $q->where('direccion_id', $direccion_id);
         })
             ->whereDate('fin', '<=', $hoy->copy()->addDays(15))
             ->get();
 
+        // validación de alertas generales del dashboard
         $hayAlertas = $registrosEstudiantes->isNotEmpty() || $registrosConvenio->isNotEmpty();
 
         return view('dashboard', compact(

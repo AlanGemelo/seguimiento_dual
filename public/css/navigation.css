@@ -137,6 +137,7 @@ hr {
 .topbar-right .dropdown {
   display: flex;
   align-items: center;
+  margin-right: 30px;
 }
 
 /* Dropdown hover */

@@ -54,9 +54,7 @@
                             <div class="col-lg-6 col-md-12 mb-3">
                                 <label class="info-label">Correo institucional</label>
                                 <div class="info-value">
-                                    {{ $estudiante->matricula }}<span>
-                                        @utvtol
-                                        .edu.mx</span>
+                                    <span>al</span>{{ $estudiante->matricula }}<span>@utvtol.edu.mx</span>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-12 mb-3">

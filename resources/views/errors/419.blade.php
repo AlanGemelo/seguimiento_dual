@@ -21,4 +21,4 @@
 
 
 {{-- Sección de la imagen --}}
-@section('image', asset('images/errors/404.png'))
+@section('image', asset('assets/images/errors/error-419-cuervo.webp'))

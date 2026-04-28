@@ -78,7 +78,7 @@
                         <tr>
                             <td colspan="7">
                                 <div class="alert alert-danger mb-0">
-                                    No hay alumnos en baja registrados
+                                    No hay mentores en baja registrados
                                 </div>
                             </td>
                         </tr>

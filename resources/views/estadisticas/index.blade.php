@@ -391,8 +391,7 @@
             const estatus = document.getElementById('estatusAcademicoSelect');
 
             if (!tipoAlumno || !estatus) return;
-            console.log(tipoAlumno);
-            console.log("Hola");
+
 
             tipoAlumno.addEventListener('change', function() {
 
@@ -414,7 +413,7 @@
                     if (el) el.disabled = !enabled;
                 });
 
-                // 🔥 IMPORTANTE: reset primero
+
                 estatus.value = '';
 
                 // filtrar opciones

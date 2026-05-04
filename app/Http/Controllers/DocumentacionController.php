@@ -109,10 +109,10 @@ class DocumentacionController extends Controller
 
         // Situaciones de seguimiento
         $situation = [
-            ['id' => 0, 'name' => 'Reprobacion'],
-            ['id' => 1, 'name' => 'Termino de Convenio'],
-            ['id' => 2, 'name' => 'Ciclo de Renovacion Concluido'],
-            ['id' => 3, 'name' => 'Termino del PE']
+            ['id' => 2, 'name' => 'Reprobacion'],
+            ['id' => 3, 'name' => 'Termino de Convenio'],
+            ['id' => 4, 'name' => 'Ciclo de Renovacion Concluido'],
+            ['id' => 5, 'name' => 'Termino del PE']
         ];
 
         return view('admin.renovaciones.index', compact(

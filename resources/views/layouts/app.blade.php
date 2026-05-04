@@ -147,7 +147,6 @@
     <script src="{{ asset('js/navbar.js') }}"></script>
 
     <!-- End custom js for this page-->
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <!-- Para el ruteo-->

@@ -1,5 +1,10 @@
 @extends('layouts.guest')
 @section('title', 'Login')
+
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+@endsection
+
 @section('content')
     <div class="container-scroller d-flex align-items-center justify-content-center">
         <div class="background-image"></div>
@@ -24,8 +29,18 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" class="form-control form-control-lg" id="password" placeholder="*************"
-                        name="password">
+
+                    <div class="input-group">
+                        <input type="password" class="form-control form-control-lg" id="password"
+                            placeholder="*************" name="password">
+
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="togglePassword" style="cursor: pointer; min-height: 100%">
+                                <i class="mdi mdi-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+
                     @error('password')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -49,112 +64,24 @@
                         </a>
                     </div>
                 </div>
+            </form>
         </div>
-        </form>
     </div>
-    </div>
+@endsection
 
-    <style>
-        .container-scroller {
-            height: 100vh;
-            display: flex;
-            position: relative;
-        }
+@section('scripts')
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        const icon = togglePassword.querySelector('i');
 
-        .background-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('{{ asset('assets/images/rectoriajpg.jpg') }}') no-repeat center center;
-            background-size: cover;
-            z-index: -2;
-        }
+        togglePassword.addEventListener('click', function() {
+            const isPassword = password.getAttribute('type') === 'password';
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
+            password.setAttribute('type', isPassword ? 'text' : 'password');
 
-        .auth-form-light {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-        }
-
-        .brand-logo img {
-            border-radius: 50%;
-        }
-
-        .title-login {
-            margin-top: 5%;
-        }
-
-        .auth-form-light h2 {
-            color: #006837;
-            font-weight: 600 !important;
-        }
-
-        .form-control {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .form-control:focus {
-            border-color: #004D40;
-            box-shadow: 0 0 0 2px rgba(0, 109, 91, 0.2);
-        }
-
-        .btn-primary {
-            background-color: #006837 !important;
-            border: none !important;
-            color: white !important;
-        }
-
-        .btn-primary:hover, .auth-form-light .btn-primary:hover {
-            background-color: #004d40 !important;
-            color: white !important;
-        }
-
-        .auth-link {
-            color: #F4B400;
-        }
-
-        .auth-link:hover {
-            color: #004D40;
-            text-decoration: underline;
-        }
-
-        .form-check-label {
-            color: #2E2E2E;
-        }
-
-        .brand-logo img {
-            border-radius: 50%;
-            background-color: #FFFFFF;
-            padding: 8px;
-            border: 2px solid #006837;
-        }
-
-        .forgot-password-link {
-            color: #2e2e2e;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-password-link:hover {
-            color: #004D40;
-            /* azul petróleo */
-            text-decoration: underline;
-        }
-    </style>
+            icon.classList.toggle('mdi-eye');
+            icon.classList.toggle('mdi-eye-off');
+        });
+    </script>
 @endsection

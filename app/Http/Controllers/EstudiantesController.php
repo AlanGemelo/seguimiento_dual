@@ -106,6 +106,11 @@ class EstudiantesController extends Controller
         $query = Estudiantes::with('academico', 'carrera', 'usuario')
             ->where('activo', true)
             ->where('direccion_id', $direccionId);
+        $user = auth()->user();
+
+        if ($user->rol_id === 2) {
+            $query->where('academico_id', $user->id);
+        }
 
         // Se aplica búsqueda en duales si existe
         if (!empty($search)) {

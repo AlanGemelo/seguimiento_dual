@@ -56,17 +56,17 @@
                                 Estudiantes Dual
                             </a>
                         </li>
-
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link {{ request('tab') === 'candidatos' ? 'active' : '' }}"
-                                href="{{ route('estudiantes.index', array_merge(request()->except('status'), ['tab' => 'candidatos'])) }}">
-                                <i class="mdi mdi-account-clock me-1"></i>
-                                Candidatos a Dual
-                            </a>
-
-                        </li>
-
                         @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link {{ request('tab') === 'candidatos' ? 'active' : '' }}"
+                                    href="{{ route('estudiantes.index', array_merge(request()->except('status'), ['tab' => 'candidatos'])) }}">
+                                    <i class="mdi mdi-account-clock me-1"></i>
+                                    Candidatos a Dual
+                                </a>
+
+                            </li>
+
+
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link {{ request('tab') === 'eliminados' ? 'active' : '' }}"
                                     href="{{ route('estudiantes.index', array_merge(request()->except('status'), ['tab' => 'eliminados'])) }}">
@@ -86,13 +86,13 @@
                             role="tabpanel">
                             @include('estudiantes.tabs.dual')
                         </div>
-
-                        <div class="tab-pane fade {{ $activeTab === 'candidatos' ? 'show active' : '' }}" id="candidatos"
-                            role="tabpanel">
-                            @include('estudiantes.tabs.candidatos')
-                        </div>
-
                         @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+                            <div class="tab-pane fade {{ $activeTab === 'candidatos' ? 'show active' : '' }}"
+                                id="candidatos" role="tabpanel">
+                                @include('estudiantes.tabs.candidatos')
+                            </div>
+
+
                             <div class="tab-pane fade {{ $activeTab === 'eliminados' ? 'show active' : '' }}"
                                 id="eliminados" role="tabpanel">
                                 @include('estudiantes.tabs.eliminados')

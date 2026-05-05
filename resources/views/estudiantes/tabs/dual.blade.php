@@ -106,7 +106,7 @@
                                 {{ $estudiante->apellidoM }}
                             </td>
 
-                            <td>{{ $estudiante->carrera->nombre }}</td>
+                            <td>{{ $estudiante->carrera->nombre ?? 'N' }}</td>
                             <td>{{ $estudiante->cuatrimestre }}</td>
 
                             <td class="text-center">

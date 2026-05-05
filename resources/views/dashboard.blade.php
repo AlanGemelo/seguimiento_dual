@@ -62,8 +62,25 @@
                                 </div>
 
                                 <div class="ms-3">
-                                    <h6 class="text-muted mb-1">Estudiantes</h6>
-                                    <h3 class="fw-bold mb-0">{{ $estudiantes }}</h3>
+                                    <h6 class="text-muted mb-1">Estudiantes Duales</h6>
+                                    <h3 class="fw-bold mb-0">{{ $duales }}</h3>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body d-flex align-items-center">
+
+                                <div class="stat-icon bg-secondary">
+                                    <i class="mdi mdi-account-school"></i>
+                                </div>
+
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1">Candiatos a Dual</h6>
+                                    <h3 class="fw-bold mb-0">{{ $candidatos }}</h3>
                                 </div>
 
                             </div>

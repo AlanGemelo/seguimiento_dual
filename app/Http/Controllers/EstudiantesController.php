@@ -960,9 +960,20 @@ class EstudiantesController extends Controller
      */
     public function showJson($id): JsonResponse
     {
-        $estudiante = Estudiantes::withTrashed()->where('matricula', $id)->get();
+        $user = auth()->user();
 
-        return response()->json($estudiante);
+        $estudiante = Estudiantes::withTrashed()->where('matricula', $id)->first();
+
+        if ($user->rol_id !== 1 && $user->rol_id !== 4 && $user->matricula !== $id) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
+
+        return response()->json([
+            'name' => $estudiante->name,
+            'matricula' => $estudiante->matricula,
+            'apellidoP' => $estudiante->apellidoP,
+            'apellidoM' => $estudiante->apellidoM,
+        ], 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     /**

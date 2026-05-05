@@ -346,8 +346,8 @@
                 url: `/estudiantes/${matricula}/json`,
                 type: 'GET',
                 success: function(response) {
-                    if (response && response.length > 0) {
-                        callback(response[0]);
+                    if (response) {
+                        callback(response);
                     } else {
                         console.error('Estudiante no encontrado');
                     }

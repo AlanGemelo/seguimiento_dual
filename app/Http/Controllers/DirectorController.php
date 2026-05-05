@@ -55,7 +55,7 @@ class DirectorController extends Controller
         $username = preg_replace('/\s+/', '', $request->email);
         $username = str_replace('@utvtol.edu.mx', '', $username);
 
-        $emailCompleto = $username.'@utvtol.edu.mx';
+        $emailCompleto = $username . '@utvtol.edu.mx';
 
         $request->merge(['email' => $emailCompleto]);
 
@@ -132,7 +132,12 @@ class DirectorController extends Controller
     public function showJson($hash): JsonResponse
     {
         try {
+            $user = auth()->user();
             $decoded = Hashids::decode($hash);
+
+            if ($user->rol_id !== 1) {
+                return response()->json(['message' => 'No autorizado'], 403);
+            }
 
             if (empty($decoded)) {
                 return response()->json(['error' => 'ID invalido'], 404);
@@ -144,11 +149,14 @@ class DirectorController extends Controller
                 return response()->json(['error' => 'Director no encontrado'], 404);
             }
 
-            return response()->json($director);
-
+            return response()->json([
+                'nombre' => $director->nombre,
+                'apellidoP' => $director->apellidoP,
+                'apellidoM' => $director->apellidoM,
+            ], 202, [], JSON_UNESCAPED_UNICODE);
         } catch (\Exception $e) {
             // Captura cualquier error interno
-            return response()->json(['error' => 'Error interno: '.$e->getMessage()], 500);
+            return response()->json(['error' => 'Error interno: ' . $e->getMessage()], 500);
         }
     }
 

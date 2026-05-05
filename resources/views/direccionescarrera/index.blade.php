@@ -172,6 +172,8 @@
         // Obtener info de la Dirección de Carrera
         function getDireccionCarreraInfo(hashId, callback) {
             const url = `${BASE_URL}/direcciones/${hashId}/json`;
+            console.log(hashId);
+
             $.ajax({
                 url: url,
                 type: 'GET',

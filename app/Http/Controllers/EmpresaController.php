@@ -501,6 +501,11 @@ class EmpresaController extends Controller
     public function showJson($id): JsonResponse
     {
         $decoded = Hashids::decode($id);
+        $user = Auth()->user();
+
+        if ($user->rol_id !== 1 && $user->rol_id !== 4) {
+            return response()->json(['message' => 'No autorizado', 403]);
+        }
 
         if (empty($decoded)) {
             return response()->json(['error' => 'ID inválido'], 404);
@@ -512,7 +517,7 @@ class EmpresaController extends Controller
 
         return response()->json([
             'nombre' => $empresa->nombre,
-        ]);
+        ], 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function downloadPDF(Empresa $empresa)

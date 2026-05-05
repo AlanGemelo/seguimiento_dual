@@ -78,8 +78,8 @@ class DireccionCarreraController extends Controller
             'direccionesInactivas',
             'searchDireccionCarrera',
             'searchDireccionesInactivas',
-            'activeTab'));
-
+            'activeTab'
+        ));
     }
 
     /**
@@ -109,7 +109,7 @@ class DireccionCarreraController extends Controller
             ]);
 
             // Combinar la parte inicial con el dominio
-            $validated['email'] = $validated['email_user'].'@utvtol.edu.mx';
+            $validated['email'] = $validated['email_user'] . '@utvtol.edu.mx';
 
             // Crear el registro
             $direccion = DireccionCarrera::create([
@@ -122,7 +122,6 @@ class DireccionCarreraController extends Controller
             return redirect()
                 ->route('direcciones.index')
                 ->with('success', 'Dirección académica creada correctamente');
-
         } catch (QueryException $e) {
             return redirect()
                 ->back()
@@ -198,7 +197,7 @@ class DireccionCarreraController extends Controller
         ]);
 
         // Combinar email
-        $validated['email'] = $validated['email_user'].'@utvtol.edu.mx';
+        $validated['email'] = $validated['email_user'] . '@utvtol.edu.mx';
 
         $direccion->update([
             'name' => $validated['name'] ?? null,
@@ -237,7 +236,6 @@ class DireccionCarreraController extends Controller
             return redirect()
                 ->route('direcciones.index', ['tab' => 'direcciones_carrera_inactivas'])
                 ->with('success', 'Dirección académica eliminada correctamente');
-
         } catch (QueryException $e) {
             if ($e->errorInfo[1] == 1451) {
                 return redirect()
@@ -268,7 +266,6 @@ class DireccionCarreraController extends Controller
             return redirect()
                 ->route('direcciones.index', ['tab' => 'direcciones_carrera_inactivas'])
                 ->with('success', 'Registro eliminado permanentemente');
-
         } catch (QueryException $e) {
             if ($e->errorInfo[1] == 1451) {
                 return redirect()
@@ -284,7 +281,12 @@ class DireccionCarreraController extends Controller
 
     public function showJson($id): JsonResponse
     {
+        $user = auth()->user();
         $decoded = Hashids::decode($id);
+
+        if ($user->rol_id !== 4 && $user->rol_id !== 1) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
 
         if (empty($decoded)) {
             return response()->json(['error' => 'ID inválido'], 404);
@@ -300,8 +302,7 @@ class DireccionCarreraController extends Controller
         return response()->json([
             'id' => $id,
             'name' => $direccion->name,
-            'deleted' => $direccion->trashed(), // Indica si está softdeleted
-        ]);
+        ], 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function reactivate($id)
@@ -334,9 +335,8 @@ class DireccionCarreraController extends Controller
             return redirect()
                 ->route('direcciones.index', ['tab' => 'direcciones_carrera'])
                 ->with('success', "La dirección de carrera '{$direccion->name}' ha sido restaurada correctamente.");
-
         } catch (\Exception $e) {
-            \Log::error('Error al reactivar dirección de carrera: '.$e->getMessage());
+            \Log::error('Error al reactivar dirección de carrera: ' . $e->getMessage());
 
             return redirect()
                 ->route('direcciones.index', ['tab' => 'direcciones_carrera_inactivas'])

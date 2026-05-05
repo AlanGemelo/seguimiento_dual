@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Nette\Schema\Message;
 use Vinkla\Hashids\Facades\Hashids;
 
 class MentorAcademicoController extends Controller
@@ -214,9 +215,18 @@ class MentorAcademicoController extends Controller
 
     public function showJson($id): JsonResponse
     {
+        $user = auth()->user();
         $mentores = User::withTrashed()->find($id);
 
-        return response()->json($mentores);
+        if ($user->rol_id !== 1 && $user->rol_id !== 4 && $user->id !== $id) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
+        return response()->json([
+            'titulo' => $mentores->titulo,
+            'name' => $mentores->name,
+            'apellidoP' => $mentores->apellidoP,
+            'apellidoM' => $mentores->apellidoM,
+        ], 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function restoreMentor($id): RedirectResponse

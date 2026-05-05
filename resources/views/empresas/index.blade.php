@@ -185,6 +185,7 @@
         // Obtener info de la unidad economica
         function getUnidadEconomicaInfo(hashId, callback) {
             const url = `${BASE_URL}/empresas/${hashId}/json`;
+
             $.ajax({
                 url: url,
                 type: 'GET',

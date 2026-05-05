@@ -126,30 +126,29 @@ class HomeController extends Controller
 
         $hoy = now();
 
-        // query base de estudiantes visibles en dashboard
-        $estudiantesQuery = Estudiantes::with('academico', 'asesorin')
-            ->where('activo', true);
+        $baseQuery = Estudiantes::whereNull('deleted_at');
 
-        // si el usuario es mentor académico, solo ve sus alumnos
+        //Filtros por rol 
         if ($user->rol_id == 2) {
-
-            $estudiantesQuery->where('academico_id', $user->id);
+            $baseQuery->where('academico_id', $user->id);
         } else {
-
-            // otros roles ven estudiantes filtrados por dirección
-            $estudiantesQuery->where('direccion_id', $direccion_id);
+            $baseQuery->where('direccion_id', $direccion_id);
         }
 
-        // total de estudiantes según el filtro aplicado
-        $estudiantes = (clone $estudiantesQuery)->count();
+        // 
+        $duales = (clone $baseQuery)->where('activo', 1)->count();
 
-        // mentores filtrados por dirección (sin cambio de lógica)
+        $candidatos = (clone $baseQuery)->where('activo', 0)->count();
+
+        $estudiantes = (clone $baseQuery)->count();
+
+        // mentores filtrados por dirección 
         $mentores = MentorIndustrial::whereHas('estudiantes', function ($query) use ($direccion_id) {
             $query->where('direccion_id', $direccion_id);
         })->count();
 
         // estudiantes próximos a vencer (15 días)
-        $registrosEstudiantes = (clone $estudiantesQuery)
+        $registrosEstudiantes = (clone $baseQuery)
             ->whereDate('fin_dual', '<=', $hoy->copy()->addDays(15))
             ->get();
 
@@ -164,7 +163,8 @@ class HomeController extends Controller
         $hayAlertas = $registrosEstudiantes->isNotEmpty() || $registrosConvenio->isNotEmpty();
 
         return view('dashboard', compact(
-            'estudiantes',
+            'duales',
+            'candidatos',
             'mentores',
             'registrosEstudiantes',
             'registrosConvenio',

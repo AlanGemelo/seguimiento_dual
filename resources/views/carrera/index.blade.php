@@ -173,6 +173,7 @@
 
             const url = `${BASE_URL}/carreras/${hashId}/json`;
 
+
             $.ajax({
                 url: url,
                 type: 'GET',

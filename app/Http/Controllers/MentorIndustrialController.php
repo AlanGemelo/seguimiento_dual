@@ -120,7 +120,7 @@ class MentorIndustrialController extends Controller
             return redirect()->back()->with('error', 'Mentor no encontrado.');
         } catch (\Throwable $e) {
             // Log del error para depuración
-            \Log::error('Error al actualizar mentor: '.$e->getMessage());
+            \Log::error('Error al actualizar mentor: ' . $e->getMessage());
 
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el mentor.');
         }
@@ -155,19 +155,29 @@ class MentorIndustrialController extends Controller
                 return redirect()->route('mentores.index')->with('warning', 'No se puede eliminar el Mentor industrial. Primero elimina los estudiantes asociados');
             }
 
-            return redirect()->route('mentores.index')->with('error', 'Error al eliminar el Mentor industrial: '.$e->getMessage());
+            return redirect()->route('mentores.index')->with('error', 'Error al eliminar el Mentor industrial: ' . $e->getMessage());
         }
     }
 
     public function showJson($id): JsonResponse
     {
+        $user = auth()->user();
+
+        if ($user->rol_id !== 4 && $user->rol_id !== 1) {
+            return response()->json(['message' => 'No autorizado', 403]);
+        }
         // Descodificacion del ID
         $decoded = Hashids::decode($id);
         $id = $decoded[0] ?? null;
 
         $mentor = MentorIndustrial::find($id);
 
-        return response()->json($mentor);
+        return response()->json([
+            'titulo' => $mentor->titulo,
+            'name' => $mentor->name,
+            'apellidoP' => $mentor->apellidoP,
+            'apellidoM' => $mentor->apellidoM,
+        ], 202, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function showForEmpresa($id): JsonResponse

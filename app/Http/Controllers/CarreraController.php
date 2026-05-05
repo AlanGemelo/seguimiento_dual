@@ -49,7 +49,7 @@ class CarreraController extends Controller
 
         if (! empty($search_carreras)) {
             $query->where(function ($q) use ($search_carreras) {
-                $q->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($search_carreras).'%']);
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_carreras) . '%']);
             });
         }
 
@@ -70,7 +70,7 @@ class CarreraController extends Controller
 
         if (! empty($search_eliminados)) {
             $deletedQuery->where(function ($q) use ($search_eliminados) {
-                $q->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($search_eliminados).'%']);
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_eliminados) . '%']);
             });
         }
 
@@ -124,10 +124,6 @@ class CarreraController extends Controller
         // Decodificar hash
         $decoded = Hashids::decode($id);
 
-        if (empty($decoded)) {
-            return response()->json(['error' => 'Programa educativo no encontrado'], 404);
-        }
-
         $id = $decoded[0];
         try {
             $carrera = Carrera::find($id);
@@ -146,7 +142,7 @@ class CarreraController extends Controller
 
             // Otro tipo de error, puedes manejarlo según tus necesidades
             return redirect()->route('carreras.index')
-                ->with('statusError', 'Error al eliminar la carrera: '.$e->getMessage());
+                ->with('statusError', 'Error al eliminar la carrera: ' . $e->getMessage());
         }
     }
 
@@ -174,7 +170,6 @@ class CarreraController extends Controller
 
             return redirect()->route('carreras.index', ['tab' => 'programas_inactivos'])
                 ->with('success', 'Programa Educativo Eliminado Correctamente.');
-
         } catch (\Illuminate\Database\QueryException $e) {
             $errorCode = $e->errorInfo[1];
 
@@ -184,14 +179,21 @@ class CarreraController extends Controller
             }
 
             return redirect()->route('carreras.index', ['tab' => 'programas_inactivos'])
-                ->with('error', 'Error al eliminar la carrera: '.$e->getMessage());
+                ->with('error', 'Error al eliminar la carrera: ' . $e->getMessage());
         }
     }
 
     public function showJson($hashId): JsonResponse
     {
+
+        $user = auth()->user();
+
         // Decodificar hash
         $decoded = Hashids::decode($hashId);
+
+        if ($user->rol_id !== 4 && $user->rol_id !== 1) {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
 
         if (empty($decoded)) {
             return response()->json(['error' => 'Programa educativo no encontrado'], 404);
@@ -206,7 +208,10 @@ class CarreraController extends Controller
             return response()->json(['error' => 'Programa educativo no encontrado'], 404);
         }
 
-        return response()->json($carrera);
+        return response()->json([
+            'grado_academico' => $carrera->grado_academico,
+            'nombre' => $carrera->nombre,
+        ], 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function show($id): View
@@ -281,10 +286,9 @@ class CarreraController extends Controller
 
             return redirect()->route('carreras.index', ['tab' => 'programas_inactivos'])
                 ->with('success', 'Programa Academico Restaurado.');
-
         } catch (\Exception $e) {
             return redirect()->route('carreras.index', ['tab' => 'programas_inactivos'])
-                ->with('error', 'Hubo un problema al restaurar el Programa Academico: '.$e->getMessage());
+                ->with('error', 'Hubo un problema al restaurar el Programa Academico: ' . $e->getMessage());
         }
     }
 }

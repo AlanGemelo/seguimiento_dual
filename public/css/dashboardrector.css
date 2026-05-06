@@ -88,3 +88,13 @@
   font-style: italic;
   font-size: 13px;
 }
+
+/* TABLET VERSION */
+@media (min-width: 768px) and (max-width: 1024px) {}
+
+/*  MOBILE VERSION  */
+@media (max-width: 768px) {
+  .stat-card {
+    margin-bottom: 10px;
+  }
+}

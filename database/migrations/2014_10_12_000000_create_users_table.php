@@ -29,6 +29,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
+            $table->boolean('force_password_change')->default(false);
         });
     }
 

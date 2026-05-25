@@ -24,10 +24,10 @@ Route::get('/', [HomeController::class, 'welcome']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // 1. Ruta principal (El controlador decidirá qué vista mostrar según el rol)
+    // Ruta principal (El controlador decidirá qué vista mostrar según el rol)
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
-    // 2. Rutas para el flujo del SuperAdmin
+    // Rutas para el flujo del SuperAdmin
     Route::get('/dashboard/seleccionar-carrera/{id}', [HomeController::class, 'seleccionarCarrera'])->name('direcciones.select');
     Route::get('/dashboard/reset-carrera', [HomeController::class, 'resetearCarrera'])->name('direcciones.reset');
 
@@ -35,6 +35,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Rutas para el modulo de administracion
+    Route::get('/administracion', [AdministracionController::class, 'index'])->name('administracion.index');
+    Route::post('/administracion/reset-password', [AdministracionController::class, 'resetPassword'])->name('administracion.password.reset');
+    Route::get('/administracion/usuario/buscar', [AdministracionController::class, 'buscarPorEmail']);
 
     // Rutas para el módulo estudiantes
     Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
@@ -241,6 +246,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             abort(404); // Si el archivo no existe, mostrar error 404
         }
     });
+
+    // Centro de ayuda
+    Route::get('/centro-ayuda', function () {
+        return view('centro_ayuda.index');
+    })->name('centro_ayuda.index');
 });
 
 require __DIR__ . '/auth.php';

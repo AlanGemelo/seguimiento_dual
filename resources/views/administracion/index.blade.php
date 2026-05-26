@@ -130,50 +130,33 @@ $activeTab = session('activeTab', 'usuarios');
 @section('scripts')
 <script>
     document.getElementById('btnBuscar').addEventListener('click', async () => {
-
         const email = document
             .getElementById('search-email')
             .value;
-
         if (!email) {
             alert('Ingresa un correo');
             return;
         }
-
         try {
-
             const res = await fetch(
                 `/administracion/usuario/buscar?email=${email}`
             );
-
             const data = await res.json();
-
             if (!data.success) {
-
                 alert(data.message);
-
                 return;
             }
-
-            // LLENAR CAMPOS
             document.getElementById('full-name')
                 .innerText = data.data.nombre;
-
             document.getElementById('role')
                 .innerText = data.data.rol;
-
             document.getElementById('user-email')
                 .innerText = data.data.email;
-
             document.getElementById('status')
                 .innerText = data.data.estado;
-
         } catch (error) {
-
             console.error(error);
-
             alert('Error al buscar usuario');
-
         }
 
     });

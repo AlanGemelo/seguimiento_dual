@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Vinkla\Hashids\Facades\Hashids;
+use  Illuminate\Session\Store;
 
 class EstudiantesController extends Controller
 {
@@ -247,7 +248,7 @@ class EstudiantesController extends Controller
                 $q->where('direccion_id', $direccionId);
             })->get();
         }
-
+        
         return view('estudiantes.create', compact(
             'empresas',
             'academicos',
@@ -463,7 +464,8 @@ class EstudiantesController extends Controller
             'user_id' => $user->id,
         ]);
 
-        return redirect()->route('estudiantes.index')->with('status', 'Estudiante creado');
+        return redirect()->route('estudiantes.index',['tab'=>'dual'])
+        ->with('success', 'Alumno dual creado exitosamente');
     }
 
     /**
@@ -535,7 +537,8 @@ class EstudiantesController extends Controller
             'user_id' => $user->id,
         ]);
 
-        return redirect()->route('estudiantes.index')->with('status', 'Estudiante creado');
+        return redirect()->route('estudiantes.index',['tab'=>'candidatos'])
+        ->with('success', 'Candidato dual creado exitosamente');
     }
 
     /**
@@ -580,7 +583,6 @@ class EstudiantesController extends Controller
      */
     public function edit($id)
     {
-
         $user = Auth::user();
         $direccionId = session('direccion')->id;
         $id = Hashids::decode($id);
@@ -815,7 +817,8 @@ class EstudiantesController extends Controller
             ]);
         }
 
-        return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');
+        return redirect()->route('estudiantes.index',['tab'=>'dual'])
+        ->with('success', 'Estudiante actualizado correctamente');
     }
 
     /**
@@ -934,7 +937,8 @@ class EstudiantesController extends Controller
             ]
         );
 
-        return redirect()->route('estudiantes.index')->with('status', 'Estudiante actualizado');
+        return redirect()->route('estudiantes.index',['tab'=>'dual'])
+        ->with('success', 'Estudiante actualizado correctamente');
     }
 
     /**

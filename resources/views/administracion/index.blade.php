@@ -129,36 +129,58 @@ $activeTab = session('activeTab', 'usuarios');
 
 @section('scripts')
 <script>
-    document.getElementById('btnBuscar').addEventListener('click', async () => {
-        const email = document
-            .getElementById('search-email')
-            .value;
+    let searching = false;
+
+    document.getElementById('btnBuscar').addEventListener('click', buscarUsuario);
+
+    document.getElementById('search-email').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            buscarUsuario();
+        }
+    });
+
+    async function buscarUsuario() {
+        if (searching) return;
+
+        const email = document.getElementById('search-email').value.trim();
+
         if (!email) {
             alert('Ingresa un correo');
             return;
         }
+
+        searching = true;
+
         try {
             const res = await fetch(
-                `/administracion/usuario/buscar?email=${email}`
+                `/administracion/usuario/buscar?email=${encodeURIComponent(email)}`
             );
+
             const data = await res.json();
-            if (!data.success) {
-                alert(data.message);
+
+            if (!res.ok || !data.success) {
+                alert(data.message || 'Usuario no encontrado');
+                limpiarDatos();
                 return;
             }
-            document.getElementById('full-name')
-                .innerText = data.data.nombre;
-            document.getElementById('role')
-                .innerText = data.data.rol;
-            document.getElementById('user-email')
-                .innerText = data.data.email;
-            document.getElementById('status')
-                .innerText = data.data.estado;
+
+            document.getElementById('full-name').innerText = data.data.nombre;
+            document.getElementById('role').innerText = data.data.rol;
+            document.getElementById('user-email').innerText = data.data.email;
+
         } catch (error) {
             console.error(error);
-            alert('Error al buscar usuario');
+            alert('Error de conexión');
+        } finally {
+            searching = false;
         }
+    }
 
-    });
+    function limpiarDatos() {
+        document.getElementById('full-name').innerText = '-';
+        document.getElementById('role').innerText = '-';
+        document.getElementById('user-email').innerText = '-';
+    }
 </script>
 @endsection

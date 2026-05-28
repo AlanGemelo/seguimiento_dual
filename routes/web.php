@@ -31,11 +31,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/seleccionar-carrera/{id}', [HomeController::class, 'seleccionarCarrera'])->name('direcciones.select');
     Route::get('/dashboard/reset-carrera', [HomeController::class, 'resetearCarrera'])->name('direcciones.reset');
 
+    //Rutas para el perfil de usuario
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
+    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    
     // Rutas para el modulo de administracion
     Route::get('/administracion', [AdministracionController::class, 'index'])->name('administracion.index');
     Route::post('/administracion/reset-password', [AdministracionController::class, 'resetPassword'])->name('administracion.password.reset');

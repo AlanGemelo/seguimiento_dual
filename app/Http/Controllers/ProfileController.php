@@ -2,68 +2,101 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Perfil público
      */
     public function index(Request $request): View
     {
         return view('profile.index', [
             'user' => $request->user(),
+            'section' => 'perfil'
         ]);
     }
 
-    public function edit(Request $request): View
+    /**
+     * Vista cambiar contraseña
+     */
+    public function password(Request $request): View
     {
         return view('profile.index', [
             'user' => $request->user(),
+            'section' => 'password'
         ]);
     }
 
     /**
-     * Update the user's profile information.
+     * Actualizar perfil
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        try {
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'apellidoP' => ['required', 'string', 'max:255'],
+                'apellidoM' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email'],
+            ]);
+
+            $request->user()->update([
+                'name' => $request->name,
+                'apellidoP' => $request->apellidoP,
+                'apellidoM' => $request->apellidoM,
+                'email' => $request->email,
+            ]);
+
+            return back()->with('success', 'Perfil actualizado correctamente.');
+        } catch (\Exception $e) {
+
+            Log::error('Error actualizando perfil: ' . $e->getMessage());
+
+            return back()->with('error', 'Ocurrió un error al actualizar el perfil.');
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.index')
-            ->with('success', 'Contraseña actualizada correctamente.')
-            ->with('activeTab', 'password');
     }
-
     /**
-     * Delete the user's account.
+     * Actualizar contraseña
      */
-    public function destroy(Request $request): RedirectResponse
+    public function updatePassword(Request $request)
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current-password'],
-        ]);
+        try {
 
-        $user = $request->user();
+            $request->validate([
+                'current_password' => ['required', 'current_password'],
+                'password' => [
+                    'required',
+                    'confirmed',
+                    Password::min(8)
+                        ->mixedCase()
+                        ->numbers(),
+                ],
+            ], [
+                'current_password.current_password' => 'La contraseña actual es incorrecta.',
+                'password.confirmed' => 'Las contraseñas no coinciden.',
+            ]);
 
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+           
+            $request->user()->update([
+                'password' => Hash::make($request->password),
+            ]);
+            return back()->with('success', 'Contraseña actualizada correctamente');
+           
+        } catch (ValidationException $e) {
+           
+            throw $e;
+              return back()->with('warning', 'Datos inválidos. Revisa la información ingresada');
+           
+        } catch (Exception $e) {
+             return back()->with('error', 'Ocurrió un error al actualizar la contraseña');
+           
+        }
     }
 }

@@ -8,7 +8,7 @@
             Lista de Candidatos a Dual
         </h6>
 
-        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+        @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 2 || Auth::user()->rol_id === 4)
             <div class="row g-2">
                 <div class="col-auto">
                     <x-buttons.add-button url="{{ route('estudiantes.crearC') }}"

@@ -11,22 +11,27 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class reporteGeneral implements FromCollection, WithHeadings, WithStyles, WithColumnWidths
 {
+    protected $user;
+    protected $direccionId;
+
+    public function __construct($user, $direccionId = null)
+    {
+        $this->user = $user;
+        $this->direccionId = $direccionId;
+    }
     /**
      * Recupera la colección de datos para el reporte.
      */
     public function collection()
     {
-        $data = DB::select("
+        // Consulta base sin WHERE ni ORDER BY
+        $query = "
             SELECT
                 e.matricula AS Matricula,
-
                 IFNULL(CONCAT(e.name, ' ', e.apellidoP, ' ', e.apellidoM), 'No disponible') AS Alumno,
-
                 IFNULL(c.nombre, 'No disponible') AS Nombre_Carrera,
-
                 IFNULL(e.inicio, 'No disponible') AS Fecha_Inicio,
                 IFNULL(e.fin, 'No disponible') AS Fecha_Termino,
-
                 CASE e.status
                     WHEN 0 THEN 'Primera vez'
                     WHEN 1 THEN 'Renovación Dual'
@@ -36,41 +41,53 @@ class reporteGeneral implements FromCollection, WithHeadings, WithStyles, WithCo
                     WHEN 5 THEN 'Término del PE'
                     ELSE 'Desconocido'
                 END AS Estatus_Estudiante,
-
                 CASE 
                     WHEN e.beca = 0 THEN 'Sí'
                     WHEN e.beca = 1 THEN 'No'
                     ELSE 'No disponible'
                 END AS Beca,
-
                 CASE 
                     WHEN e.tipoBeca = 0 THEN 'Apoyo por Empresa'
                     WHEN e.tipoBeca = 1 THEN 'Beca Dual Comecyt'
                     ELSE 'No disponible'
                 END AS Tipo_Beca,
-
                 IFNULL(CONCAT(ma.name, ' ', ma.apellidoP, ' ', ma.apellidoM), 'No disponible') AS Mentor_Academico,
-
                 (
                     SELECT COUNT(*)
                     FROM estudiantes e2
                     WHERE e2.academico_id = e.academico_id
                 ) AS Num_Alumnos_Mentor,
-
                 IFNULL(emp.nombre, 'No disponible') AS Empresa,
-
                 IFNULL(CONCAT(mi.name, ' ', mi.apellidoP, ' ', mi.apellidoM), 'No disponible') AS Mentor_Industrial,
-
                 IFNULL(e.nombre_proyecto, 'No disponible') AS Proyecto
-
             FROM estudiantes e
             LEFT JOIN carreras c ON e.carrera_id = c.id
             LEFT JOIN users ma ON e.academico_id = ma.id AND ma.rol_id = 2
             LEFT JOIN empresas emp ON e.empresa_id = emp.id
             LEFT JOIN mentor_industrials mi ON e.asesorin_id = mi.id
+        ";
 
-            ORDER BY Alumno ASC;
-        ");
+        $filters = [];
+        $bindings = [];
+
+     
+        if ($this->user->rol_id == 2) {
+            $filters[] = "e.academico_id = :mentor_id";
+            $bindings['mentor_id'] = $this->user->id;
+        }
+
+        elseif ($this->user->rol_id == 3) {
+            $filters[] = "c.direccion_id = :direccion_id";
+            $bindings['direccion_id'] = $this->direccionId;
+        }
+    
+        if (count($filters) > 0) {
+            $query .= " WHERE " . implode(' AND ', $filters);
+        }
+
+        $query .= " ORDER BY Alumno ASC;";
+
+        $data = DB::select($query, $bindings);
 
         return collect($data);
     }

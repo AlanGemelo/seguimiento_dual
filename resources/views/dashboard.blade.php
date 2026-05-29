@@ -155,32 +155,24 @@
                     </div>
 
                 </div>
-
-
+                @endif
 
                 <div class="col-md-4">
-
                     <div class="card action-card shadow-sm border-0 h-100">
                         <div class="card-body">
-
                             <h5 class="fw-bold mb-3">
                                 <i class="mdi mdi-account-plus text-primary"></i>
-                                Registrar Estudiante
+                                Registrar un Candidato
                             </h5>
-
                             <p class="text-muted small">
-                                Agregar nuevos estudiantes al sistema de educación dual.
+                                Agregar nuevos candidatos al sistema de educación dual.
                             </p>
-
-                            <a href="{{ route('estudiantes.create') }}" class="btn btn-primary btn-sm">
+                            <a href="{{ route('estudiantes.crearC') }}" class="btn btn-primary btn-sm">
                                 Registrar Estudiante
                             </a>
-
                         </div>
                     </div>
-
                 </div>
-                @endif
                 <div class="col-md-4">
                     <div class="card action-card shadow-sm border-0 h-100">
                         <div class="card-body">
@@ -200,7 +192,7 @@
 
             </div>
 
-            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+            @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4 || Auth::user()->rol_id === 2)
             <div class="card shadow-sm border-0">
                 <div class="card-body">
                     <h5 class="fw-bold mb-3">
@@ -257,7 +249,7 @@
                         </a>
                     </div>
                 </div>
-
+                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                 <!-- Administración -->
                 <div class="card sidebar-widget shadow-sm mb-3 border-0">
                     <div class="card-body">
@@ -278,7 +270,7 @@
 
                     </div>
                 </div>
-
+                @endif
                 <div class="card sidebar-widget shadow-sm mb-3">
                     <div class="card-body">
 
@@ -288,12 +280,11 @@
                         </h6>
 
                         <blockquote class="small mb-0">
-                            “La educación es el arma más poderosa para cambiar el mundo.”
+                            {{ $fraseAleatoria }}
                         </blockquote>
 
                     </div>
                 </div>
-
 
                 <div class="card sidebar-widget shadow-sm mb-3">
                     <div class="card-body">
@@ -326,15 +317,9 @@
 
                             <li>{{ $registrosEstudiantes->count() }} estudiantes finalizan dual</li>
 
-                            <li>Actualizar mentores industriales</li>
-
                         </ul>
-
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>

@@ -20,10 +20,13 @@ class AdministracionController extends Controller
     {
         $this->middleware('admin');
 
-        // Usa el middleware anónimo para capturar al usuario autenticado
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::user();
 
+            $this->user = Auth::user();
+            $user = Auth::user();
+            if (!$user || !in_array($user->rol_id, [1, 4])) {
+                abort(403);
+            }
             return $next($request);
         });
     }

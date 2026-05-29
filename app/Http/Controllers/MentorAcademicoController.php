@@ -171,20 +171,23 @@ class MentorAcademicoController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
+        $mentor = User::findOrFail($id);
+
         $request->validate([
             'titulo' => ['string', 'max:255'],
             'name' => ['min:3', 'string', 'max:255'],
             'apellidoP' => ['string', 'min:3', 'max:255'],
             'apellidoM' => ['string', 'min:3', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users,email,' . $mentor->id
+            ],
             'direccion_id' => ['required', 'integer'],
         ]);
 
-        $mentor = User::find($id);
-        if ($request->email !== $mentor->email) {
-            $request->validate(['email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]]);
-            $mentor->update(['email' => $request->email], $request->all());
-        }
         $mentor->update($request->all());
 
         return redirect()->route('academicos.index');

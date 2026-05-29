@@ -384,10 +384,15 @@ class EstadisticaController extends Controller
 
     public function reporteGeneral()
     {
-        $fecha = date('Y-m-d_H-i-s');
-        $direccionId = session('direccion')->id;
+        $user = auth()->user();
+        $fecha = now()->format('Y-m-d_H-i-s');
 
-        return Excel::download(new reporteGeneral, "reporte_general_dual_{$fecha}_{$direccionId}.xlsx");
+        $direccionId = session('direccion_id'); // mejor que session('direccion')
+
+        return Excel::download(
+            new reporteGeneral($user, $direccionId),
+            "reporte_dual_{$fecha}.xlsx"
+        );
     }
 
     public function filtrosAvanzados(Request $request)

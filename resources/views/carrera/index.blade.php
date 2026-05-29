@@ -15,7 +15,7 @@
                     <h5 class="card-title mb-0">Gestión de Programas Educativos</h5>
                 </div>
 
-                {{-- Tabs --}}
+                {{-- Tabs --}} 
                 <div class="card-body">
 
                     {{-- Alertas generales --}}

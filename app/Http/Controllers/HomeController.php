@@ -23,6 +23,8 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $hoy = now();
+        $frases = config('frases');
+        $fraseAleatoria = $frases[array_rand($frases)];
 
         switch ($user->rol_id) {
             case 1: // SUPERADMIN
@@ -53,7 +55,8 @@ class HomeController extends Controller
                     'mentores',
                     'registrosEstudiantes',
                     'registrosConvenio',
-                    'hayAlertas'
+                    'hayAlertas',
+                    'fraseAleatoria'
                 ));
 
             case 3: // ESTUDIANTE
@@ -79,13 +82,14 @@ class HomeController extends Controller
                     'estudiante',
                     'becas',
                     'tipoBeca',
-                    'usaPasswordPorDefecto'
+                    'usaPasswordPorDefecto',
+                    'fraseAleatoria'
                 ));
 
             case 4: // DIRECTOR/TUTOR
             default:
                 // Se carga el dashboard usando la carrera que el director tiene en la base de datos
-                return $this->cargarDashboardCarrera($user->direccion_id, $hoy);
+                return $this->cargarDashboardCarrera($user->direccion_id, $hoy, $fraseAleatoria);
         }
     }
 
@@ -116,6 +120,10 @@ class HomeController extends Controller
 
     private function cargarDashboardCarrera($direccion_id, $hoy): View
     {
+
+        $frases = config('frases');
+        $fraseAleatoria = $frases[array_rand($frases)];
+
         $direccion = DireccionCarrera::find($direccion_id);
         session()->put('direccion', $direccion ?? '');
 
@@ -130,7 +138,8 @@ class HomeController extends Controller
 
         //Filtros por rol 
         if ($user->rol_id == 2) {
-            $baseQuery->where('academico_id', $user->id);
+            // quitar este filtro o ajustarlo
+            $baseQuery->where('direccion_id', $user->direccion_id);
         } else {
             $baseQuery->where('direccion_id', $direccion_id);
         }
@@ -169,7 +178,8 @@ class HomeController extends Controller
             'registrosEstudiantes',
             'registrosConvenio',
             'hayAlertas',
-            'usaPasswordPorDefecto'
+            'usaPasswordPorDefecto',
+            'fraseAleatoria'
         ));
     }
 }

@@ -95,15 +95,10 @@ class AdministracionController extends Controller
 
         // CONTRASEÑA TEMPORAL
         $tempPassword = 'DUAL-' . strtoupper(Str::random(6));
-
         // GUARDAR
         $user->password = Hash::make($tempPassword);
-
-        // OPCIONAL
         $user->force_password_change = true;
-
         $user->save();
-
         return back()
             ->with('success', 'Contraseña restablecida correctamente.')
             ->with('temp_password', $tempPassword)

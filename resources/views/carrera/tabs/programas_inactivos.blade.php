@@ -14,7 +14,7 @@
 
     <div class="col-md-6 mb-3">
         <form method="GET" action="{{ route('empresas.index') }}">
-            <input type="hidden" name="tab" value="bajas_temporales">
+            <input type="hidden" name="tab" value="programas_inactivos">
 
             <div class="input-group">
                 <!-- Input de búsqueda -->
@@ -30,7 +30,7 @@
 
                 <!-- Botón para limpiar búsqueda -->
                 @if (!empty($search_eliminados))
-                    <a href="{{ route('empresas.index', ['tab' => 'bajas_temporales']) }}"
+                    <a href="{{ route('empresas.index', ['tab' => 'programas_inactivos']) }}"
                         class="btn btn-outline-secondary d-flex align-items-center"
                         style="gap: 5px; height: 40px; font-weight: 500; background: #f4b400; color: #2e2e2e;""
                         title="Limpiar búsqueda">

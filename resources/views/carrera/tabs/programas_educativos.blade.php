@@ -17,7 +17,7 @@
     {{-- Buscador --}}
     <div class="col-md-6 mb-3">
         <form method="GET" action="{{ route('carreras.index') }}">
-            <input type="hidden" name="tab" value="unidades_registradas">
+            <input type="hidden" name="tab" value="programas_educativos">
 
             <div class="input-group">
                 <input type="text" name="search_carreras" class="form-control" style="height: 40px;"
@@ -31,7 +31,7 @@
 
                 @if (!empty($search_carreras))
                     <!-- Botón para limpiar búsqueda -->
-                    <a href="{{ route('carreras.index', ['tab' => 'unidades_registradas']) }}"
+                    <a href="{{ route('carreras.index', ['tab' => 'programas_educativos']) }}"
                         class="btn btn-outline-secondary d-flex align-items-center"
                         style="gap: 5px; height: 40px; font-weight: 500; background: #f4b400; color: #2e2e2e;"
                         title="Limpiar búsqueda">

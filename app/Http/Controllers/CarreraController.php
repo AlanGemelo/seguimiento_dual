@@ -49,7 +49,8 @@ class CarreraController extends Controller
 
         if (! empty($search_carreras)) {
             $query->where(function ($q) use ($search_carreras) {
-                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_carreras) . '%']);
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_carreras) . '%'])
+                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%' . strtolower($search_carreras) . '%']);
             });
         }
 
@@ -70,7 +71,8 @@ class CarreraController extends Controller
 
         if (! empty($search_eliminados)) {
             $deletedQuery->where(function ($q) use ($search_eliminados) {
-                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_eliminados) . '%']);
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_eliminados) . '%'])
+                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%' . strtolower($search_eliminados) . '%']);
             });
         }
 
@@ -80,7 +82,12 @@ class CarreraController extends Controller
                 'search_eliminados' => $search_eliminados,
             ]);
 
-        return view('carrera.index', compact('carreras', 'carrerasDeleted'));
+        return view('carrera.index', compact(
+            'carreras',
+            'carrerasDeleted',
+            'search_carreras',
+            'search_eliminados'
+        ));
     }
 
     public function store(Request $request): RedirectResponse

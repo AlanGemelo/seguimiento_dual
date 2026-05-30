@@ -21,6 +21,8 @@
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}" />
     {{-- Page-specific CSS --}}
+     <link rel="stylesheet" href="{{ asset('css/main-content.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     @yield('styles')
     @stack('styles')
 </head>

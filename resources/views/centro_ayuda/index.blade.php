@@ -20,35 +20,36 @@
 
                 <li class="nav-item">
                     <button class="nav-link active"
-                            data-bs-toggle="tab"
-                            data-bs-target="#general">
+                        data-bs-toggle="tab"
+                        data-bs-target="#general">
                         General
                     </button>
                 </li>
 
                 <li class="nav-item">
                     <button class="nav-link"
-                            data-bs-toggle="tab"
-                            data-bs-target="#alumnos">
+                        data-bs-toggle="tab"
+                        data-bs-target="#alumnos">
                         Estudiantes
                     </button>
                 </li>
-
+                @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                 <li class="nav-item">
                     <button class="nav-link"
-                            data-bs-toggle="tab"
-                            data-bs-target="#empresas">
+                        data-bs-toggle="tab"
+                        data-bs-target="#empresas">
                         Empresas
                     </button>
                 </li>
+                @endif
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <button class="nav-link"
                             data-bs-toggle="tab"
                             data-bs-target="#usuarios">
                         Usuarios
                     </button>
-                </li>
+                </li> -->
 
             </ul>
 

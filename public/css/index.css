@@ -1,0 +1,71 @@
+.alert {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2px;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+}
+
+/* PRIMARY */
+.alert-primary {
+    color: #052c65;
+    background-color: #cfe2ff;
+    border-color: #9ec5fe;
+}
+
+/* SECONDARY */
+.alert-secondary {
+    color: #1f2328;
+    background-color: #e2e3e5;
+    border-color: #bfc2c5;
+}
+
+/* SUCCESS */
+.alert-success {
+    color: #0a3622;
+    background-color: #d1e7dd;
+    border-color: #75b798;
+}
+
+/* DANGER */
+.alert-danger {
+    color: #58151c;
+    background-color: #f8d7da;
+    border-color: #f1aeb5;
+}
+
+/* WARNING */
+.alert-warning {
+    color: #4d3800;
+    background-color: #fff3cd;
+    border-color: #ffda6a;
+}
+
+/* INFO */
+.alert-info {
+    color: #055160;
+    background-color: #cff4fc;
+    border-color: #6edff6;
+}
+
+/* LIGHT */
+.alert-light {
+    color: #343a40;
+    background-color: #fefefe;
+    border-color: #e9ecef;
+}
+
+/* DARK */
+.alert-dark {
+    color: #f8f9fa;
+    background-color: #212529;
+    border-color: #495057;
+}
+
+/* TABLET VERSION */
+@media (min-width: 768px) and (max-width: 1024px) {}
+
+/*  MOBILE VERSION  */
+@media (max-width: 767px) {}

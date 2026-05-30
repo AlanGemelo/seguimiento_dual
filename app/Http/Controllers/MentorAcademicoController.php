@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
-use Nette\Schema\Message;
 use Vinkla\Hashids\Facades\Hashids;
 
 class MentorAcademicoController extends Controller
@@ -26,6 +25,8 @@ class MentorAcademicoController extends Controller
 
         return redirect()->route('estudiantes.index')->with('message', 'Correo enviado correctamente');
     }
+
+   
 
     public function index(Request $request)
     {
@@ -103,41 +104,56 @@ class MentorAcademicoController extends Controller
 
     public function create(): View
     {
-        $direcciones = DireccionCarrera::all();
+        if (auth()->user()->rol_id == 1) {
+            $direcciones = DireccionCarrera::all();
+        } else {
+            $direcciones = DireccionCarrera::where('id', auth()->user()->direccion_id)->get();
+        }
 
         return view('mentoresacademicos.create', compact('direcciones'));
     }
 
     public function store(Request $request)
     {
-        $username = str_replace(['@utvtol.edu.mx', ' '], '', $request->email);
-        $emailCompleto = $username . '@utvtol.edu.mx';
-        $request->merge([
-            'email' => $emailCompleto,
-        ]);
+        try {
+            $username = str_replace(['@utvtol.edu.mx', ' '], '', $request->email);
+            $emailCompleto = $username . '@utvtol.edu.mx';
 
-        $request->validate([
-            'titulo' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'string', 'max:255'],
-            'apellidoP' => ['required', 'string', 'min:3', 'max:255'],
-            'apellidoM' => ['required', 'string', 'min:3', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'direccion_id' => ['required', 'integer'],
-        ]);
+            $request->merge([
+                'email' => $emailCompleto,
+            ]);
 
-        $user = User::create([
-            'titulo' => $request->titulo,
-            'name' => $request->name,
-            'apellidoP' => $request->apellidoP,
-            'apellidoM' => $request->apellidoM,
-            'email' => $request->email,
-            'password' => Hash::make('12345678'),
-            'rol_id' => 2,
-            'carrera_id' => 2,
-            'direccion_id' => $request->direccion_id,
-        ]);
+            $request->validate([
+                'titulo' => ['required', 'string', 'max:255'],
+                'name' => ['required', 'string', 'max:255'],
+                'apellidoP' => ['required', 'string', 'min:3', 'max:255'],
+                'apellidoM' => ['required', 'string', 'min:3', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'direccion_id' => ['required', 'integer'],
+            ]);
 
-        return redirect()->route('academicos.index')->with('message', 'Mentor Académico creado correctamente');
+            User::create([
+                'titulo' => $request->titulo,
+                'name' => $request->name,
+                'apellidoP' => $request->apellidoP,
+                'apellidoM' => $request->apellidoM,
+                'email' => $request->email,
+                'password' => Hash::make('12345678'),
+                'rol_id' => 2,
+                'carrera_id' => 2,
+                'direccion_id' => $request->direccion_id,
+            ]);
+
+            return redirect()
+                ->route('academicos.index')
+                ->with('success', 'Mentor Académico creado correctamente');
+        } catch (\Exception $e) {
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Ocurrió un error al crear el Mentor Académico.');
+        }
     }
 
     public function show($id): View

@@ -1,5 +1,5 @@
 @php
-    use RealRashid\SweetAlert\Facades\Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 @endphp
 
 <!DOCTYPE html>
@@ -11,7 +11,7 @@
 
     <title>
         @hasSection('title')
-            @yield('title') |
+        @yield('title') |
         @endif{{ config('app.name', 'Laravel') }}
     </title>
 
@@ -40,7 +40,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main-content.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     <style>
         .custom-loader {
             position: fixed;
@@ -151,7 +151,9 @@
 
     <!-- Para el ruteo-->
     <script>
-        window.BASE_URL = '{{ env('BASE_URL', '') }}';
+        window.BASE_URL = '{{ env('
+        BASE_URL ', '
+        ') }}';
     </script>
 
     <script>

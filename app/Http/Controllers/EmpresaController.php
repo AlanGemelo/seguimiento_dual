@@ -211,6 +211,8 @@ class EmpresaController extends Controller
 
     public function store(Request $request)
     {
+
+
         $data = $request->validate([
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:empresas,email',
@@ -223,6 +225,8 @@ class EmpresaController extends Controller
             'direcciones_ids.*' => 'exists:direccion_carreras,id',
             'archivo_especifico' => 'required|file|mimes:pdf|max:5120',
             'archivo_marco' => 'required|file|mimes:pdf|max:5120',
+            'indefinido_especifico' => 'nullable',
+            'indefinido_marco' => 'nullable',
         ]);
 
         //PROCESAR ARCHIVOS

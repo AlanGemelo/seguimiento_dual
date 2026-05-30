@@ -81,4 +81,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Roles::class, 'rol_id');
     }
+     public function getNombreCortoAttribute()
+    {
+        return str_replace('Dirección de Carrera de ', '', $this->name);
+    }
 }

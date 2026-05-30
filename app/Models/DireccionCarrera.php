@@ -34,4 +34,8 @@ class DireccionCarrera extends Model
     {
         return $this->belongsToMany(Empresa::class, 'empresa_direccion', 'direccion_id', 'empresa_id');
     }
+      public function getNombreCortoAttribute()
+    {
+        return str_replace('Dirección de Carrera de ', '', $this->name);
+    }
 }

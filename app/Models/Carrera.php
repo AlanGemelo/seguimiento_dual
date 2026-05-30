@@ -28,4 +28,8 @@ class Carrera extends Model
     {
         return $this->hasMany(Estudiantes::class, 'carrera_id', 'id');
     }
+    public function getNombreCortoAttribute()
+    {
+        return str_replace('Dirección de Carrera de ', '', $this->name);
+    }
 }

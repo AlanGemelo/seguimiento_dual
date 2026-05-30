@@ -1,0 +1,26 @@
+/* DESKTOP VERSION */
+.ext-tel {
+    max-width: 20%;
+}
+
+.ext-tel label {
+    max-width: 100%;
+}
+
+
+
+
+
+/* TABLET VERSION */
+@media (min-width: 768px) and (max-width: 1024px) {}
+
+/*  MOBILE VERSION  */
+@media (max-width: 768px) {
+    .ext-tel {
+        max-width: 50%;
+    }
+
+    .ext-tel input {
+        max-width: 100%;
+    }
+}

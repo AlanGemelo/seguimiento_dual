@@ -1,102 +1,55 @@
 <div class="row">
 
     {{-- Inicio de sesión --}}
+
+    {{-- Cambiar contraseña --}}
     <div class="col-md-4 mb-4">
         <div class="card border-0 shadow-sm h-100">
-
             <div class="card-body">
-
-                <h5 class="fw-bold">
-                    <i class="mdi mdi-login text-success"></i>
-                    Iniciar sesión
-                </h5>
-
-                <p class="small text-muted">
-                    Aprende cómo acceder correctamente al sistema institucional.
-                </p>
-
-            </div>
-
-            <div class="card-footer bg-white border-0">
-
-                <a href="https://youtube.com/"
-                   target="_blank"
-                   class="btn btn-danger btn-sm w-100">
-
-                    <i class="mdi mdi-youtube"></i>
-                    Ver tutorial
-
-                </a>
-
-            </div>
-
-        </div>
-    </div>
-
-    {{-- Recuperar contraseña --}}
-    <div class="col-md-4 mb-4">
-        <div class="card border-0 shadow-sm h-100">
-
-            <div class="card-body">
-
                 <h5 class="fw-bold">
                     <i class="mdi mdi-lock-reset text-warning"></i>
-                    Recuperar contraseña
+                    Cambiar contraseña
                 </h5>
-
                 <p class="small text-muted">
-                    Guía para recuperar el acceso a tu cuenta.
+                    Guía para actualizar o cambiar la contraseña de acceso a tu cuenta.
                 </p>
-
             </div>
-
             <div class="card-footer bg-white border-0">
-
-                <a href="https://youtube.com/"
-                   target="_blank"
-                   class="btn btn-danger btn-sm w-100">
-
+                <a href="https://youtu.be/ZYkQp-gR3uI"
+                    target="_blank"
+                    class="btn btn-danger btn-sm w-100">
                     <i class="mdi mdi-youtube"></i>
                     Ver tutorial
-
                 </a>
-
             </div>
-
         </div>
     </div>
-
-    {{-- Navegación --}}
+    @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
+    {{-- Restablecer la contraseña --}}
     <div class="col-md-4 mb-4">
         <div class="card border-0 shadow-sm h-100">
-
             <div class="card-body">
-
                 <h5 class="fw-bold">
-                    <i class="mdi mdi-view-dashboard text-primary"></i>
-                    Navegación del sistema
+                    <i class="mdi mdi-lock-reset text-warning"></i>
+                    Restablecer contraseña
                 </h5>
-
                 <p class="small text-muted">
-                    Conoce las principales secciones y módulos del sistema.
+                    Guía para que un administrador o director pueda restablecer la contraseña o el acceso de un usuario cuando este la haya olvidado.
                 </p>
-
             </div>
-
             <div class="card-footer bg-white border-0">
-
-                <a href="https://youtube.com/"
-                   target="_blank"
-                   class="btn btn-danger btn-sm w-100">
-
+                <a href="https://youtu.be/oXY969uKgf8"
+                    target="_blank"
+                    class="btn btn-danger btn-sm w-100">
                     <i class="mdi mdi-youtube"></i>
                     Ver tutorial
-
                 </a>
-
             </div>
-
         </div>
     </div>
+    @endif
+
+    {{-- Navegación --}}
+
 
 </div>

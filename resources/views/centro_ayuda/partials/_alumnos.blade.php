@@ -9,20 +9,20 @@
 
                 <h5 class="fw-bold">
                     <i class="mdi mdi-account-plus text-success"></i>
-                    Crear alumno
+                    Crear un candidato a dual
                 </h5>
 
                 <p class="small text-muted">
-                    Aprende a registrar un nuevo alumno dual o candidato.
+                    Aprende a registrar un nuevo candidato dual.
                 </p>
 
             </div>
 
             <div class="card-footer bg-white border-0">
 
-                <a href="https://youtube.com/"
-                   target="_blank"
-                   class="btn btn-danger btn-sm w-100">
+                <a href="https://youtu.be/BlhquJ_w9Us"
+                    target="_blank"
+                    class="btn btn-danger btn-sm w-100">
 
                     <i class="mdi mdi-youtube"></i>
                     Ver tutorial
@@ -35,7 +35,7 @@
 
     </div>
 
-    {{-- Editar alumno --}}
+    {{-- Convertir un candidato a alumno dual --}}
     <div class="col-md-4 mb-4">
 
         <div class="card border-0 shadow-sm h-100">
@@ -44,20 +44,20 @@
 
                 <h5 class="fw-bold">
                     <i class="mdi mdi-account-edit text-primary"></i>
-                    Editar alumno
+                    Convertir un candidato a alumno dual
                 </h5>
 
                 <p class="small text-muted">
-                    Modifica información académica y personal del alumno.
+                    Aceptar a un candidato para formar parte del listado oficial a dual.
                 </p>
 
             </div>
 
             <div class="card-footer bg-white border-0">
 
-                <a href="https://youtube.com/"
-                   target="_blank"
-                   class="btn btn-danger btn-sm w-100">
+                <a href="https://youtu.be/Q_9oP6KU-SQ"
+                    target="_blank"
+                    class="btn btn-danger btn-sm w-100">
 
                     <i class="mdi mdi-youtube"></i>
                     Ver tutorial
@@ -71,7 +71,7 @@
     </div>
 
     {{-- Subir documentos --}}
-    <div class="col-md-4 mb-4">
+    <!-- <div class="col-md-4 mb-4">
 
         <div class="card border-0 shadow-sm h-100">
 
@@ -91,8 +91,8 @@
             <div class="card-footer bg-white border-0">
 
                 <a href="https://youtube.com/"
-                   target="_blank"
-                   class="btn btn-danger btn-sm w-100">
+                    target="_blank"
+                    class="btn btn-danger btn-sm w-100">
 
                     <i class="mdi mdi-youtube"></i>
                     Ver tutorial
@@ -103,10 +103,10 @@
 
         </div>
 
-    </div>
+    </div> -->
 
     {{-- Eliminar alumno --}}
-    <div class="col-md-4 mb-4">
+    <!-- <div class="col-md-4 mb-4">
 
         <div class="card border-0 shadow-sm h-100">
 
@@ -126,8 +126,8 @@
             <div class="card-footer bg-white border-0">
 
                 <a href="https://youtube.com/"
-                   target="_blank"
-                   class="btn btn-danger btn-sm w-100">
+                    target="_blank"
+                    class="btn btn-danger btn-sm w-100">
 
                     <i class="mdi mdi-youtube"></i>
                     Ver tutorial
@@ -138,6 +138,6 @@
 
         </div>
 
-    </div>
+    </div> -->
 
 </div>

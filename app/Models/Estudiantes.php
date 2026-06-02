@@ -17,10 +17,12 @@ class Estudiantes extends Model
     public function getStatusTextAttribute()
     {
         $statuses = [
-            0 => 'Reprobacion',
-            1 => 'Termino de Convenio',
-            2 => 'Ciclo de Renovacion Concluido',
-            3 => 'Termino del PE',
+            0 => 'Primera vez',
+            1 => 'Renovación Dual',
+            2 => 'Reprobación',
+            3 => 'Término de Convenio',
+            4 => 'Ciclo de Renovación Concluido',
+            5 => 'Término del PE',
         ];
 
         return $statuses[$this->status] ?? 'Desconocido';

@@ -64,7 +64,7 @@
                             <td>{{ $mentorDeleted->titulo . ' ' . $mentorDeleted->name . ' ' . $mentorDeleted->apellidoP . ' ' . $mentorDeleted->apellidoM }}
                             </td>
                             <td>{{ $mentorDeleted->email }}</td>
-                            <td>{{ $mentorDeleted->direccion->name }}</td>
+                             <td>{{ $mentorDeleted->direccion->nombre_corto }}</td>
                             <td class="text-center">
                                 {{-- Restaurar --}}
                                 <x-buttons.restore-button funcion="restoreMentorAcademico"

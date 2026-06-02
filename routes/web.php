@@ -31,18 +31,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/seleccionar-carrera/{id}', [HomeController::class, 'seleccionarCarrera'])->name('direcciones.select');
     Route::get('/dashboard/reset-carrera', [HomeController::class, 'resetearCarrera'])->name('direcciones.reset');
 
-    //Rutas para el perfil de usuario
+    // Rutas para el perfil de usuario
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
-    
+
     // Rutas para el modulo de administracion
     Route::get('/administracion', [AdministracionController::class, 'index'])->name('administracion.index');
     Route::post('/administracion/reset-password', [AdministracionController::class, 'resetPassword'])->name('administracion.password.reset');
     Route::get('/administracion/usuario/buscar', [AdministracionController::class, 'buscarPorEmail']);
+    //Route::post('/administracion/backup', [AdministracionController::class, 'backup'])->name('admin.backup');
+    Route::get('/backup/download/{file}',[AdministracionController::class, 'downloadBackup'])->where('file', '.*')->name('admin.backup.download');
 
     // Rutas para el módulo estudiantes
     Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
@@ -221,8 +223,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('anexo2_1/{anexo2_1}/generatePdf', [Anexo2_1Controller::class, 'generatePdf'])->name('anexo2_1.generatePdf');
     Route::get('anexo2_1/{anexo2_1}/generateWord', [Anexo2_1Controller::class, 'generateWord'])->name('anexo2_1.generateWord');
 
-
-    //Rutas para renovaciones de convenios y duales
+    // Rutas para renovaciones de convenios y duales
     Route::get('/estudiantes/{id}/renovar', [DocumentacionController::class, 'showRenovarEstudiante'])
         ->name('estudiantes.renovar');
     Route::post('/estudiantes/{id}/renovar', [DocumentacionController::class, 'storeRenovarEstudiante'])
@@ -242,7 +243,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // });
 
     Route::get('/descargar/{archivo}', function ($archivo) {
-        $path = public_path('storage/anexos/' . $archivo);
+        $path = public_path('storage/anexos/'.$archivo);
         if (file_exists($path)) {
             return response()->download($path);
         } else {
@@ -256,4 +257,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('centro_ayuda.index');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

@@ -19,7 +19,7 @@ $activeTab = request('tab', 'mentores');
             <div class="card-body">
                 {{-- Alertas generales --}}
                 <x-alerts.flash-messages />
-                
+
                 <ul class="nav nav-tabs" id="mentoresTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ $activeTab === 'mentores' ? 'active' : '' }}" data-bs-toggle="tab"
@@ -55,9 +55,7 @@ $activeTab = request('tab', 'mentores');
                     </div>
                     @endif
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>
@@ -135,7 +133,7 @@ $activeTab = request('tab', 'mentores');
                 </button>
             </div>
             <div class="modal-body">
-                <p id="bannerRestore">
+                <p id="bannerDestroy">
                     ¿Estás seguro de Destruir este registro?
                 </p>
             </div>
@@ -153,6 +151,9 @@ $activeTab = request('tab', 'mentores');
 @endsection
 
 @section('scripts')
+<script>
+    const BASE_URL = "{{ url('/') }}";
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {

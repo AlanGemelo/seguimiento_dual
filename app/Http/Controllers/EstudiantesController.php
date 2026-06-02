@@ -44,6 +44,8 @@ class EstudiantesController extends Controller
         })->only(['create', 'store']);
     }
 
+
+    
     /**
      * Muestra la lista de estudiantes.
      */

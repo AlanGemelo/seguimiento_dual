@@ -1011,8 +1011,7 @@
         function eliminarArchivo(button, index) {
             const deletedFilesInput = document.getElementById('deleted_files');
             const current = deletedFilesInput.value ?
-                deletedFilesInput.value.split(',') :
-                [];
+                deletedFilesInput.value.split(',') : [];
 
             if (!current.includes(index.toString())) {
                 current.push(index);

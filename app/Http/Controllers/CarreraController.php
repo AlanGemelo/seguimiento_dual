@@ -49,8 +49,8 @@ class CarreraController extends Controller
 
         if (! empty($search_carreras)) {
             $query->where(function ($q) use ($search_carreras) {
-                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_carreras) . '%'])
-                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%' . strtolower($search_carreras) . '%']);
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($search_carreras).'%'])
+                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%'.strtolower($search_carreras).'%']);
             });
         }
 
@@ -71,8 +71,8 @@ class CarreraController extends Controller
 
         if (! empty($search_eliminados)) {
             $deletedQuery->where(function ($q) use ($search_eliminados) {
-                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_eliminados) . '%'])
-                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%' . strtolower($search_eliminados) . '%']);
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($search_eliminados).'%'])
+                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%'.strtolower($search_eliminados).'%']);
             });
         }
 
@@ -149,7 +149,7 @@ class CarreraController extends Controller
 
             // Otro tipo de error, puedes manejarlo según tus necesidades
             return redirect()->route('carreras.index')
-                ->with('statusError', 'Error al eliminar la carrera: ' . $e->getMessage());
+                ->with('statusError', 'Error al eliminar la carrera: '.$e->getMessage());
         }
     }
 
@@ -186,7 +186,7 @@ class CarreraController extends Controller
             }
 
             return redirect()->route('carreras.index', ['tab' => 'programas_inactivos'])
-                ->with('error', 'Error al eliminar la carrera: ' . $e->getMessage());
+                ->with('error', 'Error al eliminar la carrera: '.$e->getMessage());
         }
     }
 
@@ -259,15 +259,25 @@ class CarreraController extends Controller
         return view('carrera.create', compact('direcciones', 'grado_academico'));
     }
 
-    public function edit(Carrera $id): View
+    public function edit($hashid): View
     {
+        $decoded = Hashids::decode($hashid);
+
+        if (empty($decoded)) {
+            abort(404);
+        }
+
+        $id = $decoded[0];
+
+        $carrera = Carrera::with('direccion')->findOrFail($id);
+
         $grado_academico = config('niveles_academicos');
+        $direcciones = DireccionCarrera::all();
 
-        $id->load('direccion');
-        $carrera = $id;
-        $direcciones = DireccionCarrera::get();
-
-        return view('carrera.edit', compact('carrera', 'direcciones', 'grado_academico'));
+        return view(
+            'carrera.edit',
+            compact('carrera', 'direcciones', 'grado_academico')
+        );
     }
 
     public function restore($hashId): RedirectResponse
@@ -295,7 +305,7 @@ class CarreraController extends Controller
                 ->with('success', 'Programa Academico Restaurado.');
         } catch (\Exception $e) {
             return redirect()->route('carreras.index', ['tab' => 'programas_inactivos'])
-                ->with('error', 'Hubo un problema al restaurar el Programa Academico: ' . $e->getMessage());
+                ->with('error', 'Hubo un problema al restaurar el Programa Academico: '.$e->getMessage());
         }
     }
 }

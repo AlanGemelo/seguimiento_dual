@@ -74,7 +74,6 @@
                                 {{-- Editar --}}
                                 <x-buttons.edit-button
                                     url="{{ route('carreras.edit', Hashids::encode($carrera->id)) }}" title="Editar" />
-
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
                                     {{-- Eliminar --}}
                                     <x-buttons.delete-button funcion="deleteProgramaEducativo"

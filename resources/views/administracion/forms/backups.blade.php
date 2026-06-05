@@ -62,7 +62,7 @@
 
                     </div>
 
-                    <a href="{{ route('admin.backup.download', urlencode($file)) }}"
+                    <a href="{{ route('admin.backup.download', ['file' => $file]) }}"
                         class="btn btn-sm btn-outline-primary">
 
                         <span class="mdi mdi-download"></span>
@@ -87,12 +87,12 @@
 
 
         @if ($ultimoArchivo)
-                <a href="{{ route('admin.backup.download', $file) }} class="btn btn-primary">
-                    <span class="mdi mdi-download me-1"></span>
+            <a href="{{ route('admin.backup.download', $file) }} class="btn btn-primary">
+                <span class="mdi mdi-download me-1"></span>
 
-                    Descargar Último
+                Descargar Último
 
-                </a>
+            </a>
         @endif
 
     </div>

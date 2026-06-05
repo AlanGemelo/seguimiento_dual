@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -34,20 +33,19 @@ class AdministracionController extends Controller
 
     public function index()
     {
-        $files = Storage::disk('local')
-            ->files('UTVT');
+        $files = collect(Storage::disk('local')->files('UTVT'))
+            ->sortByDesc(function ($file) {
+                return Storage::disk('local')->lastModified($file);
+            })
+            ->take(3)
+            ->values();
 
-        rsort($files);
+        $ultimoArchivo = $files->first() ?? null;
 
-        $ultimoArchivo = $files[0] ?? null;
-
-        return view(
-            'administracion.index',
-            compact(
-                'files',
-                'ultimoArchivo'
-            )
-        );
+        return view('administracion.index', compact(
+            'files',
+            'ultimoArchivo'
+        ));
     }
 
     public function buscarPorEmail(Request $request)
@@ -123,17 +121,17 @@ class AdministracionController extends Controller
             ->with('activeTab', 'password-reset');
     }
 
- public function backup()
-{
-    return back()->with(
-        'warning',
-        'La generación de backup está deshabilitada temporalmente.'
-    );
-}
+    public function backup()
+    {
+        return back()->with(
+            'warning',
+            'La generación de backup está deshabilitada temporalmente.'
+        );
+    }
 
     public function downloadBackup($file)
     {
-        $file = urldecode($file);
+        // NO urldecode
 
         if (! Storage::disk('local')->exists($file)) {
             abort(404, 'Archivo no encontrado.');

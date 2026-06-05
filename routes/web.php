@@ -44,8 +44,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/administracion/reset-password', [AdministracionController::class, 'resetPassword'])->name('administracion.password.reset');
     Route::get('/administracion/usuario/buscar', [AdministracionController::class, 'buscarPorEmail']);
     //Route::post('/administracion/backup', [AdministracionController::class, 'backup'])->name('admin.backup');
-    Route::get('/backup/download/{file}',[AdministracionController::class, 'downloadBackup'])->where('file', '.*')->name('admin.backup.download');
-
+  Route::get('/backup/download/{file}', [AdministracionController::class, 'downloadBackup'])
+    ->where('file', '.*')
+    ->name('admin.backup.download');
     // Rutas para el módulo estudiantes
     Route::get('/estudiantes', [EstudiantesController::class, 'index'])->name('estudiantes.index');
     Route::get('/estudiantes/crear', [EstudiantesController::class, 'create'])->name('estudiantes.create');

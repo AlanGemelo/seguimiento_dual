@@ -39,6 +39,12 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
+                                        <label for="cuatrimestre" class="form-label">Duración cuatrimestral</label>
+                                        <input type="text" class="form-control"
+                                            value="{{ $carrera->duracion_cuatrimestres ?? 'N/A' }}" disabled>
+                                    </div>
+                               
+                                    <div class="col-md-6 mb-3">
                                         <label for="cuatrimestre" class="form-label">Nombre director de carrera</label>
                                         <input type="text" class="form-control"
                                             value="{{ $carrera->direccion->director->nombre }} {{ $carrera->direccion->director->apellidoP }} {{ $carrera->direccion->director->apellidoM }}"

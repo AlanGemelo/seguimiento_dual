@@ -49,8 +49,8 @@ class CarreraController extends Controller
 
         if (! empty($search_carreras)) {
             $query->where(function ($q) use ($search_carreras) {
-                $q->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($search_carreras).'%'])
-                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%'.strtolower($search_carreras).'%']);
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_carreras) . '%'])
+                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%' . strtolower($search_carreras) . '%']);
             });
         }
 
@@ -71,8 +71,8 @@ class CarreraController extends Controller
 
         if (! empty($search_eliminados)) {
             $deletedQuery->where(function ($q) use ($search_eliminados) {
-                $q->whereRaw('LOWER(nombre) LIKE ?', ['%'.strtolower($search_eliminados).'%'])
-                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%'.strtolower($search_eliminados).'%']);
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search_eliminados) . '%'])
+                    ->orWhereRaw('LOWER(grado_academico) LIKE ?', ['%' . strtolower($search_eliminados) . '%']);
             });
         }
 
@@ -94,20 +94,24 @@ class CarreraController extends Controller
     {
         // Obtener los valores válidos de grado académico desde config
         $valores_grado = array_column(config('niveles_academicos'), 'grado_academico');
+
         $request->validate([
             'grado_academico' => ['required', Rule::in($valores_grado)],
             'nombre' => ['required', 'min:2', 'max:255', 'string'],
-            'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id'],
+            'direccion_id' => ['required', 'numeric', 'exists:direccion_carreras,id'],
+            'duracion_cuatrimestres' => ['nullable', 'integer', 'min:1'],
         ]);
-        $direcciones = DireccionCarrera::all();
+
         Carrera::create([
             'grado_academico' => $request->grado_academico,
             'nombre' => $request->nombre,
             'direccion_id' => $request->direccion_id,
+            'duracion_cuatrimestres' => $request->duracion_cuatrimestres,
         ]);
 
-        return redirect()->route('carreras.index', compact('direcciones'));
+        return redirect()->route('carreras.index');
     }
+
 
     public function update(Request $request, Carrera $id)
     {
@@ -116,15 +120,23 @@ class CarreraController extends Controller
 
         $request->validate([
             'nombre' => ['required', 'min:2', 'max:255', 'string'],
-            'direccion_id' => ['required',  'max:255', 'numeric', 'exists:direccion_carreras,id'],
+            'direccion_id' => ['required', 'numeric', 'exists:direccion_carreras,id'],
             'grado_academico' => ['required', Rule::in($valores_grado)],
+            'duracion_cuatrimestres' => ['nullable', 'integer', 'min:1'],
         ]);
 
-        // $id = Hashids::decode($id);
-        $id->update($request->all());
+        $id->update([
+            'nombre' => $request->nombre,
+            'direccion_id' => $request->direccion_id,
+            'grado_academico' => $request->grado_academico,
+            'duracion_cuatrimestres' => $request->duracion_cuatrimestres,
+        ]);
 
-        return redirect()->route('carreras.index')->with('status', 'Carrera Actualizada');
+        return redirect()
+            ->route('carreras.index')
+            ->with('status', 'Carrera Actualizada');
     }
+
 
     public function destroy($id)
     {
@@ -149,7 +161,7 @@ class CarreraController extends Controller
 
             // Otro tipo de error, puedes manejarlo según tus necesidades
             return redirect()->route('carreras.index')
-                ->with('statusError', 'Error al eliminar la carrera: '.$e->getMessage());
+                ->with('statusError', 'Error al eliminar la carrera: ' . $e->getMessage());
         }
     }
 
@@ -186,7 +198,7 @@ class CarreraController extends Controller
             }
 
             return redirect()->route('carreras.index', ['tab' => 'programas_inactivos'])
-                ->with('error', 'Error al eliminar la carrera: '.$e->getMessage());
+                ->with('error', 'Error al eliminar la carrera: ' . $e->getMessage());
         }
     }
 
@@ -305,7 +317,7 @@ class CarreraController extends Controller
                 ->with('success', 'Programa Academico Restaurado.');
         } catch (\Exception $e) {
             return redirect()->route('carreras.index', ['tab' => 'programas_inactivos'])
-                ->with('error', 'Hubo un problema al restaurar el Programa Academico: '.$e->getMessage());
+                ->with('error', 'Hubo un problema al restaurar el Programa Academico: ' . $e->getMessage());
         }
     }
 }

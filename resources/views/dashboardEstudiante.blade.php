@@ -33,6 +33,10 @@
                             {{ match ($estudiante->status) {
                                 0 => 'Estudiante Dual',
                                 1 => 'Candidato a Dual',
+                                2 => 'Reprobación',
+                                3 => 'Término de Convenio',
+                                4 => 'Ciclo de Renovación Concluido',
+                                5 => 'Término del Programa Educativo',
                                 default => 'N/A',
                             } }}
                         </span>
@@ -99,9 +103,25 @@
 
                             <div class="col-lg-6 col-md-12 mb-3">
                                 <label class="info-label">Cuatrimestre</label>
-                                <div class="info-value">
-                                    {{ $estudiante->cuatrimestre }}
-                                </div>
+
+                                <form method="POST">
+                                    @csrf
+
+                                    <div class="d-flex gap-2">
+                                        <select name="cuatrimestre" class="form-select">
+                                            @for ($i = 1; $i <= 11; $i++)
+                                                <option value="{{ $i }}"
+                                                    {{ $estudiante->cuatrimestre == $i ? 'selected' : '' }}>
+                                                    {{ $i }}
+                                                </option>
+                                            @endfor
+                                        </select>
+
+                                        <button type="submit" class="btn btn-success">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
 
                             <div class="col-lg-6 col-md-12 mb-3">

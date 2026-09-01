@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('grado_academico');
             $table->string('nombre');
             $table->foreignId('direccion_id')->constrained('direccion_carreras');
+            $table->unsignedInteger('duracion_cuatrimestres')->nullable();
+            $table->boolean('activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

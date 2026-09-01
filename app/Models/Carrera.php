@@ -17,6 +17,7 @@ class Carrera extends Model
         'direccion_id',
         'email',
         'telefono',
+        'duracion_cuatrimestres'
     ];
 
     public function direccion()

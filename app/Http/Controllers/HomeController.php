@@ -73,11 +73,12 @@ class HomeController extends Controller
                     1 => 'Beca Dual Comecyt',
                 ];
 
+               
                 $estudiante = Estudiantes::withTrashed()
                     ->with('academico') // cargar académico
                     ->where('user_id', $user->id)
                     ->first();
-
+                    
                 return view('dashboardEstudiante', compact(
                     'estudiante',
                     'becas',

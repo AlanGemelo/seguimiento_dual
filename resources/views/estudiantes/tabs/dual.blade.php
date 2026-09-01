@@ -120,7 +120,7 @@
                                     title="Editar Dual" />
                                 {{-- Eliminar --}}
                                 @if (Auth::user()->rol_id === 1 || Auth::user()->rol_id === 4)
-                                    <x-buttons.delete-button funcion="deleteEstudiante"
+                                    <x-buttons.conclude-button funcion="deleteEstudiante"
                                         parametro="{{ $estudiante->matricula }}" />
                                 @endif
 

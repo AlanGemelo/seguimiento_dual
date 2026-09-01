@@ -54,11 +54,31 @@
                                 </div>
 
                                 <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="duracion_cuatrimestres" class="form-label">
+                                            Duración en cuatrimestres
+                                        </label>
+
+                                        <input type="number" class="form-control form-control-lg"
+                                            id="duracion_cuatrimestres" name="duracion_cuatrimestres" min="1"
+                                            value="{{ old('duracion_cuatrimestres', $carrera->duracion_cuatrimestres) }}"
+                                            placeholder="Ej. 9">
+
+                                        @error('duracion_cuatrimestres')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                     <div class="col-md-8 mb-3">
-                                        <label for="direccion_id" class="form-label">Direccion de Carrera <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" aria-label="Seleccionar Empresa" name="direccion_id">
-                                            <option selected>Seleccione una opcion</option>
+                                        <label for="direccion_id" class="form-label">
+                                            Dirección de Carrera <span class="text-danger">*</span>
+                                        </label>
+
+                                        <select class="form-select" id="direccion_id" name="direccion_id" required>
+
+                                            <option value="" disabled>
+                                                Seleccione una opción
+                                            </option>
+
                                             @foreach ($direcciones as $direccion)
                                                 <option value="{{ $direccion->id }}"
                                                     {{ old('direccion_id', $carrera->direccion_id) == $direccion->id ? 'selected' : '' }}>
@@ -66,18 +86,22 @@
                                                 </option>
                                             @endforeach
                                         </select>
+
                                         @error('direccion_id')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
-                            </div>
 
-                            <!-- Botones de Acción -->
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                                <x-buttons.success-button text="Actualizar" />
-                                <x-buttons.cancel-button url="{{ route('carreras.index') }}" />
-                            </div>
+
+
+
+                                </div>
+
+                                <!-- Botones de Acción -->
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                    <x-buttons.success-button text="Actualizar" />
+                                    <x-buttons.cancel-button url="{{ route('carreras.index') }}" />
+                                </div>
                         </form>
                     </div>
                 </div>

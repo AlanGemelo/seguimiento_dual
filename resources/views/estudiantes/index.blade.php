@@ -185,25 +185,26 @@ $activeTab = request('tab', 'dual');
         </div>
     </div>
 </div>
+
 <!-- Modal de confirmación para baja estudiante dual -->
 <div class="modal fade" id="deleteModalDual" tabindex="-1" aria-labelledby="deleteModalDualLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteModalDualLabel">Baja Estudiante Dual</h5>
+                <h5 class="modal-title" id="deleteModalDualLabel">Concluir Estancia Dual</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
-                <p id="bannerDual">¿Estás seguro de dar de baja este registro?</p>
+                <p id="bannerDual">Estás seguro de concluir la estancia de este estudiante</p>
 
                 <div class="mb-3">
-                    <label for="selectMotivoDual" class="form-label">Motivo de baja</label>
+                    <label for="selectMotivoDual" class="form-label">Motivo de conclusión</label>
                     <select id="selectMotivoDual" class="form-select">
                         <option value="">-- Selecciona un motivo --</option>
                     </select>
                     <div id="warningMessage" class="text-danger mt-1" style="display:none;">
-                        Debes seleccionar un motivo para dar de baja al estudiante.
+                       Debes seleccionar un motivo.
                     </div>
                 </div>
             </div>
@@ -213,33 +214,33 @@ $activeTab = request('tab', 'dual');
                     @method('DELETE')
                     <input type="hidden" name="status" id="statusInputDual">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="submit" class="btn btn-danger">Concluir</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal de confirmación para baja dual -->
+<!-- Modal de confirmación para baja de candidato dual -->
 <div class="modal fade" id="deleteModalCandidatos" tabindex="-1" aria-labelledby="deleteModalCandidatosLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteModalCandidatosLabel">Baja del Alumno Dual</h5>
+                <h5 class="modal-title" id="deleteModalCandidatosLabel">Concluir Estancia Dual</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Cerrar">
                 </button>
             </div>
             <div class="modal-body">
-                <p id="bannerCandidato"></p>¿Estás seguro de dar de baja este registro?</p>
+                <p id="bannerCandidato"></p>¿Estás seguro de concluir la estancia de este estudiante?</p>
                 <div class="mb-3">
                     <label for="selectMotivoCandidato" class="form-label">Motivo de baja</label>
                     <select id="selectMotivoCandidato" class="form-select">
                         <option value="">-- Selecciona un motivo --</option>
                     </select>
                     <div id="warningMessege" class="text-danger mt-1" style="display: none">
-                        Debes seleccionar un motivo para dar de baja al estudiante.
+                        Debes seleccionar un motivo.
                     </div>
                 </div>
             </div>
@@ -249,7 +250,7 @@ $activeTab = request('tab', 'dual');
                     @method('DELETE')
                     <input type="hidden" name="status" id="statusInputCandidato">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="submit" class="btn btn-danger">Concluir</button>
                 </form>
             </div>
         </div>
